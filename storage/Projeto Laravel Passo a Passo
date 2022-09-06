@@ -1,0 +1,189 @@
+=============================
+CONFIGURAÇÕES INICIAIS
+============================
+
+1 - Criar um projeto com o Laravel:
+    composer create-project --prefer-dist laravel/laravel sedes-rest-popular "8.5"
+    
+2 - Criar o arquivo .env 
+    a) na raiz do projeto, executar o comando: cp .env.exemple ./.env
+
+3 - Gerar uma chave para o app (projeto)
+    a) php artisan key:generate
+
+4 - Configurar tradução
+    a) obter arquivo de configuração em: https://github.com/Upinside/laravel-pt-BR
+    b) criar pasta resources/lang/pt-BR
+    c) descompactar o arquivo obtido na pasta criada acima
+    d) alterar a propriedade 'locale' para 'locale' => 'pt-br', em config/app.php
+
+5 - Alterar a propriedade 'timezone' para 'timezone' => 'America/Sao_Paulo', em config/app.php
+
+6 - Criar o banco de dados no MySQL ou Postgres (talvez) com a colation utf8mb4 (mais precisamente utf8mb4-unicode-ci)
+
+7 - No arquivo App/Providers/AppServiceProvider.php acrescentar as linhas abaixo, para efeito de reconhecimento da collation do banco de dados utf8mb4 acima, no passo 6
+    a) importar: use Illuminate\Support\Facades\Schema
+    b) public function resgister(){ 
+          Schema::defaultStringLength(191);
+       }
+
+8 - Criar uma chave no arquivo .env, como se segue:
+    a) FILESYSTEM_DRIVER=public
+
+9 - Configurar as credenciais do banco de dados no arquivo .env, conforme necessário
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=nome_do_banco
+    DB_USERNAME=your_username
+    DB_PASSWORD=your_password
+
+10 - Crie as tabelas da pasta: database/migrations, para checar a conexão com o banco de dados. Criada as tabelas com sucesso, exclua-as do banco novamente. 
+     php artisan migrate
+
+11 - Caso sinta necessidade, só se for necessário, altere o namespace da sua aplicação com o comando:
+     a) php artisan app:name Setres
+
+
+
+==========================================================
+FONTES AWESOME PARA COLOCAR NO PROJETO COM ESTE TEMPLATE
+=========================================================
+https://fontawesome.com/v5/search?o=r&m=free
+
+
+
+=============================
+CRIAÇÃO MÓDULO DE LOGIN
+=============================
+
+1 - Criar/Alterar migrations de User com campos conforme necessário
+2 - Executar Migration
+    a) php artisan migrate
+    
+3 - Criar controller de User
+    a) php artisan make:controller Admin/UserController -r (cria o controller com todos os resources na pasta app/Http/Controllers/Admin)
+
+4 - Criar requests User e definir as regras de validação.
+    a) php artisan make:request UserCreateRequest. Alterar o retorno do método authorize desta request para true.
+    b) php artisan make:request UserUpdateRequest. Alterar o retorno do método authorize desta request para true
+    c) Importar os respectivos requests criados e utilizá-los nos respectivos métodos create e update do controller User.
+    
+
+5 - Criar rotas conforme necessário do tipo resource. Utilizar middleware também conforme necessário.
+    a) use App\Http\Controllers\Admin\UserController;
+    b) Route::resource('user', UserController::class);
+
+6 - Criar view index.blade.php para listar usuários usuário;
+7 - Implementar método index do UserCortroller para exibir view index.blade.php, não esquecer de importar modelo User
+    a) use App\Models\User;
+    b) $users = User::all();
+       return view('admin.user.index', compact('users'));
+
+
+==================================
+CRIAÇÃO DE UM MÓDULO GENÉRICO
+==================================
+
+1 - Criar MIGRATIONS do recurso com os campos e seus tipos, bem como seus relacionamentos com outras tabelas, conforme necessário
+    a php artisan make:migration create_recursos_table (obs: coloque o nome do recurso no plural)
+
+2 - Criar o model do recurso
+    a) php artisan make:model Recurso (obs: colocar o nome do model no singular com a primeira letra em maiúscula)
+    b) definir os campos a serem preenchidos na propriedade protected $fillable = [], para serem preenchido em massa
+    c) definir os relacionametos conforme necessário e quando preciso
+    
+3 - Executar a migration
+    a) php artisan migrate
+       
+4 - Cirar as Requests (para create e update) para o recurso criado, e definir suas validações, conforme necessário
+    a) php artisan make:request RecursoCreateRequest
+    b) php artisan make:request RecursoUpdateRequest 
+
+5 - Criar o controller do Recurso e definir seus métodos conforme necessário, bem como importar classes necessárias
+    a) php artisan make:controller Admin/RecusoController --resource (obs: o parâmetro --resource, criar todos os métodos de um CRUD automaticamente)
+    b) use App\Models\Recurso;
+       use Illuminate\Support\Facades\DB;
+       use App\Http\Requests\RecursoCreateRequest;
+       use App\Http\Requests\RecursoUpdateRequest;
+       use Illuminate\Support\Facades\Validator;
+       use Illuminate\Validation\Rule;
+
+6 - Crie a(s) rota(s) do recurso, conforme necessário
+    a) use App\Http\Controllers\Admin\BairroController;
+    b) Route::prefix('admin')->name('admin.')->group(function() {
+          Route::resource('user', RecursoController::class);
+       )}
+    c) Quando necessário, acrescente o middleware se preciso for
+           b) Route::prefix('admin')->name('admin.')->group(function() {
+          Route::resource('user', RecursoController::class)->middleware(['auth']);
+       )}
+
+7 - Referenciar a rota do recurso no menu de navegação pelo seu nome (->name) conforme como nomeado no arquivo de rotas, quando for o caso
+
+8 - Cirar as views (index.blade, create.blade, edit.blade, show.blade, outras.blade) conforme necessário
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+=========================
+EXTRAS
+=========================
+1 - Site de Ícones: https://fontawesome.com/v4.7/icons/
+2 - Site de imagens de capas svg: https://undraw.co/
+
+=======================
+RELACIONAMENTOS
+======================
+1 - Um para Um
+2 - Relação entre Imovel e Endereco
+3 - Um imóvel hasOne(Endereco)
+4 - Um endereco belongsTo(Imovel). A chave estrangeira fica no modelo endereço
+
+5 - Um para Muitos
+6 - o Dono do relacionamento, NÃO possui chave estrageira, então ele é do tipo: hasMany
+7 - O inverso, ou seja, quem possui a chave estrangeira é do tipo belongsTo
+
+
+==================================
+BIBLIOTECA PARA GERAR CSV E EXCEL
+==================================
+// Depois de baixar o Maatwebsite
+// composer require maatwebsite/excel
+// Registar em config/app.php na propriedade provider e alias
+   'providers' => [
+   	\Maatwebsite\Excel\ExcelServiceProvider::class,
+   ]
+   
+   'aliases' => [
+   	'Excel' => \Maatwebsite\Excel\Facades\Excel::class,
+   ]
+
+// php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"
+// Comando para gerar este export:
+// php artisan make:export ResiduoExport --model=App\Models\Residuo
+
+// Criar o método getResiduos() no model Residuo
+// No model Residuo inserir a Facades DB
+// criar o método heading():array nesta classe (indicando o cabeçalho dos arquivos xlsx e csv)
+// Colocar a "treat" ,WithHeadings no início desta classe
+// importar o model resíduo para esta classe use App\Models\Residuo
+
+// No controle ResidoController, importar: use App\Exports\ResiduoExport;
+// No controle ResidoController, importar: use Excel;
+// criar os métodos relatorioresiduoexcel e relatorioresiduocsv no controller ResiduoController
+
+
+
+
+
+
+
+
+
+
