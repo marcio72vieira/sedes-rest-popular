@@ -43,7 +43,14 @@ CONFIGURAÇÕES INICIAIS
 11 - Caso sinta necessidade, só se for necessário, altere o namespace da sua aplicação com o comando:
      a) php artisan app:name Setres
 
+12 - Executar e Parar execução do site com os comandos abaixo em uma janela de terminal dentro da pasta do projeto
+     php artisan serve
+     fuser -k -n tcp 8000 ou fuser -k -n tcp 8001 (8000 e 8001 são as portas alocadas pelo servidor interno do artisan)
 
+13 - Criar uma branch, Alterar para branch criada, verificar em qual branch se encontra no momento
+     git branch develop (cria uma branch)
+     git switch develop (muda da branch atual para a branch develop)
+     git branch (lista as branchs e sinaliza com o * a branch atualmente em uso)
 
 ==========================================================
 FONTES AWESOME PARA COLOCAR NO PROJETO COM ESTE TEMPLATE
@@ -126,8 +133,19 @@ CRIAÇÃO DE UM MÓDULO GENÉRICO
        
        
        
-       
-       
+=======================
+COMANDOS git
+=======================
+obs: Eu tenho que está dentro da mesma "branch" (master) para a qual eu desejo commitar minhas alterações como abaixo
+     git add .
+     git commit -m "Descrição do commit"
+     git push orign master
+
+git branch develop (cria a branch develop)
+git switch master (muda para a branch master)
+git switch develop (muda para a branch develop)
+git reset --soft HEAD~  (Desfaz o último commit na minha máquina)
+git restore --staged .  (Desmarca todos os arquivos a serem comitados, tornando-os vermelhos novamente)
        
        
        
