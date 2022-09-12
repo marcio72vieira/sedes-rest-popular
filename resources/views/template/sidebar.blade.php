@@ -65,9 +65,9 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Tabelas de Apoio:</h6>
-                    <a class="collapse-item" href="{{-- route('admin.municipio.index') --}}"><i class="fas fa-globe-americas"></i>
+                    <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-globe-americas"></i>
                         Municípios</a>
-                    <a class="collapse-item" href="{{-- route('admin.bairro.index') --}}"><i class="far fa-list-alt"></i>
+                    <a class="collapse-item" href="{{ route('admin.categoria.index') }}"><i class="far fa-list-alt"></i>
                         Categorias</a>
                     <a class="collapse-item" href="{{-- route('admin.banco.index')--}}"><i class="fas fa-leaf"></i>
                         Produtos</a>

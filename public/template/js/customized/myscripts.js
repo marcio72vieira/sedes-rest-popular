@@ -3,7 +3,7 @@ $(function(){
     // Configurações do DataTable
     $('#dataTable').dataTable({
         "ordering": true,
-        "order": [[ 3, "desc" ]],
+        "order": [[ 0, "desc" ]],
         /*
         Escondendo uma coluna específica
         "columnDefs": [

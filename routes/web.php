@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Admin\MunicipioController;
+use App\Http\Controllers\Admin\CategoriaController;
 
 
 /*
@@ -33,24 +35,8 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
 
-    /*
-    // Users
-    Route::resource('user', UserController::class);
-    Route::get('user/{id}/profile', [UserController::class, 'profile'])->name('user.profile')->middleware(['auth']);
-    Route::put('/user/{id}/updateprofile', [UserController::class, 'updateprofile'])->name('user.updateprofile')->middleware(['auth']);
-
-    // Municipio
-    Route::post('getamountbairros',[MunicipioController::class, 'getamountbairros'])->name('getamountbairros');
     Route::resource('municipio', MunicipioController::class);
+    Route::resource('categoria', CategoriaController::class);
 
-    // Bairro
-    Route::resource('bairro', BairroController::class)->middleware(['auth']);
 
-    // Banco
-    Route::resource('banco', BancoController::class)->middleware(['auth']);
-
-    // Empresa
-    Route::post('getbairros',[EmpresaController::class, 'getbairros'])->name('getbairros');
-    Route::resource('empresa', EmpresaController::class);
-    */
 });
