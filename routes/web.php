@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\MunicipioController;
 use App\Http\Controllers\Admin\CategoriaController;
+use App\Http\Controllers\Admin\ProdutoController;
+use App\Http\Controllers\Admin\MedidaController;
 
 
 /*
@@ -37,6 +39,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
 
     Route::resource('municipio', MunicipioController::class);
     Route::resource('categoria', CategoriaController::class);
-
+    Route::resource('produto', ProdutoController::class);
+    Route::resource('medida', MedidaController::class);
 
 });

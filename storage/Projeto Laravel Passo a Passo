@@ -5,29 +5,32 @@ CONFIGURAÇÕES INICIAIS
 1 - Criar um projeto com o Laravel:
     composer create-project --prefer-dist laravel/laravel sedes-rest-popular "8.5"
     
-2 - Criar o arquivo .env 
+2 - Criar o arquivo .env (caso não exista) a partir do arquivo .env.exemple com o comando abaixo
     a) na raiz do projeto, executar o comando: cp .env.exemple ./.env
 
-3 - Gerar uma chave para o app (projeto)
+3 - Gerar uma chave para o app (projeto), caso não tenha sido criada automaticamente na criação do projeto laravel
     a) php artisan key:generate
 
 4 - Configurar tradução
     a) obter arquivo de configuração em: https://github.com/Upinside/laravel-pt-BR
     b) criar pasta resources/lang/pt-BR
     c) descompactar o arquivo obtido na pasta criada acima
-    d) alterar a propriedade 'locale' para 'locale' => 'pt-br', em config/app.php
+    d) no arquivo config/app.php, alterar a propriedade 'locale' para 'locale' => 'pt-br'
 
-5 - Alterar a propriedade 'timezone' para 'timezone' => 'America/Sao_Paulo', em config/app.php
+5 - No arquivo config/app.php, alterar a propriedade 'timezone' para 'timezone' => 'America/Sao_Paulo'
 
-6 - Criar o banco de dados no MySQL ou Postgres (talvez) com a colation utf8mb4 (mais precisamente utf8mb4-unicode-ci)
+6 - Criar o banco de dados no MySQL ou Postgres (conforme necessidade) com a colation utf8mb4,
+    (mais precisamente utf8mb4-unicode-ci)
 
-7 - No arquivo App/Providers/AppServiceProvider.php acrescentar as linhas abaixo, para efeito de reconhecimento da collation do banco de dados utf8mb4 acima, no passo 6
+7 - No arquivo App/Providers/AppServiceProvider.php acrescentar as linhas abaixo, para efeito de reconhecimento da 
+    collation do banco de dados utf8mb4 acima, no passo 6. A collationo utf8mb4_unicode_ci é para poder gravar 
+    caracteres de emojs caso haja necessidade no banco de dados
     a) importar: use Illuminate\Support\Facades\Schema
     b) public function resgister(){ 
           Schema::defaultStringLength(191);
        }
 
-8 - Criar uma chave no arquivo .env, como se segue:
+8 - Criar uma chave no arquivo .env, como se segue, para indicar o sistema para upload de arquivos, quando necessário
     a) FILESYSTEM_DRIVER=public
 
 9 - Configurar as credenciais do banco de dados no arquivo .env, conforme necessário
@@ -37,7 +40,9 @@ CONFIGURAÇÕES INICIAIS
     DB_USERNAME=your_username
     DB_PASSWORD=your_password
 
-10 - Crie as tabelas da pasta: database/migrations, para checar a conexão com o banco de dados. Criada as tabelas com sucesso, exclua-as do banco novamente. 
+10 - Crie as tabelas da pasta: database/migrations no banco de dados, para verificar se a conexão está Ok. Uma vez
+     criada as tabelas de forma satisfatória, exclua-as novamente do banco de dados.
+     Crie as tabelas, com o comando abaixo: 
      php artisan migrate
 
 11 - Caso sinta necessidade, só se for necessário, altere o namespace da sua aplicação com o comando:
@@ -51,6 +56,7 @@ CONFIGURAÇÕES INICIAIS
      git branch develop (cria uma branch)
      git switch develop (muda da branch atual para a branch develop)
      git branch (lista as branchs e sinaliza com o * a branch atualmente em uso)
+
 
 ==========================================================
 FONTES AWESOME PARA COLOCAR NO PROJETO COM ESTE TEMPLATE
@@ -125,7 +131,8 @@ CRIAÇÃO DE UM MÓDULO GENÉRICO
           Route::resource('user', RecursoController::class)->middleware(['auth']);
        )}
 
-7 - Referenciar a rota do recurso no menu de navegação pelo seu nome (->name) conforme como nomeado no arquivo de rotas, quando for o caso
+7 - Referenciar a rota do recurso no menu de navegação pelo seu nome (->name) conforme como nomeado no arquivo de rotas, 
+    quando for o caso
 
 8 - Cirar as views (index.blade, create.blade, edit.blade, show.blade, outras.blade) conforme necessário
        
@@ -198,9 +205,17 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
 
 
 
+==========================================
+SEQUÊNCIA DE COMANDOS PARA CRIAR RECURSOS
+==========================================
 
+php artisan make:migration create_medidas_table
+php artisan migrate
+php artisan make:model Medida
+php artisan make:controller Admin/MedidaController
 
-
+php artisan make:request MedidaCreateRequest
+php artisan make:request MedidaUpdateRequest
 
 
 

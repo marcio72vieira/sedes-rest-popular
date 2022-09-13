@@ -64,15 +64,15 @@
             </a>
             <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Tabelas de Apoio:</h6>
+                    <h6 class="collapse-header">Tabelas de Suporte:</h6>
                     <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-globe-americas"></i>
                         Municípios</a>
-                    <a class="collapse-item" href="{{ route('admin.categoria.index') }}"><i class="far fa-list-alt"></i>
+                    <a class="collapse-item" href="{{ route('admin.categoria.index') }}"><i class="fas fa-list"></i>
                         Categorias</a>
-                    <a class="collapse-item" href="{{-- route('admin.banco.index')--}}"><i class="fas fa-leaf"></i>
+                    <a class="collapse-item" href="{{ route('admin.produto.index') }}"><i class="fas fa-leaf"></i>
                         Produtos</a>
-                    <a class="collapse-item" href="{{-- route('admin.banco.index')--}}"><i class="fas fa-balance-scale"></i>
-                        Unidades</a>
+                    <a class="collapse-item" href="{{ route('admin.medida.index') }}"><i class="fas fa-weight"></i>
+                        Medidas</a>
                 </div>
             </div>
         </li>
@@ -81,7 +81,7 @@
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
-        <!-- Nav Item - Usuários -->
+        <!-- Nav Item - Usuários COM PERFIL DE ADMINISTRADOR, NUTRICIONISTA, INATIVO -->
         <li class="nav-item">
             <a class="nav-link" href="{{-- route('admin.user.index') --}}">
                 <i class="fa fa-user" aria-hidden="true"></i>
