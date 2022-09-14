@@ -78,9 +78,10 @@
                                 <div class="pl-lg-4">
                                         <div style="margin-top: 30px">
                                             <a class="btn btn-primary" href="{{route('admin.produto.index')}}" role="button">
+                                            {{-- <a class="btn btn-primary" href="{{ URL::previous() }}" role="button"> --}}
                                                 <i class="fas fa-undo-alt"></i> Retornar
                                             </a>
-                                            
+
                                         </div>
                                 </div>
                             </div>

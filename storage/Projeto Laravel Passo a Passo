@@ -4,7 +4,7 @@ CONFIGURAÇÕES INICIAIS
 
 1 - Criar um projeto com o Laravel:
     composer create-project --prefer-dist laravel/laravel sedes-rest-popular "8.5"
-    
+
 2 - Criar o arquivo .env (caso não exista) a partir do arquivo .env.exemple com o comando abaixo
     a) na raiz do projeto, executar o comando: cp .env.exemple ./.env
 
@@ -22,11 +22,11 @@ CONFIGURAÇÕES INICIAIS
 6 - Criar o banco de dados no MySQL ou Postgres (conforme necessidade) com a colation utf8mb4,
     (mais precisamente utf8mb4-unicode-ci)
 
-7 - No arquivo App/Providers/AppServiceProvider.php acrescentar as linhas abaixo, para efeito de reconhecimento da 
-    collation do banco de dados utf8mb4 acima, no passo 6. A collationo utf8mb4_unicode_ci é para poder gravar 
+7 - No arquivo App/Providers/AppServiceProvider.php acrescentar as linhas abaixo, para efeito de reconhecimento da
+    collation do banco de dados utf8mb4 acima, no passo 6. A collationo utf8mb4_unicode_ci é para poder gravar
     caracteres de emojs caso haja necessidade no banco de dados
     a) importar: use Illuminate\Support\Facades\Schema
-    b) public function resgister(){ 
+    b) public function resgister(){
           Schema::defaultStringLength(191);
        }
 
@@ -42,7 +42,7 @@ CONFIGURAÇÕES INICIAIS
 
 10 - Crie as tabelas da pasta: database/migrations no banco de dados, para verificar se a conexão está Ok. Uma vez
      criada as tabelas de forma satisfatória, exclua-as novamente do banco de dados.
-     Crie as tabelas, com o comando abaixo: 
+     Crie as tabelas, com o comando abaixo:
      php artisan migrate
 
 11 - Caso sinta necessidade, só se for necessário, altere o namespace da sua aplicação com o comando:
@@ -72,7 +72,7 @@ CRIAÇÃO MÓDULO DE LOGIN
 1 - Criar/Alterar migrations de User com campos conforme necessário
 2 - Executar Migration
     a) php artisan migrate
-    
+
 3 - Criar controller de User
     a) php artisan make:controller Admin/UserController -r (cria o controller com todos os resources na pasta app/Http/Controllers/Admin)
 
@@ -80,7 +80,7 @@ CRIAÇÃO MÓDULO DE LOGIN
     a) php artisan make:request UserCreateRequest. Alterar o retorno do método authorize desta request para true.
     b) php artisan make:request UserUpdateRequest. Alterar o retorno do método authorize desta request para true
     c) Importar os respectivos requests criados e utilizá-los nos respectivos métodos create e update do controller User.
-    
+
 
 5 - Criar rotas conforme necessário do tipo resource. Utilizar middleware também conforme necessário.
     a) use App\Http\Controllers\Admin\UserController;
@@ -104,13 +104,13 @@ CRIAÇÃO DE UM MÓDULO GENÉRICO
     a) php artisan make:model Recurso (obs: colocar o nome do model no singular com a primeira letra em maiúscula)
     b) definir os campos a serem preenchidos na propriedade protected $fillable = [], para serem preenchido em massa
     c) definir os relacionametos conforme necessário e quando preciso
-    
+
 3 - Executar a migration
     a) php artisan migrate
-       
+
 4 - Cirar as Requests (para create e update) para o recurso criado, e definir suas validações, conforme necessário
     a) php artisan make:request RecursoCreateRequest
-    b) php artisan make:request RecursoUpdateRequest 
+    b) php artisan make:request RecursoUpdateRequest
 
 5 - Criar o controller do Recurso e definir seus métodos conforme necessário, bem como importar classes necessárias
     a) php artisan make:controller Admin/RecusoController --resource (obs: o parâmetro --resource, criar todos os métodos de um CRUD automaticamente)
@@ -131,15 +131,15 @@ CRIAÇÃO DE UM MÓDULO GENÉRICO
           Route::resource('user', RecursoController::class)->middleware(['auth']);
        )}
 
-7 - Referenciar a rota do recurso no menu de navegação pelo seu nome (->name) conforme como nomeado no arquivo de rotas, 
+7 - Referenciar a rota do recurso no menu de navegação pelo seu nome (->name) conforme como nomeado no arquivo de rotas,
     quando for o caso
 
 8 - Cirar as views (index.blade, create.blade, edit.blade, show.blade, outras.blade) conforme necessário
-       
-       
-       
-       
-       
+
+
+
+
+
 =======================
 COMANDOS git
 =======================
@@ -153,9 +153,9 @@ git switch master (muda para a branch master)
 git switch develop (muda para a branch develop)
 git reset --soft HEAD~  (Desfaz o último commit na minha máquina)
 git restore --staged .  (Desmarca todos os arquivos a serem comitados, tornando-os vermelhos novamente)
-       
-       
-       
+
+
+
 =========================
 EXTRAS
 =========================
@@ -184,7 +184,7 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
    'providers' => [
    	\Maatwebsite\Excel\ExcelServiceProvider::class,
    ]
-   
+
    'aliases' => [
    	'Excel' => \Maatwebsite\Excel\Facades\Excel::class,
    ]
@@ -221,12 +221,12 @@ php artisan make:request MedidaUpdateRequest
 =========================================================================
 CONFIGURAÇÃO DA PÁGINA INICIAL DE LOGIN DA APLICAÇÃO SETRES-AUX-CATADORES
 =========================================================================
-1 - No arquivo routes/web.php tem o trecho de código a abaixo, significando que ao digitar a url raiz ('/') o 
+1 - No arquivo routes/web.php tem o trecho de código a abaixo, significando que ao digitar a url raiz ('/') o
     usuário será redirecionado para a rota nomeada: admin.residuo.index, que faz parte do grupo de rotas protegidas
     pelo middleware auth, conforme o segundo trecho de código descrito abaixo
     middleware auth conforme o segundo de trecho de código abaixo
     método index.
-    
+
     Route::get('/', function () {
         return redirect()->route('admin.residuo.index');
     });
@@ -237,7 +237,7 @@ CONFIGURAÇÃO DA PÁGINA INICIAL DE LOGIN DA APLICAÇÃO SETRES-AUX-CATADORES
         Route::resource('residuo', ResiduoController::class)->middleware(['auth']);
 
 2 - Uma vez que a rota nomeada acima está protegida pelo middleware auth, ou seja, o usuárido terá que está autenticado
-    para acessar essa rota e na primeira vez que acessar o site através da url ('/') não está autenticado, o mesmo será 
+    para acessar essa rota e na primeira vez que acessar o site através da url ('/') não está autenticado, o mesmo será
     redirecionado para a rota front.login, configurada no arquivo: .../app/Http/Middleware/Authenticate.php
 
     /**
@@ -262,3 +262,142 @@ CONFIGURAÇÃO DA PÁGINA INICIAL DE LOGIN DA APLICAÇÃO SETRES-AUX-CATADORES
     Route::get('/', function () {
         return redirect()->route('front.login');
     });
+
+
+==================
+OPERADOR TERNÁRIO
+==================
+No Laravel não é possível executar um operador ternário com mais de um nivel confome exemplos descritos abaixo:
+É possível    : name="perfil" value="{{ $user->perfil == 'adm' ? 'Administrador' : 'Nutricionista' }}"
+Não é possível: name="perfil" value="{{ $user->perfil == 'adm' ? 'Administrador' : $user->perfil == 'nut' ? 'Nutricionista' : 'Inativo' }}"
+
+
+=======================
+CRIANDO MÓDULO DE LOGIN
+=======================
+1 - Alterar migration users (create_users_table), acrescentando campos come relacionamentos necessários
+
+2 - Rodar a migration users depois de alterada
+    php artisan migrate
+
+3 - Alterar model Users identificando os campos a serem preenchidos e definindo os relacionamentos
+    hasOne, hasMany, belongsTo etc... quando necessário
+
+4 - Criar controler Acesso
+    php artisan make:controller AcessoController
+
+5 - Importar as classes como abaixo:
+    use Illuminate\Support\Facades\Auth;
+    use App\Models\User;
+
+6 - Criar os métodos: login(), check() e logout() como descritos abaixo:
+     public function login()
+     {
+        /*
+        cria um usuário no banco para fins de teste logo no primeiro acesso. Depois de criar o usuário, comente este trecho de código
+        $user = new User; $user->nomecompleto = "Administrador Mater"; $user->cpf = '000.000.000-00'; $user->crn = '000000';
+                $user->telefone = '(98) 00000-0000'; $user->name = 'Administrador'; $user->email = 'marcio@sedes.com';
+                $user->perfil = 'adm'; $user->password = bcrypt('123456'); $user->municipio_id = 1;
+        $user->save();
+        */
+
+        return view('acessologin');
+    }
+
+    public function check(Request $request)
+    {
+        if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
+            return redirect()->back()->withInput()->withErrors(['O email não é válido!']);
+        }
+
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+
+        if(Auth::attempt($credentials)){
+            $userInfo = User::where('email', '=', $request->email)->first();
+            $request->session()->put('idUsuarioLogado', $userInfo->id);
+            $request->session()->put('nameUsuarioLogado', $userInfo->name);
+            $request->session()->put('emailUsuarioLogado', $userInfo->email);
+
+            //return redirect()->route('admin.residuo.index');
+            return redirect()->route('admin.bairro.index');
+        }
+
+        return redirect()->back()->withInput()->withErrors(['Usuário e/ou Senha não conferem!']);
+
+    }
+
+
+    public function logout()
+    {
+        Auth::logout();
+	    return redirect()->route('front.login');
+    }
+
+
+7 - Acrescentar as rotas para acesso ao login conforme descrito abaixo:
+    7.1 importar essa classe
+    use App\Http\Controllers\MainController;
+
+    7.2 adicionar essas rotas
+    Route::get('/front/login', [AcessoController::class, 'login'])->name('front.login');
+    Route::post('/front/check', [AcessoController::class, 'check'])->name('front.check');
+    Route::get('/front/logout', [AcessoController::class, 'logout'])->name('front.logout');
+
+8 - Definir o redirecionamento do usuário, caso o mesmo não seja autenticado com sucesso,
+    no arquivo /app/Http/Middleware/Authenticate.php conforme descrito abaixo:
+
+    protected function redirectTo($request)
+    {
+        if (! $request->expectsJson()) {
+            return route('acesso.login');
+        }
+    }
+
+9 - Criar a view (página) com formulário de login (acessologin.blade.php)
+
+10 - Colocar no action do formulário de login a rota para autenticar o usuário na submissão do formulário, conforme abaixo:
+      <form class="user" action="{{ route('acesso.check') }}" method="post" autocomplete="off">
+            @csrf
+
+11 - Definir no link de logout da página a rota para efetuar o logou do usuário conforme abaixo:
+     <a class="btn btn-primary" href="{{ route('acesso.logout') }}">Logout</a>
+
+
+
+===========================
+CRIANDO O MÓDULO DE USUÁRIO
+===========================
+1 - Criar controller Usuário juntamente com seus respectivos métodos do tipo resource
+    php artisan make:controller Admin/UserController --resource
+
+2 - Adicionar as rotas para os métodos do controller UserController, conforme abaixo:
+
+    // Users
+    Route::resource('user', UserController::class);
+    Route::get('user/{id}/profile', [UserController::class, 'profile'])->name('user.profile')->middleware(['auth']);
+    Route::put('/user/{id}/updateprofile', [UserController::class, 'updateprofile'])->name('user.updateprofile')->middleware(['auth']);
+
+2 - Criar o modelo User definindo os campos a serem preenchidos com massive assigment na propriedade $fillable = [] e definindo seus
+    respectivos relacionamento com demias modelos hasOne, hasMany, belongsTo.
+    php artisan make:model User
+
+3 - Criar as requests para validação dos campos na Criação e Atualização dos dados do usuário conforme comandos abaixo
+    php artisan make:request UserCreateRequest
+    php artisan make:request UserUpdateRequest
+
+4 - Desenvolver os métodos do UserController, acrescentando no inicio da classe os imports necessários conforme abaixo:
+    use App\Http\Requests\UserCreateRequest;
+    use App\Http\Requests\UserUpdateRequest;
+    use App\Models\User;
+    use Illuminate\Support\Facades\Validator;
+    use Illuminate\Validation\Rule;
+    etc...
+
+
+
+
+
+

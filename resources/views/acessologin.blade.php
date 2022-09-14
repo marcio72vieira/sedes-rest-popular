@@ -39,7 +39,7 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Login</h1>
                                     </div>
-                                    <form class="user" action="{{---route('authenticate')---}}" method="post" autocomplete="off">
+                                    <form class="user" action="{{ route('acesso.check') }}" method="post" autocomplete="off">
                                         @csrf
 
                                         @if($errors->all())
@@ -50,6 +50,7 @@
                                             </div>
                                         @endif
 
+                                        {{-- email --}}
                                         <div class="form-group">
                                             <input type="email" name="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
@@ -57,6 +58,7 @@
                                                 {{-- <span class="text-danger"> @error('email') {{$message}} @enderror </span> --}}
                                         </div>
 
+                                        {{-- password --}}
                                         <div class="form-group">
                                             <input type="password" name="password" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="Senha" value="{{old('password')}}">

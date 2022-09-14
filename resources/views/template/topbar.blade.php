@@ -93,7 +93,7 @@
         <div class="modal-body">Selecione "Logout" abaixo se você estiver pronto para finalizar sua sessão.</div>
         <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="{{-- route('logout') --}}">Logout</a>
+            <a class="btn btn-primary" href="{{ route('acesso.logout') }}">Logout</a>
         </div>
     </div>
 </div>

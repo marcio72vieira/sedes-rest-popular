@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AcessoController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MunicipioController;
 use App\Http\Controllers\Admin\CategoriaController;
 use App\Http\Controllers\Admin\ProdutoController;
@@ -19,20 +20,25 @@ use App\Http\Controllers\Admin\MedidaController;
 |
 */
 
-
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('template.templateadmin');
-});
+}); */
 
 
+//==========================================================
+//REDIRECIONA PARA A PÁGINA DE LOGIN AO ACESSAR RAIZ DO SITE
+//==========================================================
 Route::get('/', function () {
-    return view('login');
+    return redirect()->route('acesso.login');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
 
+//==================================
+//ROTAS DE LOGIN/LOGOUT/AUTENTICAÇÃO
+//==================================
+Route::get('/acesso/login', [AcessoController::class, 'login'])->name('acesso.login');
+Route::post('/acesso/check', [AcessoController::class, 'check'])->name('acesso.check');
+Route::get('/acesso/logout', [AcessoController::class, 'logout'])->name('acesso.logout');
 
 
 // =====================
@@ -47,5 +53,10 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::resource('categoria', CategoriaController::class);
     Route::resource('produto', ProdutoController::class);
     Route::resource('medida', MedidaController::class);
+
+    // Users
+    Route::resource('user', UserController::class);
+    Route::get('user/{id}/profile', [UserController::class, 'profile'])->name('user.profile')->middleware(['auth']);
+    Route::put('/user/{id}/updateprofile', [UserController::class, 'updateprofile'])->name('user.updateprofile')->middleware(['auth']);
 
 });

@@ -44,6 +44,14 @@
         </a>
     </li>
 
+    <!-- Nav Item - Usuários COM PERFIL DE ADMINISTRADOR, NUTRICIONISTA, INATIVO -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.user.index') }}">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <span>Usuários</span>
+        </a>
+    </li>
+
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
@@ -81,13 +89,15 @@
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
+        {{--
         <!-- Nav Item - Usuários COM PERFIL DE ADMINISTRADOR, NUTRICIONISTA, INATIVO -->
         <li class="nav-item">
-            <a class="nav-link" href="{{-- route('admin.user.index') --}}">
+            <a class="nav-link" href="{{ route('admin.user.index') }}">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 <span>Usuários</span>
             </a>
         </li>
+        --}}
 
 
         <!-- Nav Item - Pages Collapse Menu
