@@ -218,5 +218,47 @@ php artisan make:request MedidaCreateRequest
 php artisan make:request MedidaUpdateRequest
 
 
+=========================================================================
+CONFIGURAÇÃO DA PÁGINA INICIAL DE LOGIN DA APLICAÇÃO SETRES-AUX-CATADORES
+=========================================================================
+1 - No arquivo routes/web.php tem o trecho de código a abaixo, significando que ao digitar a url raiz ('/') o 
+    usuário será redirecionado para a rota nomeada: admin.residuo.index, que faz parte do grupo de rotas protegidas
+    pelo middleware auth, conforme o segundo trecho de código descrito abaixo
+    middleware auth conforme o segundo de trecho de código abaixo
+    método index.
+    
+    Route::get('/', function () {
+        return redirect()->route('admin.residuo.index');
+    });
 
 
+
+    Route::prefix('admin')->name('admin.')->group(function() {
+        Route::resource('residuo', ResiduoController::class)->middleware(['auth']);
+
+2 - Uma vez que a rota nomeada acima está protegida pelo middleware auth, ou seja, o usuárido terá que está autenticado
+    para acessar essa rota e na primeira vez que acessar o site através da url ('/') não está autenticado, o mesmo será 
+    redirecionado para a rota front.login, configurada no arquivo: .../app/Http/Middleware/Authenticate.php
+
+    /**
+     * Get the path the user should be redirected to when they are not authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string|null
+     */
+    protected function redirectTo($request)
+    {
+        if (! $request->expectsJson()) {
+            return route('front.login');
+        }
+    }
+
+3 - Obs: No trecho de código abaixo, o mesmo poderia ser substituido pelo que se segue tranquilamente:
+
+    Route::get('/', function () {
+        return redirect()->route('admin.residuo.index');
+    });
+
+    Route::get('/', function () {
+        return redirect()->route('front.login');
+    });

@@ -19,8 +19,14 @@ use App\Http\Controllers\Admin\MedidaController;
 |
 */
 
+
 Route::get('/', function () {
     return view('template.templateadmin');
+});
+
+
+Route::get('/', function () {
+    return view('login');
 });
 
 Route::get('/login', function () {
