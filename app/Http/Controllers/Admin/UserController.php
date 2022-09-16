@@ -63,13 +63,50 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        //
+        $municipios = Municipio::orderBy('nome', 'ASC')->get();
+        $user = User::find($id);
+
+        $usuario = User::find($id);
+
+        return view('admin.user.edit', compact('municipios', 'user'));
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
-        //
+        $user = User::find($id);
+
+            $user->nomecompleto     = $request->nomecompleto;
+            $user->cpf              = $request->cpf;
+            $user->crn              = $request->crn;
+            $user->telefone         = $request->telefone;
+            $user->name             = $request->name;
+            $user->email            = $request->email;
+            $user->perfil           = $request->perfil;
+
+            Validator::make($request->all(), [
+                'cpf' => [
+                    'required',
+                    Rule::unique('users')->ignore($user->id),
+                ],
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('users')->ignore($user->id),
+                ],
+            ]);
+
+            if($request->password == ''){
+                $user->password = $request->old_password_hidden;
+            }else{
+                $user->password = bcrypt($request->password);
+            }
+
+            $user->save();
+
+            $request->session()->flash('sucesso', 'Registro editado com sucesso!');
+
+            return redirect()->route('admin.user.index');
     }
 
 

@@ -129,6 +129,7 @@
 
                             <div class="row">
                                 {{-- password --}}
+                                {{-- 
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="password">Senha<span class="small text-danger">*</span></label>
@@ -138,6 +139,7 @@
                                         @enderror
                                     </div>
                                 </div>
+                                --}}
                             </div>
                         </div>
 

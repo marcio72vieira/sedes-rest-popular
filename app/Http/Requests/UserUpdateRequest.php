@@ -13,7 +13,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nomecompleto'          => 'bail|required|string',
+            'cpf'                   => 'required|unique:users,cpf',
+            'crn'                   => 'required',
+            'telefone'              => 'required',
+            'name'                  => 'bail|required|string',  // é o campo usuário
+            'email'                 => 'bail|required|string|email|unique:users,email',
+            'municipio_id'          => 'bail|required',
+            'perfil'                => 'bail|required',
+            'password'              => 'bail|required|confirmed',
+            'password_confirmation' => 'bail|required'
         ];
     }
 }

@@ -15,7 +15,7 @@ class CreateProdutosTable extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
-            $table->text('nome');
+            $table->string('nome');
             $table->boolean('ativo');
             $table->foreignId('categoria_id')->constrained()->onDelete('cascade');
             $table->timestamps();

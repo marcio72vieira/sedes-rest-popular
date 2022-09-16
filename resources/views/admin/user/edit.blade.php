@@ -32,12 +32,12 @@
 
                         <div class="pl-lg-4">
                             <div class="row">
-                                {{-- fullname --}}
+                                {{-- nomecompleto --}}
                                 <div class="col-lg-4">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="fullname">Nome Completo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="fullname" class="form-control" name="fullname" value="{{old('fullname', $user->fullname)}}" required>
-                                        @error('fullname')
+                                        <label class="form-control-label" for="nomecompleto">Nome Completo<span class="small text-danger">*</span></label>
+                                        <input type="text" id="nomecompleto" class="form-control" name="nomecompleto" value="{{old('nomecompleto', $user->nomecompleto)}}" required>
+                                        @error('nomecompleto')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
@@ -49,6 +49,17 @@
                                         <label class="form-control-label" for="cpf">CPF<span class="small text-danger">*</span></label>
                                         <input type="text" id="cpf" class="form-control" name="cpf" value="{{old('cpf', $user->cpf)}}" required>
                                         @error('cpf')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- crn --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="crn">CRN<span class="small text-danger">*</span></label>
+                                        <input type="text" id="crn" class="form-control" name="crn" value="{{old('crn', $user->crn)}}" required>
+                                        @error('crn')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
@@ -91,6 +102,22 @@
                                     </div>
                                 </div>
 
+                                {{-- municipio_id --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="municipio_id">Município<span class="small text-danger">*</span></label>
+                                        <select name="municipio_id" id="municipio_id" class="form-control" required>
+                                            <option value="" selected disabled>Escolha...</option>
+                                            @foreach($municipios  as $municipio)
+                                                <option value="{{$municipio->id}}" {{old('municipio_id', $user->municipio_id) == $municipio->id ? 'selected' : ''}}>{{$municipio->nome}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('municipio_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 {{-- perfil --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
@@ -98,7 +125,7 @@
                                         <select name="perfil" id="perfil" class="form-control" required>
                                             <option value="" selected disabled>Escolha ...</option>
                                             <option value="adm" {{old('perfil', $user->perfil) == 'adm' ? 'selected' : ''}}>Administrador</option>
-                                            <option value="ope" {{old('perfil', $user->perfil) == 'ope' ? 'selected' : ''}}>Operador</option>
+                                            <option value="nut" {{old('perfil', $user->perfil) == 'nut' ? 'selected' : ''}}>Nutricionista</option>
                                             <option value="ina" {{old('perfil', $user->perfil) == 'ina' ? 'selected' : ''}}>Inativo</option>
                                         </select>
                                         @error('perfil')

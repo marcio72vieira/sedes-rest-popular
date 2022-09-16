@@ -1,6 +1,7 @@
 =============================
 CONFIGURAÇÕES INICIAIS
 ============================
+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
 
 1 - Criar um projeto com o Laravel:
     composer create-project --prefer-dist laravel/laravel sedes-rest-popular "8.5"

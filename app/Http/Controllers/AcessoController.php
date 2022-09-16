@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Municipio;
 use App\Models\User;
 
 class AcessoController extends Controller
@@ -11,6 +12,9 @@ class AcessoController extends Controller
     public function login()
     {
         /*
+        // Cria um município fictíco pra fins de teste
+        $municipio = new Municipio; $municipio->nome = 'São Luis'; $municipio->ativo = 1; $municipio->save();
+
         // Cria um usuário fictício para fins de teste. Depois de criar o usuário, comente este trecho de código
         $user = new User; $user->nomecompleto = "Administrador Mater"; $user->cpf = '000.000.000-00'; $user->crn = '000000';
                 $user->telefone = '(98) 00000-0000'; $user->name = 'Administrador'; $user->email = 'marcio@sedes.com';
