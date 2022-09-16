@@ -110,8 +110,12 @@ class UserController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        User::destroy($id);
+
+        $request->session()->flash('sucesso', 'Registro excluído com sucesso!');
+
+        return redirect()->route('admin.user.index');
     }
 }

@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcessoController;
+use App\Http\Controllers\Admin\EmpresaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MunicipioController;
+use App\Http\Controllers\Admin\BairroController;
 use App\Http\Controllers\Admin\CategoriaController;
 use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\Admin\MedidaController;
@@ -49,7 +51,15 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
 
+    // Empresa
+    Route::post('getbairros',[EmpresaController::class, 'getbairros'])->name('getbairros');
+    Route::resource('empresa', EmpresaController::class);
+
+    // Municipio
+    Route::post('getamountbairros',[MunicipioController::class, 'getamountbairros'])->name('getamountbairros');
     Route::resource('municipio', MunicipioController::class);
+
+    Route::resource('bairro', BairroController::class);
     Route::resource('categoria', CategoriaController::class);
     Route::resource('produto', ProdutoController::class);
     Route::resource('medida', MedidaController::class);

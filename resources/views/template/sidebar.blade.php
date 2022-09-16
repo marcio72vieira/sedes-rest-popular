@@ -30,7 +30,7 @@
 
     <!-- Nav Item - Empresas -->
     <li class="nav-item">
-        <a class="nav-link" href="{{-- route('admin.empresa.index') --}}">
+        <a class="nav-link" href="{{ route('admin.empresa.index') }}">
             <i class="fas fa-city"></i>
             <span>Empresas</span>
         </a>
@@ -75,6 +75,8 @@
                     <h6 class="collapse-header">Tabelas de Suporte:</h6>
                     <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-globe-americas"></i>
                         Municípios</a>
+                    <a class="collapse-item" href="{{ route('admin.bairro.index') }}"><i class="fas fa-location-arrow"></i>
+                        Bairros</a>
                     <a class="collapse-item" href="{{ route('admin.categoria.index') }}"><i class="fas fa-list"></i>
                         Categorias</a>
                     <a class="collapse-item" href="{{ route('admin.produto.index') }}"><i class="fas fa-leaf"></i>

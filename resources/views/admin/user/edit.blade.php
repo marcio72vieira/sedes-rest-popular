@@ -58,7 +58,7 @@
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="crn">CRN<span class="small text-danger">*</span></label>
-                                        <input type="text" id="crn" class="form-control" name="crn" value="{{old('crn', $user->crn)}}" required>
+                                        <input type="text" id="crn" class="form-control" name="crn" value="{{old('crn', $user->crn)}}">
                                         @error('crn')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror

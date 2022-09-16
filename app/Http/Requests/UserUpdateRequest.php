@@ -25,15 +25,22 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'nomecompleto'          => 'bail|required|string',
-            'cpf'                   => 'required|unique:users,cpf',
-            'crn'                   => 'required',
+            'cpf'                   => 'required',
+            'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
             'telefone'              => 'required',
             'name'                  => 'bail|required|string',  // é o campo usuário
-            'email'                 => 'bail|required|string|email|unique:users,email',
+            'email'                 => 'bail|required',
             'municipio_id'          => 'bail|required',
             'perfil'                => 'bail|required',
-            'password'              => 'bail|required|confirmed',
-            'password_confirmation' => 'bail|required'
+            'password'              => 'bail|confirmed',
+            'password_confirmation' => 'bail|required_with:password'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'crn.required_if' => 'Este campo é obrigatório para usuários com perfil de Nutricionista',
         ];
     }
 }

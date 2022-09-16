@@ -26,7 +26,7 @@ class UserCreateRequest extends FormRequest
         return [
             'nomecompleto'          => 'bail|required|string',
             'cpf'                   => 'required|unique:users,cpf',
-            'crn'                   => 'required',
+            'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
             'telefone'              => 'required',
             'name'                  => 'bail|required|string',  // é o campo usuário
             'email'                 => 'bail|required|string|email|unique:users,email',
@@ -34,6 +34,13 @@ class UserCreateRequest extends FormRequest
             'perfil'                => 'bail|required',
             'password'              => 'bail|required|confirmed',
             'password_confirmation' => 'bail|required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'crn.required_if' => 'Este campo é obrigatório para usuários com perfil de Nutricionista',
         ];
     }
 }

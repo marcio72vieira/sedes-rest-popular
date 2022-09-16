@@ -5,12 +5,34 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-        <h5><strong>MUNICÍPIOS</strong></h5>
+        <h5><strong>BAIRROS</strong></h5>
 
-        <a class="btn btn-primary" href="{{route('admin.municipio.create')}}" role="button" style="margin-bottom: 10px">
+        <a class="btn btn-primary" href="{{route('admin.bairro.create')}}" role="button" style="margin-bottom: 10px">
             <i class="fas fa-plus-circle"></i>
             Adicionar
         </a>
+
+
+        {{--
+        <a class="btn btn-primary btn-danger" href="{{route('admin.municipio.relatorio')}}" role="button" style="margin-bottom: 10px" target="_blank">
+            <i class="far fa-file-pdf"></i>
+            pdf
+        </a>
+
+
+        @can('adm')
+            <a class="btn btn-primary btn-success" href="{{route('admin.municipio.relatorioexcel')}}" role="button" style="margin-bottom: 10px">
+                <i class="far fa-file-excel"></i>
+                xlsx
+            </a>
+
+            <a class="btn btn-primary btn-warning" href="{{route('admin.municipio.relatoriocsv')}}" role="button" style="margin-bottom: 10px">
+                <i class="fas fa-file-csv"></i>
+                csv
+            </a>
+        @endcan
+        --}}
+
 
         @if(session('sucesso'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -32,39 +54,40 @@
                         <tr>
                             <th>Id</th>
                             <th>Nome</th>
+                            <th>Município</th>
                             <th>Ativo</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach($municipios as $municipio)
+                        @foreach($bairros as $bairro)
                             <tr>
-                                <td>{{$municipio->id}}</td>
-                                <td>{{$municipio->nome}}</td>
-                                <td>@if($municipio->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
+                                <td>{{$bairro->id}}</td>
+                                <td>{{$bairro->nome}}</td>
+                                <td>{{$bairro->municipio->nome}}</td>
+                                <td>@if($bairro->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
                                 <td>
-                                    <a href="{{route('admin.municipio.show', $municipio->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
-                                    <a href="{{route('admin.municipio.edit', $municipio->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                                    <a data-idmunicipio="{{$municipio->id}}" class="deletarmunicipio" href="" data-toggle="modal" data-target="#formDelete{{$municipio->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    <a href="{{route('admin.bairro.show', $bairro->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
+                                    <a href="{{route('admin.bairro.edit', $bairro->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
+                                    <a href="" data-toggle="modal" data-target="#formDelete{{$bairro->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
 
                                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
-                                    <div class="modal fade" id="formDelete{{$municipio->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
+                                    <div class="modal fade" id="formDelete{{$bairro->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="formDeleteLabel"><strong>Deletar municipio</strong></h5>
+                                                    <h5 class="modal-title" id="formDeleteLabel"><strong>Deletar Bairro</strong></h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h5>{{$municipio->nome}}</h5>
-                                                    <span class="mensagem" style="color: #f00;"></span>
+                                                    <h5>{{$bairro->nome}}</h5>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                                    <form action="{{route('admin.municipio.destroy', $municipio->id)}}" method="POST" style="display: inline">
+                                                    <form action="{{route('admin.bairro.destroy', $bairro->id)}}" method="POST" style="display: inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger" role="button"> Confirmar</button>
@@ -82,39 +105,4 @@
         </div>
    </div>
 </div>
-@endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function(){
-            $('#dataTable').on('click', '.deletarmunicipio', function(){
-
-                var idMunicipio = $(this).data('idmunicipio');
-
-                $.ajax({
-                    url:"{{route('admin.getamountbairros')}}",
-                    type: "POST",
-                    data: {
-                        municipio_id: idMunicipio,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType : 'json',
-                    success: function(result){
-                        if(result.qtd_bairros >= 1){
-                            $(".mensagem").text("Este Município não pode ser deletado, pois possui: "+ result.qtd_bairros + " registro(s) associado(s) a ele!");
-                            $("button[type=submit]").hide();
-                        }else{
-                            $("button[type=submit]").show();
-                            $(".mensagem").text("");
-                        }
-                    }
-                });
-            });
-
-            //$('button[type=button]').click(function(){
-            //    location.reload(true);
-            //});
-
-        });
-    </script>
 @endsection

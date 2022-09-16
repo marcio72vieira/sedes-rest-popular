@@ -18,4 +18,12 @@ class Municipio extends Model
     public function users(){
         return $this->hasMany(User::class);
     }
+
+    public function empresas(){
+        return $this->hasMany(Empresa::class);
+    }
+
+    public function bairros(){
+        return $this->hasMany(Bairro::class);
+    }
 }

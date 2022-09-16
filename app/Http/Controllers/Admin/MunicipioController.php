@@ -11,6 +11,9 @@ use App\Http\Requests\MunicipioUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Support\Facades\DB;
+use App\Models\Bairro;
+
 
 class MunicipioController extends Controller
 {
@@ -19,6 +22,21 @@ class MunicipioController extends Controller
         $municipios = Municipio::all();
 
         return view('admin.municipio.index', compact('municipios'));
+    }
+
+    public function getamountbairros(Request $request)
+    {
+        /*
+        $condicoes = [
+            ['municipio_id', '=', $request->municipio_id],
+            ['ativo', '=', 1]
+        ];
+        $data['bairros'] = Bairro::where($condicoes)->orderBy('nome', 'ASC')->get();
+        */
+        $id = $request->municipio_id;
+
+        $data['qtd_bairros'] = DB::table('bairros')->where('municipio_id', '=', $id)->count();
+        return response()->json($data);
     }
 
 

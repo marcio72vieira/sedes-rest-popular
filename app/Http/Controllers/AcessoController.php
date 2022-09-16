@@ -17,7 +17,7 @@ class AcessoController extends Controller
 
         // Cria um usuário fictício para fins de teste. Depois de criar o usuário, comente este trecho de código
         $user = new User; $user->nomecompleto = "Administrador Mater"; $user->cpf = '000.000.000-00'; $user->crn = '000000';
-                $user->telefone = '(98) 00000-0000'; $user->name = 'Administrador'; $user->email = 'marcio@sedes.com';
+                $user->telefone = '(98) 00000-0000'; $user->name = 'Administrador'; $user->email = 'marcio@sedes.com.br';
                 $user->perfil = 'adm'; $user->password = bcrypt('123456'); $user->municipio_id = 1;
         $user->save();
         */
