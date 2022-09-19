@@ -147,7 +147,7 @@
                             </div>
 
                             <div class="row">
-                                {{-- banco_id --}}
+                                {{-- banco_id
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="banco_id">Banco<span class="small text-danger">*</span></label>
@@ -158,7 +158,7 @@
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- agencia --}}
                                 <div class="col-lg-1">

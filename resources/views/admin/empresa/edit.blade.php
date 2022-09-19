@@ -23,7 +23,7 @@
 
                 <div class="card-body">
 
-                    <form action="{{route('admin.empresa.update', $empresa->id)}}" method="POST"  autocomplete="off">
+                    <form action="{{route('admin.empresa.update', $empresa->id)}}" method="POST" enctype="multipart/form-data" autocomplete="off" >
                         @csrf
                         @method('PUT')
 
@@ -76,27 +76,28 @@
                                     </div>
                                 </div>
 
-                                {{-- documentocnpj
+                                {{-- documentocnpj--}}
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="documentocnpj">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="file" id="documentocnpj" style="display:block" name="documentocnpj" required placeholder="Aqui">
-                                        @error('documentocnpj')
+                                        <label class="form-control-label" for="file">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
+                                        <input type="file" id="file" style="display:block" name="file" placeholder="Aqui">
+                                        @error('file')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
+                                
+                                {{-- 
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="documentocnpjAntigo">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
+                                        <input type="text" id="documentocnpjAntigo" class="form-control" name="documentocnpjAntigo" value="{{old('documentocnpjAntigo', $empresa->documentocnpj)}}" readonly>
+                                        @error('documentocnpjAntigo')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div> 
                                 --}}
-
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="documentocnpj">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="text" id="documentocnpj" class="form-control" name="documentocnpj" value="{{old('documentocnpj', $empresa->documentocnpj)}}" readonly>
-                                        @error('documentocnpj')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="row">
@@ -149,7 +150,7 @@
                             </div>
 
                             <div class="row">
-                                {{-- banco_id --}}
+                                {{-- banco_id 
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="banco_id">Banco<span class="small text-danger">*</span></label>
@@ -163,7 +164,7 @@
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
-                                </div>
+                                </div>--}}
 
                                 {{-- agencia --}}
                                 <div class="col-lg-1">

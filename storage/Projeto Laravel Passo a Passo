@@ -399,6 +399,23 @@ CRIANDO O MÓDULO DE USUÁRIO
 
 
 
+================
+COMANDOS artisan
+================
+1 - Para gerar o link simbólico para a pasta app/public
+php artisan storage:link
+php artisan clear-cache
+php artisan dump-autoload
+
+
+
+=========================
+QUESTIONAMENTOS A MESSIAS
+=========================
+Uma empresaa tem mais de um nutricionista ?
+Uma emprea pode ser responsável por mais de um restaurante ?
+Um nutricionista de uma empresa pode ser responsável por mais de um restaurante ?
+Um nutricionista da SEDES pode ser responsável por mais de um restaurante ?
 
 
 

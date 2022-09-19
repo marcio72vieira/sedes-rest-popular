@@ -33,7 +33,7 @@ class EmpresaCreateRequest extends FormRequest
             'cargotitum' => 'bail|required',
             //'titulardois' => 'bail|required',
             //'cargotitdois' => 'bail|required',
-            'banco_id' => 'bail|required',
+            //'banco_id' => 'bail|required',
             'agencia' => 'bail|required',
             'conta' => 'bail|required',
             'logradouro' => 'bail|required',

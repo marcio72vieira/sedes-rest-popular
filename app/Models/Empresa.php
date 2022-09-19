@@ -19,7 +19,7 @@ class Empresa extends Model
         'cargotitum',
         'titulardois',
         'cargotitdois',
-        'banco_id',
+        //'banco_id',
         'agencia',
         'conta',
         'logradouro',
