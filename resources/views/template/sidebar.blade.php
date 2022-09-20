@@ -36,6 +36,16 @@
         </a>
     </li>
 
+    {{--
+    <!-- Nav Item - Companhias -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.companhia.index') }}">
+            <i class="fas fa-city"></i>
+            <span>Companhias</span>
+        </a>
+    </li>
+    --}}
+
     <!-- Nav Item - Restaurantes -->
     <li class="nav-item">
         <a class="nav-link" href="{{-- route('admin.user.create') --}}">

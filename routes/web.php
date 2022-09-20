@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcessoController;
 use App\Http\Controllers\Admin\EmpresaController;
+//  use App\Http\Controllers\Admin\CompanhiaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MunicipioController;
 use App\Http\Controllers\Admin\BairroController;
@@ -51,6 +52,10 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
 
+    // Companhia
+    // Route::post('getbairros',[CompanhiaController::class, 'getbairros'])->name('getbairros');
+    // Route::resource('companhia', CompanhiaController::class);
+
     // Empresa
     Route::post('getbairros',[EmpresaController::class, 'getbairros'])->name('getbairros');
     Route::resource('empresa', EmpresaController::class);
@@ -66,7 +71,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
 
     // Users
     Route::resource('user', UserController::class);
-    Route::get('user/{id}/profile', [UserController::class, 'profile'])->name('user.profile')->middleware(['auth']);
-    Route::put('/user/{id}/updateprofile', [UserController::class, 'updateprofile'])->name('user.updateprofile')->middleware(['auth']);
+    Route::get('user/{id}/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::put('/user/{id}/updateprofile', [UserController::class, 'updateprofile'])->name('user.updateprofile');
 
 });

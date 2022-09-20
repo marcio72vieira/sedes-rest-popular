@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h5 class="h5 mb-4 text-gray-800">Empresa / Cadastrar</h5>
+    <h5 class="h5 mb-4 text-gray-800">Companhia / Cadastrar</h5>
 
     <div class="row">
 
@@ -22,7 +22,7 @@
 
                 <div class="card-body">
 
-                    <form method="POST" action="{{route('admin.empresa.store')}}" enctype="multipart/form-data" autocomplete="off">
+                    <form method="POST" action="{{route('admin.companhia.store')}}" enctype="multipart/form-data" autocomplete="off">
                         @csrf
 
                         <div class="pl-lg-4">
@@ -50,30 +50,6 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                {{-- titular --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="titular">1º Representante<span class="small text-danger">*</span></label>
-                                        <input type="text" id="titular" class="form-control" name="titular" value="{{old('titular')}}">
-                                        @error('titular')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- cargotitular --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cargotitular">Cargo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cargotitular" class="form-control" name="cargotitular" value="{{old('cargotitular')}}">
-                                        @error('cargotitular')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
 
                             <div class="row">
                                 {{-- cnpj --}}
@@ -87,17 +63,131 @@
                                     </div>
                                 </div>
 
-                                {{-- email --}}
+                                {{-- codigocnae --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="email">1º E-mail<span class="small text-danger">*</span></label>
-                                        <input type="email" id="email" class="form-control" name="email" value="{{old('email')}}">
-                                        @error('email')
+                                        <label class="form-control-label" for="codigocnae">Cód. CNAE<span class="small text-danger">*</span></label>
+                                        <input type="text" id="codigocnae" class="form-control" name="codigocnae" value="{{old('codigocnae')}}">
+                                        @error('codigocnae')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
+                                {{-- documentocnpj--}}
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="documentocnpj">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
+                                        <input type="file" id="documentocnpj" style="display:block" name="documentocnpj" value="{{old('documentocnpj')}}">
+                                        @error('documentocnpj')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{--
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="documentocnpj">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
+                                        <input type="text" id="documentocnpj" class="form-control" name="documentocnpj">
+                                        @error('documentocnpj')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>--}}
+                            </div>
+
+                            <div class="row">
+                                {{-- titularum --}}
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="titularum">1º Representante<span class="small text-danger">*</span></label>
+                                        <input type="text" id="titularum" class="form-control" name="titularum" value="{{old('titularum')}}">
+                                        @error('titularum')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- cargotitum --}}
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="cargotitum">Cargo<span class="small text-danger">*</span></label>
+                                        <input type="text" id="cargotitum" class="form-control" name="cargotitum" value="{{old('cargotitum')}}">
+                                        @error('cargotitum')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                {{-- titulardois --}}
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="titulardois">2º Representante<span class="small text-danger">*</span></label>
+                                        <input type="text" id="titulardois" class="form-control" name="titulardois" value="{{old('titulardois')}}">
+                                        @error('titulardois')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- cargotitdois --}}
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="cargotitdois">Cargo<span class="small text-danger">*</span></label>
+                                        <input type="text" id="cargotitdois" class="form-control" name="cargotitdois" value="{{old('cargotitdois')}}">
+                                        @error('cargotitdois')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                {{-- banco_id
+                                <div class="col-lg-3">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="banco_id">Banco<span class="small text-danger">*</span></label>
+                                        <select name="banco_id" id="banco_id" class="form-control">
+                                            <option value="" selected disabled>Escolha...</option>
+                                            @foreach($bancos  as $banco)
+                                                <option value="{{$banco->id}}" {{old('banco_id') == $banco->id ? 'selected' : ''}}>{{$banco->nome}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('banco_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                --}}
+
+                                {{-- agencia --}}
+                                <div class="col-lg-1">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="agencia">Agência<span class="small text-danger">*</span></label>
+                                        <input type="text" id="agencia" class="form-control" name="agencia" value="{{old('agencia')}}">
+                                        @error('agencia')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- conta --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="conta">Conta Corrente<span class="small text-danger">*</span></label>
+                                        <input type="text" id="conta" class="form-control" name="conta" value="{{old('conta')}}">
+                                        @error('conta')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 {{-- celular --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
@@ -109,12 +199,45 @@
                                     </div>
                                 </div>
 
-                                {{-- fone --}}
+                                {{-- foneum --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="fone">1º Telefone<span class="small text-danger">*</span></label>
-                                        <input type="text" id="fone" class="form-control mask-cell" name="fone" placeholder="(99) 9999-9999" value="{{old('fone')}}">
-                                        @error('fone')
+                                        <label class="form-control-label" for="foneum">1º Telefone<span class="small text-danger">*</span></label>
+                                        <input type="text" id="foneum" class="form-control mask-cell" name="foneum" placeholder="(99) 9999-9999" value="{{old('foneum')}}">
+                                        @error('foneum')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- fonedois --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="fonedois">2º Telefone</label>
+                                        <input type="text" id="fonedois" class="form-control mask-cell" name="fonedois" placeholder="(99) 9999-9999" value="{{old('fonedois')}}">
+                                        @error('fonedois')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- emailum --}}
+                                <div class="col-lg-3">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="emailum">1º E-mail<span class="small text-danger">*</span></label>
+                                        <input type="emailum" id="emailum" class="form-control" name="emailum" value="{{old('emailum')}}">
+                                        @error('emailum')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- emaildois --}}
+                                <div class="col-lg-3">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="emaildois">2º E-mail<span class="small text-danger">*</span></label>
+                                        <input type="emaildois" id="emaildois" class="form-control" name="emaildois" value="{{old('emaildois')}}">
+                                        @error('emaildois')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
@@ -158,6 +281,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                             </div>
 
                             <div class="row">
@@ -178,12 +302,26 @@
                                 </div>
 
 
-                                {{-- bairro --}}
+                                {{-- bairro_id --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="bairro">bairro</label>
-                                        <input type="text" id="bairro" class="form-control" name="bairro" value="{{old('bairro')}}">
-                                        @error('bairro')
+                                        <label class="form-control-label" for="bairro_id">Bairro<span class="small text-danger">*</span></label>
+                                        {{-- @if($errors->all()) --}}
+                                        @if(count($errors) > 0)
+                                            <select name="bairro_id" id="bairro_id" class="form-control">
+                                                <option value="" selected disabled>Escolha o Bairro...</option>
+                                                @foreach($bairros  as $bairro)
+                                                    @if($bairro->municipio_id == old('municipio_id'))
+                                                        <option value="{{$bairro->id}}" {{old('bairro_id') == $bairro->id ? 'selected' : ''}}>{{$bairro->nome}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <select name="bairro_id" id="bairro_id" class="form-control">
+                                                <option value="" selected disabled>Escolha o Bairro...</option>
+                                            </select>
+                                        @enderror
+                                        @error('bairro_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
@@ -220,6 +358,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <br>
@@ -228,7 +367,7 @@
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col text-center">
-                                    <a class="btn btn-primary" href="{{route('admin.empresa.index')}}" role="button">Cancelar</a>
+                                    <a class="btn btn-primary" href="{{route('admin.companhia.index')}}" role="button">Cancelar</a>
                                     <button type="submit" id="sent" class="btn btn-primary" style="width: 95px;"> Salvar </button>
                                 </div>
                             </div>

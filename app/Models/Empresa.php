@@ -13,26 +13,17 @@ class Empresa extends Model
         'razaosocial',
         'nomefantasia',
         'cnpj',
-        'codigocnae',
-        'documentocnpj',
-        'titularum',
-        'cargotitum',
-        'titulardois',
-        'cargotitdois',
-        //'banco_id',
-        'agencia',
-        'conta',
+        'titular',
+        'cargotitular',
         'logradouro',
         'numero',
         'complemento',
         'municipio_id',
-        'bairro_id',
+        'bairro',
         'cep',
-        'emailum',
-        'emaildois',
+        'email',
         'celular',
-        'foneum',
-        'fonedois',
+        'fone',
         'ativo'
     ];
 
@@ -40,11 +31,4 @@ class Empresa extends Model
         return $this->belongsTo(Municipio::class);
     }
 
-    public function bairro(){
-        return $this->belongsTo(Bairro::class);
-    }
-
-    public function banco(){
-        return $this->belongsTo(Banco::class);
-    }
 }

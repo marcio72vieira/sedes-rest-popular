@@ -39,12 +39,12 @@
 
                         <div class="pl-lg-4">
                             <div class="row">
-                                {{-- fullname --}}
+                                {{-- nomecompleto --}}
                                 <div class="col-lg-4">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="fullname">Nome Completo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="fullname" class="form-control" name="fullname" value="{{old('fullname', $user->fullname)}}" required>
-                                        @error('fullname')
+                                        <label class="form-control-label" for="nomecompleto">Nome Completo<span class="small text-danger">*</span></label>
+                                        <input type="text" id="nomecompleto" class="form-control" name="nomecompleto" value="{{old('nomecompleto', $user->nomecompleto)}}" required>
+                                        @error('nomecompleto')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
@@ -56,6 +56,17 @@
                                         <label class="form-control-label" for="cpf">CPF<span class="small text-danger">*</span></label>
                                         <input type="text" id="cpf" class="form-control" name="cpf" value="{{old('cpf', $user->cpf)}}" required>
                                         @error('cpf')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- crn --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="crn">CRN<span class="small text-danger">*</span></label>
+                                        <input type="text" id="crn" class="form-control" name="crn" value="{{old('crn', $user->crn)}}">
+                                        @error('crn')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>

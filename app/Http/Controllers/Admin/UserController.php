@@ -109,6 +109,54 @@ class UserController extends Controller
             return redirect()->route('admin.user.index');
     }
 
+    public function profile($id)
+    {
+        $user = User::find($id);
+
+        return view('admin.user.profile', compact('user'));
+    }
+
+    public function updateprofile( Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'nomecompleto'          => 'bail|required|string',
+            'cpf'                   => 'required',
+            'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
+            'telefone'              => 'required',
+            'name'                  => 'bail|required|string',  // é o campo usuário
+            'email'                 => 'bail|required|string|email',
+            'password'              => 'bail|required_with:password_confirmation|confirmed',
+            'password_confirmation' => 'bail|required_with:password',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }else {
+
+            $user = User::find($id);
+
+            $user->nomecompleto     = $request->nomecompleto;
+            $user->cpf          = $request->cpf;
+            $user->crn          = $request->crn;
+            $user->telefone     = $request->telefone;
+            $user->name         = $request->name;
+            $user->email        = $request->email;
+            $user->perfil       = $request->old_perfil_hidden;         // não é alterado pelo usuário
+
+            if($request->password == ''){
+                $user->password = $request->old_password_hidden;
+            }else{
+                $user->password = bcrypt($request->password);
+            }
+
+            $user->save();
+
+            // Atualiza os dados, executa o logout e força o usuário a fazer login novamente com os novos dados
+            return redirect()->route('acesso.logout');
+        }
+
+    }
+
 
     public function destroy($id, Request $request)
     {
