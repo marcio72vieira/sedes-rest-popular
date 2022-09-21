@@ -27,66 +27,31 @@ class EmpresaController extends Controller
         return view('admin.empresa.index', compact('empresas'));
     }
 
-
-    public function getbairros(Request $request)
-    {
-        $condicoes = [
-            ['municipio_id', '=', $request->municipio_id],
-            ['ativo', '=', 1]
-        ];
-
-        $data['bairros'] = Bairro::where($condicoes)->orderBy('nome', 'ASC')->get();
-        return response()->json($data);
-    }
-
-
     public function create()
     {
         $municipios = Municipio::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $bairros = Bairro::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        //$bancos = Banco::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
 
-        //return view('admin.empresa.create', compact('municipios', 'bairros', 'bancos'));
-        return view('admin.empresa.create', compact('municipios', 'bairros'));
+        return view('admin.empresa.create', compact('municipios'));
     }
 
 
     public function store(EmpresaCreateRequest $request)
     {
-        // Atribuindo um nome ao arquivo e Gravando ele fisicamene no diretório: storage/public/documentos/nome_do_arquivo.pdf
-        if($request->file()){
-            //Retirando . / e - do cnpj para ficar apenas os números
-            //$filename = 'doc_'.Str::replace(['.', '/', '-'], '',$request['cnpj']).'_cnpj.pdf';   //doc_123456_cnpj.pdf
-            $filename = 'doc_'.time().'.pdf';
-            $filepath = $request->file('documentocnpj')->storeAs('documentos', $filename, 'public');
-        }
-
-
         Empresa::create([
             'razaosocial'   => $request['razaosocial'],
             'nomefantasia'  => $request['nomefantasia'],
             'cnpj'          => $request['cnpj'],
-            'codigocnae'    => $request['codigocnae'],
-            //'documentocnpj' => '/storage/'.$filepath,
-            'documentocnpj' => $filepath,
-            'titularum'     => $request['titularum'],
-            'cargotitum'    => $request['cargotitum'],
-            'titulardois'   => $request['titulardois'],
-            'cargotitdois'  => $request['cargotitdois'],
-            'banco_id'      => $request['banco_id'],
-            'agencia'       => $request['agencia'],
-            'conta'         => $request['conta'],
+            'titular'       => $request['titular'],
+            'cargotitular'  => $request['cargotitular'],
             'logradouro'    => $request['logradouro'],
             'numero'        => $request['numero'],
             'complemento'   => $request['complemento'],
             'municipio_id'  => $request['municipio_id'],
-            'bairro_id'     => $request['bairro_id'],
+            'bairro'        => $request['bairro'],
             'cep'           => $request['cep'],
-            'emailum'       => $request['emailum'],
-            'emaildois'     => $request['emailum'],
+            'email'         => $request['email'],
             'celular'       => $request['celular'],
-            'foneum'        => $request['foneum'],
-            'fonedois'      => $request['fonedois'],
+            'fone'          => $request['fone'],
             'ativo'         => $request['ativo'],
         ]);
 
@@ -95,19 +60,13 @@ class EmpresaController extends Controller
 
         return redirect()->route('admin.empresa.index');
 
-        /* Forma anterior como estava sendo gravado os dados, antes de fazer o upload de arquivo (forma mais sucinta)
-        Empresa::create($request->all());
-        $request->session()->flash('sucesso', 'Registro incluído com sucesso!');
-        return redirect()->route('admin.empresa.index');
-        */
     }
 
 
     public function show($id)
     {
         // Resgata registro através do eager-load
-        // $empresa = Empresa::with(['municipio', 'bairro', 'banco'])->find($id);
-        $empresa = Empresa::with(['municipio', 'bairro'])->find($id);
+        $empresa = Empresa::with(['municipio'])->find($id);
 
         return view('admin.empresa.show', compact('empresa'));
     }
@@ -116,13 +75,9 @@ class EmpresaController extends Controller
     public function edit($id)
     {
         $empresa = Empresa::find($id);
-        //$bairros = Bairro::where('municipio_id', '=', $empresa->municipio_id)->where('ativo', '=', 1)->orderBy('nome', 'ASC')->get();
-        $bairros = Bairro::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
         $municipios = Municipio::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        //$bancos = Banco::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-
-        //return view('admin.empresa.edit', compact('empresa', 'bairros', 'municipios', 'bancos'));
-        return view('admin.empresa.edit', compact('empresa', 'bairros', 'municipios'));
+        
+        return view('admin.empresa.edit', compact('empresa', 'municipios'));
     }
 
 
@@ -138,28 +93,7 @@ class EmpresaController extends Controller
             ],
         ]);
 
-        // Verifica se no processo de alteração, o campo do tipo file foi alterado, indicando que o 
-        // usuário deseja alterar o arquivo .pdf
-        if($request->file()){
-            // Delete fisicamente o arquivo da pasta storage/app/public/documentos/nome_arquivo.pdf, recuperando o 
-            // seu nome do banco de dados vindo no campo $empresaa->documentocnpj.
-            $documentfile = $empresa->documentocnpj;
-            Storage::disk('public')->delete([$documentfile]);
-
-            //$filename = 'doc_'.Str::replace(['.', '/', '-'], '',$request['cnpj']).'_cnpj.pdf';
-            $filename = 'doc_'.time().'.pdf';
-            $filepath = $request->file('file')->storeAs('documentos', $filename, 'public');
-
-            // Alterando o valor do campo 'documentocnpj' para atualizar no banco com os demais campos que foram possivelmente
-            // alterados
-            //$request['documentocnpj'] = $filepath;
-            $request['documentocnpj'] = 'documentos/'.$filename;
-
-            $empresa->update($request->all());
-            
-        }else{
-            $empresa->update($request->all());
-        }
+        $empresa->update($request->all());
 
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 
@@ -171,12 +105,6 @@ class EmpresaController extends Controller
     public function destroy($id, Request $request)
     {
         $empresa = Empresa::find($id);
-
-        $documento = $empresa->documentocnpj;
-
-        if(Storage::exists($documento)){
-            Storage::delete($documento);
-        }
 
         Empresa::destroy($id);
 

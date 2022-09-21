@@ -31,4 +31,8 @@ class Empresa extends Model
         return $this->belongsTo(Municipio::class);
     }
 
+    public function nutricionistas(){
+        return $this->hasMany(Nutricionista::class);
+    }
+
 }

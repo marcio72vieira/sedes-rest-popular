@@ -54,7 +54,7 @@
                                 {{-- titular --}}
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="titular">1º Representante<span class="small text-danger">*</span></label>
+                                        <label class="form-control-label" for="titular">Representante<span class="small text-danger">*</span></label>
                                         <input type="text" id="titular" class="form-control" name="titular" value="{{old('titular')}}">
                                         @error('titular')
                                             <small style="color: red">{{$message}}</small>
@@ -90,7 +90,7 @@
                                 {{-- email --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="email">1º E-mail<span class="small text-danger">*</span></label>
+                                        <label class="form-control-label" for="email">E-mail<span class="small text-danger">*</span></label>
                                         <input type="email" id="email" class="form-control" name="email" value="{{old('email')}}">
                                         @error('email')
                                             <small style="color: red">{{$message}}</small>
@@ -112,7 +112,7 @@
                                 {{-- fone --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="fone">1º Telefone<span class="small text-danger">*</span></label>
+                                        <label class="form-control-label" for="fone">Telefone<span class="small text-danger">*</span></label>
                                         <input type="text" id="fone" class="form-control mask-cell" name="fone" placeholder="(99) 9999-9999" value="{{old('fone')}}">
                                         @error('fone')
                                             <small style="color: red">{{$message}}</small>

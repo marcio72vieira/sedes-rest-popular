@@ -406,7 +406,7 @@ COMANDOS artisan
 php artisan storage:link
 php artisan clear-cache
 php artisan dump-autoload
-
+php artisan migrate:rollback --step=5
 
 
 =========================

@@ -11,27 +11,7 @@
             <i class="fas fa-plus-circle"></i>
             Adicionar
         </a>
-
-        {{--
-        <a class="btn btn-primary btn-danger" href="{{route('admin.empresa.relatorio')}}" role="button" style="margin-bottom: 10px" target="_blank">
-            <i class="far fa-file-pdf"></i>
-            pdf
-        </a>
-
-        @can('adm')
-            <a class="btn btn-primary btn-success" href="{{route('admin.empresa.relatorioexcel')}}" role="button" style="margin-bottom: 10px">
-                <i class="far fa-file-excel"></i>
-                xlsx
-            </a>
-
-            <a class="btn btn-primary btn-warning" href="{{route('admin.empresa.relatoriocsv')}}" role="button" style="margin-bottom: 10px">
-                <i class="fas fa-file-csv"></i>
-                csv
-            </a>
-        @endcan
-        --}}
-
-
+ 
         @if(session('sucesso'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>OK!</strong> {{session('sucesso')}}
@@ -52,12 +32,11 @@
             <tr>
               <th>Id</th>
               <th>Nome</th>
-              <th>Representante(s)</th>
+              <th>Representante</th>
               <th>Email</th>
-              <th>Fone(s)</th>
-              <th>Doc.</th>
+              <th>Contato(s)</th>
               <th>Ativo</th>
-              <th style="width: 90px">Ações</th>
+              <th style="width: 110px">Ações</th>
             </tr>
           </thead>
 
@@ -66,21 +45,20 @@
              <tr>
                 <td>{{$empresa->id}}</td>
                 <td>{{$empresa->nomefantasia}}</td>
-                <td>{{$empresa->titularum}} / {{$empresa->titulardois}}</td>
-                <td>{{$empresa->emailum}}; {{$empresa->emaildois}}</td>
-                <td>{{$empresa->celular}}; {{$empresa->foneum}}; {{$empresa->fonedois}}</td>
-                <td style="text-align: center">
-                    <a href="{{asset('/storage/'.$empresa->documentocnpj)}}" target="_blank">
-                        <img src="{{asset('template/img/icopdf.png')}}" width="20">
-                    </a>
-                </td>
+                <td>{{$empresa->titular}}</td>
+                <td>{{$empresa->email}}</td>
+                <td>{{$empresa->celular}} / {{$empresa->fone}}</td>
                 <td>{{$empresa->ativo == 1 ? 'SIM' : 'NÃO'}}</td>
-                <td>
+                <td>@if($empresa->ativo == 1)
+                      <a href="{{route('admin.empresa.nutricionista.index', $empresa->id)}}" title="cadastrar nutricionistas"><i class="fas fa-user-friends text-success mr-2"></i></a>
+                    @else
+                      <a href="#" title="cadastrar nutricionistas"><i class="fas fa-user-friends text-default mr-2"></i></a>
+                    @endif
                     <a href="{{route('admin.empresa.show', $empresa->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.empresa.edit', $empresa->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                     {{--<a href="{{route('admin.empresa.ficha', $empresa->id)}}" title="ficha" target="_blank"><i class="far fa-file-pdf text-danger mr-2"></i></a>--}}
                     <a href="" data-toggle="modal" data-target="#formDelete{{$empresa->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
-
+                    
                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                     <div class="modal fade" id="formDelete{{$empresa->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
                         <div class="modal-dialog">

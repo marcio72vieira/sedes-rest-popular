@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Banco extends Model
 {
     use HasFactory;
+
+    public function companhias(){
+        return $this->hasMany(Companhia::class);
+    }
+    
 }

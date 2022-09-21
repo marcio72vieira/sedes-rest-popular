@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcessoController;
 use App\Http\Controllers\Admin\EmpresaController;
+use App\Http\Controllers\Admin\NutricionistaController;
 //  use App\Http\Controllers\Admin\CompanhiaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MunicipioController;
@@ -10,7 +11,7 @@ use App\Http\Controllers\Admin\BairroController;
 use App\Http\Controllers\Admin\CategoriaController;
 use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\Admin\MedidaController;
-
+use App\Models\Nutricionista;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,9 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::post('getbairros',[EmpresaController::class, 'getbairros'])->name('getbairros');
     Route::resource('empresa', EmpresaController::class);
 
+    // Nutricionista (Rota aninhada) fica do tipo: empresa/1/nutricionista.
+    Route::resource('empresa.nutricionista', NutricionistaController::class);
+
     // Municipio
     Route::post('getamountbairros',[MunicipioController::class, 'getamountbairros'])->name('getamountbairros');
     Route::resource('municipio', MunicipioController::class);
@@ -68,6 +72,8 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::resource('categoria', CategoriaController::class);
     Route::resource('produto', ProdutoController::class);
     Route::resource('medida', MedidaController::class);
+
+    
 
     // Users
     Route::resource('user', UserController::class);

@@ -23,6 +23,10 @@ class Municipio extends Model
         return $this->hasMany(Empresa::class);
     }
 
+    public function companhias(){
+        return $this->hasMany(Companhia::class);
+    }
+
     public function bairros(){
         return $this->hasMany(Bairro::class);
     }
