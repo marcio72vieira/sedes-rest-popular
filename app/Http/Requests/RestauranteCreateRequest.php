@@ -13,7 +13,7 @@ class RestauranteCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,17 @@ class RestauranteCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'identificacao' => 'bail|required',
+            'logradouro' => 'bail|required',
+            'numero' => 'bail|required',
+            //'complemento' => 'bail|required',
+            'municipio_id' => 'bail|required',
+            'bairro_id' => 'bail|required',
+            'cep' => 'bail|required',
+            'empresa_id' => 'bail|required',
+            'nutricionista_id' => 'bail|required',
+            'user_id' => 'bail|required',
+            'ativo' => 'bail|required'
         ];
     }
 }

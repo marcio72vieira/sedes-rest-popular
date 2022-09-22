@@ -12,25 +12,6 @@
             Adicionar
         </a>
 
-        {{--
-        <a class="btn btn-primary btn-danger" href="{{route('admin.restaurante.relatorio')}}" role="button" style="margin-bottom: 10px" target="_blank">
-            <i class="far fa-file-pdf"></i>
-            pdf
-        </a>
-
-        @can('adm')
-            <a class="btn btn-primary btn-success" href="{{route('admin.restaurante.relatorioexcel')}}" role="button" style="margin-bottom: 10px">
-                <i class="far fa-file-excel"></i>
-                xlsx
-            </a>
-
-            <a class="btn btn-primary btn-warning" href="{{route('admin.restaurante.relatoriocsv')}}" role="button" style="margin-bottom: 10px">
-                <i class="fas fa-file-csv"></i>
-                csv
-            </a>
-        @endcan
-        --}}
-
 
         @if(session('sucesso'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -51,11 +32,10 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>Nome</th>
-              <th>Representante(s)</th>
-              <th>Email</th>
-              <th>Fone(s)</th>
-              <th>Doc.</th>
+              <th>Identificacao</th>
+              <th>Município - Bairro</th>
+              <th>Empresa</th>
+              <th>Responsáveis</th>
               <th>Ativo</th>
               <th style="width: 90px">Ações</th>
             </tr>
@@ -65,17 +45,17 @@
           @foreach($restaurantes as $restaurante)
              <tr>
                 <td>{{$restaurante->id}}</td>
-                <td>{{$restaurante->nomefantasia}}</td>
-                <td>{{$restaurante->titularum}} / {{$restaurante->titulardois}}</td>
-                <td>{{$restaurante->emailum}}; {{$restaurante->emaildois}}</td>
-                <td>{{$restaurante->celular}}; {{$restaurante->foneum}}; {{$restaurante->fonedois}}</td>
-                <td style="text-align: center">
-                    <a href="{{asset('/storage/'.$restaurante->documentocnpj)}}" target="_blank">
-                        <img src="{{asset('template/img/icopdf.png')}}" width="20">
-                    </a>
+                <td>{{$restaurante->identificacao}}</td>
+                <td>{{$restaurante->municipio->nome}} - {{$restaurante->bairro->nome}}</td>
+                <td>{{$restaurante->empresa->nomefantasia}}</td>
+                <td><span style="font-size: 10px; color: blue">EMPRESA:</span> {{$restaurante->nutricionista->nomecompleto}}; {{$restaurante->nutricionista->telefone}}; {{$restaurante->nutricionista->email}}
+                    <br>
+                    <span style="font-size: 10px; color: blue">SEDES:</span>  {{$restaurante->user->nomecompleto}}; {{$restaurante->user->telefone}}; {{$restaurante->user->email}}
                 </td>
-                <td>{{$restaurante->ativo == 1 ? 'SIM' : 'NÃO'}}</td>
+                {{--<td>{{$restaurante->ativo == 1 ? 'SIM' : 'NÃO'}}</td>--}}
+                <td>@if($restaurante->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
                 <td>
+                    <a href="" title="exibir"><i class="fas fa-shopping-cart"></i></a>
                     <a href="{{route('admin.restaurante.show', $restaurante->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.restaurante.edit', $restaurante->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                     {{--<a href="{{route('admin.restaurante.ficha', $restaurante->id)}}" title="ficha" target="_blank"><i class="far fa-file-pdf text-danger mr-2"></i></a>--}}

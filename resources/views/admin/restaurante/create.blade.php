@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h5 class="h5 mb-4 text-gray-800">Companhia / Cadastrar</h5>
+    <h5 class="h5 mb-4 text-gray-800">Restaurante / Cadastrar</h5>
 
     <div class="row">
 
@@ -22,229 +22,22 @@
 
                 <div class="card-body">
 
-                    <form method="POST" action="{{route('admin.companhia.store')}}" enctype="multipart/form-data" autocomplete="off">
+                    <form method="POST" action="{{route('admin.restaurante.store')}}" autocomplete="off">
                         @csrf
 
                         <div class="pl-lg-4">
                             <div class="row">
-                                {{-- razaosocial --}}
+                                {{-- identificacao --}}
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="razaosocial">Razão Social<span class="small text-danger">*</span></label>
-                                        <input type="text" id="razaosocial" class="form-control" name="razaosocial" value="{{old('razaosocial')}}">
-                                        @error('razaosocial')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- nomefantasia --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="nomefantasia">Nome de Fantasia<span class="small text-danger">*</span></label>
-                                        <input type="text" id="nomefantasia" class="form-control" name="nomefantasia" value="{{old('nomefantasia')}}">
-                                        @error('nomefantasia')
+                                        <label class="form-control-label" for="identificacao">Identificação da Unidade<span class="small text-danger">*</span></label>
+                                        <input type="text" id="identificacao" class="form-control" name="identificacao" value="{{old('identificacao')}}">
+                                        @error('identificacao')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
-
-
-                            <div class="row">
-                                {{-- cnpj --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cnpj">CNPJ<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cnpj" class="form-control" name="cnpj" value="{{old('cnpj')}}">
-                                        @error('cnpj')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- codigocnae --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="codigocnae">Cód. CNAE<span class="small text-danger">*</span></label>
-                                        <input type="text" id="codigocnae" class="form-control" name="codigocnae" value="{{old('codigocnae')}}">
-                                        @error('codigocnae')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- documentocnpj--}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="documentocnpj">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="file" id="documentocnpj" style="display:block" name="documentocnpj" value="{{old('documentocnpj')}}">
-                                        @error('documentocnpj')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{--
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="documentocnpj">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="text" id="documentocnpj" class="form-control" name="documentocnpj">
-                                        @error('documentocnpj')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>--}}
-                            </div>
-
-                            <div class="row">
-                                {{-- titularum --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="titularum">1º Representante<span class="small text-danger">*</span></label>
-                                        <input type="text" id="titularum" class="form-control" name="titularum" value="{{old('titularum')}}">
-                                        @error('titularum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- cargotitum --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cargotitum">Cargo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cargotitum" class="form-control" name="cargotitum" value="{{old('cargotitum')}}">
-                                        @error('cargotitum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                {{-- titulardois --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="titulardois">2º Representante<span class="small text-danger">*</span></label>
-                                        <input type="text" id="titulardois" class="form-control" name="titulardois" value="{{old('titulardois')}}">
-                                        @error('titulardois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- cargotitdois --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cargotitdois">Cargo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cargotitdois" class="form-control" name="cargotitdois" value="{{old('cargotitdois')}}">
-                                        @error('cargotitdois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                {{-- banco_id
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="banco_id">Banco<span class="small text-danger">*</span></label>
-                                        <select name="banco_id" id="banco_id" class="form-control">
-                                            <option value="" selected disabled>Escolha...</option>
-                                            @foreach($bancos  as $banco)
-                                                <option value="{{$banco->id}}" {{old('banco_id') == $banco->id ? 'selected' : ''}}>{{$banco->nome}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('banco_id')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                --}}
-
-                                {{-- agencia --}}
-                                <div class="col-lg-1">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="agencia">Agência<span class="small text-danger">*</span></label>
-                                        <input type="text" id="agencia" class="form-control" name="agencia" value="{{old('agencia')}}">
-                                        @error('agencia')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- conta --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="conta">Conta Corrente<span class="small text-danger">*</span></label>
-                                        <input type="text" id="conta" class="form-control" name="conta" value="{{old('conta')}}">
-                                        @error('conta')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                {{-- celular --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="celular">Celular<span class="small text-danger">*</span></label>
-                                        <input type="text" id="celular" class="form-control mask-cell" name="celular" placeholder="(99) 9999-9999" value="{{old('celular')}}">
-                                        @error('celular')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- foneum --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="foneum">1º Telefone<span class="small text-danger">*</span></label>
-                                        <input type="text" id="foneum" class="form-control mask-cell" name="foneum" placeholder="(99) 9999-9999" value="{{old('foneum')}}">
-                                        @error('foneum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- fonedois --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="fonedois">2º Telefone</label>
-                                        <input type="text" id="fonedois" class="form-control mask-cell" name="fonedois" placeholder="(99) 9999-9999" value="{{old('fonedois')}}">
-                                        @error('fonedois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- emailum --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="emailum">1º E-mail<span class="small text-danger">*</span></label>
-                                        <input type="emailum" id="emailum" class="form-control" name="emailum" value="{{old('emailum')}}">
-                                        @error('emailum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- emaildois --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="emaildois">2º E-mail<span class="small text-danger">*</span></label>
-                                        <input type="emaildois" id="emaildois" class="form-control" name="emaildois" value="{{old('emaildois')}}">
-                                        @error('emaildois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
 
                             <h5>Endereço</h5>
 
@@ -337,10 +130,74 @@
                                         @enderror
                                     </div>
                                 </div>
+                            </div>
+
+                            <br>
+                            <hr>
+                            <br>
+
+                            <div class="row">
+                                {{-- empresa_id --}}
+                                <div class="col-lg-3">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="empresa_id">Empresa<span class="small text-danger">*</span></label>
+                                        <select name="empresa_id" id="empresa_id" class="form-control">
+                                            <option value="" selected disabled>Escolha...</option>
+                                            @foreach($empresas  as $empresa)
+                                                <option value="{{$empresa->id}}" {{old('empresa_id') == $empresa->id ? 'selected' : ''}}>{{$empresa->nomefantasia}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('empresa_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+
+                                {{-- nutricionista_id --}}
+                                <div class="col-lg-3">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="bairro_id">Nutricionista da Empresa<span class="small text-danger">*</span></label>
+                                        {{-- @if($errors->all()) --}}
+                                        @if(count($errors) > 0)
+                                            <select name="nutricionista_id" id="nutricionista_id" class="form-control">
+                                                <option value="" selected disabled>Escolha o nutricionista...</option>
+                                                @foreach($nutricionistas  as $nutricionista)
+                                                    @if($nutricionista->municipio_id == old('municipio_id'))
+                                                        <option value="{{$nutricionista->id}}" {{old('nutricionista_id') == $nutricionista->id ? 'selected' : ''}}>{{$nutricionista->nome}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <select name="nutricionista_id" id="nutricionista_id" class="form-control">
+                                                <option value="" selected disabled>Escolha Nutricionista...</option>
+                                            </select>
+                                        @enderror
+                                        @error('nutricionista_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- user_id (Usuário Nutricionista) --}}
+                                <div class="col-lg-4">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="user_id">Nutricionista da SEDES<span class="small text-danger">*</span></label>
+                                        <select name="user_id" id="user_id" class="form-control">
+                                            <option value="" selected disabled>Escolha...</option>
+                                            @foreach($users  as $user)
+                                                <option value="{{$user->id}}" {{old('user_id') == $user->id ? 'selected' : ''}}>{{$user->nomecompleto}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('user_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
 
                                 {{-- ativo --}}
-                                <div class="col-lg-2 offset-lg-2">
-                                    <div class="form-group focused">
+                                <div class="col-lg-2">
+                                    <div class="form-group focused  float-right">
                                         <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
                                         <div style="margin-top: 5px">
                                             <div class="form-check form-check-inline">
@@ -358,16 +215,15 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
-                        <br>
+                        <br><br>
 
                         <!-- Button -->
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col text-center">
-                                    <a class="btn btn-primary" href="{{route('admin.companhia.index')}}" role="button">Cancelar</a>
+                                    <a class="btn btn-primary" href="{{route('admin.restaurante.index')}}" role="button">Cancelar</a>
                                     <button type="submit" id="sent" class="btn btn-primary" style="width: 95px;"> Salvar </button>
                                 </div>
                             </div>
@@ -391,11 +247,12 @@
 
     <script>
         $(document).ready(function() {
+            //Recuperação dinâmica dos bairros de um município
             $('#municipio_id').on('change', function() {
                 var municipio_id = this.value;
                 $("#bairro_id").html('');
                 $.ajax({
-                    url:"{{route('admin.getbairros')}}",
+                    url:"{{route('admin.getbairrosrestaurante')}}",
                     type: "POST",
                     data: {
                         municipio_id: municipio_id,
@@ -406,6 +263,27 @@
                         $('#bairro_id').html('<option value="">Escolha o Bairro...</option>');
                         $.each(result.bairros,function(key,value){
                             $("#bairro_id").append('<option value="'+value.id+'">'+value.nome+'</option>');
+                        });
+                    }
+                });
+            });
+
+            //Recuperação dinâmica dos nutricionistas de uma empresa
+            $('#empresa_id').on('change', function() {
+                var empresa_id = this.value;
+                $("#nutricionista_id").html('');
+                $.ajax({
+                    url:"{{route('admin.getnutricionistasempresas')}}",
+                    type: "POST",
+                    data: {
+                        empresa_id: empresa_id,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType : 'json',
+                    success: function(result){
+                        $('#nutricionista_id').html('<option value="">Escolha Nutricionista...</option>');
+                        $.each(result.nutricionistas,function(key,value){
+                            $("#nutricionista_id").append('<option value="'+value.id+'">'+value.nomecompleto+'</option>');
                         });
                     }
                 });

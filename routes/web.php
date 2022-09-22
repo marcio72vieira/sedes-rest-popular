@@ -59,10 +59,12 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Route::resource('companhia', CompanhiaController::class);
 
     // Restaurante
-    Route::post('getbairros',[CompanhiaController::class, 'getbairros'])->name('getbairros');
+    Route::post('getbairrosrestaurante',[RestauranteController::class, 'getbairrosrestaurante'])->name('getbairrosrestaurante');
+    Route::post('getnutricionistasempresas',[RestauranteController::class, 'getnutricionistasempresas'])->name('getnutricionistasempresas');
     Route::resource('restaurante', RestauranteController::class);
 
     // Empresa
+    Route::post('getbairros',[EmpresaController::class, 'getbairros'])->name('getbairros');
     Route::resource('empresa', EmpresaController::class);
 
     // Nutricionista (Rota aninhada) fica do tipo: empresa/1/nutricionista.
@@ -78,7 +80,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::resource('produto', ProdutoController::class);
     Route::resource('medida', MedidaController::class);
 
-    
+
 
     // Users
     Route::resource('user', UserController::class);
