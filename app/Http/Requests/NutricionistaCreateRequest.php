@@ -25,9 +25,9 @@ class NutricionistaCreateRequest extends FormRequest
     {
         return [
             'nomecompleto'          => 'bail|required|string',
-            'cpf'                   => 'required|unique:nutricionista,cpf',
+            'cpf'                   => 'required|unique:nutricionistas,cpf',
             'crn'                   => 'bail|required',
-            'email'                 => 'bail|required|string|email|unique:users,email',
+            'email'                 => 'bail|required|string|email|unique:nutricionistas,email',
             'telefone'              => 'required',
             //'empresa_id'            => 'bail|required',
             'ativo'                 => 'bail|required'

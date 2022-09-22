@@ -63,7 +63,10 @@ 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
 FONTES AWESOME PARA COLOCAR NO PROJETO COM ESTE TEMPLATE
 =========================================================
 https://fontawesome.com/v5/search?o=r&m=free
-
+para aumentar o tamanho dos ícones utilize as classes
+To increase icon sizes relative to their container, use the fa-lg (33% increase), fa-2x , fa-3x , fa-4x , or fa-5x classes
+Exemplo:
+    <b><i class="fa-lg fas fa-check text-success mr-2"></i></b>
 
 
 =============================

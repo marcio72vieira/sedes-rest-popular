@@ -55,7 +55,7 @@
                 <td>{{$nutricionista->telefone}}</td>
                 <td>{{$nutricionista->cpf}}</td>
                 <td>{{$nutricionista->crn}}</td>
-                <td>@if($nutricionista->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
+                <td>@if($nutricionista->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
                 <td>
                     <a href="{{route('admin.empresa.nutricionista.show', [$empresa->id, $nutricionista->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.empresa.nutricionista.edit', [$empresa->id, $nutricionista->id])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
@@ -72,7 +72,7 @@
                             </button>
                             </div>
                             <div class="modal-body">
-                                <h5>{{$nutricionista->name}}</h5>
+                                <h5>{{$nutricionista->nomecompleto}}</h5>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>

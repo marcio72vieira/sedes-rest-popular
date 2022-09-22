@@ -70,7 +70,7 @@ class NutricionistaController extends Controller
     }
 
     
-    public function update(NutricionistaCreateRequest $request, $idempresa, $idnutricionista)
+    public function update(NutricionistaUpdateRequest $request, $idempresa, $idnutricionista)
     {
         $nutricionista = nutricionista::find($idnutricionista);
 
@@ -102,8 +102,12 @@ class NutricionistaController extends Controller
     }
 
     
-    public function destroy($id)
+    public function destroy($idempresa, $idnutricionista, Request $request)
     {
-        //
+        Nutricionista::destroy($idnutricionista);
+
+        $request->session()->flash('sucesso', 'Registro excluído com sucesso!');
+
+        return redirect()->route('admin.empresa.nutricionista.index', $idempresa);
     }
 }

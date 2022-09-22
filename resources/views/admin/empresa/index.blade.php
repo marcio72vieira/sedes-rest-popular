@@ -48,9 +48,11 @@
                 <td>{{$empresa->titular}}</td>
                 <td>{{$empresa->email}}</td>
                 <td>{{$empresa->celular}} / {{$empresa->fone}}</td>
-                <td>{{$empresa->ativo == 1 ? 'SIM' : 'NÃO'}}</td>
-                <td>@if($empresa->ativo == 1)
-                      <a href="{{route('admin.empresa.nutricionista.index', $empresa->id)}}" title="cadastrar nutricionistas"><i class="fas fa-user-friends text-success mr-2"></i></a>
+                {{-- <td>{{$empresa->ativo == 1 ? 'SIM' : 'NÃO'}}</td>--}}
+                <td>@if($empresa->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
+                <td>
+                    @if($empresa->ativo == 1)
+                      <a href="{{route('admin.empresa.nutricionista.index', $empresa->id)}}" title="cadastrar nutricionistas"><b><i class="fas fa-user-friends text-success mr-2"></i></b></a>
                     @else
                       <a href="#" title="cadastrar nutricionistas"><i class="fas fa-user-friends text-default mr-2"></i></a>
                     @endif

@@ -48,7 +48,7 @@
 
     <!-- Nav Item - Restaurantes -->
     <li class="nav-item">
-        <a class="nav-link" href="{{-- route('admin.user.create') --}}">
+        <a class="nav-link" href="{{ route('admin.restaurante.index') }}">
             <i class="fas fa-utensils"></i>
             <span>Restaurantes</span>
         </a>

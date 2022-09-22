@@ -29,7 +29,7 @@ class NutricionistaUpdateRequest extends FormRequest
             'crn'                   => 'bail|required',
             'email'                 => 'bail|required',
             'telefone'              => 'required',
-            //'empresa_id'            => 'bail|required',
+            //'empresa_id'          => 'bail|required',
             'ativo'                 => 'bail|required'
             
         ];

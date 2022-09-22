@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcessoController;
 use App\Http\Controllers\Admin\EmpresaController;
+use App\Http\Controllers\Admin\RestauranteController;
 use App\Http\Controllers\Admin\NutricionistaController;
 //  use App\Http\Controllers\Admin\CompanhiaController;
 use App\Http\Controllers\Admin\UserController;
@@ -57,14 +58,18 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Route::post('getbairros',[CompanhiaController::class, 'getbairros'])->name('getbairros');
     // Route::resource('companhia', CompanhiaController::class);
 
+    // Restaurante
+    Route::post('getbairros',[CompanhiaController::class, 'getbairros'])->name('getbairros');
+    Route::resource('restaurante', RestauranteController::class);
+
     // Empresa
-    Route::post('getbairros',[EmpresaController::class, 'getbairros'])->name('getbairros');
     Route::resource('empresa', EmpresaController::class);
 
     // Nutricionista (Rota aninhada) fica do tipo: empresa/1/nutricionista.
     Route::resource('empresa.nutricionista', NutricionistaController::class);
 
     // Municipio
+    // Impede a exclusão de um município, no caso de haver algum bairro associado a ele através da rota 'getmountbairros'
     Route::post('getamountbairros',[MunicipioController::class, 'getamountbairros'])->name('getamountbairros');
     Route::resource('municipio', MunicipioController::class);
 
