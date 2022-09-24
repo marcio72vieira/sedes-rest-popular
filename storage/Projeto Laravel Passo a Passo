@@ -400,6 +400,41 @@ CRIANDO O MÓDULO DE USUÁRIO
     use Illuminate\Validation\Rule;
     etc...
 
+========================================================
+EXPLICANDO SELECT DEPENDENTE (MUNICIPIO/BAIRRO) NO EDIT
+========================================================
+1 - {{-- minicípio_id --}}
+2 - <select name="municipio_id" id="municipio_id">
+3 -    <option value="" selected disabled>Escolha...</option>
+4 -    @foreach($municipios  as $municipio)
+5 -        <option value="{{$municipio->id}}" {{old('municipio_id') == $municipio->id ? 'selected' : ''}}>{{$municipio->nome}}</option>
+6 -    @endforeach
+7 - </select>
+8 -
+9 -
+10 - 
+11 - {{-- bairro_id --}}
+12 - @if(count($errors) > 0)
+13 -    <select name="bairro_id" id="bairro_id">
+14 -        <option value="" selected disabled>Escolha o Bairro...</option>
+15 -        @foreach($bairros  as $bairro)
+16 -            @if($bairro->municipio_id == old('municipio_id'))
+17 -                <option value="{{$bairro->id}}" {{old('bairro_id') == $bairro->id ? 'selected' : ''}}>{{$bairro->nome}}</option>
+18 -            @endif
+19 -        @endforeach
+20 -    </select>
+21 - @else
+22 -    <select name="bairro_id" id="bairro_id" class="form-control">
+23 -        <option value="" selected disabled>Escolha o Bairro...</option>
+24 -    </select>
+25 - @endif
+26 - @error('bairro_id')
+27 -    <small style="color: red">{{$message}}</small>
+28 - @enderror
+
+
+
+
 
 
 ================

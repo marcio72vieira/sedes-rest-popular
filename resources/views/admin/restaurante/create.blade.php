@@ -31,13 +31,81 @@
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="identificacao">Identificação da Unidade<span class="small text-danger">*</span></label>
-                                        <input type="text" id="identificacao" class="form-control" name="identificacao" value="{{old('identificacao')}}">
+                                        <input type="text" id="identificacao" class="form-control" name="identificacao" value="{{old('identificacao')}}" required>
                                         @error('identificacao')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
+
+                                {{-- user_id (Usuário Nutricionista) --}}
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="user_id">Nutricionista da SEDES<span class="small text-danger">*</span></label>
+                                        <select name="user_id" id="user_id" class="form-control" required>
+                                            <option value="" selected disabled>Escolha...</option>
+                                            @foreach($users  as $user)
+                                                <option value="{{$user->id}}" {{old('user_id') == $user->id ? 'selected' : ''}}>{{$user->nomecompleto}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('user_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="row">
+                                {{-- empresa_id --}}
+                                <div class="col-lg-3">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="empresa_id">Empresa<span class="small text-danger">*</span></label>
+                                        <select name="empresa_id" id="empresa_id" class="form-control" required>
+                                            <option value="" selected disabled>Escolha...</option>
+                                            @foreach($empresas  as $empresa)
+                                                <option value="{{$empresa->id}}" {{old('empresa_id') == $empresa->id ? 'selected' : ''}}>{{$empresa->nomefantasia}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('empresa_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+
+                                {{-- nutricionista_id --}}
+                                <div class="col-lg-3">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="nutricionista_id">Nutricionista da Empresa<span class="small text-danger">*</span></label>
+                                        {{-- @if($errors->all()) --}}
+                                        @if(count($errors) > 0)
+                                            <select name="nutricionista_id" id="nutricionista_id" class="form-control" required>
+                                                <option value="" selected disabled>Escolha Nutricionista...</option>
+                                                @foreach($nutricionistas  as $nutricionista)
+                                                    {{-- Só exibe as nutricionistas cujo valor da propriedade empresa_id do objeto nutricionista for igual
+                                                         ao valor da empresa_id selecionado anteriormente [old('empresa_id')] ao submeter o formulário.
+                                                         Depois, testa se a nutricionista_id postada [old('nutricionista_id') == $nutricionista->id] 
+                                                         é igual ao valor da nutricionista atual para selecioná-la com selected --}}
+                                                    @if($nutricionista->empresa_id == old('empresa_id'))
+                                                        <option value="{{$nutricionista->id}}" {{old('nutricionista_id') == $nutricionista->id ? 'selected' : ''}}>{{$nutricionista->nomecompleto}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <select name="nutricionista_id" id="nutricionista_id" class="form-control" required>
+                                                <option value="" selected disabled>Escolha Nutricionista...</option>
+                                            </select>
+                                        @endif
+                                        @error('nutricionista_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <hr>
+                            <br>
 
                             <h5>Endereço</h5>
 
@@ -46,7 +114,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="logradouro">Rua; Av; Travessa, etc...<span class="small text-danger">*</span></label>
-                                        <input type="text" id="logradouro" class="form-control" name="logradouro" value="{{old('logradouro')}}">
+                                        <input type="text" id="logradouro" class="form-control" name="logradouro" value="{{old('logradouro')}}" required>
                                         @error('logradouro')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -57,7 +125,7 @@
                                 <div class="col-lg-1">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="numero">Número<span class="small text-danger">*</span></label>
-                                        <input type="text" id="numero" class="form-control" name="numero" value="{{old('numero')}}">
+                                        <input type="text" id="numero" class="form-control" name="numero" value="{{old('numero')}}" required>
                                         @error('numero')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -82,7 +150,7 @@
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="municipio_id">Município<span class="small text-danger">*</span></label>
-                                        <select name="municipio_id" id="municipio_id" class="form-control">
+                                        <select name="municipio_id" id="municipio_id" class="form-control" required>
                                             <option value="" selected disabled>Escolha...</option>
                                             @foreach($municipios  as $municipio)
                                                 <option value="{{$municipio->id}}" {{old('municipio_id') == $municipio->id ? 'selected' : ''}}>{{$municipio->nome}}</option>
@@ -100,8 +168,9 @@
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="bairro_id">Bairro<span class="small text-danger">*</span></label>
                                         {{-- @if($errors->all()) --}}
+                                        {{-- Se count($errors) > 0, é porque o formulario foi enviado --}}
                                         @if(count($errors) > 0)
-                                            <select name="bairro_id" id="bairro_id" class="form-control">
+                                            <select name="bairro_id" id="bairro_id" class="form-control" required>
                                                 <option value="" selected disabled>Escolha o Bairro...</option>
                                                 @foreach($bairros  as $bairro)
                                                     @if($bairro->municipio_id == old('municipio_id'))
@@ -110,10 +179,10 @@
                                                 @endforeach
                                             </select>
                                         @else
-                                            <select name="bairro_id" id="bairro_id" class="form-control">
+                                            <select name="bairro_id" id="bairro_id" class="form-control" required>
                                                 <option value="" selected disabled>Escolha o Bairro...</option>
                                             </select>
-                                        @enderror
+                                        @endif
                                         @error('bairro_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -124,90 +193,27 @@
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="cep">CEP<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cep" class="form-control" name="cep" value="{{old('cep')}}">
+                                        <input type="text" id="cep" class="form-control" name="cep" value="{{old('cep')}}" required>
                                         @error('cep')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <hr>
-                            <br>
-
-                            <div class="row">
-                                {{-- empresa_id --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="empresa_id">Empresa<span class="small text-danger">*</span></label>
-                                        <select name="empresa_id" id="empresa_id" class="form-control">
-                                            <option value="" selected disabled>Escolha...</option>
-                                            @foreach($empresas  as $empresa)
-                                                <option value="{{$empresa->id}}" {{old('empresa_id') == $empresa->id ? 'selected' : ''}}>{{$empresa->nomefantasia}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('empresa_id')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-                                {{-- nutricionista_id --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="bairro_id">Nutricionista da Empresa<span class="small text-danger">*</span></label>
-                                        {{-- @if($errors->all()) --}}
-                                        @if(count($errors) > 0)
-                                            <select name="nutricionista_id" id="nutricionista_id" class="form-control">
-                                                <option value="" selected disabled>Escolha o nutricionista...</option>
-                                                @foreach($nutricionistas  as $nutricionista)
-                                                    @if($nutricionista->municipio_id == old('municipio_id'))
-                                                        <option value="{{$nutricionista->id}}" {{old('nutricionista_id') == $nutricionista->id ? 'selected' : ''}}>{{$nutricionista->nome}}</option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        @else
-                                            <select name="nutricionista_id" id="nutricionista_id" class="form-control">
-                                                <option value="" selected disabled>Escolha Nutricionista...</option>
-                                            </select>
-                                        @enderror
-                                        @error('nutricionista_id')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- user_id (Usuário Nutricionista) --}}
-                                <div class="col-lg-4">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="user_id">Nutricionista da SEDES<span class="small text-danger">*</span></label>
-                                        <select name="user_id" id="user_id" class="form-control">
-                                            <option value="" selected disabled>Escolha...</option>
-                                            @foreach($users  as $user)
-                                                <option value="{{$user->id}}" {{old('user_id') == $user->id ? 'selected' : ''}}>{{$user->nomecompleto}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('user_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
                                 {{-- ativo --}}
-                                <div class="col-lg-2">
+                                <div class="col-lg-2 offset-lg-2">
                                     <div class="form-group focused  float-right">
                                         <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
                                         <div style="margin-top: 5px">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1" {{old('ativo') == '1' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1" {{old('ativo') == '1' ? 'checked' : ''}} required>
                                                 <label class="form-check-label" for="ativosim">Sim</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0" {{old('ativo') == '0' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0" {{old('ativo') == '0' ? 'checked' : ''}} required>
                                                 <label class="form-check-label" for="ativonao">Não</label>
                                             </div>
+                                            <br>
                                             @error('ativo')
                                                 <small style="color: red">{{$message}}</small>
                                             @enderror
@@ -247,6 +253,28 @@
 
     <script>
         $(document).ready(function() {
+            //Recuperação dinâmica dos nutricionistas de uma empresa
+            $('#empresa_id').on('change', function() {
+                var empresa_id = this.value;
+                $("#nutricionista_id").html('');
+                $.ajax({
+                    url:"{{route('admin.getnutricionistasempresas')}}",
+                    type: "POST",
+                    data: {
+                        empresa_id: empresa_id,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType : 'json',
+                    success: function(result){
+                        $('#nutricionista_id').html('<option value="">Escolha Nutricionista...</option>');
+                        $.each(result.nutricionistas,function(key,value){
+                            $("#nutricionista_id").append('<option value="'+value.id+'">'+value.nomecompleto+'</option>');
+                        });
+                    }
+                });
+            });
+
+
             //Recuperação dinâmica dos bairros de um município
             $('#municipio_id').on('change', function() {
                 var municipio_id = this.value;
@@ -268,26 +296,7 @@
                 });
             });
 
-            //Recuperação dinâmica dos nutricionistas de uma empresa
-            $('#empresa_id').on('change', function() {
-                var empresa_id = this.value;
-                $("#nutricionista_id").html('');
-                $.ajax({
-                    url:"{{route('admin.getnutricionistasempresas')}}",
-                    type: "POST",
-                    data: {
-                        empresa_id: empresa_id,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType : 'json',
-                    success: function(result){
-                        $('#nutricionista_id').html('<option value="">Escolha Nutricionista...</option>');
-                        $.each(result.nutricionistas,function(key,value){
-                            $("#nutricionista_id").append('<option value="'+value.id+'">'+value.nomecompleto+'</option>');
-                        });
-                    }
-                });
-            });
+            
 
 
             /*

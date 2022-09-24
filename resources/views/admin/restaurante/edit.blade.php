@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h5 class="h5 mb-4 text-gray-800">Companhia / Editar</h5>
+    <h5 class="h5 mb-4 text-gray-800">Restaurante / Editar</h5>
 
     <div class="row">
 
@@ -16,237 +16,103 @@
 
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        {{$companhia->nomefantasia}}<br>
+                        {{$restaurante->identificacao}}<br>
                         <span class="small text-secondary">Campo marcado com * é de preenchimento obrigatório!</span>
                     </h6>
                 </div>
 
                 <div class="card-body">
 
-                    <form action="{{route('admin.companhia.update', $companhia->id)}}" method="POST" enctype="multipart/form-data" autocomplete="off" >
+                    <form action="{{route('admin.restaurante.update', $restaurante->id)}}" method="POST" enctype="multipart/form-data" autocomplete="off" >
                         @csrf
                         @method('PUT')
 
                         <div class="pl-lg-4">
                             <div class="row">
-                                {{-- razaosocial --}}
+                                {{-- identificacao --}}
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="razaosocial">Razão Social<span class="small text-danger">*</span></label>
-                                        <input type="text" id="razaosocial" class="form-control" name="razaosocial" value="{{old('razaosocial', $companhia->razaosocial)}}" required>
-                                        @error('razaosocial')
+                                        <label class="form-control-label" for="identificacao">Identificação da Unidade<span class="small text-danger">*</span></label>
+                                        <input type="text" id="identificacao" class="form-control" name="identificacao" value="{{old('identificacao', $restaurante->identificacao)}}" required>
+                                        @error('identificacao')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
-                                {{-- nomefantasia --}}
+                                {{-- user_id (Usuário Nutricionista) --}}
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="nomefantasia">Nome de Fantasia<span class="small text-danger">*</span></label>
-                                        <input type="text" id="nomefantasia" class="form-control" name="nomefantasia" value="{{old('nomefantasia', $companhia->nomefantasia)}}" required>
-                                        @error('nomefantasia')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                {{-- cnpj --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cnpj">CNPJ<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cnpj" class="form-control" name="cnpj" value="{{old('cnpj', $companhia->cnpj)}}" required>
-                                        @error('cnpj')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- codigocnae --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="codigocnae">Cód. CNAE<span class="small text-danger">*</span></label>
-                                        <input type="text" id="codigocnae" class="form-control" name="codigocnae" value="{{old('codigocnae', $companhia->codigocnae)}}" required>
-                                        @error('codigocnae')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- documentocnpj--}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="file">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="file" id="file" style="display:block" name="file" placeholder="Aqui">
-                                        @error('file')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{--
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="documentocnpjAntigo">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="text" id="documentocnpjAntigo" class="form-control" name="documentocnpjAntigo" value="{{old('documentocnpjAntigo', $companhia->documentocnpj)}}" readonly>
-                                        @error('documentocnpjAntigo')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                --}}
-                            </div>
-
-                            <div class="row">
-                                {{-- titularum --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="titularum">1º Representante<span class="small text-danger">*</span></label>
-                                        <input type="text" id="titularum" class="form-control" name="titularum" value="{{old('titularum', $companhia->titularum)}}" required>
-                                        @error('titularum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- cargotitum --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cargotitum">Cargo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cargotitum" class="form-control" name="cargotitum" value="{{old('cargotitum', $companhia->cargotitum)}}" required>
-                                        @error('cargotitum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                {{-- titulardois --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="titulardois">2º Representante<span class="small text-danger">*</span></label>
-                                        <input type="text" id="titulardois" class="form-control" name="titulardois" value="{{old('titulardois', $companhia->titulardois)}}">
-                                        @error('titulardois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- cargotitdois --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cargotitdois">Cargo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cargotitdois" class="form-control" name="cargotitdois" value="{{old('cargotitdois', $companhia->cargotitdois)}}">
-                                        @error('cargotitdois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                {{-- banco_id
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="banco_id">Banco<span class="small text-danger">*</span></label>
-                                        <select name="banco_id" id="banco_id" class="form-control" required>
+                                        <label class="form-control-label" for="user_id">Nutricionista da SEDES<span class="small text-danger">*</span></label>
+                                        <select name="user_id" id="user_id" class="form-control" required>
                                             <option value="" selected disabled>Escolha...</option>
-                                            @foreach($bancos  as $banco)
-                                                <option value="{{$banco->id}}" {{old('banco_id', $companhia->banco_id) == $banco->id ? 'selected' : ''}}>{{$banco->nome}}</option>
+                                            @foreach($users  as $user)
+                                                <option value="{{$user->id}}" {{old('user_id', $restaurante->user->id) == $user->id ? 'selected' : ''}}>{{$user->nomecompleto}}</option>
                                             @endforeach
                                         </select>
-                                        @error('banco_id')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>--}}
-
-                                {{-- agencia --}}
-                                <div class="col-lg-1">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="agencia">Agência<span class="small text-danger">*</span></label>
-                                        <input type="text" id="agencia" class="form-control" name="agencia" value="{{old('agencia', $companhia->agencia)}}" required>
-                                        @error('agencia')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- conta --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="conta">Conta Corrente<span class="small text-danger">*</span></label>
-                                        <input type="text" id="conta" class="form-control" name="conta" value="{{old('conta', $companhia->conta)}}" required>
-                                        @error('conta')
+                                        @error('user_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
+
 
                             <div class="row">
-                                {{-- celular --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="celular">Celular<span class="small text-danger">*</span></label>
-                                        <input type="text" id="celular" class="form-control mask-cell" name="celular" placeholder="(99) 9999-9999" value="{{old('celular', $companhia->celular)}}" required>
-                                        @error('celular')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- foneum --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="foneum">1º Telefone<span class="small text-danger">*</span></label>
-                                        <input type="text" id="foneum" class="form-control mask-cell" name="foneum" placeholder="(99) 9999-9999" value="{{old('foneum', $companhia->foneum)}}">
-                                        @error('foneum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- fonedois --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="fonedois">2º Telefone</label>
-                                        <input type="text" id="fonedois" class="form-control mask-cell" name="fonedois" placeholder="(99) 9999-9999" value="{{old('fonedois', $companhia->fonedois)}}">
-                                        @error('fonedois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- emailum --}}
+                                {{-- empresa_id --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="emailum">1º E-mail<span class="small text-danger">*</span></label>
-                                        <input type="emailum" id="emailum" class="form-control" name="emailum" value="{{old('emailum', $companhia->emailum)}}" required>
-                                        @error('emailum')
+                                        <label class="form-control-label" for="empresa_id">Empresa<span class="small text-danger">*</span></label>
+                                        <select name="empresa_id" id="empresa_id" class="form-control" required>
+                                            <option value="" selected disabled>Escolha...</option>
+                                            @foreach($empresas  as $empresa)
+                                                <option value="{{$empresa->id}}" {{old('empresa_id', $restaurante->empresa->id) == $empresa->id ? 'selected' : ''}}>{{$empresa->nomefantasia}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('empresa_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
-                                {{-- emaildois --}}
+
+
+                                {{-- nutricionista_id --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="emaildois">2º E-mail<span class="small text-danger">*</span></label>
-                                        <input type="emaildois" id="emaildois" class="form-control" name="emaildois" value="{{old('emaildois', $companhia->emaildois)}}">
-                                        @error('emaildois')
+                                        <label class="form-control-label" for="nutricionista_id">Nutricionista da Empresa<span class="small text-danger">*</span></label>
+
+                                        @if(count($errors) > 0)
+                                            <select name="nutricionista_id" id="nutricionista_id" class="form-control" required>
+                                                <option value="" selected disabled>Escolha nutricionista...</option>
+                                                @foreach($nutricionistas  as $nutricionista)
+                                                    @if($nutricionista->municipio_id == old('municipio_id'))
+                                                        <option value="{{$nutricionista->id}}" {{old('nutricionista_id') == $nutricionista->id ? 'selected' : ''}}>{{$nutricionista->nomecompleto}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <select name="nutricionista_id" id="nutricionista_id" class="form-control" required>
+                                                <option value="" selected disabled>Escolha nutricionista...</option>
+                                                @foreach($nutricionistas  as $nutricionista)
+                                                    {{--Só mostra os nutricionistas cujo id da empresa do nutricionista é igual ao id da empresa do restaurante--}}
+                                                    @if($nutricionista->empresa_id == $restaurante->empresa_id)
+                                                        <option value="{{$nutricionista->id}}" {{old('nutricionista_id', $restaurante->nutricionista->id) == $nutricionista->id ? 'selected' : ''}}>{{$nutricionista->nomecompleto}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @endif
+
+                                        @error('bairro_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
 
+                            <br>
                             <hr>
+                            <br>
 
                             <h5>Endereço</h5>
 
@@ -255,7 +121,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="logradouro">Rua; Av; Travessa, etc...<span class="small text-danger">*</span></label>
-                                        <input type="text" id="logradouro" class="form-control" name="logradouro" value="{{old('logradouro', $companhia->logradouro)}}" required>
+                                        <input type="text" id="logradouro" class="form-control" name="logradouro" value="{{old('logradouro', $restaurante->logradouro)}}" required>
                                         @error('logradouro')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -266,7 +132,7 @@
                                 <div class="col-lg-1">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="numero">Número<span class="small text-danger">*</span></label>
-                                        <input type="text" id="numero" class="form-control" name="numero" value="{{old('numero', $companhia->numero)}}" required>
+                                        <input type="text" id="numero" class="form-control" name="numero" value="{{old('numero', $restaurante->numero)}}" required>
                                         @error('numero')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -277,7 +143,7 @@
                                 <div class="col-lg-5">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="complemento">Complemento</label>
-                                        <input type="text" id="complemento" class="form-control" name="complemento" value="{{old('complemento', $companhia->complemento)}}">
+                                        <input type="text" id="complemento" class="form-control" name="complemento" value="{{old('complemento', $restaurante->complemento)}}">
                                         @error('complemento')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -294,7 +160,7 @@
                                         <select name="municipio_id" id="municipio_id" class="form-control" required>
                                             <option value="" selected disabled>Escolha...</option>
                                             @foreach($municipios  as $municipio)
-                                                <option value="{{$municipio->id}}" {{old('municipio_id', $companhia->municipio->id) == $municipio->id ? 'selected' : ''}}>{{$municipio->nome}}</option>
+                                                <option value="{{$municipio->id}}" {{old('municipio_id', $restaurante->municipio->id) == $municipio->id ? 'selected' : ''}}>{{$municipio->nome}}</option>
                                             @endforeach
                                         </select>
                                         @error('municipio_id')
@@ -321,12 +187,12 @@
                                             <select name="bairro_id" id="bairro_id" class="form-control" required>
                                                 <option value="" selected disabled>Escolha o Bairro...</option>
                                                 @foreach($bairros  as $bairro)
-                                                    @if($bairro->municipio_id == $companhia->municipio_id)
-                                                        <option value="{{$bairro->id}}" {{old('bairro_id', $companhia->bairro->id) == $bairro->id ? 'selected' : ''}}>{{$bairro->nome}}</option>
+                                                    @if($bairro->municipio_id == $restaurante->municipio_id)
+                                                        <option value="{{$bairro->id}}" {{old('bairro_id', $restaurante->bairro->id) == $bairro->id ? 'selected' : ''}}>{{$bairro->nome}}</option>
                                                     @endif
                                                 @endforeach
                                             </select>
-                                        @enderror
+                                        @endif
 
                                         @error('bairro_id')
                                             <small style="color: red">{{$message}}</small>
@@ -338,7 +204,7 @@
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="cep">CEP<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cep" class="form-control" name="cep" value="{{old('cep', $companhia->cep)}}" required>
+                                        <input type="text" id="cep" class="form-control" name="cep" value="{{old('cep', $restaurante->cep)}}" required>
                                         @error('cep')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -351,11 +217,11 @@
                                         <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
                                         <div style="margin-top: 5px">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1"  {{old('ativo', $companhia->ativo) == '1' ? 'checked' : ''}}  required>
+                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1"  {{old('ativo', $restaurante->ativo) == '1' ? 'checked' : ''}}  required>
                                                 <label class="form-check-label" for="ativosim">Sim</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0"  {{old('ativo', $companhia->ativo) == '0' ? 'checked' : ''}}  required>
+                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0"  {{old('ativo', $restaurante->ativo) == '0' ? 'checked' : ''}}  required>
                                                 <label class="form-check-label" for="ativonao">Não</label>
                                             </div>
                                             @error('ativo')
@@ -374,7 +240,7 @@
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col text-center">
-                                    <a class="btn btn-primary" href="{{route('admin.companhia.index')}}" role="button">Cancelar</a>
+                                    <a class="btn btn-primary" href="{{route('admin.restaurante.index')}}" role="button">Cancelar</a>
                                     <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button>
                                 </div>
                             </div>
@@ -398,11 +264,34 @@
 
     <script>
         $(document).ready(function() {
+            //Recuperação dinâmica dos nutricionistas de uma empresa
+            $('#empresa_id').on('change', function() {
+                var empresa_id = this.value;
+                $("#nutricionista_id").html('');
+                $.ajax({
+                    url:"{{route('admin.getnutricionistasempresas')}}",
+                    type: "POST",
+                    data: {
+                        empresa_id: empresa_id,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType : 'json',
+                    success: function(result){
+                        $('#nutricionista_id').html('<option value="">Escolha Nutricionista...</option>');
+                        $.each(result.nutricionistas,function(key,value){
+                            $("#nutricionista_id").append('<option value="'+value.id+'">'+value.nomecompleto+'</option>');
+                        });
+                    }
+                });
+            });
+
+
+            //Recuperação dinâmica dos bairros de um município
             $('#municipio_id').on('change', function() {
                 var municipio_id = this.value;
                 $("#bairro_id").html('');
                 $.ajax({
-                    url:"{{route('admin.getbairros')}}",
+                    url:"{{route('admin.getbairrosrestaurante')}}",
                     type: "POST",
                     data: {
                         municipio_id: municipio_id,
@@ -413,11 +302,11 @@
                         $('#bairro_id').html('<option value="">Escolha o Bairro...</option>');
                         $.each(result.bairros,function(key,value){
                             $("#bairro_id").append('<option value="'+value.id+'">'+value.nome+'</option>');
-                            //$("#bairro_id").append('<option value="'+value.id+'" {{old("bairro_id") == "'+value.id+'" ? "selected" : ""}}     >'+value.nome'+</option>');
                         });
                     }
                 });
             });
+
         });
     </script>
 @endsection

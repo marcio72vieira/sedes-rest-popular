@@ -32,10 +32,11 @@
           <thead>
             <tr>
               <th>Id</th>
+              {{--<th>Município - Bairro</th>--}}
+              <th>Município</th>
               <th>Identificacao</th>
-              <th>Município - Bairro</th>
-              <th>Empresa</th>
-              <th>Responsáveis</th>
+              {{--<th>Empresa</th>--}}
+              <th>Responsáveis / Contato / E-mail</th>
               <th>Ativo</th>
               <th style="width: 90px">Ações</th>
             </tr>
@@ -45,17 +46,18 @@
           @foreach($restaurantes as $restaurante)
              <tr>
                 <td>{{$restaurante->id}}</td>
+                {{-- <td>{{$restaurante->municipio->nome}} - {{$restaurante->bairro->nome}}</td>--}}
+                <td>{{$restaurante->municipio->nome}}</td>
                 <td>{{$restaurante->identificacao}}</td>
-                <td>{{$restaurante->municipio->nome}} - {{$restaurante->bairro->nome}}</td>
-                <td>{{$restaurante->empresa->nomefantasia}}</td>
-                <td><span style="font-size: 10px; color: blue">EMPRESA:</span> {{$restaurante->nutricionista->nomecompleto}}; {{$restaurante->nutricionista->telefone}}; {{$restaurante->nutricionista->email}}
-                    <br>
-                    <span style="font-size: 10px; color: blue">SEDES:</span>  {{$restaurante->user->nomecompleto}}; {{$restaurante->user->telefone}}; {{$restaurante->user->email}}
-                </td>
+                {{--<td>{{$restaurante->empresa->nomefantasia}}</td>--}}
                 {{--<td>{{$restaurante->ativo == 1 ? 'SIM' : 'NÃO'}}</td>--}}
+                <td>
+                  <span style="font-size: 10px; color: blue">SEDES:</span>  {{$restaurante->user->nomecompleto}} / {{$restaurante->user->telefone}} / {{$restaurante->user->email}}<br>  
+                  <span style="font-size: 10px; color: blue">EMPRESA:</span> {{$restaurante->nutricionista->nomecompleto}} / {{$restaurante->nutricionista->telefone}} / {{$restaurante->nutricionista->email}}
+                </td>
                 <td>@if($restaurante->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
                 <td>
-                    <a href="" title="exibir"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="" title="compras"><i class="fas fa-shopping-cart"></i></a>
                     <a href="{{route('admin.restaurante.show', $restaurante->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.restaurante.edit', $restaurante->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                     {{--<a href="{{route('admin.restaurante.ficha', $restaurante->id)}}" title="ficha" target="_blank"><i class="far fa-file-pdf text-danger mr-2"></i></a>--}}
@@ -72,7 +74,7 @@
                             </button>
                             </div>
                             <div class="modal-body">
-                                <h5>{{$restaurante->nomefantasia}}</h5>
+                                <h5>{{$restaurante->identificacao}}</h5>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>

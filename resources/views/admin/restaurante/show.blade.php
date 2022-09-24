@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h5 class="h5 mb-4 text-gray-800">Companhia / Exibir</h5>
+    <h5 class="h5 mb-4 text-gray-800">Restaurante / Exibir</h5>
 
     <div class="row">
 
@@ -16,7 +16,7 @@
 
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        {{$companhia->nomefantasia}}<br>
+                        {{$restaurante->identificacao}}<br>
                         <span class="small text-secondary">Campo marcado com * é de preenchimento obrigatório!</span>
                     </h6>
                 </div>
@@ -27,220 +27,63 @@
 
                         <div class="pl-lg-4">
                             <div class="row">
-                                {{-- razaosocial --}}
+                                {{-- identificacao --}}
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="razaosocial">Razão Social<span class="small text-danger">*</span></label>
-                                        <input type="text" id="razaosocial" class="form-control" name="razaosocial" value="{{$companhia->razaosocial}}" readonly>
-                                        @error('razaosocial')
+                                        <label class="form-control-label" for="identificacao">Identificação da Unidade<span class="small text-danger">*</span></label>
+                                        <input type="text" id="identificacao" class="form-control" name="identificacao" value="{{$restaurante->identificacao}}" readonly>
+                                        @error('identificacao')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
-                                {{-- nomefantasia --}}
+                                {{-- user_id (Usuário Nutricionista) --}}
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="nomefantasia">Nome de Fantasia<span class="small text-danger">*</span></label>
-                                        <input type="text" id="nomefantasia" class="form-control" name="nomefantasia" value="{{$companhia->nomefantasia}}" readonly>
-                                        @error('nomefantasia')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                {{-- cnpj --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cnpj">CNPJ<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cnpj" class="form-control" name="cnpj" value="{{$companhia->cnpj}}" readonly>
-                                        @error('cnpj')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- codigocnae --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="codigocnae">Cód. CNAE<span class="small text-danger">*</span></label>
-                                        <input type="text" id="codigocnae" class="form-control" name="codigocnae" value="{{$companhia->codigocnae}}" readonly>
-                                        @error('codigocnae')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- documentocnpj
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="documentocnpj">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="file" id="documentocnpj" style="display:block" name="documentocnpj" readonly placeholder="Aqui">
-                                        @error('documentocnpj')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                --}}
-
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="documentocnpj">Documento CNPJ (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="text" id="documentocnpj" class="form-control" name="documentocnpj" value="{{$companhia->documentocnpj}}"  readonly>
-                                        @error('documentocnpj')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                {{-- titularum --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="titularum">1º Representante<span class="small text-danger">*</span></label>
-                                        <input type="text" id="titularum" class="form-control" name="titularum" value="{{$companhia->titularum}}" readonly>
-                                        @error('titularum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- cargotitum --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cargotitum">Cargo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cargotitum" class="form-control" name="cargotitum" value="{{$companhia->cargotitum}}" readonly>
-                                        @error('cargotitum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                {{-- titulardois --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="titulardois">2º Representante<span class="small text-danger">*</span></label>
-                                        <input type="text" id="titulardois" class="form-control" name="titulardois" value="{{$companhia->titulardois}}" readonly>
-                                        @error('titulardois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- cargotitdois --}}
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="cargotitdois">Cargo<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cargotitdois" class="form-control" name="cargotitdois" value="{{$companhia->cargotitdois}}" readonly>
-                                        @error('cargotitdois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                {{-- banco_id
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="banco_id">Banco<span class="small text-danger">*</span></label>
-                                        <select name="banco_id" id="banco_id" class="form-control" disabled>
-                                            <option value="">{{$companhia->banco->nome}}</option>
+                                        <label class="form-control-label" for="user_id">Nutricionista da SEDES<span class="small text-danger">*</span></label>
+                                        <select name="user_id" id="user_id" class="form-control" disabled>
+                                            <option value="">{{$restaurante->user->nomecompleto}}</option>
                                         </select>
-                                        @error('banco_id')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div> --}}
-
-                                {{-- agencia --}}
-                                <div class="col-lg-1">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="agencia">Agência<span class="small text-danger">*</span></label>
-                                        <input type="text" id="agencia" class="form-control" name="agencia" value="{{$companhia->agencia}}" readonly>
-                                        @error('agencia')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- conta --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="conta">Conta Corrente<span class="small text-danger">*</span></label>
-                                        <input type="text" id="conta" class="form-control" name="conta" value="{{$companhia->conta}}" readonly>
-                                        @error('conta')
+                                        @error('user_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
+
 
                             <div class="row">
-                                {{-- celular --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="celular">Celular<span class="small text-danger">*</span></label>
-                                        <input type="text" id="celular" class="form-control mask-cell" name="celular" value="{{$companhia->celular}}" readonly>
-                                        @error('celular')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- foneum --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="foneum">1º Telefone<span class="small text-danger">*</span></label>
-                                        <input type="text" id="foneum" class="form-control mask-cell" name="foneum" value="{{$companhia->foneum}}" readonly>
-                                        @error('foneum')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- fonedois --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="fonedois">2º Telefone</label>
-                                        <input type="text" id="fonedois" class="form-control mask-cell" name="fonedois" value="{{$companhia->fonedois}}" readonly>
-                                        @error('fonedois')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- emailum --}}
+                                {{-- empresa_id --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="emailum">1º E-mail<span class="small text-danger">*</span></label>
-                                        <input type="emailum" id="emailum" class="form-control" name="emailum" value="{{$companhia->emailum}}" readonly>
-                                        @error('emailum')
+                                        <label class="form-control-label" for="empresa_id">Empresa<span class="small text-danger">*</span></label>
+                                        <select name="empresa_id" id="empresa_id" class="form-control" disabled>
+                                            <option value="">{{$restaurante->empresa->nomefantasia}}</option>
+                                        </select>
+                                        @error('empresa_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
-                                {{-- emaildois --}}
+                                {{-- nutricionista_id --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="emaildois">2º E-mail<span class="small text-danger">*</span></label>
-                                        <input type="emaildois" id="emaildois" class="form-control" name="emaildois" value="{{$companhia->emaildois}}" readonly>
-                                        @error('emaildois')
+                                        <label class="form-control-label" for="nutricionista_id">Nutricionista da Empresa<span class="small text-danger">*</span></label>
+                                        <select name="nutricionista_id" id="nutricionista_id" class="form-control" disabled>
+                                            <option value="">{{$restaurante->nutricionista->nomecompleto}}</option>
+                                        </select>
+                                        @error('nutricionista_id')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
 
+                            <br>
                             <hr>
+                            <br>
 
                             <h5>Endereço</h5>
 
@@ -249,7 +92,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="logradouro">Rua; Av; Travessa, etc...<span class="small text-danger">*</span></label>
-                                        <input type="text" id="logradouro" class="form-control" name="logradouro" value="{{$companhia->logradouro}}" readonly>
+                                        <input type="text" id="logradouro" class="form-control" name="logradouro" value="{{$restaurante->logradouro}}" readonly>
                                         @error('logradouro')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -260,7 +103,7 @@
                                 <div class="col-lg-1">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="numero">Número<span class="small text-danger">*</span></label>
-                                        <input type="text" id="numero" class="form-control" name="numero" value="{{$companhia->numero}}" readonly>
+                                        <input type="text" id="numero" class="form-control" name="numero" value="{{$restaurante->numero}}" readonly>
                                         @error('numero')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -271,7 +114,7 @@
                                 <div class="col-lg-5">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="complemento">Complemento</label>
-                                        <input type="text" id="complemento" class="form-control" name="complemento" value="{{$companhia->complemento}}" readonly>
+                                        <input type="text" id="complemento" class="form-control" name="complemento" value="{{$restaurante->complemento}}" readonly>
                                         @error('complemento')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -286,7 +129,7 @@
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="municipio_id">Município<span class="small text-danger">*</span></label>
                                         <select name="municipio_id" id="municipio_id" class="form-control" disabled>
-                                            <option value="">{{$companhia->municipio->nome}}</option>
+                                            <option value="">{{$restaurante->municipio->nome}}</option>
                                         </select>
                                         @error('municipio_id')
                                             <small style="color: red">{{$message}}</small>
@@ -299,7 +142,7 @@
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="bairro_id">Bairro<span class="small text-danger">*</span></label>
                                         <select name="bairro_id" id="bairro_id" class="form-control" disabled>
-                                            <option value="">{{$companhia->bairro->nome}}</option>
+                                            <option value="">{{$restaurante->bairro->nome}}</option>
                                         </select>
                                         @error('bairro_id')
                                             <small style="color: red">{{$message}}</small>
@@ -311,7 +154,7 @@
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="cep">CEP<span class="small text-danger">*</span></label>
-                                        <input type="text" id="cep" class="form-control" name="cep" value="{{$companhia->cep}}" readonly>
+                                        <input type="text" id="cep" class="form-control" name="cep" value="{{$restaurante->cep}}" readonly>
                                         @error('cep')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
@@ -324,13 +167,14 @@
                                         <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
                                         <div style="margin-top: 5px">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1"  {{$companhia->ativo == '1' ? 'checked' : ''}} disabled>
+                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1"  {{$restaurante->ativo == '1' ? 'checked' : ''}} disabled>
                                                 <label class="form-check-label" for="ativosim">Sim</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0"  {{$companhia->ativo == '0' ? 'checked' : ''}} disabled>
+                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0"  {{$restaurante->ativo == '0' ? 'checked' : ''}} disabled>
                                                 <label class="form-check-label" for="ativonao">Não</label>
                                             </div>
+                                            <br>
                                             @error('ativo')
                                                 <small style="color: red">{{$message}}</small>
                                             @enderror
@@ -338,7 +182,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
                         <br>
@@ -347,7 +190,7 @@
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col text-center">
-                                    <a class="btn btn-primary" href="{{route('admin.companhia.index')}}" role="button">
+                                    <a class="btn btn-primary" href="{{route('admin.restaurante.index')}}" role="button">
                                         <i class="fas fa-undo-alt"></i>
                                         Retornar</a>
                                 </div>
