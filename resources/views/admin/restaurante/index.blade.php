@@ -38,7 +38,7 @@
               {{--<th>Empresa</th>--}}
               <th>Responsáveis / Contato / E-mail</th>
               <th>Ativo</th>
-              <th style="width: 90px">Ações</th>
+              <th style="width: 100px">Ações</th>
             </tr>
           </thead>
 
@@ -57,7 +57,7 @@
                 </td>
                 <td>@if($restaurante->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
                 <td>
-                    <a href="" title="compras"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="{{route('admin.restaurante.compra.index', $restaurante->id)}}" title="compras"><i class="fas fa-shopping-cart text-success mr-2"></i></a>
                     <a href="{{route('admin.restaurante.show', $restaurante->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.restaurante.edit', $restaurante->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                     {{--<a href="{{route('admin.restaurante.ficha', $restaurante->id)}}" title="ficha" target="_blank"><i class="far fa-file-pdf text-danger mr-2"></i></a>--}}

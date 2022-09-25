@@ -12,11 +12,23 @@ use App\Http\Requests\ProdutoUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use File;
+
 class ProdutoController extends Controller
 {
     
     public function index()
     {
+        /*
+        Exemplo rústico de registro de log.
+        $data = json_encode([time(),'produto','lista', session('idUsuarioLogado'), session('nameUsuarioLogado')]);
+        $file = time() .rand(). '_file.json';
+        $destinationPath=public_path()."/upload/";
+        if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+        File::put($destinationPath.$file,$data);
+        //return response()->download($destinationPath.$file);
+        */
+        
         $produtos = Produto::all();
         return view('admin.produto.index', compact('produtos'));
     }

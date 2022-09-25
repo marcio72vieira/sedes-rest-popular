@@ -42,4 +42,8 @@ class Restaurante extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function compras(){
+        return $this->hasMany(Compra::class);
+    }
 }
