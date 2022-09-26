@@ -11,10 +11,10 @@ class Compra extends Model
 
     protected $fillable = [
         'data_ini',
-        'data_fim',
+        'data_fin',
         'semana',
-        'valorsemaf',
-        'valorcomaf',
+        'valor',
+        'valoraf',
         'valortotal',
         'restaurante_id'
     ];

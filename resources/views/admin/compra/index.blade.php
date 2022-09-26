@@ -14,7 +14,7 @@
 
         <a class="btn btn-primary float-right" href="{{route('admin.restaurante.index')}}" role="button" style="margin-bottom: 10px">
             <i class="fas fa-undo-alt"></i>
-            Restaurantes
+            Listar Restaurantes
           </a>
 
 
@@ -37,11 +37,13 @@
                     <thead>
                         <tr>
                             <th>Id</th>
+                            <th>Mês</th>
                             <th>Semana</th>
                             <th>Data</th>
                             <th>Valor</th>
                             <th>Valor AF</th>
                             <th>Valor Total</th>
+                            <th>% AF</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -50,12 +52,15 @@
                         @foreach($compras as $compra)
                             <tr>
                                 <td>{{$compra->id}}</td>
-                                <td>{{$compra->semana}}</td>
-                                <td>{{$compra->data_ini}} a {{$compra->data_ini}}</td>
-                                <td>{{$compra->valorsemaf}}</td>
-                                <td>{{$compra->valorcomaf}}</td>
-                                <td>{{$compra->valortotal}}</td>
+                                <td>{{mrc_extract_month($compra->data_ini)}}</td>
+                                <td>@if($compra->semana == 1) primeira @elseif ($compra->semana == 2) segunda @elseif ($compra->semana == 3) terceira @elseif ($compra->semana == 4) quarta @elseif ($compra->semana == 5) quinta @endif</td>
+                                <td>{{mrc_turn_data($compra->data_ini)}} a {{mrc_turn_data($compra->data_fin)}}</td>
+                                <td>{{mrc_turn_value($compra->valor)}}</td>
+                                <td>{{mrc_turn_value($compra->valoraf)}}</td>
+                                <td>{{mrc_turn_value($compra->valortotal)}}</td>
+                                <td>{{mrc_calc_percentaf($compra->valortotal, $compra->valoraf )}}</td>
                                 <td>
+                                    <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="comprovantes"><i class="fas fa-file-invoice text-success mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.edit', [$restaurante->id, $compra->id])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                                     <a href="" data-toggle="modal" data-target="#formDelete{{$compra->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>

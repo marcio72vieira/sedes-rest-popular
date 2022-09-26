@@ -16,10 +16,10 @@ class CreateComprasTable extends Migration
         Schema::create('compras', function (Blueprint $table) {
             $table->id();
             $table->date('data_ini');
-            $table->date('data_fim');
-            $table->string('semana');
-            $table->decimal('valorsemaf',12, 2);
-            $table->decimal('valorcomaf',12, 2);
+            $table->date('data_fin');
+            $table->smallInteger('semana');
+            $table->decimal('valor',12, 2);
+            $table->decimal('valoraf',12, 2);
             $table->decimal('valortotal',12, 2);
 
             $table->foreignId('restaurante_id')->constrained()->onDelete('cascade');

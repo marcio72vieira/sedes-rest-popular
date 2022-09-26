@@ -23,14 +23,14 @@ class CompraCreateRequest extends FormRequest
      */
     public function rules()
     {
-        return [ 
+        return [
             'data_ini'          =>'bail|required',
-            'data_fim'          =>'bail|required',
+            'data_fin'          =>'bail|required',
             'semana'            =>'bail|required',
-            'valorsemaf'        =>'bail|required',
-            'valorcomaf'        =>'bail|required',
-            'valortotal'        =>'bail|required',
-            'restaurante_id'    =>'bail|required',
+            'valor'             =>'bail|required',
+            'valoraf'           =>'bail|required',
+            //'valortotal'        =>'bail|required',    // é calculado automaticamente
+            //'restaurante_id'    =>'bail|required',
         ];
     }
 }

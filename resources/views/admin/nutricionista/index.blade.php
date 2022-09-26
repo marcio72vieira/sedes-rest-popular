@@ -14,7 +14,7 @@
 
         <a class="btn btn-primary float-right" href="{{route('admin.empresa.index')}}" role="button" style="margin-bottom: 10px">
             <i class="fas fa-undo-alt"></i>
-            Empresas
+            Listar Empresas
           </a>
 
         @if(session('sucesso'))
