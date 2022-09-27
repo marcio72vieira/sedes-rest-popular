@@ -51,6 +51,37 @@ if (!function_exists('mrc_calc_percentage')) {
 }
 
 
+if (!function_exists('mrc_extract_week')) {
+
+    function mrc_extract_week($valsemana)
+    {
+        $numweek = $valsemana;
+
+        switch($numweek) {
+            case 1:
+                $semana = "primeira";
+                break;
+                case 2:
+                    $semana = "segunda";
+                    break;
+                case 3:
+                    $semana = "terceira";
+                    break;
+                case 4:
+                    $semana = "quarta";
+                    break;
+                case 5:
+                    $semana = "quinta";
+                    break;
+                default:
+                $semana = "Semana inválida!";
+        }
+
+        return $semana;
+    }
+}
+
+
 if (!function_exists('mrc_extract_month')) {
 
     function mrc_extract_month($dataBd)

@@ -38,8 +38,8 @@
                         <tr>
                             <th>Id</th>
                             <th>Mês</th>
-                            <th>Semana</th>
                             <th>Data</th>
+                            <th>Semana</th>
                             <th>Valor</th>
                             <th>Valor AF</th>
                             <th>Valor Total</th>
@@ -53,14 +53,15 @@
                             <tr>
                                 <td>{{$compra->id}}</td>
                                 <td>{{mrc_extract_month($compra->data_ini)}}</td>
-                                <td>@if($compra->semana == 1) primeira @elseif ($compra->semana == 2) segunda @elseif ($compra->semana == 3) terceira @elseif ($compra->semana == 4) quarta @elseif ($compra->semana == 5) quinta @endif</td>
                                 <td>{{mrc_turn_data($compra->data_ini)}} a {{mrc_turn_data($compra->data_fin)}}</td>
+                                {{--<td>@if($compra->semana == 1) primeira @elseif ($compra->semana == 2) segunda @elseif ($compra->semana == 3) terceira @elseif ($compra->semana == 4) quarta @elseif ($compra->semana == 5) quinta @endif</td>--}}
+                                <td>{{mrc_extract_week($compra->semana)}}</td>
                                 <td>{{mrc_turn_value($compra->valor)}}</td>
                                 <td>{{mrc_turn_value($compra->valoraf)}}</td>
                                 <td>{{mrc_turn_value($compra->valortotal)}}</td>
                                 <td>{{mrc_calc_percentaf($compra->valortotal, $compra->valoraf )}}</td>
                                 <td>
-                                    <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="comprovantes"><i class="fas fa-file-invoice text-success mr-2"></i></a>
+                                    <a href="#" title="comprovantes"><i class="fas fa-file-invoice text-success mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.edit', [$restaurante->id, $compra->id])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                                     <a href="" data-toggle="modal" data-target="#formDelete{{$compra->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>

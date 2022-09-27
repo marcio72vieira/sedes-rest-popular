@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h5 class="h5 mb-4 text-gray-800"> Suporte / Bairros / Exibir</h5>
+    <h5 class="h5 mb-4 text-gray-800"> Restaurante / Compras / Exibir</h5>
 
     <div class="row">
 
@@ -16,7 +16,12 @@
 
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        {{$bairro->nome}}<br>
+                        Compras <br><br>
+                        Município: {{$restaurante->municipio->nome }}<br>
+                        Restaurante: {{$restaurante->identificacao }}<br>
+                        Nutricionista da Empresa: {{$restaurante->nutricionista->nomecompleto}}<br>
+                        Nutricionista da Sedes: {{$restaurante->user->nomecompleto}}<br>
+                        <br>
                         <span class="small text-secondary">Campo marcado com * é de preenchimento obrigatório!</span>
                     </h6>
                 </div>
@@ -27,59 +32,84 @@
 
                         <div class="pl-lg-4">
                             <div class="row">
-                                {{-- nome --}}
-                                <div class="col-lg-3">
+                                {{-- semana --}}
+                                <div class="col-lg-2">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="nome">Nome<span class="small text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="nome" name="nome" value="{{$bairro->nome}}" readonly>
-                                        @error('nome')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                {{-- municipio_id --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="municipio_id">Município<span class="small text-danger">*</span></label>
-                                        <select name="municipio_id" id="municipio_id" class="form-control" disabled>
-                                            <option value="" selected disabled>Escolha...</option>
-                                            @foreach($municipios  as $municipio)
-                                                <option value="{{$municipio->id}}" {{old('municipio_id', $bairro->municipio_id) == $municipio->id ? 'selected' : ''}}>{{$municipio->nome}}</option>
-                                            @endforeach
+                                        <label class="form-control-label" for="semana">Nº Semana<span class="small text-danger">*</span></label>
+                                        <select name="semana" id="semana" class="form-control" disabled>
+                                            <option value="">{{mrc_extract_week($compra->semana)}}</option>
                                         </select>
-                                        @error('municipio_id')
+                                        @error('semana')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
-                                {{-- ativo --}}
-                                <div class="col-lg-3">
+                                {{-- data_ini --}}
+                                <div class="col-lg-2">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
-                                        <div style="margin-top: 5px">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1"  {{old('ativo', $bairro->ativo) == '1' ? 'checked' : ''}}  disabled>
-                                                <label class="form-check-label" for="ativosim">Sim</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0"  {{old('ativo', $bairro->ativo) == '0' ? 'checked' : ''}}  disabled>
-                                                <label class="form-check-label" for="ativonao">Não</label>
-                                            </div>
-                                            @error('ativo')
-                                                <small style="color: red">{{$message}}</small>
-                                            @enderror
-                                        </div>
+                                        <label class="form-control-label" for="data_ini">Data Inicial<span class="small text-danger">*</span></label>
+                                        <input type="date" id="data_ini" class="form-control" name="data_ini" value="{{$compra->data_ini}}" disabled>
+                                        @error('data_ini')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
 
-                                <!-- Buttons -->
-                                <div class="pl-lg-4">
-                                        <div style="margin-top: 30px">
-                                            <a class="btn btn-primary" href="{{route('admin.bairro.index')}}" role="button">Retornar</a>
-                                            {{-- <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button> --}}
-                                        </div>
+                                {{-- data_fin --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="data_fin">Data Final<span class="small text-danger">*</span></label>
+                                        <input type="date" id="data_fin" class="form-control" name="data_fin" value="{{$compra->data_fin}}" disabled>
+                                        @error('data_fin')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- valor --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="valor">Valor (R$)<span class="small text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="valor" name="valor" value="{{mrc_turn_value($compra->valor)}}" disabled>
+                                        @error('valor')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- valoraf --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="valoraf">Valor AF (R$)<span class="small text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="valoraf" name="valoraf" value="{{mrc_turn_value($compra->valoraf)}}" disabled>
+                                        @error('valoraf')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- valortotal --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="valortotal">Valor Total (R$)<span class="small text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="valortotal" name="valortotal" value="{{mrc_turn_value($compra->valortotal)}}" disabled>
+                                        @error('valortotal')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br><br>
+                            <!-- Buttons -->
+                            
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col text-center">
+                                        <a class="btn btn-primary" href="{{route('admin.restaurante.compra.index', $compra->id)}}" role="button">Retornar</a>
+                                        {{-- <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button> --}}
+                                    </div>
                                 </div>
                             </div>
                         </div>

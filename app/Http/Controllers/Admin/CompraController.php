@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Restaurante;
 use App\Models\Produto;
+use App\Models\Medida;
 use App\Models\Compra;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CompraCreateRequest;
@@ -34,7 +35,12 @@ class CompraController extends Controller
     {
         $restaurante = Restaurante::find($idrestaurante);
 
-        return view('admin.compra.create', compact('restaurante'));
+        $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+
+
+        //return view('admin.compra.create', compact('restaurante', 'produtos', 'medidas'));
+        return view('admin.compra.createnew', compact('restaurante', 'produtos', 'medidas'));
     }
 
 
@@ -57,9 +63,12 @@ class CompraController extends Controller
     }
 
 
-    public function show($id)
+    public function show($idrestaurante, $idcompra)
     {
-        //
+        $restaurante = Restaurante::find($idrestaurante);
+        $compra = Compra::find($idcompra);
+
+        return view('admin.compra.show', compact('restaurante', 'compra'));
     }
 
 
@@ -75,8 +84,12 @@ class CompraController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy($idrestaurante, $idcompra, Request $request)
     {
-        //
+        Compra::destroy($idcompra);
+
+        $request->session()->flash('sucesso', 'Registro excluído com sucesso!');
+
+        return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
     }
 }
