@@ -126,7 +126,7 @@
                         <div class="pl-lg-4">
 
                             {{-- Inicio Cabeçalho linha de dados --}}
-                            <div class="row linhaCabecalho">
+                            <div class="row">
                                 {{-- Produto --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
@@ -180,10 +180,11 @@
                             </div>
                             {{-- Fim Cabeçalho linha de dados --}}
 
-                            <div class="row linhaDados">
+                            <div class="row linhaAtual">
                                 {{-- produto_id --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
+                                        <label class="form-control-label" for="produto_id">Produto<span class="small text-danger">*</span></label>
                                         <select name="produto_id" id="produto_id" class="form-control" required>
                                             <option value="" selected disabled>Escolha...</option>
                                             @foreach($produtos  as $produto)
@@ -199,6 +200,7 @@
                                 {{-- quant --}}
                                 <div class="col-lg-1">
                                     <div class="form-group focused">
+                                        <label class="form-control-label" for="quant">Quant.<span class="small text-danger">*</span></label>
                                         <input type="text" class="form-control valquant" id="quant" name="quant" value="{{old('quant')}}" required>
                                         @error('quant')
                                             <small style="color: red">{{$message}}</small>
@@ -209,6 +211,7 @@
                                 {{-- medida_id --}}
                                 <div class="col-lg-1">
                                     <div class="form-group focused">
+                                        <label class="form-control-label" for="medida_id">Medida<span class="small text-danger">*</span></label>
                                         <select name="medida_id" id="medida_id" class="form-control" required>
                                             <option value="" selected disabled>Escolha...</option>
                                             @foreach($medidas  as $medida)
@@ -225,6 +228,7 @@
                                 {{-- detalhe --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
+                                        <label class="form-control-label" for="detalhe">Detalhe<span class="small text-danger">*</span></label>
                                         <input type="text" class="form-control" id="detalhe" name="detalhe" value="{{old('detalhe')}}" required>
                                         @error('detalhe')
                                             <small style="color: red">{{$message}}</small>
@@ -236,6 +240,7 @@
                                  {{-- valorunit --}}
                                  <div class="col-lg-2">
                                     <div class="form-group focused">
+                                        <label class="form-control-label" for="valorunit">Valor<span class="small text-danger">*</span></label>
                                         <input type="text" class="form-control valunit" id="valorunit" name="valorunit" value="{{old('valorunit')}}" required>
                                         @error('valorunit')
                                             <small style="color: red">{{$message}}</small>
@@ -246,6 +251,8 @@
                                 {{-- af --}}
                                 <div class="col-lg-1" style="margin-right: -70px">
                                     <div class="form-group focused">
+                                        <label for="af">AF </label>
+                                        <br>
                                         <input type="checkbox" id="af" name="af" value="{{old('af')}}" style="margin-top: 15px;">
                                     </div>
                                 </div>
@@ -253,6 +260,7 @@
                                 {{-- valorparcial --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
+                                        <label class="form-control-label" for="valorparcial">Valor Total<span class="small text-danger">*</span></label>
                                         <input type="text" class="form-control valparc" id="valorparcial" name="valorparcial" value="{{old('valorparcial')}}" required>
                                         @error('valorparcial')
                                             <small style="color: red">{{$message}}</small>
@@ -261,7 +269,7 @@
                                 </div>
 
 
-                                <div class="pl-lg-1">
+                                <div class="pl-lg-1" style="margin-top: 30px">
                                         <a class="btn btn-success" href="#" role="button"><i class="fas fa-plus"></i></a>
                                         &nbsp;&nbsp;
                                         <a class="btn btn-danger" href="#" role="button"><i class="fas fa-minus"></i></a>
@@ -270,7 +278,7 @@
 
 
                             {{-- inicio linha fake --}}
-                            <div class="row linhaDados">
+                            <div class="row linhaAtual">
                                 {{-- produto_id --}}
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
@@ -374,6 +382,21 @@
 
     <script>
         $(document).ready(function(){
+            //Sites ref:
+                // https://stackoverflow.com/questions/59133114/calculate-sum-from-number-type-input-fields-by-javascript?utm_source=pocket_mylist
+                // https://stackoverflow.com/questions/33581989/pass-current-text-as-parameter-to-jquery-function
+                // https://www.w3schools.com/jquery/jquery_traversing_siblings.asp
+                // https://stackoverflow.com/questions/41160023/jquery-calculate-field-from-two-other-fields
+                // https://stackoverflow.com/questions/2569699/how-can-one-select-specific-sibling-of-a-context-node-using-jquery
+                // https://codeburst.io/how-to-position-html-elements-side-by-side-with-css-e1fae72ddcc
+                // https://www.youtube.com/watch?v=gUqKf-U6Dx0
+                // https://www.youtube.com/watch?v=7efeIJ7oFTc
+
+
+
+            //valquant
+            //valunit ou preço
+            //valparc valor valorparcial valortotal
 
             //Interage através de cada texboxex cuja classe tem o nome de valunit
             $(".valunit").each(function() {
@@ -382,10 +405,10 @@
                 $(this).focusout(function(){
 
                     precoUnitario = $(this).val();
-                    //quantatual = $(this).parents(".linhaDados").find(".valquant").css({"color": "red", "border": "1px solid red"});
-                    quantatual = $(this).parents(".linhaDados").find(".valquant").val();
+                    //quantatual = $(this).parents(".linhaAtual").find(".valquant").css({"color": "red", "border": "1px solid red"});
+                    quantatual = $(this).parents(".linhaAtual").find(".valquant").val();
 
-                    valorParcial = $(this).parents(".linhaDados").find(".valparc");
+                    valorParcial = $(this).parents(".linhaAtual").find(".valparc");
 
                     calculateMul(precoUnitario, quantatual, valorParcial);
 
@@ -397,7 +420,7 @@
 
             //alert(preco * quant);
 
-            $(vlrparc).val(preco * quant).toFixed(1);
+            $(vlrparc).val(preco * quant);
 
 
             /*
