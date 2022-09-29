@@ -1,0 +1,107 @@
+https://www.youtube.com/watch?v=69pTm_GBpsE
+
+$(function() {
+   //mask
+   $('.amount').mask('#,###.##', {reverse : true});
+   
+   //function that will get the total amount by each class
+   var total_amount =  function() {
+      var sum = 0;
+      
+      $('.amount').each(function(){
+         var num = $(this).val().replace(',','');
+         
+         if(num != 0) {
+            sum += parseFloat(num);
+         }
+      });
+      
+      $('#total_amount').val(sum.toFixed(2));
+   }
+   
+   //keyup handler
+   $('.amount').keyup(function(){
+      total_amount();
+   });
+   
+});
+
+// Jeffy Evangelista
+Jeffy Evangelista
+há 2 anos
+thanks for the idea bro, but how can I change the operation into multiplication instead of addtition?
+
+Rico Aminanda
+change sum += parseFloat(num) with sum *= parseFloat(num) 
+
+
+
+
+@section('scripts')
+    
+    <script>
+        // Marco Zero
+
+        $(document).ready(function(){
+
+            //Interage através de cada caixa de texto cuja classe seja igual a valunit
+            $(".valunit").each(function() {
+                //$(this).mask('#.###,##', {reverse:true});
+
+                $(this).focusout(function()
+                {
+                    //quantidade = $(this).parents(".linhaDados").find(".quantidade").css({"color": "red", "border": "1px solid red"});
+                    //Obtém o ancestral do objeto atual (valorunit) de nome .linhaDados, depois pega o descendente de nome quantidade e obtém seu valor
+                    quantidade = $(this).parents(".linhaDados").find(".quantidade").val();
+
+                    //Obtém o valor do objeto atual
+                    valorunitario = $(this).val();
+
+                    //Obtém o objeto caixa de texto valorparc
+                    valorParcial = $(this).parents(".linhaDados").find(".valparc");
+
+                    //Multiplica o valor da quantidade vezes o valor do preço, fixando o resultado em duas casas decimais
+                    valorum = (quantidade * valorunitario).toFixed(2);
+
+                    //Atribui o valor ao objeto valorParcial (ou seja, na caixa de texto)
+                    valorParcial.val(valorum);
+
+                    //Atribui o valor da caixa valor o valor da operação valorParcial fixando também em duas casas decimais
+                    $('#valor').val(valorParcial.val()).toFixed(2);
+                   
+
+                    //Chama a função calculateMul, repassadndo valores e objetos obtidos
+                    //calculateMul(valorunitario, quantidade, valorParcial);
+
+                });
+            }); 
+            
+
+        });
+
+        function calculateMul(preco, quant, vlrparc) {
+
+            $(vlrparc).val(preco * quant).toFixed(1);
+
+
+            /*
+            //var sum = 0;
+            var mul = 1;
+            //iterate through each textboxes and add the values
+            $(".valunit").each(function() {
+                quantidade = $('.quant').val();
+                alert(quantidade);
+
+                //add only if the value is number
+                if(!isNaN(this.value) && this.value.length!=0) {
+                    //sum += parseFloat(this.value);
+                    mul = parseFloat(this.value);
+                }
+            });
+            //.toFixed() method will roundoff the final sum to 2 decimal places
+            $("#sum").html(sum.toFixed(2));
+            */
+        });
+
+    </script>
+@endsection
