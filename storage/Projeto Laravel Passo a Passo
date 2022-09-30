@@ -498,10 +498,15 @@ SITES REFERÊNCIA PARA JQUERY DE LINHA DE DADOS
 // https://stackabuse.com/how-to-check-if-checkbox-is-checked-in-jquery-and-javascript/
 // https://www.tutorialspoint.com/How-to-format-a-number-with-two-decimals-in-JavaScript
 // https://pt.stackoverflow.com/questions/10002/como-a-fun%C3%A7%C3%A3o-parsefloat-funciona
+// https://www.kadunew.com/blog/jquery/atribuindo-eventos-a-elementos-criados-dinamicamente
+// https://stackoverflow.com/questions/12322704/running-jquery-each-on-dynamically-created-elements
+// https://www.geeksforgeeks.org/how-to-handle-events-in-dynamically-created-elements-in-jquery/
+// https://social.msdn.microsoft.com/Forums/en-US/7766f3ed-6e21-493e-b825-f72a0b5403c6/jquery-how-to-loop-through-dynamically-created-controls?forum=aspdotnetjquery
+// https://blog.logrocket.com/how-to-dynamically-create-javascript-elements-with-event-handlers/
+// https://www.google.com/search?channel=fs&client=ubuntu&q=how+utilizar+method+each+for+elements+create+dinamic+with+jquery
 //
 //
 //
-
 
 // https://www.youtube.com/watch?v=69pTm_GBpsE
 // https://www.youtube.com/watch?v=j9lLXp_kb3U
@@ -511,6 +516,7 @@ SITES REFERÊNCIA PARA JQUERY DE LINHA DE DADOS
 // https://www.youtube.com/watch?v=7efeIJ7oFTc
 
 how I know if an or other event in jquery foi trigged
+How to Enable jQuery Each on Dynamically Added Content
 
 
 ================
