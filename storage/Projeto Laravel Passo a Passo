@@ -504,6 +504,13 @@ SITES REFERÊNCIA PARA JQUERY DE LINHA DE DADOS
 // https://social.msdn.microsoft.com/Forums/en-US/7766f3ed-6e21-493e-b825-f72a0b5403c6/jquery-how-to-loop-through-dynamically-created-controls?forum=aspdotnetjquery
 // https://blog.logrocket.com/how-to-dynamically-create-javascript-elements-with-event-handlers/
 // https://www.google.com/search?channel=fs&client=ubuntu&q=how+utilizar+method+each+for+elements+create+dinamic+with+jquery
+// https://stackoverflow.com/questions/17451616/using-each-on-dynamic-objects-in-jquery
+// https://stackoverflow.com/questions/17451616/using-each-on-dynamic-objects-in-jquery
+// https://stackoverflow.com/questions/26592645/what-is-the-difference-between-domnodeinserted-and-domnodeinsertedintodocument
+// https://nightwolf.dev/bind-to-dynamically-added-elements-with-jquery/
+// https://learn.jquery.com/using-jquery-core/iterating/
+
+//
 //
 //
 //
