@@ -334,37 +334,33 @@
                var campo_af         = $(this).parents(".linhaDados").find(".af").is(':checked');
 
                var campo_precototal = $(this).parents(".linhaDados").find(".precototal");
-               
+
 
                // Se todos os campos obrigatórios foram preechidos, realiza os cálculos e acrescenta uma nova linha. 
                if  (campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') {
 
                         // Calcula o valor do precototal fixando duas casas decimais
-                        var calculo = (campo_quantidade * campo_preco).toFixed(2);
-
+                        // var calculo = (campo_quantidade * campo_preco).toFixed(2);
                         // Atribuio valor ao campo precototal. Obs: campo_precototal.val(calculo).toFixed(2) dá error!
-                        campo_precototal.val(calculo);
-
-
-                        if(campo_af) {
+                        // campo_precototal.val(calculo);
+                        /* if(campo_af) {
                             alert('AF selecionado!');
                         } else {
                             alert('AF NÃO selecionado!');
-                        }
+                        } */
 
                         // Acrescenta uma nova linha
                         $("#corpoDados").append(linhaDados);
+
+
                 } else {
 
                     alert("Preencha os campos desta linha!");
                 }
 
         
-
-
                 
-                // Funciona para as linhas criadas dinamicamente
-                // Quando preço perde o foco
+                // Funciona para as linhas criadas dinamicamente. Quando preço perde o foco
                 $(".preco").each(function() {
                     $(this).focusout(function(){
 
@@ -380,14 +376,11 @@
 
                         total_precototal();
 
-                        //total_precototalaf();
-
                     });
                 });
                 
 
-                // Funciona para as linhas criadas dinamicamente
-                // Quando quantidade foi digitado e perde o foco
+                // Funciona para as linhas criadas dinamicamente. Quando quantidade foi digitado e perde o foco
                 $(".quantidade").each(function() {
                     $(this).focusout(function(){
 
@@ -403,26 +396,68 @@
 
                         total_precototal();
 
-                        //total_precototalaf();
-
                     });
                 });
 
 
                 //Funciona para as linhas criadas dinamicamente
-                $('.af').each(function(){
-                    $(this).change(function(){
-                        total_precototalaf();
+                $('.af').change(function(){
+                    //$(this).change(function(){
+                    //    total_precototalaf();
+                    //});
+
+                    var sum   = 0;
+                    var sumaf = 0;
+
+                    $(this).each(function() {
+
+                        if($(this).is(':checked')){
+
+                            precototal = $(this).parents(".linhaDados").find(".precototal").val();
+
+                            sumaf += parseFloat(precototal);
+
+                        } else {
+                            
+                            $('.precototal').each(function(){
+                                //var num = $(this).val().replace(',','');
+                                var num = $(this).val();
+
+                                if(num != 0) {
+                                    sum += parseFloat(num);
+                                }
+                            });
+                        }
+
                     });
+
+                    $('#valor').val(sum.toFixed(2)) ;
+
+                    $("#valoraf").val(sumaf.toFixed(2));
+
                 });
+
+
+
 
 
                 $('.removelinha').each(function() {
                     $(this).click(function() {
 
-                        total_precototalaf();
-
                         $(this).parent().parent().remove();
+
+                        var sum = 0;
+
+                        $('.precototal').each(function(){
+                            var num = $(this).val();
+
+                            if(num != 0) {
+                                sum += parseFloat(num);
+                            }
+                        });
+
+                        $('#valor').val(sum.toFixed(2));
+
                     });
                 });
 
@@ -434,56 +469,91 @@
 
 
 
-            // Só Funciona para a primeira linha
-            $(".preco").each(function() {
-                $(this).focusout(function(){
+            /*******************************************/
+            /* INICIO Só Funciona para a primeira linha /
+            /*******************************************/
+            $(".preco").focusout(function() {
 
-                    valpreco = $(this).val();
+                valpreco = $(this).val();
 
-                    valquantidade = $(this).parents(".linhaDados").find(".quantidade").val();
+                valquantidade = $(this).parents(".linhaDados").find(".quantidade").val();
 
-                    precototal = $(this).parents(".linhaDados").find(".precototal");
+                precototal = $(this).parents(".linhaDados").find(".precototal");
 
-                    produtoprecoquantidade = (valpreco * valquantidade).toFixed(2);
+                produtoprecoquantidade = (valpreco * valquantidade).toFixed(2);
 
-                    precototal.val(produtoprecoquantidade);
+                precototal.val(produtoprecoquantidade);
 
-                    total_precototal();
+                total_precototal();
 
-                    //total_precototalaf();
-
-                });
             });
 
-            // Só Funciona para a primeira linha
-            $(".quantidade").each(function() {
-                    $(this).focusout(function(){
 
-                        valpreco = $(this).parents(".linhaDados").find(".preco").val();
-                        
-                        valquantidade =  $(this).val();
-                        
-                        precototal = $(this).parents(".linhaDados").find(".precototal");
+            $(".quantidade").focusout(function() {
 
-                        produtoprecoquantidade = (valpreco * valquantidade).toFixed(2);
-
-                        precototal.val(produtoprecoquantidade);
-
-                        total_precototal();
-
-                        //total_precototalaf();
-
-                    });
-                });
+                valpreco = $(this).parents(".linhaDados").find(".preco").val();
 
 
+                valquantidade =  $(this).val();
 
-             // Só Funciona apenas para a primeira linha
-             $('.af').each(function(){
-                $(this).change(function(){
-                    total_precototalaf();
-                });
+                precototal = $(this).parents(".linhaDados").find(".precototal");
+
+                produtoprecoquantidade = (valpreco * valquantidade).toFixed(2);
+
+                precototal.val(produtoprecoquantidade);
+
+                total_precototal();
+
             });
+
+
+            
+            $('.af').change(function(){
+
+                var sum   = 0;
+                var sumaf = 0;
+
+                $(this).each(function() {
+
+                    if($(this).is(':checked')){
+
+                        precototal = $(this).parents(".linhaDados").find(".precototal").val();
+
+                        sumaf += parseFloat(precototal);
+
+                    } else {
+                        
+                        $('.precototal').each(function(){
+                            //var num = $(this).val().replace(',','');
+                            var num = $(this).val();
+
+                            if(num != 0) {
+                                sum += parseFloat(num);
+                            }
+                        });
+                    }
+
+                });
+
+                $('#valor').val(sum.toFixed(2)) ;
+
+                $("#valoraf").val(sumaf.toFixed(2));
+
+            });
+
+
+            
+
+            /****************************************/
+            /* FIM Só Funciona para a primeira linha /
+            /****************************************/
+
+
+
+
+
+
+
 
 
 
@@ -501,14 +571,8 @@
                 });
 
                 $('#valor').val(sum.toFixed(2));
+
             }
-
-
-
-           
-
-
-           
 
 
             var total_precototalaf = function() {
@@ -520,13 +584,18 @@
                         precototal = $(this).parents(".linhaDados").find(".precototal").val();
 
                         sumaf += parseFloat(precototal);
+
                     }
+
+                    //alert(sumaf);
+
                 });
 
                 $("#valoraf").val(sumaf.toFixed(2));
             }
 
 
+        
 
 
 
