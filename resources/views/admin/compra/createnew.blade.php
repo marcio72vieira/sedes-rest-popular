@@ -83,7 +83,7 @@
                                         <div class="col-lg-3  offset-lg-2">
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valor">Valor (R$)<span class="small text-danger">*</span></label>
-                                                <input type="text" class="form-control text-right" id="valor" name="valor" value="{{old('valor')}}" readonly>
+                                                <input type="text" class="form-control text-right" id="valor" name="valor" value="0.00" readonly>
                                                 @error('valor')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -94,7 +94,7 @@
                                         <div class="col-lg-3">
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valoraf">Valor AF (R$)<span class="small text-danger">*</span></label>
-                                                <input type="text" class="form-control  text-right" id="valoraf" name="valoraf" value="{{old('valoraf')}}" readonly>
+                                                <input type="text" class="form-control  text-right" id="valoraf" name="valoraf" value="0.00" readonly>
                                                 @error('valoraf')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -105,7 +105,7 @@
                                         <div class="col-lg-3">
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valortotal">Valor Total (R$)<span class="small text-danger">*</span></label>
-                                                <input type="text" class="form-control text-right" id="valortotal" name="valortotal" value="{{old('valortotal')}}" readonly>
+                                                <input type="text" class="form-control text-right" id="valortotal" name="valortotal" value="0.00" readonly>
                                                 @error('valortotal')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -364,15 +364,14 @@
                 $(".preco").each(function() {
                     $(this).focusout(function(){
 
-                        valpreco = $(this).val();
+                        quantidade = $(this).parents(".linhaDados").find(".quantidade").val();
+                
+                        preco = $(this).val();
 
-                        valquantidade = $(this).parents(".linhaDados").find(".quantidade").val();
+                        quantXpreco = (quantidade * preco).toFixed(2);
 
                         precototal = $(this).parents(".linhaDados").find(".precototal");
-
-                        produtoprecoquantidade = (valpreco * valquantidade).toFixed(2);
-
-                        precototal.val(produtoprecoquantidade);
+                        precototal.val(quantXpreco);
 
                         total_precototal();
 
@@ -384,15 +383,14 @@
                 $(".quantidade").each(function() {
                     $(this).focusout(function(){
 
-                        valpreco = $(this).parents(".linhaDados").find(".preco").val();
-                        
-                        valquantidade =  $(this).val();
-                        
+                        quantidade =  $(this).val();
+
+                        preco = $(this).parents(".linhaDados").find(".preco").val();
+
+                        quantXpreco = (quantidade * preco).toFixed(2);
+
                         precototal = $(this).parents(".linhaDados").find(".precototal");
-
-                        produtoprecoquantidade = (valpreco * valquantidade).toFixed(2);
-
-                        precototal.val(produtoprecoquantidade);
+                        precototal.val(quantXpreco);
 
                         total_precototal();
 
@@ -402,38 +400,34 @@
 
                 //Funciona para as linhas criadas dinamicamente
                 $('.af').change(function(){
-                    //$(this).change(function(){
-                    //    total_precototalaf();
-                    //});
+                    
+                    var valCompraAF = 0;
+                    var valCompraNormal = 0;
+                    var valGeral = 0;
 
-                    var sum   = 0;
-                    var sumaf = 0;
-
-                    $(this).each(function() {
-
+                    $(".af").each(function() {
+                        
                         if($(this).is(':checked')){
 
-                            precototal = $(this).parents(".linhaDados").find(".precototal").val();
-
-                            sumaf += parseFloat(precototal);
-
-                        } else {
+                            var preco = $(this).parents(".linhaDados").find(".precototal").val();
+                            var val = parseFloat(preco);
+                            valCompraAF += val;
+                        
+                        }   else {
                             
-                            $('.precototal').each(function(){
-                                //var num = $(this).val().replace(',','');
-                                var num = $(this).val();
+                            var preco = $(this).parents(".linhaDados").find(".precototal").val();
+                            val = parseFloat(preco);
+                            valCompraNormal += val;
+            
+                        } 
+                    }); 
 
-                                if(num != 0) {
-                                    sum += parseFloat(num);
-                                }
-                            });
-                        }
 
-                    });
+                    valGeral = (valCompraAF + valCompraNormal);
 
-                    $('#valor').val(sum.toFixed(2)) ;
-
-                    $("#valoraf").val(sumaf.toFixed(2));
+                    $("#valor").val(valCompraNormal.toFixed(2));
+                    $("#valoraf").val(valCompraAF.toFixed(2));
+                    $("#valortotal").val(valGeral.toFixed(2));
 
                 });
 
@@ -468,21 +462,23 @@
             /**************************/
 
 
+            
+
+
 
             /*******************************************/
             /* INICIO Só Funciona para a primeira linha /
             /*******************************************/
             $(".preco").focusout(function() {
 
-                valpreco = $(this).val();
+                quantidade = $(this).parents(".linhaDados").find(".quantidade").val();
+                
+                preco = $(this).val();
 
-                valquantidade = $(this).parents(".linhaDados").find(".quantidade").val();
+                quantXpreco = (quantidade * preco).toFixed(2);
 
                 precototal = $(this).parents(".linhaDados").find(".precototal");
-
-                produtoprecoquantidade = (valpreco * valquantidade).toFixed(2);
-
-                precototal.val(produtoprecoquantidade);
+                precototal.val(quantXpreco);
 
                 total_precototal();
 
@@ -491,67 +487,55 @@
 
             $(".quantidade").focusout(function() {
 
-                valpreco = $(this).parents(".linhaDados").find(".preco").val();
+                quantidade =  $(this).val();
 
+                preco = $(this).parents(".linhaDados").find(".preco").val();
 
-                valquantidade =  $(this).val();
+                quantXpreco = (quantidade * preco).toFixed(2);
 
                 precototal = $(this).parents(".linhaDados").find(".precototal");
-
-                produtoprecoquantidade = (valpreco * valquantidade).toFixed(2);
-
-                precototal.val(produtoprecoquantidade);
+                precototal.val(quantXpreco);
 
                 total_precototal();
 
             });
 
 
-            
+
             $('.af').change(function(){
 
-                var sum   = 0;
-                var sumaf = 0;
+                var valCompraAF = 0;
+                var valCompraNormal = 0;
+                var valGeral = 0;
 
-                $(this).each(function() {
-
+                $(".af").each(function() {
+                    
                     if($(this).is(':checked')){
 
-                        precototal = $(this).parents(".linhaDados").find(".precototal").val();
-
-                        sumaf += parseFloat(precototal);
-
-                    } else {
+                        var preco = $(this).parents(".linhaDados").find(".precototal").val();
+                        var val = parseFloat(preco);
+                        valCompraAF += val;
+                    
+                    }   else {
                         
-                        $('.precototal').each(function(){
-                            //var num = $(this).val().replace(',','');
-                            var num = $(this).val();
+                        var preco = $(this).parents(".linhaDados").find(".precototal").val();
+                        val = parseFloat(preco);
+                        valCompraNormal += val;
+        
+                    } 
+                }); 
 
-                            if(num != 0) {
-                                sum += parseFloat(num);
-                            }
-                        });
-                    }
 
-                });
+                valGeral = (valCompraAF + valCompraNormal);
 
-                $('#valor').val(sum.toFixed(2)) ;
-
-                $("#valoraf").val(sumaf.toFixed(2));
+                $("#valor").val(valCompraNormal.toFixed(2));
+                $("#valoraf").val(valCompraAF.toFixed(2));
+                $("#valortotal").val(valGeral.toFixed(2));
 
             });
-
-
-            
-
             /****************************************/
             /* FIM Só Funciona para a primeira linha /
             /****************************************/
-
-
-
-
-
 
 
 
@@ -648,7 +632,52 @@
 
 
                 //$("#corpoDados").append(linhaDados);
-                
+
+
+
+                /*
+                var valortotalafchecado = 0;
+                var valortotalafunchecado = 0;
+                var valorgeral = 0;
+                var count = 0;
+                var countChecked = 0;
+                var countUnchecked = 0;
+                var precochecados = 0;
+                var preconaochecados = 0;
+
+                $(".af").each(function() {
+                    
+                    count++;
+
+                    if($(this).is(':checked')){
+                        countChecked++;
+
+                        var preco = $(this).parents(".linhaDados").find(".precototal").val();
+                        var v = parseFloat(preco);
+                        valortotalafchecado += v;
+                        
+                        
+                    }   else {
+                        countUnchecked++;
+                        
+                        var preco = $(this).parents(".linhaDados").find(".precototal").val();
+                        v = parseFloat(preco);
+                        valortotalafunchecado += v;
+        
+                    } 
+                }); 
+
+
+                valorgeral = (valortotalafchecado + valortotalafunchecado);
+
+
+                alert("Total de checkbox: " + count);
+                alert("Total de checados: " + countChecked);
+                alert("Total de nao checados: " + countUnchecked);
+                alert("Valor AF: " + valortotalafchecado.toFixed(2));
+                alert("Valor NORMAL: " + valortotalafunchecado.toFixed(2));
+                alert("Valor GERAL: " + valorgeral.toFixed(2));
+                */
 
 
 
