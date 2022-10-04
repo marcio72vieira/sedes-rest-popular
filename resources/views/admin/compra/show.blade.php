@@ -103,11 +103,11 @@
 
                             <br><br>
                             <!-- Buttons -->
-                            
+
                             <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col text-center">
-                                        <a class="btn btn-primary" href="{{route('admin.restaurante.compra.index', $compra->id)}}" role="button">Retornar</a>
+                                        <a class="btn btn-primary" href="{{route('admin.restaurante.compra.index', $restaurante->id)}}" role="button">Retornar</a>
                                         {{-- <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button> --}}
                                     </div>
                                 </div>

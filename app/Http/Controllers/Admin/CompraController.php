@@ -39,21 +39,20 @@ class CompraController extends Controller
         $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
 
 
-        //return view('admin.compra.create', compact('restaurante', 'produtos', 'medidas'));
-        return view('admin.compra.createnew', compact('restaurante', 'produtos', 'medidas'));
+        return view('admin.compra.create', compact('restaurante', 'produtos', 'medidas'));
     }
 
 
     public function store(CompraCreateRequest $request, $idrestaurante)
     {
         Compra::create([
+            'semana'            => $request['semana'],
             'data_ini'          => $request['data_ini'],
             'data_fin'          => $request['data_fin'],
-            'semana'            => $request['semana'],
             'valor'             => $request['valor'],
             'valoraf'           => $request['valoraf'],
-            //'valortotal'        => $request['valortotal'],
-            'valortotal'        => $request['valor'] + $request['valoraf'],
+            'valortotal'        => $request['valortotal'],
+            //'valortotal'      => $request['valor'] + $request['valoraf'],
             'restaurante_id'    => $idrestaurante
         ]);
 
