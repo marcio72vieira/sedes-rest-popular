@@ -77,7 +77,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h5>{{$compra->nome}}</h5>
+                                                    <h5>da {{mrc_extract_week($compra->semana)}} semana do mês de {{mrc_extract_month($compra->data_ini)}}</h5>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>

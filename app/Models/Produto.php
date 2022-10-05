@@ -18,4 +18,8 @@ class Produto extends Model
     public function categoria(){
         return $this->belongsTo(Categoria::class);
     }
+
+    public function compras(){
+        return $this->belongsToMany(Compra::class)->withPivot(['quantidade', 'medida_id', 'detalhe','preco','af', 'precototal'])->withTimestamps();
+    }
 }

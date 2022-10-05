@@ -63,7 +63,7 @@ class CompraController extends Controller
 
         DB::beginTransaction();
 
-            //Só grava os campos que estiverem definidos no model Compra na propriedade $fillable
+            //Com o $resquest->all(), só os campos definidos no model (propriedade $fillable) serão gravados
             $compra = Compra::create($request->all());
 
             $produto = $request->input('produto_id', []);
@@ -71,19 +71,21 @@ class CompraController extends Controller
             $medida_id = $request->input('medida_id', []);
             $detalhe = $request->input('detalhe', []);
             $preco = $request->input('preco', []);
-            $af = $request->input('af', []);
+            $af_hidden = $request->input('af_hidden', []); // Substituido: $af = $request->input('af', []);
             $precototal = $request->input('precototal', []);
             
-
             for ($item = 0; $item < count($produto); $item++) {
+
                 if ($produto[$item] != '') {
+
                     $compra->produtos()->attach($produto[$item], 
                         [
                             'quantidade' => $quantidade[$item], 
                             'medida_id' => $medida_id[$item],
                             'detalhe' => $detalhe[$item],
                             'preco' => $preco[$item], 
-                            'af' => (isset($_POST['af'][$item]) ? 'sim' : 'nao' ),  // Vefifica se o checkbox existe
+                            //'af' => (isset($_POST['af'][$item]) ? 'sim' : 'nao' ),  // Vefifica se o checkbox existe. Substituido
+                            'af' =>  $af_hidden[$item],
                             'precototal' => $precototal[$item],
                         ]);
                 }
@@ -99,9 +101,12 @@ class CompraController extends Controller
     public function show($idrestaurante, $idcompra)
     {
         $restaurante = Restaurante::find($idrestaurante);
-        $compra = Compra::find($idcompra);
+        $compra = Compra::with('produtos')->find($idcompra);
+        $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
 
-        return view('admin.compra.show', compact('restaurante', 'compra'));
+        //dd([$restaurante, $compra, $medidas]);
+
+        return view('admin.compra.show', compact('restaurante', 'compra', 'medidas'));
     }
 
 

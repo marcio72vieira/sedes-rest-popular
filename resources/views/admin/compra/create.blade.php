@@ -254,6 +254,7 @@
                                         <div class="col-lg-1" style="margin-right: -70px">
                                             <div class="form-group focused">
                                                 <input type="checkbox" class="af" id="af" name="af[]" value="sim" style="margin-top: 15px;">
+                                                <input type="hidden" name="af_hidden[]" id="af_hidden" value="nao">
                                             </div>
                                         </div>
 
@@ -323,7 +324,7 @@
                         linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control' id='detalhe' name='detalhe[]' value='{{old('detalhe')}}'></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right preco' id='preco' name='preco[]' value='{{old('preco')}}' required></div></div>";
-                        linhaDados += "<div class='col-lg-1' style='margin-right: -70px'><div class='form-group focused'><input type='checkbox' class='af' id='af' name='af[]' value='sim' style='margin-top: 15px;'></div></div>";
+                        linhaDados += "<div class='col-lg-1' style='margin-right: -70px'><div class='form-group focused'><input type='checkbox' class='af' id='af' name='af[]' value='sim' style='margin-top: 15px;'><input type='hidden' name='af_hidden[]' id='af_hidden' value='nao'></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right precototal' id='precototal' name='precototal[]' value='{{old('precototal')}}' readonly></div></div>";
                         linhaDados += "<div class='pl-lg-1'><a class='btn btn-success add-linha' href='#' role='button' style='margin-right: 10px'><i class='fas fa-plus'></i></a>&nbsp;&nbsp;<a class='btn btn-danger removelinha' href='#' role='button'><i class='fas fa-minus'></i></a></div>";
                     linhaDados += "</div>";
@@ -440,6 +441,8 @@
                             var preco = $(this).parents(".linhaDados").find(".precototal").val();
                             var val = parseFloat(preco);
                             valCompraAF += val;
+
+                            var af_hidden = $(this).siblings("#af_hidden").val('sim');
 
                         }   else {
 
@@ -566,6 +569,8 @@
                         var val = parseFloat(preco);
                         valCompraAF += val;
 
+                        var af_hidden = $(this).siblings("#af_hidden").val('sim');
+
                     }   else {
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
@@ -602,6 +607,8 @@
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
                         var val = parseFloat(preco);
                         valCompraAF += val;
+
+                        var af_hidden = $(this).siblings("#af_hidden").val('sim');
 
                     }   else {
 
