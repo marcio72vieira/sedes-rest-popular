@@ -45,6 +45,9 @@ class CompraController extends Controller
 
     public function store(CompraCreateRequest $request, $idrestaurante)
     {
+        /* 
+        //dd($request->all());
+
         Compra::create([
             'semana'            => $request['semana'],
             'data_ini'          => $request['data_ini'],
@@ -55,6 +58,37 @@ class CompraController extends Controller
             //'valortotal'      => $request['valor'] + $request['valoraf'],
             'restaurante_id'    => $idrestaurante
         ]);
+        */
+        
+
+        DB::beginTransaction();
+
+            //Só grava os campos que estiverem definidos no model Compra na propriedade $fillable
+            $compra = Compra::create($request->all());
+
+            $produto = $request->input('produto_id', []);
+            $quantidade = $request->input('quantidade', []);
+            $medida_id = $request->input('medida_id', []);
+            $detalhe = $request->input('detalhe', []);
+            $preco = $request->input('preco', []);
+            $af = $request->input('af', []);
+            $precototal = $request->input('precototal', []);
+            
+
+            for ($item = 0; $item < count($produto); $item++) {
+                if ($produto[$item] != '') {
+                    $compra->produtos()->attach($produto[$item], 
+                        [
+                            'quantidade' => $quantidade[$item], 
+                            'medida_id' => $medida_id[$item],
+                            'detalhe' => $detalhe[$item],
+                            'preco' => $preco[$item], 
+                            'af' => (isset($_POST['af'][$item]) ? 'sim' : 'nao' ),  // Vefifica se o checkbox existe
+                            'precototal' => $precototal[$item],
+                        ]);
+                }
+            }
+        DB::commit();
 
         $request->session()->flash('sucesso', 'Registro incluído com sucesso!');
 

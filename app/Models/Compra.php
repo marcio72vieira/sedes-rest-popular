@@ -22,4 +22,9 @@ class Compra extends Model
     public function restaurante() {
         return $this->belongsTo(Restaurante::class);
     }
+
+    public function produtos()
+    {
+        return $this->belongsToMany(Produto::class)->withPivot(['quantidade', 'medida_id', 'detalhe','preco','af', 'precototal'])->withTimestamps();
+    }
 }

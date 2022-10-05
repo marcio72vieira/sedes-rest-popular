@@ -16,6 +16,8 @@
             <form action="{{route('admin.restaurante.compra.store', $restaurante->id)}}" method="POST" autocomplete="off" style="padding: 4px">
                 @csrf
                 <div class="card shadow mb-4">
+                    {{-- campo input para ser gravado juntamente com os demais campos do model Compra --}}
+                    <input type="hidden" name="restaurante_id" value="{{ $restaurante->id }}">
 
                     <div class="row">
                         <div class="col-sm-5">
@@ -189,7 +191,7 @@
                                         {{-- produto_id --}}
                                         <div class="col-lg-2">
                                             <div class="form-group focused">
-                                                <select name="produto_id" id="produto_id" class="form-control produto_id" required>
+                                                <select name="produto_id[]" id="produto_id" class="form-control produto_id" required>
                                                     <option value="" selected disabled>Escolha...</option>
                                                     @foreach($produtos  as $produto)
                                                         <option value="{{$produto->id}}" {{old('produto_id') == $produto->id ? 'selected' : ''}}>{{$produto->nome}}</option>
@@ -204,7 +206,7 @@
                                         {{-- quantidade --}}
                                         <div class="col-lg-1">
                                             <div class="form-group focused">
-                                                <input type="text" class="form-control text-right quantidade" id="quantidade" name="quantidade" value="{{old('quantidade')}}" required>
+                                                <input type="text" class="form-control text-right quantidade" id="quantidade" name="quantidade[]" value="{{old('quantidade')}}" required>
                                                 @error('quantidade')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -214,7 +216,7 @@
                                         {{-- medida_id --}}
                                         <div class="col-lg-1">
                                             <div class="form-group focused">
-                                                <select name="medida_id" id="medida_id" class="form-control medida_id" required>
+                                                <select name="medida_id[]" id="medida_id" class="form-control medida_id" required>
                                                     <option value="" selected disabled>Escolha...</option>
                                                     @foreach($medidas  as $medida)
                                                         <option value="{{$medida->id}}" {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>
@@ -230,7 +232,7 @@
                                         {{-- detalhe --}}
                                         <div class="col-lg-2">
                                             <div class="form-group focused">
-                                                <input type="text" class="form-control" id="detalhe" name="detalhe" value="{{old('detalhe')}}">
+                                                <input type="text" class="form-control" id="detalhe" name="detalhe[]" value="{{old('detalhe')}}">
                                                 @error('detalhe')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -241,7 +243,7 @@
                                         {{-- preco --}}
                                         <div class="col-lg-2">
                                             <div class="form-group focused">
-                                                <input type="text" class="form-control text-right preco" id="preco" name="preco" value="{{old('preco')}}" required>
+                                                <input type="text" class="form-control text-right preco" id="preco" name="preco[]" value="{{old('preco')}}" required>
                                                 @error('preco')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -251,14 +253,14 @@
                                         {{-- af --}}
                                         <div class="col-lg-1" style="margin-right: -70px">
                                             <div class="form-group focused">
-                                                <input type="checkbox" class="af" id="af" name="af" value="{{old('af')}}" style="margin-top: 15px;">
+                                                <input type="checkbox" class="af" id="af" name="af[]" value="sim" style="margin-top: 15px;">
                                             </div>
                                         </div>
 
                                         {{-- precototal --}}
                                         <div class="col-lg-2">
                                             <div class="form-group focused">
-                                                <input type="text" class="form-control text-right precototal" id="precototal" name="precototal" value="{{old('precototal')}}" readonly>
+                                                <input type="text" class="form-control text-right precototal" id="precototal" name="precototal[]" value="{{old('precototal')}}" readonly>
                                                 @error('precototal')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -316,13 +318,13 @@
             //$('form').on('click', '.add-linha', function () {
 
                 var linhaDados =  "<div class='row linhaDados'>";
-                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><select name='produto_id' id='produto_id' class='form-control produto_id' required><option value='' selected disabled>Escolha...</option>@foreach($produtos  as $produto)<option value='{{$produto->id}}' {{old('produto_id') == $produto->id ? 'selected' : ''}}>{{$produto->nome}}</option>@endforeach</select></div></div>";
-                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><input type='text' class='form-control text-right quantidade' id='quantidade' name='quantidade' value='{{old('quantidade')}}' required></div></div>";
-                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select></div></div>";
-                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control' id='detalhe' name='detalhe' value='{{old('detalhe')}}'></div></div>";
-                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right preco' id='preco' name='preco' value='{{old('preco')}}' required></div></div>";
-                        linhaDados += "<div class='col-lg-1' style='margin-right: -70px'><div class='form-group focused'><input type='checkbox' class='af' id='af' name='af' value='{{old('af')}}' style='margin-top: 15px;'></div></div>";
-                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right precototal' id='precototal' name='precototal' value='{{old('precototal')}}' readonly></div></div>";
+                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><select name='produto_id[]' id='produto_id' class='form-control produto_id' required><option value='' selected disabled>Escolha...</option>@foreach($produtos  as $produto)<option value='{{$produto->id}}' {{old('produto_id') == $produto->id ? 'selected' : ''}}>{{$produto->nome}}</option>@endforeach</select></div></div>";
+                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><input type='text' class='form-control text-right quantidade' id='quantidade' name='quantidade[]' value='{{old('quantidade')}}' required></div></div>";
+                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select></div></div>";
+                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control' id='detalhe' name='detalhe[]' value='{{old('detalhe')}}'></div></div>";
+                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right preco' id='preco' name='preco[]' value='{{old('preco')}}' required></div></div>";
+                        linhaDados += "<div class='col-lg-1' style='margin-right: -70px'><div class='form-group focused'><input type='checkbox' class='af' id='af' name='af[]' value='sim' style='margin-top: 15px;'></div></div>";
+                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right precototal' id='precototal' name='precototal[]' value='{{old('precototal')}}' readonly></div></div>";
                         linhaDados += "<div class='pl-lg-1'><a class='btn btn-success add-linha' href='#' role='button' style='margin-right: 10px'><i class='fas fa-plus'></i></a>&nbsp;&nbsp;<a class='btn btn-danger removelinha' href='#' role='button'><i class='fas fa-minus'></i></a></div>";
                     linhaDados += "</div>";
 
