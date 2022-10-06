@@ -53,7 +53,7 @@ Route::get('/acesso/logout', [AcessoController::class, 'logout'])->name('acesso.
 Route::prefix('admin')->name('admin.')->group(function() {
 
     // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
 
     // Companhia
     // Route::post('getbairros',[CompanhiaController::class, 'getbairros'])->name('getbairros');
@@ -86,7 +86,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
 
 
 
-    // Users 
+    // Users
     Route::resource('user', UserController::class)->middleware(['auth']);
     Route::get('user/{id}/profile', [UserController::class, 'profile'])->name('user.profile')->middleware(['auth']);
     Route::put('/user/{id}/updateprofile', [UserController::class, 'updateprofile'])->name('user.updateprofile')->middleware(['auth']);

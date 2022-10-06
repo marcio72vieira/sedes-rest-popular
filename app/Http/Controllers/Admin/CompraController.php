@@ -45,7 +45,7 @@ class CompraController extends Controller
 
     public function store(CompraCreateRequest $request, $idrestaurante)
     {
-        /* 
+        /*
         //dd($request->all());
 
         Compra::create([
@@ -59,7 +59,7 @@ class CompraController extends Controller
             'restaurante_id'    => $idrestaurante
         ]);
         */
-        
+
 
         DB::beginTransaction();
 
@@ -73,17 +73,17 @@ class CompraController extends Controller
             $preco = $request->input('preco', []);
             $af_hidden = $request->input('af_hidden', []); // Substituido: $af = $request->input('af', []);
             $precototal = $request->input('precototal', []);
-            
+
             for ($item = 0; $item < count($produto); $item++) {
 
                 if ($produto[$item] != '') {
 
-                    $compra->produtos()->attach($produto[$item], 
+                    $compra->produtos()->attach($produto[$item],
                         [
-                            'quantidade' => $quantidade[$item], 
+                            'quantidade' => $quantidade[$item],
                             'medida_id' => $medida_id[$item],
                             'detalhe' => $detalhe[$item],
-                            'preco' => $preco[$item], 
+                            'preco' => $preco[$item],
                             //'af' => (isset($_POST['af'][$item]) ? 'sim' : 'nao' ),  // Vefifica se o checkbox existe. Substituido
                             'af' =>  $af_hidden[$item],
                             'precototal' => $precototal[$item],
@@ -110,9 +110,17 @@ class CompraController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit($idrestaurante, $idcompra)
     {
-        //
+        $restaurante = Restaurante::find($idrestaurante);
+
+        $compra = Compra::with('produtos')->find($idcompra);
+
+        $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+
+
+        return view('admin.compra.edit', compact('restaurante', 'compra', 'produtos', 'medidas'));
     }
 
 

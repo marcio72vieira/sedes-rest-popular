@@ -527,6 +527,10 @@ how to register record in master detail style in laravel
 // https://blog.quickadminpanel.com/master-detail-form-in-laravel-jquery-create-order-with-products/
 // https://pt.stackoverflow.com/questions/5675/como-verificar-se-um-checkbox-est%C3%A1-checado-com-php
 //
+// https://laracasts.com/discuss/channels/laravel/laravel-sync-function-with-pivot
+// https://www.scratchcode.io/source-books/laravel-sync-with-an-example/
+// https://medium.com/@mateusgalasso/a-fun%C3%A7%C3%A3o-sync-em-laravel-c7fb1d8afbe1
+
 //
 // https://www.youtube.com/watch?v=69pTm_GBpsE
 // https://www.youtube.com/watch?v=j9lLXp_kb3U
@@ -539,6 +543,26 @@ how to register record in master detail style in laravel
 
 how I know if an or other event in jquery foi trigged
 How to Enable jQuery Each on Dynamically Added Content
+
+
+===============================================================================
+UMA POSSÍVEL SOLUÇÃO PARA A EDIÇÃO DE REGISTRO MANY TO MANY COM O MÉTODO ATTACH
+===============================================================================
+1 - Acrescentar um identificador (id) na tabela pivot (compra_produto)
+2 - Acessar os registros de compra como está sendo feito atualmente com a consulta, só que habilitando para edição
+3 - Editar, Acrescentar, Apagar os registros conforme necessidade do operador
+4 - Na hora de "atualizar", criar e chamar um método que apague todos os registros que possuam as chaves: id_compra x id_produto do
+    da compra atual, ou melhor, todas as compras com o ID da compra atual
+    novamene como já está sendo feito atualmente com o método attach.
+    OBS: o método attach permite cadastrar id_compra x id_produto mais de uma vez como no exemplo abaixo. Por isso acho
+         conveniente informar uma chave adicional com o id da relação compra x produto
+         compra x   produto
+         1          1
+         1          2
+         1          3
+         1          1
+         1          2
+
 
 
 ================
