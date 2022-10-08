@@ -45,51 +45,27 @@ class CompraController extends Controller
 
     public function store(CompraCreateRequest $request, $idrestaurante)
     {
-        /*
-        //dd($request->all());
 
-        Compra::create([
-            'semana'            => $request['semana'],
-            'data_ini'          => $request['data_ini'],
-            'data_fin'          => $request['data_fin'],
-            'valor'             => $request['valor'],
-            'valoraf'           => $request['valoraf'],
-            'valortotal'        => $request['valortotal'],
-            //'valortotal'      => $request['valor'] + $request['valoraf'],
-            'restaurante_id'    => $idrestaurante
-        ]);
-        */
+        $arrProdIds = [];
+        $arrCampos = [];
+        $arrMesclado = [];
+
+
+        for($x = 0; $x < count($request->produto_id); $x++){
+            $arrProdIds[] = $request->produto_id[$x];
+            $arrCampos[] = $request->quantidade[$x];
+
+            //$user->roles()->sync([1 => ['expires' => true], 2, 3]);
+            $arrMesclado[$arrProdIds[$x]] = ['quantidade' => $request->quantidade[$x], 'medida_id' => $request->medida_id[$x], 'detalhe' => $request->detalhe[$x], 'preco' => $request->preco[$x], 'af' => $request->af_hidden[$x], 'precototal' => $request->precototal[$x]];
+        }
 
 
         DB::beginTransaction();
-
             //Com o $resquest->all(), só os campos definidos no model (propriedade $fillable) serão gravados
-            $compra = Compra::create($request->all());
+             $compra = Compra::create($request->all());
+            
+            $compra->produtos()->sync($arrMesclado); 
 
-            $produto = $request->input('produto_id', []);
-            $quantidade = $request->input('quantidade', []);
-            $medida_id = $request->input('medida_id', []);
-            $detalhe = $request->input('detalhe', []);
-            $preco = $request->input('preco', []);
-            $af_hidden = $request->input('af_hidden', []); // Substituido: $af = $request->input('af', []);
-            $precototal = $request->input('precototal', []);
-
-            for ($item = 0; $item < count($produto); $item++) {
-
-                if ($produto[$item] != '') {
-
-                    $compra->produtos()->attach($produto[$item],
-                        [
-                            'quantidade' => $quantidade[$item],
-                            'medida_id' => $medida_id[$item],
-                            'detalhe' => $detalhe[$item],
-                            'preco' => $preco[$item],
-                            //'af' => (isset($_POST['af'][$item]) ? 'sim' : 'nao' ),  // Vefifica se o checkbox existe. Substituido
-                            'af' =>  $af_hidden[$item],
-                            'precototal' => $precototal[$item],
-                        ]);
-                }
-            }
         DB::commit();
 
         $request->session()->flash('sucesso', 'Registro incluído com sucesso!');
@@ -124,10 +100,37 @@ class CompraController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
     {
-        //
+
+        $compra = Compra::find($idcompra);
+
+        $arrProdIds = [];
+        $arrCampos = [];
+        $arrMesclado = [];
+
+
+        for($x=0; $x < count($request->produto_id); $x++){
+            $arrProdIds[] = $request->produto_id[$x];
+            $arrCampos[] = $request->quantidade[$x];
+
+            $arrMesclado[$arrProdIds[$x]] = ['quantidade' => $request->quantidade[$x], 'medida_id' => $request->medida_id[$x], 'detalhe' => $request->detalhe[$x], 'preco' => $request->preco[$x], 'af' => $request->af_hidden[$x], 'precototal' => $request->precototal[$x]];
+        }
+
+        DB::beginTransaction();
+
+            $compra->update($request->all());
+
+            $compra->produtos()->sync($arrMesclado); 
+
+        DB::commit();
+
+        $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
+
+        return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
     }
+
+
 
 
     public function destroy($idrestaurante, $idcompra, Request $request)

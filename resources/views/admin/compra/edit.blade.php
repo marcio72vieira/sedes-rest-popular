@@ -13,8 +13,10 @@
 
 
         <div class="col-lg-12 order-lg-1">
-            <form action="{{route('admin.restaurante.compra.store', $restaurante->id)}}" method="POST" autocomplete="off" style="padding: 4px">
+            <form method="POST" action="{{route('admin.restaurante.compra.update', [$restaurante->id, $compra->id])}}" autocomplete="off" style="padding: 4px">
                 @csrf
+                @method('PUT')
+
                 <div class="card shadow mb-4">
                     {{-- campo input para ser gravado juntamente com os demais campos do model Compra --}}
                     <input type="hidden" name="restaurante_id" value="{{ $restaurante->id }}">
@@ -317,9 +319,10 @@
             /***************************/
             /* INICIO REMOVE linhaDados*/
             /***************************/
-            //Oculta o primeiro botão (.removerlinha), pois na compra deverá haver pelo menos um produto cadastrado
+            //Oculta o primeiro botão com a classe '.removerlinha, pois na compra deverá haver pelo menos um produto cadastrado
             $(".removelinha:first").css("display","none");
 
+            //Remove todas as linhas em que o botão com a classe '.removelinha' for clicado e depois recalcula os valores
             $(document).on('click', '.removelinha', function () {
                 $(this).parent().parent().remove();
 
@@ -358,11 +361,18 @@
 
                var campo_precototal = $(this).parents(".linhaDados").find(".precototal");
 
+               var totalLinhaDados = $('.linhaDados').length;
 
+            
                // Se todos os campos obrigatórios foram preechidos, realiza os cálculos e acrescenta uma nova linha.
                if  (campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') {
                     // Acrescenta uma nova linha
-                    $("#corpoDados").append(linhaDados);
+                    // $("#corpoDados").append(linhaDados);
+
+                    // Na situação anterior (comentada, utilizada no create), sempre que uma nova linha é adicionada, 
+                    // esta linha é adicionada logo após a primeira linha independente de qual botão add era clicado. 
+                    $(".linhaDados").eq(totalLinhaDados - 1).after(linhaDados);
+
                 } else {
                     // Caso possua algum campo obrigatório não preenchido
                     alert("Preencha todos os campos!");
@@ -469,6 +479,8 @@
                             var preco = $(this).parents(".linhaDados").find(".precototal").val();
                             val = parseFloat(preco);
                             valCompraNormal += val;
+
+                            var af_hidden = $(this).siblings("#af_hidden").val('nao');
 
                         }
                     });
@@ -597,6 +609,8 @@
                         val = parseFloat(preco);
                         valCompraNormal += val;
 
+                        var af_hidden = $(this).siblings("#af_hidden").val('nao');
+
                     }
                 });
 
@@ -636,6 +650,8 @@
                         val = parseFloat(preco);
                         valCompraNormal += val;
 
+                        var af_hidden = $(this).siblings("#af_hidden").val('nao');
+
                     }
                 });
 
@@ -659,6 +675,8 @@
             //$("#container").removeClass("color");
             //aplicar um estilo em um elemento específico
             //$("p:eq(1)").css("background-color","yellow");
+            //Adiciona um elemento após um elemento específico
+            //$('#list li:eq(1)').after('<li>Position 3</li>');
 
         });
 

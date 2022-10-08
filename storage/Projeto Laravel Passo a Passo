@@ -526,10 +526,18 @@ how to register record in master detail style in laravel
 // https://laraveldaily.com/post/pivot-tables-and-many-to-many-relationships
 // https://blog.quickadminpanel.com/master-detail-form-in-laravel-jquery-create-order-with-products/
 // https://pt.stackoverflow.com/questions/5675/como-verificar-se-um-checkbox-est%C3%A1-checado-com-php
+// https://stackoverflow.com/questions/24702640/laravel-save-update-many-to-many-relationship/24706638#24706638
+// https://stackoverflow.com/questions/45210136/get-a-value-from-within-an-array-of-object-in-laravel
+
 //
 // https://laracasts.com/discuss/channels/laravel/laravel-sync-function-with-pivot
 // https://www.scratchcode.io/source-books/laravel-sync-with-an-example/
 // https://medium.com/@mateusgalasso/a-fun%C3%A7%C3%A3o-sync-em-laravel-c7fb1d8afbe1
+// https://stackoverflow.com/questions/27230672/laravel-sync-how-to-sync-an-array-and-also-pass-additional-pivot-fields
+// https://laracasts.com/discuss/channels/laravel/array-to-string-conversion-error-12
+// https://www.codegrepper.com/code-examples/php/laravel+model+sync+array+to+string+conversion
+https://stackoverflow.com/questions/45210136/get-a-value-from-within-an-array-of-object-in-laravel
+
 
 //
 // https://www.youtube.com/watch?v=69pTm_GBpsE
@@ -583,5 +591,152 @@ Uma emprea pode ser responsável por mais de um restaurante ?
 Um nutricionista de uma empresa pode ser responsável por mais de um restaurante ?
 Um nutricionista da SEDES pode ser responsável por mais de um restaurante ?
 
+
+
+==================================================
+Método STORE de tabelas PIVOT - CompraControlleer
+==================================================
+public function store(CompraCreateRequest $request, $idrestaurante)
+    {
+        /*
+        //dd($request->all());
+        
+        //Capturando os valores dos campos diretamente
+        Compra::create([
+            'semana'            => $request['semana'],
+            'data_ini'          => $request['data_ini'],
+            'data_fin'          => $request['data_fin'],
+            'valor'             => $request['valor'],
+            'valoraf'           => $request['valoraf'],
+            'valortotal'        => $request['valortotal'],
+            //'valortotal'      => $request['valor'] + $request['valoraf'],
+            'restaurante_id'    => $idrestaurante
+        ]);
+        */
+
+
+        DB::beginTransaction();
+
+            //Com o $resquest->all(), só os campos definidos no model (propriedade $fillable) serão gravados
+            $compra = Compra::create($request->all());
+
+            $produto = $request->input('produto_id', []);
+            $quantidade = $request->input('quantidade', []);
+            $medida_id = $request->input('medida_id', []);
+            $detalhe = $request->input('detalhe', []);
+            $preco = $request->input('preco', []);
+            $af_hidden = $request->input('af_hidden', []); // Substituido: $af = $request->input('af', []);
+            $precototal = $request->input('precototal', []);
+
+            for ($item = 0; $item < count($produto); $item++) {
+
+                if ($produto[$item] != '') {
+
+
+                    /* 
+                    //ASSOCIAÇÃO COM MÉTODO ATTACH e campos adicionais
+                    //Obs: $produto[$item] é o id do produto atual ($produto_id) dentro do loop for
+                    $compra->produtos()->attach($produto[$item],    
+                        [
+                            'quantidade' => $quantidade[$item],
+                            'medida_id' => $medida_id[$item],
+                            'detalhe' => $detalhe[$item],
+                            'preco' => $preco[$item],
+                            //'af' => (isset($_POST['af'][$item]) ? 'sim' : 'nao' ),  // Vefifica se o checkbox existe. Substituido
+                            'af' =>  $af_hidden[$item],
+                            'precototal' => $precototal[$item],
+                        ]);
+                    */
+                    
+
+                    //ASSOCIAÇÃO COM MÉTODO SYNC e campos adicionais
+                    //Obs: $produto[$item] é o id do produto atual ($produto_id) dentro do loop for
+
+                    //$compra->produtos()->syncWithoutDetaching([$produto[$item] => 
+                    $compra->produtos()->sync([$produto[$item] => 
+                        [
+                            'quantidade' => $quantidade[$item],
+                            'medida_id' => $medida_id[$item],
+                            'detalhe' => $detalhe[$item],
+                            'preco' => $preco[$item],
+                            //'af' => (isset($_POST['af'][$item]) ? 'sim' : 'nao' ),  // Vefifica se o checkbox existe. Substituido
+                            'af' =>  $af_hidden[$item],
+                            'precototal' => $precototal[$item],
+                        ]], false);
+
+
+                }
+            }
+
+            /*
+            //Tenho que transformar o loop for acima neste estrutura, onde 1, 2, 3 são os IDs do produtos e os arraya que
+            //eles se referem 1 => [], corresponde aos campos e seus devidos valores em uma tabela do tipo pivot.
+            //Obs: com o segundo parâmetro 'false', não ha a necessidade de transformar o loop acima na estrutura abaixo, 
+            //     mas também caso seja deletada uma linha a mesma não será apagada.
+            $compra->produtos()->sync([
+                1 => ['quantidade' => 10, 'medida_id' => 1, 'detalhe' => 'avocado', 'preco' => 5.00, 'af' => 'sim', 'precototal' => 50.00],
+                2 => ['quantidade' => 5, 'medida_id' => 1, 'detalhe' => 'tommy', 'preco' => 7.00, 'af' => 'nao', 'precototal' => 35.00],
+                2 => ['quantidade' => 5, 'medida_id' => 2, 'detalhe' => 'princesa', 'preco' => 8.00, 'af' => 'nao', 'precototal' => 40.00],
+            ]);
+            */
+
+        DB::commit();
+
+        $request->session()->flash('sucesso', 'Registro incluído com sucesso!');
+
+        return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
+    }
+
+
+
+==================================================
+Método UPDATE de tabelas PIVOT - CompraControlleer
+==================================================
+public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
+    {
+
+        $compra = Compra::find($idcompra);
+
+        DB::beginTransaction();
+
+            $compra->update($request->all());
+
+            $produto = $request->input('produto_id', []);
+            $quantidade = $request->input('quantidade', []);
+            $medida_id = $request->input('medida_id', []);
+            $detalhe = $request->input('detalhe', []);
+            $preco = $request->input('preco', []);
+            $af_hidden = $request->input('af_hidden', []); // Substituido: $af = $request->input('af', []);
+            $precototal = $request->input('precototal', []);
+
+            //dd($request->all());
+
+            for ($item = 0; $item < count($produto); $item++) {
+
+                if ($produto[$item] != '') {
+
+
+                    //ASSOCIAÇÃO COM MÉTODO SYNC e campos adicionais
+                    //Obs: $produto[$item] é o id do produto atual ($produto_id) dentro do loop for
+
+                    //$compra->produtos()->syncWithoutDetaching([$produto[$item] => 
+                    $compra->produtos()->sync([$produto[$item] => 
+                        [
+                            'quantidade' => $quantidade[$item],
+                            'medida_id' => $medida_id[$item],
+                            'detalhe' => $detalhe[$item],
+                            'preco' => $preco[$item],
+                            'af' =>  $af_hidden[$item],
+                            'precototal' => $precototal[$item],
+                        ]], false);
+                }
+            }
+
+        DB::commit();
+
+        $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
+
+        return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
+    }
 
 
