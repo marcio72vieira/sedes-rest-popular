@@ -257,7 +257,7 @@
                                             <div class="col-lg-1" style="margin-right: -70px">
                                                 <div class="form-group focused">
                                                     <input type="checkbox" class="af" id="af" name="af[]" value="sim" {{$item->pivot->af == 'sim' ? 'checked' : ''}} style="margin-top: 15px;">
-                                                    <input type="hidden" name="af_hidden[]" id="af_hidden" value="nao">
+                                                    <input type="hidden" name="af_hidden[]" id="af_hidden" value="{{$item->pivot->af}}">
                                                 </div>
                                             </div>
 

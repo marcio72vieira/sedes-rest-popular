@@ -16,7 +16,7 @@
 
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        Usuário: {{$user->nomecompleto}}
+                        Usuário: {{$user->nomecompleto}} -  Restaurante: {{$user->restaurante->identificacao}}
                     </h6>
                 </div>
 
@@ -142,6 +142,7 @@
                                 --}}
                             </div>
                         </div>
+
 
                         <!-- Button -->
                         <div class="pl-lg-4">

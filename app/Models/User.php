@@ -50,4 +50,8 @@ class User extends Authenticatable
     public function municipio(){
         return $this->belongsTo(Municipio::class);
     }
+
+    public function restaurante(){
+        return $this->hasOne(Restaurante::class);
+    }
 }

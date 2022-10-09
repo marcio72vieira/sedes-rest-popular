@@ -19,13 +19,22 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class RestauranteController extends Controller
 {
 
     public function index()
     {
-        $restaurantes = Restaurante::all();
+        //$restaurantes = Restaurante::all();
+
+        // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, caso contrário, NUTRICIONISTA, só ao qual pertence
+        if(Auth::user()->perfil == 'adm'){
+            $restaurantes = Restaurante::orderBy('nome', 'ASC')->get();
+        } else {
+            $restaurantes = Restaurante::where('user_id', '=', Auth::user()->id)->orderBy('identificacao', 'ASC')->get();
+        }
+
         return view('admin.restaurante.index', compact('restaurantes'));
     }
 

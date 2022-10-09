@@ -92,7 +92,8 @@ class CompraController extends Controller
 
         $compra = Compra::with('produtos')->find($idcompra);
 
-        $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        //$produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        $produtos = Produto::where('ativo', '=', '1')->get();
         $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
 
 
