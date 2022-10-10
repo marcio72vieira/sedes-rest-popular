@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MunicipioController;
 use App\Http\Controllers\Admin\BairroController;
 use App\Http\Controllers\Admin\CategoriaController;
+use App\Http\Controllers\Admin\ComprovanteController;
 use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\Admin\MedidaController;
 use App\Models\Nutricionista;
@@ -73,6 +74,9 @@ Route::prefix('admin')->name('admin.')->group(function() {
 
     // Compra (Rota aninhada) fica do tipo: restaurante/1/Compra.
     Route::resource('restaurante.compra', CompraController::class)->middleware(['auth']);
+
+    // Comprovante (Rota aninhada) fica do tipo: compra/1/comprovante
+    Route::resource('compra.comprovante', ComprovanteController::class)->middleware(['auth']);
 
     // Municipio
     // Impede a exclusão de um município, no caso de haver algum bairro associado a ele através da rota 'getmountbairros'

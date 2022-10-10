@@ -30,7 +30,7 @@ class RestauranteController extends Controller
 
         // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, caso contrário, NUTRICIONISTA, só ao qual pertence
         if(Auth::user()->perfil == 'adm'){
-            $restaurantes = Restaurante::orderBy('nome', 'ASC')->get();
+            $restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
         } else {
             $restaurantes = Restaurante::where('user_id', '=', Auth::user()->id)->orderBy('identificacao', 'ASC')->get();
         }
@@ -117,7 +117,7 @@ class RestauranteController extends Controller
         $empresas = Empresa::where('ativo', '=', '1')->orderBy('nomefantasia', 'ASC')->get();
         $nutricionistas = Nutricionista::where('ativo', '=', '1')->orderBy('nomecompleto', 'ASC')->get();
         $users = User::where('perfil', '=', 'nut')->orderBy('nomecompleto', 'ASC')->get();
-    
+
         return view('admin.restaurante.edit', compact('restaurante', 'municipios', 'bairros', 'empresas', 'nutricionistas', 'users'));
     }
 
