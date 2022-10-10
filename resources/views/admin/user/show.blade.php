@@ -16,7 +16,10 @@
 
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        Usuário: {{$user->nomecompleto}} -  Restaurante: {{$user->restaurante->identificacao}}
+                        Usuário: {{$user->nomecompleto}} 
+                        @isset($user->restaurante->identificacao)
+                        -  Restaurante: {{$user->restaurante->identificacao}}
+                        @endisset
                     </h6>
                 </div>
 
