@@ -57,9 +57,10 @@
                                 {{--<td>@if($compra->semana == 1) primeira @elseif ($compra->semana == 2) segunda @elseif ($compra->semana == 3) terceira @elseif ($compra->semana == 4) quarta @elseif ($compra->semana == 5) quinta @endif</td>--}}
                                 <td>{{mrc_extract_week($compra->semana)}}</td>
                                 <td>{{mrc_turn_value($compra->valor)}}</td>
-                                <td>{{mrc_turn_value($compra->valoraf)}}</td>
+                                {{--<td>{{mrc_turn_value($compra->valoraf)}}&nbsp;&nbsp;<strong>({{intval(mrc_calc_percentaf($compra->valortotal, $compra->valoraf ))}}%)</strong></td>--}}
+                                <td>{{mrc_turn_value($compra->valoraf)}}</strong></td>
                                 <td>{{mrc_turn_value($compra->valortotal)}}</td>
-                                <td>{{mrc_calc_percentaf($compra->valortotal, $compra->valoraf )}}</td>
+                                <td>{{intval(mrc_calc_percentaf($compra->valortotal, $compra->valoraf ))}}%</td>
                                 <td>
                                     <a href="{{route('admin.compra.comprovante.index', [$compra->id])}}" title="comprovantes"><i class="fas fa-file-invoice text-success mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>

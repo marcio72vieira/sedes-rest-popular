@@ -36,10 +36,8 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Id</th>
                             <th>Compra</th>
-                            <th>Valor</th>
-                            <th>Valor AF</th>
-                            <th>Valor Total</th>
                             <th>Comprovantes</th>
                             <th>Ações</th>
                         </tr>
@@ -48,32 +46,33 @@
                     <tbody>
                         @foreach($comprovantes as $comprovante)
                             <tr>
-                                <td>{{$comprovante[0]}}</td>
-                                <td>{{$comprovante[0]}}</td>
-                                {{--
-                                <td>@if($categoria->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
+                                <td>{{$comprovante->id}}</td>
+                                <td>{{$comprovante->compra_id}}</td>
+                                <td style="text-align: center">
+                                    <a href="{{asset('/storage/'.$comprovante->url)}}" target="_blank">
+                                        <img src="{{asset('template/img/icopdf.png')}}" width="20">
+                                    </a>
+                                </td>
                                 <td>
-                                    <a href="{{route('admin.categoria.show', $categoria->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
-                                    <a href="{{route('admin.categoria.edit', $categoria->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                                    <a data-idcategoria="{{$categoria->id}}" class="deletarcategoria" href="" data-toggle="modal" data-target="#formDelete{{$categoria->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    <a data-idcomprovante="{{$comprovante->id}}" class="deletarcomprovante" href="" data-toggle="modal" data-target="#formDelete{{$comprovante->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
 
                                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
-                                    <div class="modal fade" id="formDelete{{$categoria->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
+                                    <div class="modal fade" id="formDelete{{$comprovante->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="formDeleteLabel"><strong>Deletar categoria</strong></h5>
+                                                    <h5 class="modal-title" id="formDeleteLabel"><strong>Deletar comprovante</strong></h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h5>{{$categoria->nome}}</h5>
+                                                    <h5>{{$comprovante->nome}}</h5>
                                                     <span class="mensagem" style="color: #f00;"></span>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                                    <form action="{{route('admin.categoria.destroy', $categoria->id)}}" method="POST" style="display: inline">
+                                                    <form action="{{route('admin.compra.comprovante.destroy', [$compra->id, $comprovante->id])}}" method="POST" style="display: inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger" role="button"> Confirmar</button>
@@ -83,7 +82,6 @@
                                         </div>
                                     </div>
                                 </td>
-                                --}}
                             </tr>
                         @endforeach
                     </tbody>

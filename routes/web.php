@@ -76,7 +76,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::resource('restaurante.compra', CompraController::class)->middleware(['auth']);
 
     // Comprovante (Rota aninhada) fica do tipo: compra/1/comprovante
-    Route::resource('compra.comprovante', ComprovanteController::class)->middleware(['auth']);
+    Route::resource('compra.comprovante', ComprovanteController::class)->except(['show', 'edit', 'update'])->middleware(['auth']);
 
     // Municipio
     // Impede a exclusão de um município, no caso de haver algum bairro associado a ele através da rota 'getmountbairros'

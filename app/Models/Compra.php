@@ -26,4 +26,8 @@ class Compra extends Model
     public function produtos() {
         return $this->belongsToMany(Produto::class)->withPivot(['quantidade', 'medida_id', 'detalhe','preco','af', 'precototal'])->withTimestamps();
     }
+
+    public function comprovantes(){
+        return $this->hasMany(Comprovante::class);
+    }
 }

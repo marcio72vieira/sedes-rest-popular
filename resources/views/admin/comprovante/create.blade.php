@@ -28,50 +28,27 @@
 
                         <div class="pl-lg-4">
                             <div class="row">
-                                {{-- comprovante--}}
+                                {{-- url--}}
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="comprovante">Comprovante (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
-                                        <input type="file" id="comprovante" style="display:block" name="comprovante" value="{{old('comprovante')}}">
-                                        @error('comprovante')
+                                        <label class="form-control-label" for="url">Comprovante (arquivo do tipo .pdf)<span class="small text-danger">*</span></label>
+                                        <input type="file" id="url" style="display:block" name="url" value="{{old('url')}}">
+                                        @error('url')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
-                                {{-- ativo --}}
-                                <div class="col-lg-3">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
-                                        <div style="margin-top: 5px">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1" {{old('ativo') == '1' ? 'checked' : ''}} required>
-                                                <label class="form-check-label" for="ativosim">Sim</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0" {{old('ativo') == '0' ? 'checked' : ''}} required>
-                                                <label class="form-check-label" for="ativonao">Não</label>
-                                            </div>
-                                            @error('ativo')
-                                                <small style="color: red">{{$message}}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
+                                
                                 <!-- Buttons -->
                                 <div class="pl-lg-4">
-                                        <div style="margin-top: 30px">
-                                            <a class="btn btn-primary" href="{{route('admin.compra.comprovante.index', [$compra->id])}}" role="button">Cancelar</a>
-                                            <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button>
-                                        </div>
+                                    <div style="margin-top: 30px">
+                                        <a class="btn btn-primary" href="{{route('admin.compra.comprovante.index', [$compra->id])}}" role="button">Cancelar</a>
+                                        <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button>
+                                    </div>
                                 </div>
-
                             </div>
-
                         </div>
-
-
                     </form>
 
                 </div>

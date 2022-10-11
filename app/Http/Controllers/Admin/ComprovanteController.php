@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Compra;
-use App\Http\Requests\CategoriaCreateRequest;
-use App\Http\Requests\CategoriaUpdateRequest;
+use App\Models\Comprovante;
+use App\Http\Requests\ComprovanteCreateRequest;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -19,10 +19,9 @@ class ComprovanteController extends Controller
     {
 
         $compra = Compra::find($idcompra);
-        $comprovantes = ["Nota nº {$idcompra}"];
+        $comprovantes = Comprovante::where('compra_id', '=', $idcompra)->get();
 
         return view('admin.comprovante.index', compact('compra', 'comprovantes'));
-        //return "Comprovantes relativos à compra: {$idcompra} ".$idcompra ;
 
     }
 
@@ -35,38 +34,30 @@ class ComprovanteController extends Controller
     }
 
 
-    public function store(Request $request, $idcompra)
+    public function store(ComprovanteCreateRequest $request, $idcompra)
     {
-        //dd($request->file('comprovante')); ou //dd($request->'comprovante');
+
+       
 
         $compra = Compra::find($idcompra);
 
-        //$restaurante = $compra->restaurante['identificacao'];
+        // Recuperando a identificação do restaurante da compra atual
         $restaurante = Str::lower($compra->restaurante->identificacao);
 
 
-
-
-
-
         // Checando se veio a imagem/arquivo na requisição e depoois verifica se não houve erro de upload na imagem.
-        if($request->hasFile('comprovante')) {
+        if($request->hasFile('url')) {
 
-            if($request->comprovante->isValid()) {
-                // primeiro parâmetro, local onde se quer armazenar o arquivo (dentro da pasta : documentos/restaurante/compra). Se não existir é criado a pasta
-                // segundo parâmetro, qual disco (local, public ou S3), deseja-se armazenar o upload. No caso será o 'public'.
-                // Obs: O método store, retorna o caminho onde o arquivo foi armazenado no disco.
-
+            if($request->url->isValid()) {
+                
                 // Armazenando o arquivo no disco public e retornando a url (caminho) do arquivo
-                $comprovanteURL = $request->comprovante->store('documentos/$restaurante/$compra->id', 'public');
+                $comprovanteURL = $request->url->store("documentos/$restaurante/$compra->id", "public");
 
-                /*
                 //Armazenando os caminhos do arquivo no Banco de Dados
                 $comprovante = new Comprovante();
-                $comprovante->url = $comprovanteURL;
-                $comprovante->compra_id = $idcompra;
+                    $comprovante->url = $comprovanteURL;
+                    $comprovante->compra_id = $idcompra;
                 $comprovante->save();
-                */
 
             }
         }
@@ -77,22 +68,7 @@ class ComprovanteController extends Controller
     }
 
 
-    public function show($id)
-    {
-        //
-    }
 
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
 
     public function destroy($id)

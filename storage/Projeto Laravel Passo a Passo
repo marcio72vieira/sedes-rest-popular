@@ -537,6 +537,7 @@ how to register record in master detail style in laravel
 // https://laracasts.com/discuss/channels/laravel/array-to-string-conversion-error-12
 // https://www.codegrepper.com/code-examples/php/laravel+model+sync+array+to+string+conversion
 https://stackoverflow.com/questions/45210136/get-a-value-from-within-an-array-of-object-in-laravel
+// https://stackoverflow.com/questions/37432641/how-to-validate-on-max-file-size-in-laravel
 
 
 //
@@ -740,3 +741,17 @@ public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
     }
 
 
+==============================
+COMENTÁRIOS SOLTOS DE CÓDIGOS
+==============================
+//dd($request->file('comprovante')); ou 
+//dd($request->'comprovante');
+
+
+// primeiro parâmetro, local onde se quer armazenar o arquivo (dentro da pasta : documentos/restaurante/compra). Se não existir é criado a pasta
+// segundo parâmetro, qual disco (local, public ou S3), deseja-se armazenar o upload. No caso será o 'public'.
+// Obs: O método store, retorna o caminho onde o arquivo foi armazenado no disco.
+// Armazenando o arquivo no disco public e retornando a url (caminho) do arquivo
+$comprovanteURL = $request->comprovante->store("documentos/$restaurante/$compra->id", "public");
+
+ //return "Comprovantes relativos à compra: {$idcompra} ".$idcompra ;
