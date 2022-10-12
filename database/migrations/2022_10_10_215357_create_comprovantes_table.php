@@ -16,6 +16,7 @@ class CreateComprovantesTable extends Migration
         Schema::create('comprovantes', function (Blueprint $table) {
             $table->id();
             $table->string('url');
+            $table->smallInteger('restaurante_id');
             $table->foreignId('compra_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

@@ -11,9 +11,10 @@ use App\Models\Compra;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CompraCreateRequest;
 use App\Http\Requests\CompraUpdateRequest;
-
+use App\Models\Comprovante;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -27,7 +28,16 @@ class CompraController extends Controller
         $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
         $compras = Compra::where('restaurante_id', '=', $idrestaurante)->orderBy('data_ini', 'DESC')->get();
 
-        return view('admin.compra.index', compact('restaurante', 'compras', 'produtos'));
+        //Recupera em uma collection o número de registros relacionados, para impedir deleção acidental.
+        //Todos os registros relacionados entre comprovante e compra, independente de seus IDs serão recuperados
+        $comprovantes = Comprovante::withCount('compra')->get();
+        //Transforma a collection ($comprovante) retornada pelo ->get() em um array.
+        $turnarray = $comprovantes->toArray();
+        //Do array retornado, extrai apenas os valores da chave compra_id
+        //Na view, comparo o id da compra corrente dentro do foreach com os id's do array $regsvinculados
+        $regsvinculado = Arr::pluck($turnarray, 'compra_id');
+        
+        return view('admin.compra.index', compact('restaurante', 'compras', 'produtos', 'regsvinculado'));
     }
 
 
@@ -136,6 +146,7 @@ class CompraController extends Controller
 
     public function destroy($idrestaurante, $idcompra, Request $request)
     {
+
         Compra::destroy($idcompra);
 
         $request->session()->flash('sucesso', 'Registro excluído com sucesso!');

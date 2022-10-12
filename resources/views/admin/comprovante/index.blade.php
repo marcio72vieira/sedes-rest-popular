@@ -27,6 +27,15 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>ERRO!!!</strong> {{session('error')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -67,7 +76,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h5>{{$comprovante->nome}}</h5>
+                                                    <h5>{{$comprovante->id}} da compra {{$comprovante->compra_id}}</h5>
                                                     <span class="mensagem" style="color: #f00;"></span>
                                                 </div>
                                                 <div class="modal-footer">
