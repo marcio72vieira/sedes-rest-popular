@@ -541,6 +541,8 @@ https://stackoverflow.com/questions/45210136/get-a-value-from-within-an-array-of
 // https://stackoverflow.com/questions/33676576/eloquent-laravel-how-to-get-a-row-count-from-a-get
 // https://laracasts.com/discuss/channels/general-discussion/with-storage-to-check-if-the-directory-is-empty
 // https://laravel.com/docs/8.x/eloquent-relationships#counting-related-models
+// https://blog.pusher.com/advanced-laravel-eloquent-usage/
+// https://pusher.com/tutorials/?q=laravel
 
 
 
@@ -744,6 +746,154 @@ public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
 
         return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
     }
+
+
+=========================
+EXPORTANDO DADOS COM MPDF
+=========================
+1 - Páginas de referência: 
+    video tutorial =    https://www.youtube.com/watch?v=07XlgQuX_dA&t=603s (Export Data to PDF - Become a Master in Laravel - 39)
+    criar tabelas =     https://divtable.com/table-styler/
+    biblioteca =        https://github.com/mpdf/mpdf
+    documentação =      https://mpdf.github.io/
+
+
+2 - No terminal, na pasta do seu projeto, instale a biblioteca com o comando abaixo:
+    composer require mpdf/mpdf
+
+3 - Após a instalação, na pasta routes/web, crie as rotas para os metodos nos controllers que exibirão os PDFs como abaixo:
+    // RELATÓRIOS PRODUTOS
+    Route::get('admin/produto/pdf/relatoriopdfproduto', [ProdutoController::class, 'relatoriopdfproduto'])->name('admin.produto.relatoriopdfproduto')->middleware(['auth']);
+
+4 - Crie o método relatoriopdfproduto no controller ProdutoController para testar a rota, como abaixo:
+    public function relatoriopdfproduto()
+    {
+        return "Relatório PDF";
+    }
+
+5 - Crie o link na view index (ou onde mais interessar possa) para vincular à roda criada acima, como abaixo: Testa a rota clicando no link
+    <a class="btn btn-primary btn-danger" href="{{route('admin.produto.relatoriopdfproduto')}}" role="button" style="margin-bottom: 10px" target="_blank">
+        <i class="far fa-file-pdf"></i>pdf
+    </a>
+
+6 - Crie a pasta view/admin/produto/pdf
+
+7 - Crie o arquivo pdfproduto.blade.php dentro da pasta view/admin/produto/pdf/ com a estrutura abaixo:
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>SEDES - Produto</title>
+    </head>
+
+
+    <body>
+        <table style="width: 717px; border-collapse: collapse;">
+
+            @foreach ($produtos as $produto)
+                <tr @if($loop->even) style="background-color: #e3e3e3;" @endif>
+                    <td style="width: 50px;" class="dados-lista">{{$produto->id}}</td>
+                    <td style="width: 667px;" class="dados-lista">{{$produto->nome}}</td>
+                </tr>
+            @endforeach
+
+        </table>
+    </body>
+    </html>
+
+
+8 - Substitua o conteúdo do método relatoriopdfproduto criado no passo 4, pelo descrito abaixo
+    
+    public function relatoriopdfproduto()
+    {
+        $produtos =  Produto::all();
+
+        return view('admin.produto.pdf.pdfproduto', compact('produtos'));
+    }
+
+
+9 - Clinque no link novamente para descrito no passo 5 para testar a chamada da view e exibir os dados
+
+10 - Substitua o conteúdo do método relatoriopdfproduto, pelo descrito abaixo
+
+    public function relatoriopdfproduto()
+    {
+        // Obtendo os dados
+        $produtos =  Produto::all();
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('Produtos_lista.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 32,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 83px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 352px;" class="titulo-rel">
+                        PRODUTOS
+                    </td>
+                </tr>
+            </table>
+            <table style="width:717px; border-collapse: collapse;">
+                <tr>
+                    <td width="50px" class="col-header-table">ID</td>
+                    <td width="400px" class="col-header-table">NOME</td>
+                </tr>
+            </table>
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="239px">São Luis(MA) {DATE d/m/Y}</td>
+                    <td width="239px" align="center"></td>
+                    <td width="239px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.produto.pdf.pdfproduto', compact('produtos'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+        //return view('admin.produto.pdf.pdfproduto', compact('produtos'));
+    }
+
+11 - Clinck no link para gerar o arquivo .pdf e veja o arquivo .pdf gerado
+
+
+
 
 
 ==============================

@@ -89,10 +89,17 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::resource('medida', MedidaController::class)->middleware(['auth']);
 
 
-
     // Users
     Route::resource('user', UserController::class)->middleware(['auth']);
     Route::get('user/{id}/profile', [UserController::class, 'profile'])->name('user.profile')->middleware(['auth']);
     Route::put('/user/{id}/updateprofile', [UserController::class, 'updateprofile'])->name('user.updateprofile')->middleware(['auth']);
 
 });
+
+
+/***********************************************/
+/*   ROTAS PARA RELATÓRIOS PDF's, Excel e CSV  */
+/***********************************************/
+// RELATÓRIOS PRODUTOS
+Route::get('admin/produto/pdf/relatoriopdfproduto', [ProdutoController::class, 'relatoriopdfproduto'])->name('admin.produto.relatoriopdfproduto')->middleware(['auth']);
+
