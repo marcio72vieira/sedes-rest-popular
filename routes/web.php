@@ -103,3 +103,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
 // RELATÓRIOS PRODUTOS
 Route::get('admin/produto/pdf/relatoriopdfproduto', [ProdutoController::class, 'relatoriopdfproduto'])->name('admin.produto.relatoriopdfproduto')->middleware(['auth']);
 
+
+// RELATÓRIOS COMPRAS
+//Route::get('admin/compra/pdf/{id}/relpdfcompra', [CompraController::class, 'relpdfcompra'])->name('admin.compra.relpdfcompra')->middleware(['auth']);
+Route::get('admin/restaurante/{idrest}compra/{idcompra}/pdf/relpdfcompra', [CompraController::class, 'relpdfcompra'])->name('admin.restaurante.compra.relpdfcompra')->middleware(['auth']);
