@@ -18,7 +18,7 @@ class CreateCompraProdutoTable extends Migration
             $table->foreignId('produto_id')->constrained()->onDelete('cascade');
             $table->decimal('quantidade',12,2);
             $table->integer('medida_id');
-            $table->string('detalhe');
+            $table->string('detalhe')->nullable();
             $table->decimal('preco',12,2);
             $table->string('af');
             $table->decimal('precototal',12,2);

@@ -893,6 +893,62 @@ EXPORTANDO DADOS COM MPDF
 11 - Clinck no link para gerar o arquivo .pdf e veja o arquivo .pdf gerado
 
 
+===================================================
+CRIANDO SEEDER PARA POPULAR TABELAS APÓS INSTALAÇÃO
+===================================================
+1 - Criar o seeder com o comando abaixo, para criar o arquivo em database/seeders
+    php artisan make:seeder MunicipioSeeder
+
+2 - Importar o modelo como qual se quer trabalhar
+    use App\Models\Municipio
+
+3 - No método Run(), crie uma nova instância do municipio e atribua valores aos campos. Salve o objeto, como segue abaixo
+    public function run()
+    {
+        $municipio = new Municipio();
+        $municipio->nome = "São Luis";
+        $municipio->ativo = true;
+        $municipio->save();
+    }
+
+4 - Execute os passos de 1 a 3 descritos acima alterando apenas o método run() do seeder de User
+    além de importar a classe Has, como descrito abaixo
+
+    use Illuminate\Support\Facades\Hash;
+
+    // Campos nullable não é necessário ser informado
+    public function run()
+    {
+        $user = new User();
+        $user->fullname = "Marcio Nonato F Vieira";
+        $user->cpf = "471.183.423-11";
+        $user->telefone = "(98) 98702-3329";
+	    $user->name = "Marcio Vieira";
+	    $user->email = "marcio@seati.ma.gov.br";
+        $user->perfil = "adm";
+        $user->municipio_id = 1;
+	    $user->password = Hash::make('123456');
+	    $user->save();
+    }
+
+5 - No método run() do Seeder padrão (DatabaseSeeder.php), chamar as seeder criadas com o método call
+    como descrito abaixo
+
+    public function run()
+    {
+        // \App\Models\User::factory(10)->create();
+        $this->call(MunicipioSeeder::class);
+        $this->call(UserSeeder::class);
+    }
+
+6 - No terminal, rode as seeder com uma das formas abaixo:
+    a) php artisan db:seed (Roda todas as seeders)
+    b) php artisan db:seed --class=NomeDaSeeder (roda uma seeder específica)
+    c) php artisan migrate:fresh --seed
+
+
+
+
 
 
 
