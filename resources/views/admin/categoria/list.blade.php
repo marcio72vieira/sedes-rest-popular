@@ -5,14 +5,14 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Municípios da regional: {{ $regional->nome }}</strong></h5>
+    <h5><strong>Produtos da categoria: {{ $categoria->nome }}</strong></h5>
 
-    <a class="btn btn-primary" href="{{route('admin.regional.index')}}" role="button" style="margin-bottom: 6px;">
+    <a class="btn btn-primary" href="{{route('admin.categoria.index')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>
         Voltar
     </a>
 
-    <a class="btn btn-primary btn-danger" href="{{route('admin.regional.relpdfregionalmunicipios', $regional->id)}}" role="button" style="margin-bottom: 10px" target="_blank">
+    <a class="btn btn-primary btn-danger" href="{{route('admin.categoria.relpdfcategoriaprodutos', $categoria->id)}}" role="button" style="margin-bottom: 10px" target="_blank">
         <i class="far fa-file-pdf"></i>pdf
     </a>
 
@@ -32,12 +32,12 @@
                     </thead>
 
                     <tbody>
-                        @foreach($municipios as $municipio)
+                        @foreach($produtos as $produto)
                             <tr>
-                                <td>{{$municipio->id}}</td>
-                                <td>{{$municipio->nome}}</td>
+                                <td>{{$produto->id}}</td>
+                                <td>{{$produto->nome}}</td>
                                 <td>
-                                    @if($municipio->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> 
+                                    @if($produto->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> 
                                     @else <b><i class="fas fa-times  text-danger mr-2"></i></b> 
                                     @endif
                                 </td>

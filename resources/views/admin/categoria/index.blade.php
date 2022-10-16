@@ -12,6 +12,11 @@
             Adicionar
         </a>
 
+        <a class="btn btn-primary btn-danger" href="{{route('admin.categoria.relpdfcategoria')}}" role="button" style="margin-bottom: 10px" target="_blank">
+            <i class="far fa-file-pdf"></i> pdf
+        </a>
+
+
         @if(session('sucesso'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>OK!</strong> {{session('sucesso')}}
@@ -44,6 +49,7 @@
                                 <td>{{$categoria->nome}}</td>
                                 <td>@if($categoria->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
                                 <td>
+                                    <a href="{{route('admin.categoria.listarprodutos', $categoria->id)}}" title="produtos desta categoria"><i class="fas fa-list text-success mr-2"></i></i></a>
                                     <a href="{{route('admin.categoria.show', $categoria->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.categoria.edit', $categoria->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                                     <a data-idcategoria="{{$categoria->id}}" class="deletarcategoria" href="" data-toggle="modal" data-target="#formDelete{{$categoria->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>

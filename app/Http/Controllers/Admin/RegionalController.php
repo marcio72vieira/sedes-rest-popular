@@ -106,7 +106,7 @@ class RegionalController extends Controller
     /*    RELATÓRIOS PDF's, Excel e CSV    */
     /***************************************/
 
-    public function relatoriopdfregional()
+    public function relpdfregional()
     {
         // Obtendo os dados
         $regionais =  Regional::all();
@@ -180,7 +180,7 @@ class RegionalController extends Controller
 
 
     // --- Relatório PDF Municípios da Regional
-    public function relpdfmunicipiosregional($id)
+    public function relpdfregionalmunicipios($id)
     {
         // Obtendo os dados
         $regional = Regional::find($id);
@@ -239,7 +239,7 @@ class RegionalController extends Controller
 
 
         // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
-        $html = \View::make('admin.regional.pdf.pdfmunicipiosregional', compact('municipios'));
+        $html = \View::make('admin.regional.pdf.pdfregionalmunicipios', compact('municipios'));
         $html = $html->render();
 
         // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.regional.pdf.pdfregional')

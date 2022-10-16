@@ -12,7 +12,7 @@
             Adicionar
         </a>
 
-        <a class="btn btn-primary btn-danger" href="{{route('admin.produto.relatoriopdfproduto')}}" role="button" style="margin-bottom: 10px" target="_blank">
+        <a class="btn btn-primary btn-danger" href="{{route('admin.produto.relpdfproduto')}}" role="button" style="margin-bottom: 10px" target="_blank">
             <i class="far fa-file-pdf"></i>pdf
         </a>
 

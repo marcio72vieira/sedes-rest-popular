@@ -12,8 +12,8 @@
             Adicionar
         </a>
 
-        <a class="btn btn-primary btn-danger" href="{{route('admin.regional.relatoriopdfregional')}}" role="button" style="margin-bottom: 10px" target="_blank">
-            <i class="far fa-file-pdf"></i>pdf
+        <a class="btn btn-primary btn-danger" href="{{route('admin.regional.relpdfregional')}}" role="button" style="margin-bottom: 10px" target="_blank">
+            <i class="far fa-file-pdf"></i> pdf
         </a>
 
         @if(session('sucesso'))
@@ -48,8 +48,8 @@
                                 <td>{{$regional->nome}}</td>
                                 <td>@if($regional->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
                                 <td>
-                                    <a href="{{route('admin.regional.relpdfmunicipiosregional', $regional->id)}}" title="pdf municípios desta regional" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>
-                                    <a href="{{route('admin.regional.listarmunicipios', $regional->id)}}" title="municípios desta regional"><i class="far fa-map text-success mr-2"></i></i></a>
+                                    {{--<a href="{{route('admin.regional.relpdfmunicipiosregional', $regional->id)}}" title="pdf municípios desta regional" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>--}}
+                                    <a href="{{route('admin.regional.listarmunicipios', $regional->id)}}" title="municípios desta regional"><i class="fas fa-list text-success mr-2"></i></i></a>
                                     <a href="{{route('admin.regional.show', $regional->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.regional.edit', $regional->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                                     {{-- Se o id da regional atual estiver dentro do array de regsvinculados, impede a deleção acidental. --}}

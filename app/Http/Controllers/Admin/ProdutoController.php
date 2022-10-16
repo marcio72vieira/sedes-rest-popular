@@ -100,15 +100,16 @@ class ProdutoController extends Controller
 
     }
 
-
+    
+    
     /***************************************/
     /*    RELATÓRIOS PDF's, Excel e CSV    */
     /***************************************/
 
-    public function relatoriopdfproduto()
+    public function relpdfproduto()
     {
         // Obtendo os dados
-        $produtos =  Produto::all();
+        $produtos =  Produto::with('categoria')->orderBy('nome', 'ASC')->get();
 
         // Definindo o nome do arquivo a ser baixado
         $fileName = ('Produtos_lista.pdf');
@@ -144,7 +145,8 @@ class ProdutoController extends Controller
             <table style="width:717px; border-collapse: collapse;">
                 <tr>
                     <td width="50px" class="col-header-table">ID</td>
-                    <td width="550px" class="col-header-table">NOME</td>
+                    <td width="276px" class="col-header-table">NOME</td>
+                    <td width="275px" class="col-header-table">CATEGORIA</td>
                     <td width="115px" class="col-header-table">ATIVO</td>
                 </tr>
             </table>

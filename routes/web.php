@@ -56,7 +56,6 @@ Route::prefix('admin')->name('admin.')->group(function() {
 
     // Dashboard
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth']);
-
     // Companhia
     // Route::post('getbairros',[CompanhiaController::class, 'getbairros'])->name('getbairros');
     // Route::resource('companhia', CompanhiaController::class);
@@ -89,9 +88,15 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Impede a exclusão de um município, no caso de haver algum bairro associado a ele através da rota 'getmountbairros'
     Route::post('getamountbairros',[MunicipioController::class, 'getamountbairros'])->name('getamountbairros')->middleware(['auth']);
     Route::resource('municipio', MunicipioController::class)->middleware(['auth']);
+    Route::get('municipio/{id}/listarbairros', [MunicipioController::class, 'listarbairros'])->name('municipio.listarbairros')->middleware(['auth']);
+
+    // Categorias
+    Route::resource('categoria', CategoriaController::class)->middleware(['auth']);
+    Route::get('categoria/{id}/listarprodutos', [CategoriaController::class, 'listarprodutos'])->name('categoria.listarprodutos')->middleware(['auth']);
+
+
 
     Route::resource('bairro', BairroController::class)->middleware(['auth']);
-    Route::resource('categoria', CategoriaController::class)->middleware(['auth']);
     Route::resource('produto', ProdutoController::class)->middleware(['auth']);
     Route::resource('medida', MedidaController::class)->middleware(['auth']);
 
@@ -108,12 +113,37 @@ Route::prefix('admin')->name('admin.')->group(function() {
 /*   ROTAS PARA RELATÓRIOS PDF's, Excel e CSV  */
 /***********************************************/
 // RELATÓRIOS REGIONAIS
-Route::get('admin/regional/pdf/relatoriopdfregional', [RegionalController::class, 'relatoriopdfregional'])->name('admin.regional.relatoriopdfregional')->middleware(['auth']);
-Route::get('admin/regional/{id}/pdf/relpdfmunicipiosregional', [RegionalController::class, 'relpdfmunicipiosregional'])->name('admin.regional.relpdfmunicipiosregional')->middleware(['auth']);
+Route::get('admin/regional/pdf/relpdfregional', [RegionalController::class, 'relpdfregional'])->name('admin.regional.relpdfregional')->middleware(['auth']);
+Route::get('admin/regional/{id}/pdf/relpdfregionalmunicipios', [RegionalController::class, 'relpdfregionalmunicipios'])->name('admin.regional.relpdfregionalmunicipios')->middleware(['auth']);
+
+
+
+
+// RELATÓRIOS MUNICÍPIOS
+Route::get('admin/municipio/pdf/relpdfmunicipio', [MunicipioController::class, 'relpdfmunicipio'])->name('admin.municipio.relpdfmunicipio')->middleware(['auth']);
+Route::get('admin/municipio/{id}/pdf/relpdfmunicipiobairros', [MunicipioController::class, 'relpdfmunicipiobairros'])->name('admin.municipio.relpdfmunicipiobairros')->middleware(['auth']);
+
+
+
+// RELATÓRIOS BAIRROS
+Route::get('admin/bairro/pdf/relpdfbairro', [BairroController::class, 'relpdfbairro'])->name('admin.bairro.relpdfbairro')->middleware(['auth']);
+
+
+
+// RELATÓRIOS CATEGORIAS
+Route::get('admin/categoria/pdf/relpdfcategoria', [CategoriaController::class, 'relpdfcategoria'])->name('admin.categoria.relpdfcategoria')->middleware(['auth']);
+Route::get('admin/categoria/{id}/pdf/relpdfcategoriaprodutos', [CategoriaController::class, 'relpdfcategoriaprodutos'])->name('admin.categoria.relpdfcategoriaprodutos')->middleware(['auth']);
+
 
 
 // RELATÓRIOS PRODUTOS
-Route::get('admin/produto/pdf/relatoriopdfproduto', [ProdutoController::class, 'relatoriopdfproduto'])->name('admin.produto.relatoriopdfproduto')->middleware(['auth']);
+Route::get('admin/produto/pdf/relpdfproduto', [ProdutoController::class, 'relpdfproduto'])->name('admin.produto.relpdfproduto')->middleware(['auth']);
+
+
+
+// RELATÓRIOS MEDIDAS
+Route::get('admin/medida/pdf/relpdfmedida', [MedidaController::class, 'relpdfmedida'])->name('admin.medida.relpdfmedida')->middleware(['auth']);
+
 
 
 
