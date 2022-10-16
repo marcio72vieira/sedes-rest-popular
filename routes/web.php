@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\NutricionistaController;
 use App\Http\Controllers\Admin\CompraController;
 //  use App\Http\Controllers\Admin\CompanhiaController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RegionalController;
 use App\Http\Controllers\Admin\MunicipioController;
 use App\Http\Controllers\Admin\BairroController;
 use App\Http\Controllers\Admin\CategoriaController;
@@ -78,6 +79,12 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Comprovante (Rota aninhada) fica do tipo: compra/1/comprovante
     Route::resource('compra.comprovante', ComprovanteController::class)->except(['show', 'edit', 'update'])->middleware(['auth']);
 
+
+    // Regional
+    Route::resource('regional', RegionalController::class)->middleware(['auth']);
+    Route::get('regional/{id}/listarmunicipios', [RegionalController::class, 'listarmunicipios'])->name('regional.listarmunicipios')->middleware(['auth']);
+
+
     // Municipio
     // Impede a exclusão de um município, no caso de haver algum bairro associado a ele através da rota 'getmountbairros'
     Route::post('getamountbairros',[MunicipioController::class, 'getamountbairros'])->name('getamountbairros')->middleware(['auth']);
@@ -100,10 +107,17 @@ Route::prefix('admin')->name('admin.')->group(function() {
 /***********************************************/
 /*   ROTAS PARA RELATÓRIOS PDF's, Excel e CSV  */
 /***********************************************/
+// RELATÓRIOS REGIONAIS
+Route::get('admin/regional/pdf/relatoriopdfregional', [RegionalController::class, 'relatoriopdfregional'])->name('admin.regional.relatoriopdfregional')->middleware(['auth']);
+Route::get('admin/regional/{id}/pdf/relpdfmunicipiosregional', [RegionalController::class, 'relpdfmunicipiosregional'])->name('admin.regional.relpdfmunicipiosregional')->middleware(['auth']);
+
+
 // RELATÓRIOS PRODUTOS
 Route::get('admin/produto/pdf/relatoriopdfproduto', [ProdutoController::class, 'relatoriopdfproduto'])->name('admin.produto.relatoriopdfproduto')->middleware(['auth']);
+
 
 
 // RELATÓRIOS COMPRAS
 //Route::get('admin/compra/pdf/{id}/relpdfcompra', [CompraController::class, 'relpdfcompra'])->name('admin.compra.relpdfcompra')->middleware(['auth']);
 Route::get('admin/restaurante/{idrest}compra/{idcompra}/pdf/relpdfcompra', [CompraController::class, 'relpdfcompra'])->name('admin.restaurante.compra.relpdfcompra')->middleware(['auth']);
+

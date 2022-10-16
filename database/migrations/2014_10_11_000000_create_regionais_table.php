@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMunicipiosTable extends Migration
+class CreateRegionaisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateMunicipiosTable extends Migration
      */
     public function up()
     {
-        Schema::create('municipios', function (Blueprint $table) {
+        Schema::create('regionais', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
             $table->boolean('ativo');
-
-            //Cria o campo reginal_id na tabela cidade, referenciando a tabela regionais
-            $table->foreignId('regional_id')->constrained('regionais')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateMunicipiosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('municipios');
+        Schema::dropIfExists('regionais');
     }
 }

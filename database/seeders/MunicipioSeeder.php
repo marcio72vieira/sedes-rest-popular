@@ -16,8 +16,9 @@ class MunicipioSeeder extends Seeder
     public function run()
     {
         $municipio = new Municipio();
-            $municipio->nome = "São Luis";
+            $municipio->nome = "SÃO LUIS";
             $municipio->ativo = true;
+            $municipio->regional_id = 1;
         $municipio->save();
 
     }

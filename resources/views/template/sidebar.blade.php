@@ -83,11 +83,13 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Tabelas de Suporte:</h6>
-                    <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-globe-americas"></i>
+                    <a class="collapse-item" href="{{ route('admin.regional.index') }}"><i class="fas fa-globe-americas"></i>
+                        Regionais</a>
+                    <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-map-marked-alt"></i>
                         Municípios</a>
                     <a class="collapse-item" href="{{ route('admin.bairro.index') }}"><i class="fas fa-location-arrow"></i>
                         Bairros</a>
-                    <a class="collapse-item" href="{{ route('admin.categoria.index') }}"><i class="fas fa-list"></i>
+                    <a class="collapse-item" href="{{ route('admin.categoria.index') }}"><i class="fas fa-stream"></i></i>
                         Categorias</a>
                     <a class="collapse-item" href="{{ route('admin.produto.index') }}"><i class="fas fa-leaf"></i>
                         Produtos</a>

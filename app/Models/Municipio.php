@@ -11,7 +11,8 @@ class Municipio extends Model
 
     protected $fillable = [
         'nome',
-        'ativo'
+        'ativo',
+        'regional_id'
     ];
 
 
@@ -29,5 +30,9 @@ class Municipio extends Model
 
     public function bairros(){
         return $this->hasMany(Bairro::class);
+    }
+
+    public function regional(){
+        return $this->belongsTo(Regional::class);
     }
 }

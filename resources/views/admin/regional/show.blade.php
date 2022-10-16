@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h5 class="h5 mb-4 text-gray-800"> Suporte / Municípios / Cadastrar</h5>
+    <h5 class="h5 mb-4 text-gray-800"> Suporte / Regionais / Exibir</h5>
 
     <div class="row">
 
@@ -16,15 +16,14 @@
 
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        Municípios<br>
+                        {{$regional->nome}}<br>
                         <span class="small text-secondary">Campo marcado com * é de preenchimento obrigatório!</span>
                     </h6>
                 </div>
 
                 <div class="card-body">
 
-                    <form action="{{route('admin.municipio.store')}}" method="POST" autocomplete="off">
-                        @csrf
+                    <form action="" method="" autocomplete="off">
 
                         <div class="pl-lg-4">
                             <div class="row">
@@ -32,40 +31,24 @@
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="nome">Nome<span class="small text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="nome" name="nome" value="{{old('nome')}}" required>
+                                        <input type="text" class="form-control" id="nome" name="nome" value="{{$regional->nome}}" readonly>
                                         @error('nome')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>
                                 </div>
 
-                                {{-- regional_id --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="regional_id">Regional<span class="small text-danger">*</span></label>
-                                        <select name="regional_id" id="regional_id" class="form-control" required>
-                                            <option value="" selected disabled>Escolha...</option>
-                                            @foreach($regionais  as $regional)
-                                                <option value="{{$regional->id}}" {{old('regional_id') == $regional->id ? 'selected' : ''}}>{{$regional->nome}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('regional_id')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
                                 {{-- ativo --}}
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
                                         <div style="margin-top: 5px">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1" {{old('ativo') == '1' ? 'checked' : ''}} required>
+                                                <input class="form-check-input" type="radio" name="ativo" id="ativosim" value="1"  {{old('ativo', $regional->ativo) == '1' ? 'checked' : ''}}  disabled>
                                                 <label class="form-check-label" for="ativosim">Sim</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0" {{old('ativo') == '0' ? 'checked' : ''}} required>
+                                                <input class="form-check-input" type="radio" name="ativo" id="ativonao" value="0"  {{old('ativo', $regional->ativo) == '0' ? 'checked' : ''}}  disabled>
                                                 <label class="form-check-label" for="ativonao">Não</label>
                                             </div>
                                             @error('ativo')
@@ -78,15 +61,13 @@
                                 <!-- Buttons -->
                                 <div class="pl-lg-4">
                                         <div style="margin-top: 30px">
-                                            <a class="btn btn-primary" href="{{route('admin.municipio.index')}}" role="button">Cancelar</a>
-                                            <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button>
+                                            <a class="btn btn-primary" href="{{route('admin.regional.index')}}" role="button">
+                                                <i class="fas fa-undo-alt"></i> Retornar
+                                            </a>
                                         </div>
                                 </div>
-
                             </div>
-
                         </div>
-
 
                     </form>
 
@@ -100,4 +81,3 @@
 
 </div>
 @endsection
-

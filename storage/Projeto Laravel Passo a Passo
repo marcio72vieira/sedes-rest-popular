@@ -966,3 +966,45 @@ COMENTÁRIOS SOLTOS DE CÓDIGOS
 $comprovanteURL = $request->comprovante->store("documentos/$restaurante/$compra->id", "public");
 
  //return "Comprovantes relativos à compra: {$idcompra} ".$idcompra ;
+
+
+==============================================================================
+MODELOS E MIGRATIONS QUE NÃO OBEDECEM O PADRÃO DO PLURAL DOS NOMES DAS TABELAS
+==============================================================================
+1 - Crie a migration regionais com o comando abaixo:
+    php artisan make:migration create_regionais_table (irá criar a tabela regionais)
+
+2 - Na migration da tabela cidades, que depende de regionais crie a chave estrangeira como segue:
+    ...
+    $table->foreignId('regional_id')->constrained('regionais')->onDelete('cascade');
+    ...
+    Explicando
+    Irá criar o campo regional_id na tabela cidade referenciando a tabela 'regionais'. 
+    Houve a necessidde de explicitar o nome da tabela relacionada dentro da função contrained('regionais'), 
+    visto que o laravel esperava uma tabela com o nome 'regionals' que é o plural de regional, como essa 
+    tabela não existe e sim a tabela 'regionais' é necessário indicar seu nome na função constrained().
+
+3 - No modelo Regional (criado com o comando: php artisan make:model Regional) tem-se que indicar o nome
+    da tabela a que esse modelo faz referẽncia com a variável protected $table, já que o Laravel mais uma vez
+    esperava uma tabela com o nome 'regionals' e não 'regionais' como foi criado pela migration acima.
+    class Regional extends Model
+    {
+        use HasFactory;
+
+        protected $table = "regionais";
+    }
+
+
+=============================
+TABELA ESTATÍSTICAS ou VIEWS
+============================
+1 - Crio uma tabela estatisticas com seu respectivo modelo, cujos dados serão salvos/atualizados 
+    sempre que houver adição/alteção de uma compra no estilo com compra_produto onde deverá constar os seguintes campos:
+    id;
+    id_compra; id_produto, quantidade, medida_id, detalhe, preco, af, precototal,
+    semana_num, semana_desc, mes_num, mes_desc, data_ini, data_fin, valor, valoraf, valortoal,
+    regional_id, nome_regional, municipio_id, nome_municipio_, bairro_id, nome_bairro,
+    empresa_id, nome_fantasia, nutricionista_id, nome_nutricionista, user_id, nome_user,
+    restaurante_id, identificacao, 
+    
+How I know whats records ware deleted with function sync in the laravel

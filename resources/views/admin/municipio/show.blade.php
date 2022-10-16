@@ -38,8 +38,24 @@
                                     </div>
                                 </div>
 
+                                {{-- regional_id --}}
+                                <div class="col-lg-2">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="regional_id">Regional<span class="small text-danger">*</span></label>
+                                        <select name="regional_id" id="regional_id" class="form-control" disabled>
+                                            <option value="" selected disabled>Escolha...</option>
+                                            @foreach($regionais  as $regional)
+                                                <option value="{{$regional->id}}" {{old('regional_id', $municipio->regional_id) == $regional->id ? 'selected' : ''}}>{{$regional->nome}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('regional_id')
+                                            <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 {{-- ativo --}}
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
                                         <div style="margin-top: 5px">

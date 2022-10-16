@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MunicipioUpdateRequest extends FormRequest
+class RegionalCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class MunicipioUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'bail|required|min:3',
-            'ativo' => 'bail|required',
-            'regional_id' => 'bail|required'
+            'nome' => 'bail|required|min:3|unique:regionais,nome',
+            'ativo' => 'bail|required'
         ];
     }
 }

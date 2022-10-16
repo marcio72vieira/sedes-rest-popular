@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h5 class="h5 mb-4 text-gray-800"> Suporte / Municípios / Cadastrar</h5>
+    <h5 class="h5 mb-4 text-gray-800"> Suporte / Regionais / Cadastrar</h5>
 
     <div class="row">
 
@@ -16,14 +16,14 @@
 
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        Municípios<br>
+                        Regionais<br>
                         <span class="small text-secondary">Campo marcado com * é de preenchimento obrigatório!</span>
                     </h6>
                 </div>
 
                 <div class="card-body">
 
-                    <form action="{{route('admin.municipio.store')}}" method="POST" autocomplete="off">
+                    <form action="{{route('admin.regional.store')}}" method="POST" autocomplete="off">
                         @csrf
 
                         <div class="pl-lg-4">
@@ -39,24 +39,8 @@
                                     </div>
                                 </div>
 
-                                {{-- regional_id --}}
-                                <div class="col-lg-2">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label" for="regional_id">Regional<span class="small text-danger">*</span></label>
-                                        <select name="regional_id" id="regional_id" class="form-control" required>
-                                            <option value="" selected disabled>Escolha...</option>
-                                            @foreach($regionais  as $regional)
-                                                <option value="{{$regional->id}}" {{old('regional_id') == $regional->id ? 'selected' : ''}}>{{$regional->nome}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('regional_id')
-                                            <small style="color: red">{{$message}}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
                                 {{-- ativo --}}
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="ativo">Ativo ? <span class="small text-danger">*</span></label>
                                         <div style="margin-top: 5px">
@@ -78,7 +62,7 @@
                                 <!-- Buttons -->
                                 <div class="pl-lg-4">
                                         <div style="margin-top: 30px">
-                                            <a class="btn btn-primary" href="{{route('admin.municipio.index')}}" role="button">Cancelar</a>
+                                            <a class="btn btn-primary" href="{{route('admin.regional.index')}}" role="button">Cancelar</a>
                                             <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button>
                                         </div>
                                 </div>

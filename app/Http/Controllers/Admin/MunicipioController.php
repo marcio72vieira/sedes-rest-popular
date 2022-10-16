@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Municipio;
+use App\Models\Regional;
 use App\Http\Requests\MunicipioCreateRequest;
 use App\Http\Requests\MunicipioUpdateRequest;
 
@@ -12,14 +13,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Bairro;
 
 
 class MunicipioController extends Controller
 {
     public function index()
     {
-        $municipios = Municipio::all();
+        $municipios = Municipio::with('regional')->get();
 
         return view('admin.municipio.index', compact('municipios'));
     }
@@ -42,7 +42,8 @@ class MunicipioController extends Controller
 
     public function create()
     {
-        return view('admin.municipio.create');
+        $regionais = Regional::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        return view('admin.municipio.create', compact('regionais'));
     }
 
 
@@ -58,17 +59,19 @@ class MunicipioController extends Controller
 
     public function show($id)
     {
+        $regionais = Regional::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
         $municipio = Municipio::find($id);
 
-        return view('admin.municipio.show', compact('municipio'));
+        return view('admin.municipio.show', compact('municipio', 'regionais'));
     }
 
 
     public function edit($id)
     {
+        $regionais = Regional::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
         $municipio = Municipio::find($id);
 
-        return view('admin.municipio.edit', compact('municipio'));
+        return view('admin.municipio.edit', compact('regionais', 'municipio'));
     }
 
 

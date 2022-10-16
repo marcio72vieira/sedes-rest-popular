@@ -25,7 +25,8 @@ class MunicipioCreateRequest extends FormRequest
     {
         return [
             'nome' => 'bail|required|min:3|unique:municipios,nome',
-            'ativo' => 'bail|required'
+            'ativo' => 'bail|required',
+            'regional_id' => 'bail|required'
         ];
     }
 }
