@@ -73,6 +73,28 @@
         </div>
     -->
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompra"
+            aria-expanded="true" aria-controls="collapseThree">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Compras</span>
+        </a>
+        <div id="collapseCompra" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Registro de Compras:</h6>
+                <a class="collapse-item" href="{{ route('admin.regional.index') }}"><i class="fas fa-shopping-cart"></i>
+                    Registros</a>
+                <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-search-dollar"></i>
+                    Consultar</a>
+            </div>
+        </div>
+    </li>
+
+
+
+
+
+
      <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"

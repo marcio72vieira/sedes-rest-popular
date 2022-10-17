@@ -36,6 +36,7 @@
                         <tr>
                             <th>Id</th>
                             <th>Nome</th>
+                            <th>Nº Municípios</th>
                             <th>Ativo</th>
                             <th>Ações</th>
                         </tr>
@@ -46,6 +47,7 @@
                             <tr>
                                 <td>{{$regional->id}}</td>
                                 <td>{{$regional->nome}}</td>
+                                <td>{{$regional->qtdmunicipiosvinc($regional->id)}}</td>
                                 <td>@if($regional->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
                                 <td>
                                     {{--<a href="{{route('admin.regional.relpdfmunicipiosregional', $regional->id)}}" title="pdf municípios desta regional" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>--}}
@@ -53,10 +55,11 @@
                                     <a href="{{route('admin.regional.show', $regional->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.regional.edit', $regional->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                                     {{-- Se o id da regional atual estiver dentro do array de regsvinculados, impede a deleção acidental. --}}
-                                    @if(in_array($regional->id,$regsvinculados))
-                                        <a href="" title="há municípios vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
-                                    @else
+                                    {{-- @if(in_array($regional->id,$regsvinculados)) --}}
+                                    @if($regional->qtdmunicipiosvinc($regional->id) == 0)
                                         <a href="" data-toggle="modal" data-target="#formDelete{{$regional->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    @else
+                                        <a href="" title="há municípios vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
                                     @endif
 
 

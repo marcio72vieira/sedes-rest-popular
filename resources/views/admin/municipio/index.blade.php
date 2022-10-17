@@ -37,6 +37,7 @@
                             <th>Id</th>
                             <th>Nome</th>
                             <th>Regional</th>
+                            <th>Nº Bairros</th>
                             <th>Ativo</th>
                             <th>Ações</th>
                         </tr>
@@ -48,12 +49,17 @@
                                 <td>{{$municipio->id}}</td>
                                 <td>{{$municipio->nome}}</td>
                                 <td>{{$municipio->regional->nome}}</td>
+                                <td>{{$municipio->qtdbairrosvinc($municipio->id)}}</td>
                                 <td>@if($municipio->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
                                 <td>
                                     <a href="{{route('admin.municipio.listarbairros', $municipio->id)}}" title="bairros deste município"><i class="fas fa-list text-success mr-2"></i></i></a>
                                     <a href="{{route('admin.municipio.show', $municipio->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.municipio.edit', $municipio->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                                    <a data-idmunicipio="{{$municipio->id}}" class="deletarmunicipio" href="" data-toggle="modal" data-target="#formDelete{{$municipio->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    @if($municipio->qtdbairrosvinc($municipio->id) == 0)
+                                        <a href="" data-toggle="modal" data-target="#formDelete{{$municipio->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    @else
+                                        <a href="" title="há municípios vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                                    @endif
 
                                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                                     <div class="modal fade" id="formDelete{{$municipio->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">

@@ -41,8 +41,8 @@ class BairroController extends Controller
 
     public function show($id)
     {
+        $bairro = Bairro::findOrFail($id);
         $municipios = Municipio::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $bairro = Bairro::find($id);
 
         return view('admin.bairro.show', compact('municipios', 'bairro'));
     }
@@ -50,8 +50,8 @@ class BairroController extends Controller
 
     public function edit($id)
     {
+        $bairro = Bairro::findOrFail($id);
         $municipios = Municipio::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $bairro = Bairro::find($id);
 
         return view('admin.bairro.edit', compact('municipios', 'bairro'));
     }
@@ -59,7 +59,7 @@ class BairroController extends Controller
 
     public function update($id, BairroUpdateRequest $request)
     {
-        $bairro = Bairro::find($id);
+        $bairro = Bairro::findOrFail($id);
 
         // Validação unique
         Validator::make($request->all(), [

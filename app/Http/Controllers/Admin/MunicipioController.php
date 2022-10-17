@@ -60,8 +60,8 @@ class MunicipioController extends Controller
 
     public function show($id)
     {
+        $municipio = Municipio::findOrFail($id);
         $regionais = Regional::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $municipio = Municipio::find($id);
 
         return view('admin.municipio.show', compact('municipio', 'regionais'));
     }
@@ -69,8 +69,8 @@ class MunicipioController extends Controller
 
     public function edit($id)
     {
+        $municipio = Municipio::findOrFail($id);
         $regionais = Regional::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $municipio = Municipio::find($id);
 
         return view('admin.municipio.edit', compact('regionais', 'municipio'));
     }
@@ -78,7 +78,7 @@ class MunicipioController extends Controller
 
     public function update($id, MunicipioUpdateRequest $request)
     {
-        $municipio = Municipio::find($id);
+        $municipio = Municipio::findOrFail($id);
 
         // Validação unique
         Validator::make($request->all(), [
@@ -109,7 +109,7 @@ class MunicipioController extends Controller
 
     public function listarbairros($id)
     {
-        $municipio = Municipio::find($id);
+        $municipio = Municipio::findOrFail($id);
         $bairros = Bairro::where('municipio_id', '=', $id)->get();
         
         return view('admin.municipio.list', compact('municipio','bairros'));
@@ -197,7 +197,7 @@ class MunicipioController extends Controller
     public function relpdfmunicipiobairros($id)
     {
         // Obtendo os dados
-        $municipio = Municipio::find($id);
+        $municipio = Municipio::findOrFail($id);
         $bairros =  Bairro::where('municipio_id', '=', $id)->orderBy('nome', 'ASC')->get();
 
         // Definindo o nome do arquivo a ser baixado

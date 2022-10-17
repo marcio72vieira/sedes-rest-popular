@@ -40,7 +40,7 @@ class MedidaController extends Controller
 
     public function show($id)
     {
-        $medida = Medida::find($id);
+        $medida = Medida::findOrFail($id);
 
         return view('admin.medida.show', compact('medida'));
     }
@@ -48,7 +48,7 @@ class MedidaController extends Controller
 
     public function edit($id)
     {
-        $medida = Medida::find($id);
+        $medida = Medida::findOrFail($id);
 
         return view('admin.medida.edit', compact('medida'));
     }
@@ -56,7 +56,7 @@ class MedidaController extends Controller
 
     public function update($id, MedidaUpdateRequest $request)
     {
-        $medida = Medida::find($id);
+        $medida = Medida::findOrFail($id);
 
         // Validação unique
         Validator::make($request->all(), [

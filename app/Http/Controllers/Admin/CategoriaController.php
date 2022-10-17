@@ -41,7 +41,7 @@ class CategoriaController extends Controller
 
     public function show($id)
     {
-        $categoria = Categoria::find($id);
+        $categoria = Categoria::findOrFail($id);
 
         return view('admin.categoria.show', compact('categoria'));
     }
@@ -49,7 +49,7 @@ class CategoriaController extends Controller
 
     public function edit($id)
     {
-        $categoria = Categoria::find($id);
+        $categoria = Categoria::findOrFail($id);
 
         return view('admin.categoria.edit', compact('categoria'));
     }
@@ -57,7 +57,7 @@ class CategoriaController extends Controller
 
     public function update($id, CategoriaUpdateRequest $request)
     {
-        $categoria = Categoria::find($id);
+        $categoria = Categoria::findOrFail($id);
 
         // Validação unique
         Validator::make($request->all(), [
@@ -89,7 +89,7 @@ class CategoriaController extends Controller
 
     public function listarprodutos($id)
     {
-        $categoria = Categoria::find($id);
+        $categoria = Categoria::findOrFail($id);
         $produtos = Produto::where('categoria_id', '=', $id)->orderBy('nome', 'ASC')->get();
         
         return view('admin.categoria.list', compact('categoria','produtos'));
@@ -177,7 +177,7 @@ class CategoriaController extends Controller
     public function relpdfcategoriaprodutos($id)
     {
         // Obtendo os dados
-        $categoria = Categoria::find($id);
+        $categoria = Categoria::findOrFail($id);
         $produtos =  Produto::where('categoria_id', '=', $id)->orderBy('nome', 'ASC')->get();
 
         // Definindo o nome do arquivo a ser baixado

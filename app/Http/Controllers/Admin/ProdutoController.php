@@ -54,7 +54,7 @@ class ProdutoController extends Controller
     public function show($id)
     {
         $categorias = Categoria::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $produto = Produto::find($id);
+        $produto = Produto::findOrFail($id);
 
         return view('admin.produto.show', compact('categorias', 'produto'));
     }
@@ -62,8 +62,8 @@ class ProdutoController extends Controller
    
     public function edit($id)
     {
+        $produto = Produto::findOrFail($id);
         $categorias = Categoria::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $produto = Produto::find($id);
 
         return view('admin.produto.edit', compact('categorias', 'produto'));
     }
@@ -71,7 +71,7 @@ class ProdutoController extends Controller
     
     public function update($id, ProdutoUpdateRequest $request)
     {
-        $produto = Produto::find($id);
+        $produto = Produto::findOrFail($id);
 
         // Validação unique
         Validator::make($request->all(), [

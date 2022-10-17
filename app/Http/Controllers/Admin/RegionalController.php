@@ -21,12 +21,17 @@ class RegionalController extends Controller
     {
         $regionais = Regional::all();
 
+        
+        /*
         //Verificando se há registros vinculados para evitar deleção acidental na view
         $havinculo = Municipio::withCount('regional')->get();
         $turnarray = $havinculo->toArray();
         $regsvinculados = Arr::pluck($turnarray, 'regional_id');
-
+        
         return view('admin.regional.index', compact('regionais', 'regsvinculados'));
+        */
+
+        return view('admin.regional.index', compact('regionais'));
     }
 
     
@@ -48,7 +53,7 @@ class RegionalController extends Controller
     
     public function show($id)
     {
-        $regional = Regional::find($id);
+        $regional = Regional::findOrFail($id);
 
         return view('admin.regional.show', compact('regional'));
     }
@@ -56,7 +61,7 @@ class RegionalController extends Controller
     
     public function edit($id)
     {
-        $regional = Regional::find($id);
+        $regional = Regional::findOrFail($id);
 
         return view('admin.regional.edit', compact('regional'));
     }
@@ -64,7 +69,7 @@ class RegionalController extends Controller
     
     public function update(RegionalUpdateRequest $request, $id)
     {
-        $regional = Regional::find($id);
+        $regional = Regional::findOrFail($id);
 
         // Validação unique
         Validator::make($request->all(), [
@@ -95,7 +100,7 @@ class RegionalController extends Controller
 
     public function listarmunicipios($id)
     {
-        $regional = Regional::find($id);
+        $regional = Regional::findOrFail($id);
         $municipios = Municipio::where('regional_id', '=', $id)->get();
         
         return view('admin.regional.list', compact('regional','municipios'));

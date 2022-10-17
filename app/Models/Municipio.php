@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Municipio extends Model
 {
@@ -34,5 +35,12 @@ class Municipio extends Model
 
     public function regional(){
         return $this->belongsTo(Regional::class);
+    }
+
+    public function qtdbairrosvinc($id)
+    {
+        $qtd = DB::table('bairros')->where('municipio_id', '=', $id)->count();
+
+        return $qtd;
     }
 }

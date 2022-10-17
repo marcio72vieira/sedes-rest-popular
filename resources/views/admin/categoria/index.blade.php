@@ -37,6 +37,7 @@
                         <tr>
                             <th>Id</th>
                             <th>Nome</th>
+                            <th>Nº Produtos</th>
                             <th>Ativo</th>
                             <th>Ações</th>
                         </tr>
@@ -47,13 +48,19 @@
                             <tr>
                                 <td>{{$categoria->id}}</td>
                                 <td>{{$categoria->nome}}</td>
+                                <td>{{$categoria->qtdprodutosvinc($categoria->id)}}</td>
                                 <td>@if($categoria->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
                                 <td>
                                     <a href="{{route('admin.categoria.listarprodutos', $categoria->id)}}" title="produtos desta categoria"><i class="fas fa-list text-success mr-2"></i></i></a>
                                     <a href="{{route('admin.categoria.show', $categoria->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.categoria.edit', $categoria->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                                    <a data-idcategoria="{{$categoria->id}}" class="deletarcategoria" href="" data-toggle="modal" data-target="#formDelete{{$categoria->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
-
+                                    @if($categoria->qtdprodutosvinc($categoria->id) == 0)
+                                        <a href="" data-toggle="modal" data-target="#formDelete{{$categoria->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    @else
+                                        <a href="" title="há produtos vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                                    @endif
+                                    
+                                    {{--<a data-idcategoria="{{$categoria->id}}" class="deletarcategoria" href="" data-toggle="modal" data-target="#formDelete{{$categoria->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>--}}
                                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                                     <div class="modal fade" id="formDelete{{$categoria->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
                                         <div class="modal-dialog">
