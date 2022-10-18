@@ -32,7 +32,7 @@ class EmpresaUpdateRequest extends FormRequest
             'logradouro' => 'bail|required',
             'numero' => 'bail|required',
             //'complemento' => 'bail|required',
-            'municipio_id' => 'bail|required',
+            'municipio' => 'bail|required',
             'bairro' => 'bail|required',
             'cep' => 'bail|required',
             'email' => 'bail|required',

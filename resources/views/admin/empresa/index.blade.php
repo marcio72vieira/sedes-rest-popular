@@ -11,6 +11,11 @@
             <i class="fas fa-plus-circle"></i>
             Adicionar
         </a>
+
+        <a class="btn btn-primary btn-danger" href="{{route('admin.empresa.relpdfempresa')}}" role="button" style="margin-bottom: 10px" target="_blank">
+          <i class="far fa-file-pdf"></i> pdf
+        </a>
+
  
         @if(session('sucesso'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -35,8 +40,9 @@
               <th>Representante</th>
               <th>Email</th>
               <th>Contato(s)</th>
+              <th>Qtd. Nut.</th>
               <th>Ativo</th>
-              <th style="width: 110px">Ações</th>
+              <th style="width: 130px">Ações</th>
             </tr>
           </thead>
 
@@ -48,19 +54,26 @@
                 <td>{{$empresa->titular}}</td>
                 <td>{{$empresa->email}}</td>
                 <td>{{$empresa->celular}} / {{$empresa->fone}}</td>
+                <td>{{$empresa->qtdnutricionistasvinc($empresa->id)}}</td>
                 {{-- <td>{{$empresa->ativo == 1 ? 'SIM' : 'NÃO'}}</td>--}}
                 <td>@if($empresa->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
                 <td>
+                    <a href="{{route('admin.empresa.listarnutricionistas', $empresa->id)}}" title="nutricionistas desta empresa"><i class="fas fa-list text-success mr-2"></i></i></a>
                     @if($empresa->ativo == 1)
                       <a href="{{route('admin.empresa.nutricionista.index', $empresa->id)}}" title="cadastrar nutricionistas"><b><i class="fas fa-user-friends text-success mr-2"></i></b></a>
                     @else
-                      <a href="#" title="cadastrar nutricionistas"><i class="fas fa-user-friends text-default mr-2"></i></a>
+                      <a href="#" title="empresa desativada"><i class="fas fa-user-friends text-secondary mr-2"></i></a>
                     @endif
                     <a href="{{route('admin.empresa.show', $empresa->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.empresa.edit', $empresa->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                     {{--<a href="{{route('admin.empresa.ficha', $empresa->id)}}" title="ficha" target="_blank"><i class="far fa-file-pdf text-danger mr-2"></i></a>--}}
-                    <a href="" data-toggle="modal" data-target="#formDelete{{$empresa->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
-                    
+                    {{--<a href="" data-toggle="modal" data-target="#formDelete{{$empresa->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>--}}                    
+                    @if($empresa->qtdnutricionistasvinc($empresa->id) == 0)
+                        <a href="" data-toggle="modal" data-target="#formDelete{{$empresa->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                    @else
+                        <a href="" title="há nutricionistas vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                    @endif
+
                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                     <div class="modal fade" id="formDelete{{$empresa->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
                         <div class="modal-dialog">

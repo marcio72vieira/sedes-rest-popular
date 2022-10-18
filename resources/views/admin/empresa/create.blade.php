@@ -161,17 +161,12 @@
                             </div>
 
                             <div class="row">
-                                {{-- municipio_id --}}
+                                {{-- municipio --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="municipio_id">Município<span class="small text-danger">*</span></label>
-                                        <select name="municipio_id" id="municipio_id" class="form-control">
-                                            <option value="" selected disabled>Escolha...</option>
-                                            @foreach($municipios  as $municipio)
-                                                <option value="{{$municipio->id}}" {{old('municipio_id') == $municipio->id ? 'selected' : ''}}>{{$municipio->nome}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('municipio_id')
+                                        <label class="form-control-label" for="municipio">Município</label>
+                                        <input type="text" id="municipio" class="form-control" name="municipio" value="{{old('municipio')}}">
+                                        @error('municipio')
                                             <small style="color: red">{{$message}}</small>
                                         @enderror
                                     </div>

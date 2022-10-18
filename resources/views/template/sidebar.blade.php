@@ -81,11 +81,11 @@
         </a>
         <div id="collapseCompra" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Registro de Compras:</h6>
+                <h6 class="collapse-header">Operação de Compras:</h6>
                 <a class="collapse-item" href="{{ route('admin.regional.index') }}"><i class="fas fa-shopping-cart"></i>
                     Registros</a>
                 <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-search-dollar"></i>
-                    Consultar</a>
+                    Consultas</a>
             </div>
         </div>
     </li>

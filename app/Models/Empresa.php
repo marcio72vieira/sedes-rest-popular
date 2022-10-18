@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Empresa extends Model
 {
@@ -18,7 +19,7 @@ class Empresa extends Model
         'logradouro',
         'numero',
         'complemento',
-        'municipio_id',
+        'municipio',
         'bairro',
         'cep',
         'email',
@@ -27,12 +28,16 @@ class Empresa extends Model
         'ativo'
     ];
 
-    public function municipio(){
-        return $this->belongsTo(Municipio::class);
-    }
 
     public function nutricionistas(){
         return $this->hasMany(Nutricionista::class);
+    }
+
+    public function qtdnutricionistasvinc($id)
+    {
+        $qtd = DB::table('nutricionistas')->where('empresa_id', '=', $id)->count();
+
+        return $qtd;
     }
 
 }

@@ -85,3 +85,28 @@
   }
 
 
+  td.label-ficha {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 7px;
+    padding: 5px;
+    border-left: 0.5px solid #000000;
+    border-top: 0.5px solid #000000;
+    border-right: 0.5px solid #000000;
+  }
+
+  td.dados-ficha {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 3px;
+    border-left: 0.5px solid #000000;
+    border-right: 0.5px solid #000000;
+  }
+
+  td.close-ficha {
+    border-top: 0.5px solid #000000;
+  }
+
+
+

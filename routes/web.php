@@ -68,6 +68,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Empresa
     Route::post('getbairros',[EmpresaController::class, 'getbairros'])->name('getbairros')->middleware(['auth']);
     Route::resource('empresa', EmpresaController::class)->middleware(['auth']);
+    Route::get('empresa/{id}/listarnutricionistas', [EmpresaController::class, 'listarnutricionistas'])->name('empresa.listarnutricionistas')->middleware(['auth']);
 
     // Nutricionista (Rota aninhada) fica do tipo: empresa/1/nutricionista.
     Route::resource('empresa.nutricionista', NutricionistaController::class)->middleware(['auth']);
@@ -112,10 +113,15 @@ Route::prefix('admin')->name('admin.')->group(function() {
 /***********************************************/
 /*   ROTAS PARA RELATÓRIOS PDF's, Excel e CSV  */
 /***********************************************/
+// RELATÓRIOS EMPRESAS
+Route::get('admin/empresa/pdf/relpdfempresa', [EmpresaController::class, 'relpdfempresa'])->name('admin.empresa.relpdfempresa')->middleware(['auth']);
+Route::get('admin/empresa/{id}/pdf/relpdfempresanutricionistas', [EmpresaController::class, 'relpdfempresanutricionistas'])->name('admin.empresa.relpdfempresanutricionistas')->middleware(['auth']);
+
+
+
 // RELATÓRIOS REGIONAIS
 Route::get('admin/regional/pdf/relpdfregional', [RegionalController::class, 'relpdfregional'])->name('admin.regional.relpdfregional')->middleware(['auth']);
 Route::get('admin/regional/{id}/pdf/relpdfregionalmunicipios', [RegionalController::class, 'relpdfregionalmunicipios'])->name('admin.regional.relpdfregionalmunicipios')->middleware(['auth']);
-
 
 
 

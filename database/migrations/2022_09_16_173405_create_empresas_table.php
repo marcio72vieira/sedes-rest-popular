@@ -23,7 +23,7 @@ class CreateEmpresasTable extends Migration
             $table->string('logradouro');
             $table->string('numero');
             $table->string('complemento')->nullable();
-            $table->foreignId('municipio_id')->constrained()->onDelete('cascade');
+            $table->string('municipio');
             $table->string('bairro');
             $table->string('cep');
             $table->string('email');
