@@ -24,7 +24,7 @@ class CompraController extends Controller
 
     public function index($idrestaurante)
     {
-        $restaurante = Restaurante::find($idrestaurante);
+        $restaurante = Restaurante::findOrFail($idrestaurante);
         $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
         $compras = Compra::where('restaurante_id', '=', $idrestaurante)->orderBy('data_ini', 'DESC')->get();
 
@@ -43,7 +43,7 @@ class CompraController extends Controller
 
     public function create($idrestaurante)
     {
-        $restaurante = Restaurante::find($idrestaurante);
+        $restaurante = Restaurante::findOrFail($idrestaurante);
 
         $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
         $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
@@ -86,8 +86,8 @@ class CompraController extends Controller
 
     public function show($idrestaurante, $idcompra)
     {
-        $restaurante = Restaurante::find($idrestaurante);
-        $compra = Compra::with('produtos')->find($idcompra);
+        $restaurante = Restaurante::findOrFail($idrestaurante);
+        $compra = Compra::with('produtos')->findOrFail($idcompra);
         $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
 
         //dd([$restaurante, $compra, $medidas]);
@@ -98,9 +98,9 @@ class CompraController extends Controller
 
     public function edit($idrestaurante, $idcompra)
     {
-        $restaurante = Restaurante::find($idrestaurante);
+        $restaurante = Restaurante::findOrFail($idrestaurante);
 
-        $compra = Compra::with('produtos')->find($idcompra);
+        $compra = Compra::with('produtos')->findOrFail($idcompra);
 
         //$produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
         $produtos = Produto::where('ativo', '=', '1')->get();
@@ -114,7 +114,7 @@ class CompraController extends Controller
     public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
     {
 
-        $compra = Compra::find($idcompra);
+        $compra = Compra::findOrFail($idcompra);
 
         $arrProdIds = [];
         $arrCampos = [];
@@ -163,8 +163,8 @@ class CompraController extends Controller
     public function relpdfcompra($idrest, $idcompra)
     {
         // Obtendo os dados
-        $restaurante = Restaurante::find($idrest);
-        $compra = Compra::with('produtos')->find($idcompra);
+        $restaurante = Restaurante::findOrFail($idrest);
+        $compra = Compra::with('produtos')->findOrFail($idcompra);
         $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
 
         // Definindo o nome do arquivo a ser baixado
@@ -174,7 +174,7 @@ class CompraController extends Controller
         $mpdf = new \Mpdf\Mpdf([
             'margin_left' => 10,
             'margin_right' => 10,
-            'margin_top' => 50,
+            'margin_top' => 60,
             'margin_bottom' => 15,
             'margin-header' => 10,
             'margin_footer' => 5
@@ -194,36 +194,54 @@ class CompraController extends Controller
                         Secretaria do Estado de Desenvolvimento Social/SEDES
                     </td>
                     <td style="width: 352px;" class="titulo-rel">
-                        Restaurante Popular - '.$restaurante->identificacao.' <br> compra nº '.$compra->id.'
+                        '.$restaurante->identificacao.' <br> compra nº '.$compra->id.'
                     </td>
                 </tr>
             </table>
-            <table style="width:717px; border-collapse: collapse;; margin-bottom: 5px">
+            <table style="width:717px; border-collapse: collapse;">
                 <tr>
-                    <td style="width: 417px"><span class="spanlabel">MUNICÍPIO: </span><span  class="spandata">'.$restaurante->municipio->nome.'</span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel">SEMANA</span><span class="spandata"></span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel">DATA INICIAL</span><span class="spandata"></span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel">DATA FINAL</span><span class="spandata"></span></td>
+                    <td style="width: 417px;" class="label-ficha">Município (Regional)</td>
+                    <td style="width: 100px;" class="label-ficha">Semana</td>
+                    <td style="width: 100px;" class="label-ficha">Data Inicial</td>
+                    <td style="width: 100px;" class="label-ficha">Data Final</td>
                 </tr>
                 <tr>
-                    <td style="width: 417px"><span class="spanlabel">RESTAURANTE: </span><span  class="spandata">'.$restaurante->identificacao.'</span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel"><span class="spandata">'.mrc_extract_week($compra->semana).'</span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel"><span class="spandata">'.mrc_turn_data($compra->data_ini).'</span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel"><span class="spandata">'.mrc_turn_data($compra->data_fin).'</span></td>
-                </tr>
-                <tr>
-                    <td style="width: 417px"><span class="spanlabel">NUTRICIONISTA DA EMPRESA: </span><span  class="spandata">'.$restaurante->nutricionista->nomecompleto.'</span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel">VALOR </span><span class="spandata"></span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel">VALOR AF ('.intval(mrc_calc_percentaf($compra->valortotal, $compra->valoraf )).'%)</span><span class="spandata"></span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel">VALOR TOTAL</span><span class="spandata"></span></td>
-                </tr>
-                <tr>
-                    <td style="width: 417px"><span class="spanlabel">NUTRICIONISTA DA SEDES: </span><span  class="spandata">'.$restaurante->user->nomecompleto.'</span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel"></span><span class="spandata">'.mrc_turn_value($compra->valor).'</span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel"></span><span class="spandata">'.mrc_turn_value($compra->valoraf).'</span></td>
-                    <td style="width: 100px; text-align:right"><span class="spanlabel"></span><span class="spandata">'.mrc_turn_value($compra->valortotal).'</span></td>
+                    <td style="width: 417px;" class="dados-ficha">'.$restaurante->municipio->nome.' ('.$restaurante->municipio->regional->nome.')</td>
+                    <td style="width: 100px;" class="dados-ficha">'.mrc_extract_week($compra->semana).'</td>
+                    <td style="width: 100px;" class="dados-ficha">'.mrc_turn_data($compra->data_ini).'</td>
+                    <td style="width: 100px;" class="dados-ficha">'.mrc_turn_data($compra->data_fin).'</td>
                 </tr>
             </table>
+
+            <table style="width:717px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 417px;" class="label-ficha">Restaurante</td>
+                    <td style="width: 100px;" class="label-ficha">Valor</td>
+                    <td style="width: 100px;" class="label-ficha">Valor AF ('.intval(mrc_calc_percentaf($compra->valortotal, $compra->valoraf )).'%)</td>
+                    <td style="width: 100px;" class="label-ficha">Valor Total</td>
+                </tr>
+                <tr>
+                    <td style="width: 417px;" class="dados-ficha">'.$restaurante->identificacao.'</td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($compra->valor).'</td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($compra->valoraf).'</td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($compra->valortotal).'</td>
+                </tr>
+            </table>
+
+            <table style="width:717px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 417px;" class="label-ficha">Nutricionista Empresa</td>
+                    <td style="width: 300px;" class="label-ficha">Nutricionista SEDES</td>
+                </tr>
+                <tr>
+                    <td style="width: 417px;" class="dados-ficha">'.$restaurante->nutricionista->nomecompleto.'</td>
+                    <td style="width: 300px;" class="dados-ficha">'.$restaurante->user->nomecompleto.'</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="width:717px;" class="close-ficha"></td>
+                </tr>
+            </table>
+
             <table style="width:717px; border-collapse: collapse">
                 <tr>
                     <td width="30px" class="col-header-table" style="text-align:center">Id</td>
@@ -243,7 +261,7 @@ class CompraController extends Controller
         $mpdf->SetHTMLFooter('
             <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                 <tr>
-                    <td width="239px">São Luis(MA) {DATE d/m/Y}</td>
+                    <td width="239px">São Luis(MA) {DATE d/m/Y H:i}</td>
                     <td width="239px" align="center"></td>
                     <td width="239px" align="right">{PAGENO}/{nbpg}</td>
                 </tr>

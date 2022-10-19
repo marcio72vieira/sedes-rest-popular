@@ -77,7 +77,7 @@
                                 <!-- Buttons -->
                                 <div class="pl-lg-4">
                                         <div style="margin-top: 30px">
-                                            <a class="btn btn-primary" href="{{route('admin.bairro.index')}}" role="button">Retornar</a>
+                                            <a class="btn btn-primary" href="{{route('admin.bairro.index')}}" role="button"><i class="fas fa-undo-alt"></i> Retornar</a>
                                             {{-- <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button> --}}
                                         </div>
                                 </div>

@@ -23,7 +23,7 @@
                 </td>
                 <td style="width: 200px;" class="dados-lista">{{$item->pivot->detalhe}}</td>
                 <td style="width: 72px; text-align: right" class="dados-lista">{{mrc_turn_value($item->pivot->preco)}}</td>
-                <td style="width: 35px;text-align: center" class="dados-lista">{{$item->pivot->af == 'sim' ? 's' : 'n'}}</td>
+                <td style="width: 35px;text-align: center" class="dados-lista">{{$item->pivot->af == 'sim' ? 'x' : ''}}</td>
                 <td style="width: 80px; text-align: right" class="dados-lista">{{mrc_turn_value($item->pivot->precototal)}}</td>
             </tr>
         @endforeach

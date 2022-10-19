@@ -63,6 +63,7 @@ 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
 FONTES AWESOME PARA COLOCAR NO PROJETO COM ESTE TEMPLATE
 =========================================================
 https://fontawesome.com/v5/search?o=r&m=free
+versão do bootstrap: Bootstrap v4.5.3
 para aumentar o tamanho dos ícones utilize as classes
 To increase icon sizes relative to their container, use the fa-lg (33% increase), fa-2x , fa-3x , fa-4x , or fa-5x classes
 Exemplo:
@@ -543,6 +544,20 @@ https://stackoverflow.com/questions/45210136/get-a-value-from-within-an-array-of
 // https://laravel.com/docs/8.x/eloquent-relationships#counting-related-models
 // https://blog.pusher.com/advanced-laravel-eloquent-usage/
 // https://pusher.com/tutorials/?q=laravel
+// https://sam-ngu.medium.com/laravel-service-provider-in-simple-english-a0473991ee4c
+// https://medium.com/@chirag-nandaniya/8-best-laravel-admin-panel-packages-for-your-back-office-system-56b9355f474c
+
+remover opção de select
+// https://www.google.com/search?client=ubuntu&channel=fs&sxsrf=ALiCzsYt-1CDMe0sRtKLOMWLU9VAuEE52g:1666201672200&q=How+take+off+an+option+of+the+option+selected+with+jquery+when+the+option+is+selected&spell=1&sa=X&ved=2ahUKEwiqqq727Oz6AhX0qJUCHaYADCUQBSgAegQIBxAB&biw=1322&bih=633&dpr=1
+// https://stackoverflow.com/questions/1518216/jquery-remove-options-from-select
+// https://www.tutorialrepublic.com/faq/how-to-get-the-value-of-selected-option-in-a-select-box-using-jquery.php
+
+
+
+
+
+
+
 
 
 
@@ -555,6 +570,9 @@ https://stackoverflow.com/questions/45210136/get-a-value-from-within-an-array-of
 // https://www.youtube.com/watch?v=7efeIJ7oFTc
 // https://www.youtube.com/watch?v=mHnvwFrZAkw
 // https://www.youtube.com/watch?v=7efeIJ7oFTc
+// https://www.youtube.com/watch?v=hy0oieokjtQ
+// https://www.youtube.com/watch?v=1AxQNDOJTBw
+
 
 how I know if an or other event in jquery foi trigged
 How to Enable jQuery Each on Dynamically Added Content

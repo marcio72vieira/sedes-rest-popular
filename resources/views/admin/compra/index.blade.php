@@ -64,7 +64,7 @@
                                 <td>
                                     <a href="{{route('admin.compra.comprovante.index', [$compra->id])}}" title="adicionar comprovantes"><i class="fas fa-file-invoice text-success mr-2"></i></a>
                                     {{--<a href="{{route('admin.compra.relpdfcompra', [$compra->id])}}" title="relatório de compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>--}}
-                                    <a href="{{route('admin.restaurante.compra.relpdfcompra', [$restaurante->id, $compra->id])}}" title="relatório de compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>
+                                    <a href="{{route('admin.restaurante.compra.relpdfcompra', [$restaurante->id, $compra->id])}}" title="relatório desta compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.edit', [$restaurante->id, $compra->id])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                                     {{-- Se o id da compra atual estiver dentro do array de regsvinculados, impede a deleção acidental. --}}

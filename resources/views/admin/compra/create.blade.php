@@ -350,6 +350,40 @@
 
 
 
+                /// Remove opção do select escolhido
+                // $(".produto_id").each(function() {
+                //     $(this)
+                // });
+                
+                //$(".produto_id option[value='1']").each(function() {
+                //    $(this).remove();
+                //});
+
+
+                /*
+                $("select.country").change(function(){
+                    var selectedCountry = $(this).children("option:selected").val();
+                    alert("You have selected the country - " + selectedCountry);
+                });
+                */
+
+
+                /* $(".produto_id").each(function() {
+                    $(this).change(function() {
+                        var selectedProduto = $(this).children("option:selected").val();
+                        alert("Voce selecionou o produto - " + selectedProduto);
+
+                        $(".produto_id.option[value = '" + selectedProduto + "']").each(function() {
+                            $(this).remove();
+                        });
+                    });
+                }); */
+                /// Remove opção do select escolhido
+
+
+
+
+
                 // Funciona para as linhas criadas dinamicamente. Quando quantidade  perde o foco
                 // Alterar quantidade
                 $(".quantidade").each(function() {
@@ -449,6 +483,8 @@
                             var preco = $(this).parents(".linhaDados").find(".precototal").val();
                             val = parseFloat(preco);
                             valCompraNormal += val;
+
+                            var af_hidden = $(this).siblings("#af_hidden").val('nao');
 
                         }
                     });
@@ -577,6 +613,8 @@
                         val = parseFloat(preco);
                         valCompraNormal += val;
 
+                        var af_hidden = $(this).siblings("#af_hidden").val('nao');
+
                     }
                 });
 
@@ -615,6 +653,8 @@
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
                         val = parseFloat(preco);
                         valCompraNormal += val;
+
+                        var af_hidden = $(this).siblings("#af_hidden").val('nao');
 
                     }
                 });
