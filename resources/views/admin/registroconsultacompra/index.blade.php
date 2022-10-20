@@ -12,7 +12,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                
+                {{ $restaurante[0]['identificacao'] }}
             </div>
         </div>
    </div>

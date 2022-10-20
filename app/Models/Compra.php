@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Compra extends Model
 {
@@ -29,5 +30,13 @@ class Compra extends Model
 
     public function comprovantes(){
         return $this->hasMany(Comprovante::class);
+    }
+
+
+    public function qtdcomprovantesvinc($id)
+    {
+        $qtd = DB::table('comprovantes')->where('compra_id', '=', $id)->count();
+
+        return $qtd;
     }
 }

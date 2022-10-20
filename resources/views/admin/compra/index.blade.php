@@ -44,6 +44,7 @@
                             <th>Valor AF</th>
                             <th>Valor Total</th>
                             <th>% AF</th>
+                            <th>Comprovantes</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -61,18 +62,28 @@
                                 <td style="text-align: right">{{mrc_turn_value($compra->valoraf)}}</strong></td>
                                 <td style="text-align: right">{{mrc_turn_value($compra->valortotal)}}</td>
                                 <td style="text-align: center">{{intval(mrc_calc_percentaf($compra->valortotal, $compra->valoraf ))}}%</td>
+                                <td style="text-align: right">{{$compra->qtdcomprovantesvinc($compra->id)}}</td>
                                 <td>
                                     <a href="{{route('admin.compra.comprovante.index', [$compra->id])}}" title="adicionar comprovantes"><i class="fas fa-file-invoice text-success mr-2"></i></a>
                                     {{--<a href="{{route('admin.compra.relpdfcompra', [$compra->id])}}" title="relatório de compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>--}}
                                     <a href="{{route('admin.restaurante.compra.relpdfcompra', [$restaurante->id, $compra->id])}}" title="relatório desta compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.edit', [$restaurante->id, $compra->id])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                                    {{-- Se o id da compra atual estiver dentro do array de regsvinculados, impede a deleção acidental. --}}
+                                    @if($compra->qtdcomprovantesvinc($compra->id) == 0)
+                                        <a href="" data-toggle="modal" data-target="#formDelete{{$compra->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    @else
+                                        <a href="" title="há comprovantes vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                                    @endif
+
+                                    {{-- Utilizado com a antiga lógica de desconstrução de array vindo do CompraController
+                                        Se o id da compra atual estiver dentro do array de regsvinculados, impede a deleção acidental.
                                     @if(in_array($compra->id,$regsvinculado))
                                         <a href="" title="há comprovantes vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
                                     @else
                                         <a href="" data-toggle="modal" data-target="#formDelete{{$compra->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
-                                    @endif
+                                    @endif --}}
+
+
                                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                                     <div class="modal fade" id="formDelete{{$compra->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
                                         <div class="modal-dialog">

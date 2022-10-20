@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Restaurante;
+use App\Models\Compra;
 use App\Models\Municipio;
 use App\Models\Bairro;
 use App\Models\Empresa;
@@ -26,26 +27,33 @@ class RegistroconsultacompraController extends Controller
 {
     public function index()
     {
-        //return view('admin.registroconsultacompra.index');
-        //return view('admin.restaurante.index');
+        // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, e a partir destes, vai para o processo de COMPRA, caso contrário irá presquisar apenas
+        // o(s) restaurante(s) da NUTRICIONISTA responsável(logada) no momento.
+        if(Auth::user()->perfil == 'adm'){
+            $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
 
-        // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, caso contrário só o restaurante do NUTRICIONISTA responsável
-        
-        /* if(Auth::user()->perfil == 'adm'){
-            $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])
-                                        ->orderBy('identificacao', 'ASC')->get();
-            
             return view('admin.restaurante.index', compact('restaurantes'));
 
         } else {
-            $restaurante = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])
-                                        ->where('user_id', '=', Auth::user()->id)->get();
-            
-            //dd($restaurante);
+            //Obs:  Se a regra de negócio mudar e a nutricionista da SEDES for responsável por mais de um restaurante, utilizar query com ->get() no final,
+            //      como comentado abaixo, pois retorna uma collection.
+            //      apenas um restaurante
+            //      $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->where('user_id', '=', Auth::user()->id)->get();
+            //      $compras = Compra::where('restaurante_id', '=', $restaurantes[0]['id'])->orderBy('data_ini', 'DESC')->get();
+            //      return view('admin.compra.index', compact('restaurantes', 'compras'));
+            //Obs:  Na view (admin.compra.index), para acessar a identificacao do restarurante dever-se-ia colocar:
+            //      <strong>COMPRAS: Restaurante {{ $restaurantes[0]['identificacao'] }}</strong>
 
-            return view('admin.compra.index', compact('restaurante'));
-        } */
 
-        //return view('admin.restaurante.index', compact('restaurantes'));
+            //Obs:  Como a nutricionista da SEDES é responsável por apenas um restaurante, utiliza-se a query com ->first(), pois retorna só um objeto
+            //      $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first(); OU a query abaixo
+            $restaurante = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->where('user_id', '=', Auth::user()->id)->first();
+            $compras = Compra::where('restaurante_id', '=', $restaurante->id)->orderBy('data_ini', 'DESC')->get();
+
+
+            return view('admin.compra.index', compact('restaurante', 'compras'));
+
+        }
+
     }
 }

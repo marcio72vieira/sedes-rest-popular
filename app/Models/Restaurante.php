@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Restaurante extends Model
 {
@@ -45,5 +46,12 @@ class Restaurante extends Model
 
     public function compras(){
         return $this->hasMany(Compra::class);
+    }
+
+    public function qtdcomprasvinc($id)
+    {
+        $qtd = DB::table('compras')->where('restaurante_id', '=', $id)->count();
+
+        return $qtd;
     }
 }

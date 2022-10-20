@@ -37,6 +37,7 @@
               <th>Identificacao</th>
               {{--<th>Empresa</th>--}}
               <th>Responsáveis / Contato / E-mail</th>
+              <th>Compras</th>
               <th>Ativo</th>
               <th style="width: 100px">Ações</th>
             </tr>
@@ -52,16 +53,22 @@
                 {{--<td>{{$restaurante->empresa->nomefantasia}}</td>--}}
                 {{--<td>{{$restaurante->ativo == 1 ? 'SIM' : 'NÃO'}}</td>--}}
                 <td>
-                  <span style="font-size: 10px; color: blue">SEDES:</span>  {{$restaurante->user->nomecompleto}} / {{$restaurante->user->telefone}} / {{$restaurante->user->email}}<br>  
+                  <span style="font-size: 10px; color: blue">SEDES:</span>  {{$restaurante->user->nomecompleto}} / {{$restaurante->user->telefone}} / {{$restaurante->user->email}}<br>
                   <span style="font-size: 10px; color: blue">EMPRESA:</span> {{$restaurante->nutricionista->nomecompleto}} / {{$restaurante->nutricionista->telefone}} / {{$restaurante->nutricionista->email}}
                 </td>
-                <td>@if($restaurante->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
+                <td style="text-align: center">{{$restaurante->qtdcomprasvinc($restaurante->id)}}</td>
+                <td style="text-align: center">@if($restaurante->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
                 <td>
                     <a href="{{route('admin.restaurante.compra.index', $restaurante->id)}}" title="compras"><i class="fas fa-shopping-cart text-success mr-2"></i></a>
                     <a href="{{route('admin.restaurante.show', $restaurante->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.restaurante.edit', $restaurante->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                     {{--<a href="{{route('admin.restaurante.ficha', $restaurante->id)}}" title="ficha" target="_blank"><i class="far fa-file-pdf text-danger mr-2"></i></a>--}}
-                    <a href="" data-toggle="modal" data-target="#formDelete{{$restaurante->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                    @if($restaurante->qtdcomprasvinc($restaurante->id) == 0)
+                        <a href="" data-toggle="modal" data-target="#formDelete{{$restaurante->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                    @else
+                        <a href="" title="há compras vinculadas!"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                    @endif
+
 
                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                     <div class="modal fade" id="formDelete{{$restaurante->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
