@@ -23,21 +23,23 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
-class RegistroconsultacompraController extends Controller
+class RegistrocompraController extends Controller
 {
     public function index()
     {
         // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, e a partir destes, vai para o processo de COMPRA, caso contrário irá presquisar apenas
         // o(s) restaurante(s) da NUTRICIONISTA responsável(logada) no momento.
+        // if(Auth::user()->perfil == 'adm' && Auth::user()->ativo == 1 ){
         if(Auth::user()->perfil == 'adm'){
             $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
 
-            return view('admin.restaurante.index', compact('restaurantes'));
+            return view('admin.registrocompra.index', compact('restaurantes'));
 
+        //elseif (Auth::user()->perfil == 'nut' && Auth::user()->ativo == 1 )
         } else {
             //Obs:  Se a regra de negócio mudar e a nutricionista da SEDES for responsável por mais de um restaurante, utilizar query com ->get() no final,
             //      como comentado abaixo, pois retorna uma collection.
-            //      apenas um restaurante
+
             //      $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->where('user_id', '=', Auth::user()->id)->get();
             //      $compras = Compra::where('restaurante_id', '=', $restaurantes[0]['id'])->orderBy('data_ini', 'DESC')->get();
             //      return view('admin.compra.index', compact('restaurantes', 'compras'));
@@ -53,6 +55,8 @@ class RegistroconsultacompraController extends Controller
 
             return view('admin.compra.index', compact('restaurante', 'compras'));
 
+        //else
+        // return view('uma view informando que o usuário não está ativo embora esteja cadastrado no sitema')
         }
 
     }

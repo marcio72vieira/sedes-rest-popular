@@ -12,10 +12,13 @@
             Adicionar
         </a>
 
-        <a class="btn btn-primary float-right" href="{{route('admin.restaurante.index')}}" role="button" style="margin-bottom: 10px">
-            <i class="fas fa-undo-alt"></i>
-            Listar Restaurantes
-          </a>
+        {{-- Se o usuário autenticado é ADM retorna para a lista de restaurantes, se NUT não exibe o botão --}}
+        @if(Auth::user()->perfil == 'adm')
+            <a class="btn btn-primary float-right" href="{{route('admin.registrocompra.index')}}" role="button" style="margin-bottom: 10px">
+                <i class="fas fa-undo-alt"></i>
+                Listar Restaurantes
+            </a>
+        @endif
 
 
         @if(session('sucesso'))

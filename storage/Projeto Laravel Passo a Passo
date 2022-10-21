@@ -1,7 +1,7 @@
 =============================
 CONFIGURAÇÕES INICIAIS
 ============================
-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
+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
 
 1 - Criar um projeto com o Laravel:
     composer create-project --prefer-dist laravel/laravel sedes-rest-popular "8.5"
@@ -552,18 +552,7 @@ remover opção de select
 // https://stackoverflow.com/questions/1518216/jquery-remove-options-from-select
 // https://www.tutorialrepublic.com/faq/how-to-get-the-value-of-selected-option-in-a-select-box-using-jquery.php
 
-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
 
-
-
-
-
-
-
-
-
-
-//
 // https://www.youtube.com/watch?v=69pTm_GBpsE
 // https://www.youtube.com/watch?v=j9lLXp_kb3U
 // https://www.youtube.com/watch?v=gbSOEzAfw_I
@@ -578,6 +567,26 @@ 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
 
 how I know if an or other event in jquery foi trigged
 How to Enable jQuery Each on Dynamically Added Content
+
+
+=================================================================================================
+ACESSANDO UMA PROPRIEDADE DE UMA COLECTION ( ->get()) SEM FOREACH na VIEW OU NO PRÓPRIO CONTROLLE
+=================================================================================================
+Obs:  Se a regra de negócio mudar e a nutricionista da SEDES for responsável por mais de um restaurante, utilizar query com ->get() no final,
+      como comentado abaixo, pois retorna uma collection.
+      $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->where('user_id', '=', Auth::user()->id)->get();
+      $compras = Compra::where('restaurante_id', '=', $restaurantes[0]['id'])->orderBy('data_ini', 'DESC')->get();
+      return view('admin.compra.index', compact('restaurantes', 'compras'));
+Obs:  Na view (admin.compra.index), para acessar a identificacao do restarurante dever-se-ia colocar:
+      <strong>COMPRAS: Restaurante {{ $restaurantes[0]['identificacao'] }}</strong>
+        <div class="card-body">
+            <div class="table-responsive">
+                {{ $restaurante[0]['identificacao'] }}
+            </div>
+        </div>
+
+
+
 
 
 ===============================================================================

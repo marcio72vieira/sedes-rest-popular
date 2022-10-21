@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\CategoriaController;
 use App\Http\Controllers\Admin\ComprovanteController;
 use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\Admin\MedidaController;
-use App\Http\Controllers\Admin\RegistroconsultacompraController;
+use App\Http\Controllers\Admin\RegistrocompraController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,7 +115,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
 /*   ROTAS PARA REGISTRO E CONSULTA DE COMPRAS */
 /***********************************************/
 //Compras :Registros e Consultas
-Route::get('registrocompra', [RegistroconsultacompraController::class, 'index'])->name('admin.registro.compra.index')->middleware(['auth']);
+Route::get('registrocompra', [RegistrocompraController::class, 'index'])->name('admin.registrocompra.index')->middleware(['auth']);
 
 
 
