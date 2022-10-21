@@ -8,8 +8,8 @@
         <h5><strong>COMPROVANTES Ref. à conpra de nº {{ $compra->id }}</strong></h5>
 
         <a class="btn btn-primary" href="{{route('admin.compra.comprovante.create', [$compra->id])}}" role="button" style="margin-bottom: 10px">
-            <i class="fas fa-plus-circle"></i>
-            Adicionar
+            <i class="fas fa-upload"></i>
+             Adicionar
         </a>
 
         {{-- Obs: Eu não tenho uma rota do tipo compra.index mas sim restaurante.compra.index, visto que compra é aninhada --}}

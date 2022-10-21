@@ -84,7 +84,7 @@
                 <h6 class="collapse-header">Operação de Compras:</h6>
                 <a class="collapse-item" href="{{route('admin.registrocompra.index')}}"><i class="fas fa-shopping-cart"></i>
                     Registros</a>
-                <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-search-dollar"></i>
+                <a class="collapse-item" href="{{route('admin.registroconsulta.search') }}"><i class="fas fa-search-dollar"></i>
                     Consultas</a>
             </div>
         </div>

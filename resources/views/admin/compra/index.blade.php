@@ -54,7 +54,7 @@
 
                     <tbody>
                         @foreach($compras as $compra)
-                            <tr>
+                            <tr class="{{($compra->qtdcomprovantesvinc($compra->id) == 0 ? 'alert-danger' : '')}}">
                                 <td>{{$compra->id}}</td>
                                 <td>{{mrc_extract_month($compra->data_ini)}}</td>
                                 <td>{{mrc_extract_week($compra->semana)}}</td>
@@ -65,9 +65,16 @@
                                 <td style="text-align: right">{{mrc_turn_value($compra->valoraf)}}</strong></td>
                                 <td style="text-align: right">{{mrc_turn_value($compra->valortotal)}}</td>
                                 <td style="text-align: center">{{intval(mrc_calc_percentaf($compra->valortotal, $compra->valoraf ))}}%</td>
-                                <td style="text-align: right">{{$compra->qtdcomprovantesvinc($compra->id)}}</td>
+                                <td style="text-align: right">
+                                    {{-- {{$compra->qtdcomprovantesvinc($compra->id)}} --}}
+                                    @foreach($compra->comprovantes as $comprovante)
+                                        <a href="{{asset('/storage/'.$comprovante->url)}}" target="_blank">
+                                            <img src="{{asset('template/img/icopdf.png')}}" width="17">
+                                        </a>
+                                    @endforeach
+                                </td>
                                 <td>
-                                    <a href="{{route('admin.compra.comprovante.index', [$compra->id])}}" title="adicionar comprovantes"><i class="fas fa-file-invoice text-success mr-2"></i></a>
+                                    <a href="{{route('admin.compra.comprovante.index', [$compra->id])}}" title="adicionar comprovantes"><i class="fas fa-file-upload text-success mr-2"></i></a>
                                     {{--<a href="{{route('admin.compra.relpdfcompra', [$compra->id])}}" title="relatório de compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>--}}
                                     <a href="{{route('admin.restaurante.compra.relpdfcompra', [$restaurante->id, $compra->id])}}" title="relatório desta compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
@@ -77,6 +84,7 @@
                                     @else
                                         <a href="" title="há comprovantes vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
                                     @endif
+                                    
 
                                     {{-- Utilizado com a antiga lógica de desconstrução de array vindo do CompraController
                                         Se o id da compra atual estiver dentro do array de regsvinculados, impede a deleção acidental.

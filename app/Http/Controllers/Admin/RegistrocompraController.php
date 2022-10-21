@@ -60,4 +60,9 @@ class RegistrocompraController extends Controller
         }
 
     }
+
+    public function search()
+    {
+        return view('admin.registrocompra.search');
+    }
 }

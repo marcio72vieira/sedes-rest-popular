@@ -552,6 +552,18 @@ remover opção de select
 // https://stackoverflow.com/questions/1518216/jquery-remove-options-from-select
 // https://www.tutorialrepublic.com/faq/how-to-get-the-value-of-selected-option-in-a-select-box-using-jquery.php
 
+Trabalhando com datas 
+// https://dev.to/nicolus/how-the-new-one-of-many-laravel-relationship-made-my-project-600-times-faster-27ll
+// https://dev.to/nicolus/how-to-properly-retrieve-laravel-models-between-two-dates-1bek
+// https://stackoverflow.com/questions/33247908/get-only-records-created-today-in-laravel
+// https://stackoverflow.com/questions/33247908/get-only-records-created-today-in-laravel
+
+
+Trabalhando com mais de uma tabela pivo para os mesmos dados
+(I can create mote than one pivot table with same data for record in laravel)
+// https://stackoverflow.com/questions/44214912/how-to-create-multiple-pivot-tables-for-the-same-two-models-in-laravel
+// https://laravel.com/docs/5.4/eloquent-relationships#many-to-many
+
 
 // https://www.youtube.com/watch?v=69pTm_GBpsE
 // https://www.youtube.com/watch?v=j9lLXp_kb3U
@@ -1031,9 +1043,31 @@ TABELA ESTATÍSTICAS ou VIEWS
     sempre que houver adição/alteção de uma compra no estilo com compra_produto onde deverá constar os seguintes campos:
     id;
     id_compra; id_produto, quantidade, medida_id, detalhe, preco, af, precototal,
-    semana_num, semana_desc, mes_num, mes_desc, data_ini, data_fin, valor, valoraf, valortoal,
+    semana_num, semana_desc, mes_num, mes_desc, data_ini, data_fin, valor, valoraf, valortotal,
     regional_id, nome_regional, municipio_id, nome_municipio_, bairro_id, nome_bairro,
     empresa_id, nome_fantasia, nutricionista_id, nome_nutricionista, user_id, nome_user,
     restaurante_id, identificacao, 
     
 How I know whats records ware deleted with function sync in the laravel
+
+
+No model Compra  criar outro relacionamento do tipo muitos para muitos com seus respecitov campos pivot como abaixo:
+
+public function allCompras()
+{
+    return $this->belongsToMany(Produto::class, 'bigtable_data')->withPivot([
+        'id',
+        'compra_id', 'produto_id', 'quantidade', 'medida_id', 'detalhe', 'preco', 'af', 'precototal',
+        'semana_id', 'semana_nome', 'mes_id', 'mes_nome', 'data_ini', 'data_fin', 'valor', 'valor_af', 'valortotal',
+        'categoria_id', 'categoria_nome', 'restaurante_id', 'identificacao',
+        'regional_id', 'regional_nome', 'municipio_id', 'municipio_nome', 'bairro_id', 'bairro_nome',
+        'empresa_id', 'razaosocial', 'nomefantasia', 'cnpj', 
+        'nutricionista_id', 'nutricionista_nomecompleto', 'nutricionista_cpf', nutricionista_crn', 'nutricionista_emp_id',
+        'user_id', 'user_nomecompleto', 'user_cpf', 'user_crn'
+        'restaurante_id', 'identificacao'
+    ])->withTimestamps();
+
+
+
+    return $this->belongsToMany('App\Compra', 'another_pivot_table_name');
+}
