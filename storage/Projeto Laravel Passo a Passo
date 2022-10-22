@@ -563,6 +563,14 @@ Trabalhando com mais de uma tabela pivo para os mesmos dados
 (I can create mote than one pivot table with same data for record in laravel)
 // https://stackoverflow.com/questions/44214912/how-to-create-multiple-pivot-tables-for-the-same-two-models-in-laravel
 // https://laravel.com/docs/5.4/eloquent-relationships#many-to-many
+// https://www.tutorialrepublic.com/faq/how-to-get-the-value-of-selected-option-in-a-select-box-using-jquery.php
+// https://stackoverflow.com/questions/10011802/how-to-get-this-selected-option-in-jquery
+// https://learn.jquery.com/using-jquery-core/faq/how-do-i-get-the-text-value-of-a-selected-option/
+// https://forum.jquery.com/topic/this-option-selected-attr-rel-option-selected-is-not-working-in-ie
+// https://stackoverflow.com/questions/1643227/get-selected-text-from-a-drop-down-list-select-box-using-jquery
+
+
+
 
 
 // https://www.youtube.com/watch?v=69pTm_GBpsE
@@ -1053,11 +1061,12 @@ How I know whats records ware deleted with function sync in the laravel
 
 No model Compra  criar outro relacionamento do tipo muitos para muitos com seus respecitov campos pivot como abaixo:
 
-public function allCompras()
+public function alldatasCompras()
 {
     return $this->belongsToMany(Produto::class, 'bigtable_data')->withPivot([
         'id',
         'compra_id', 'produto_id', 'quantidade', 'medida_id', 'detalhe', 'preco', 'af', 'precototal',
+        'produto_nome', 'medida_nome', 'medida_simbolo',
         'semana_id', 'semana_nome', 'mes_id', 'mes_nome', 'data_ini', 'data_fin', 'valor', 'valor_af', 'valortotal',
         'categoria_id', 'categoria_nome', 'restaurante_id', 'identificacao',
         'regional_id', 'regional_nome', 'municipio_id', 'municipio_nome', 'bairro_id', 'bairro_nome',
@@ -1067,7 +1076,4 @@ public function allCompras()
         'restaurante_id', 'identificacao'
     ])->withTimestamps();
 
-
-
-    return $this->belongsToMany('App\Compra', 'another_pivot_table_name');
 }

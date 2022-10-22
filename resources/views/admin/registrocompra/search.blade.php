@@ -42,7 +42,13 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">Informações de Home</div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Informações de Perfil</div>
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Informações de Contatos</div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    Informações de Contatos
+                    <br>
+                    @foreach ($records as $item)
+                        {{ $item->produto_nome }}  - {{ $item->detalhe }} <br>  
+                    @endforeach
+                </div>
             </div>
 
 

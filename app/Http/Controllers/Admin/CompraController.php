@@ -62,18 +62,29 @@ class CompraController extends Controller
 
     public function store(CompraCreateRequest $request, $idrestaurante)
     {
+        //dd($request);
 
         $arrProdIds = [];
         $arrCampos = [];
         $arrMesclado = [];
 
+        $arrProdutos = [];
+        $arrComposto = [];
 
         for($x = 0; $x < count($request->produto_id); $x++){
             $arrProdIds[] = $request->produto_id[$x];
-            $arrCampos[] = $request->quantidade[$x];
+            $arrProdutos[] = $request->produto_id[$x];
+
+            //**$arrCampos[] = $request->quantidade[$x];**/
 
             //$user->roles()->sync([1 => ['expires' => true], 2, 3]);
             $arrMesclado[$arrProdIds[$x]] = ['quantidade' => $request->quantidade[$x], 'medida_id' => $request->medida_id[$x], 'detalhe' => $request->detalhe[$x], 'preco' => $request->preco[$x], 'af' => $request->af_hidden[$x], 'precototal' => $request->precototal[$x]];
+        
+            $arrComposto[$arrProdutos[$x]] = [
+                'quantidade' => $request->quantidade[$x], 'medida_id' => $request->medida_id[$x], 'detalhe' => $request->detalhe[$x], 'preco' => $request->preco[$x], 'af' => $request->af_hidden[$x], 'precototal' => $request->precototal[$x],
+                'produto_nome' => $request->produto_nome[$x], 'medida_simbolo' =>$request->medida_simbolo[$x], 'semana' => $request->semana_hidden, 'semana_nome' => $request->semana_nome_hidden
+            ];
+
         }
 
 
@@ -82,6 +93,8 @@ class CompraController extends Controller
              $compra = Compra::create($request->all());
             
             $compra->produtos()->sync($arrMesclado); 
+
+            $compra->allProdutos()->sync($arrComposto);
 
         DB::commit();
 

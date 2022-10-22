@@ -51,9 +51,6 @@
                                                     <option value="4" {{old('semana') == '4' ? 'selected' : ''}}>Quatro</option>
                                                     <option value="5" {{old('semana') == '5' ? 'selected' : ''}}>Cinco</option>
                                                 </select>
-                                                <input type="hidden" name="semana_hidden" id="semana_hidden"  value="">
-                                                <input type="hidden" name="semana_nome_hidden" id="semana_nome_hidden"  value="">
-                                
                                                 @error('semana')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -200,7 +197,6 @@
                                                         <option value="{{$produto->id}}" {{old('produto_id') == $produto->id ? 'selected' : ''}}>{{$produto->nome}}</option>
                                                     @endforeach
                                                 </select>
-                                                <input type="hidden" name="produto_nome[]" id="produto_nome"  value="">
                                                 @error('produto_id')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -226,7 +222,6 @@
                                                         <option value="{{$medida->id}}" {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>
                                                     @endforeach
                                                 </select>
-                                                <input type="hidden" name="medida_simbolo[]" id="medida_simbolo"  value="">
                                                 @error('medida_id')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -324,9 +319,9 @@
             //$('form').on('click', '.add-linha', function () {
 
                 var linhaDados =  "<div class='row linhaDados'>";
-                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><select name='produto_id[]' id='produto_id' class='form-control produto_id' required><option value='' selected disabled>Escolha...</option>@foreach($produtos  as $produto)<option value='{{$produto->id}}' {{old('produto_id') == $produto->id ? 'selected' : ''}}>{{$produto->nome}}</option>@endforeach</select> <input type='hidden' name='produto_nome[]' id='produto_nome' value=''></div></div>";
+                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><select name='produto_id[]' id='produto_id' class='form-control produto_id' required><option value='' selected disabled>Escolha...</option>@foreach($produtos  as $produto)<option value='{{$produto->id}}' {{old('produto_id') == $produto->id ? 'selected' : ''}}>{{$produto->nome}}</option>@endforeach</select></div></div>";
                         linhaDados += "<div class='col-lg-1'><div class='form-group focused'><input type='text' class='form-control text-right quantidade' id='quantidade' name='quantidade[]' value='{{old('quantidade')}}' required></div></div>";
-                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select> <input type='hidden' name='medida_simbolo[]' id='medida_simbolo'  value=''></div></div>";
+                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control' id='detalhe' name='detalhe[]' value='{{old('detalhe')}}'></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right preco' id='preco' name='preco[]' value='{{old('preco')}}' required></div></div>";
                         linhaDados += "<div class='col-lg-1' style='margin-right: -70px'><div class='form-group focused'><input type='checkbox' class='af' id='af' name='af[]' value='sim' style='margin-top: 15px;'><input type='hidden' name='af_hidden[]' id='af_hidden' value='nao'></div></div>";
@@ -384,29 +379,6 @@
                     });
                 }); */
                 /// Remove opção do select escolhido
-
-                /// Adicionando o texto do produto_id, da medida_id e o simbolo da medida dos campos selects
-                $(".produto_id").change(function(){
-                    $(".produto_id").each(function() {
-                        //nomeproduto = $(this).find('option:selected').text();
-                        //nomeproduto = $(this).children("option:selected").text();
-                        nomeproduto = $("option:selected", this).text();
-                        $(this).siblings("#produto_nome").val(nomeproduto)
-
-                        semana = $("#semana").val();
-                        $("#semana_hidden").val(semana);
-                        semanaescolhida = $("#semana option:selected").text();
-                        $("#semana_nome_hidden").val(semanaescolhida);
-                    });
-                });
-
-                $(".medida_id").change(function(){
-                    $(".medida_id").each(function() {
-                        simbolomedida = $("option:selected", this).text();
-                        $(this).siblings("#medida_simbolo").val(simbolomedida)
-                    });
-                });
-                /// FIM Adicionando o texto do produto_id, da medida_id e o simbolo da medida dos campos selects
 
 
 
@@ -654,31 +626,6 @@
                 $("#valortotal").val(valGeral.toFixed(2));
 
             });
-
-
-            /// Adicionando o nome do produto no campo select
-            $(".produto_id").change(function(){
-                $(".produto_id").each(function() {
-                    //nomeproduto = $(this).find('option:selected').text();
-                    //nomeproduto = $(this).children("option:selected").text();
-                    nomeproduto = $("option:selected", this).text();
-                    $(this).siblings("#produto_nome").val(nomeproduto);
-
-                    semana = $("#semana").val();
-                    $("#semana_hidden").val(semana);
-                    semanaescolhida = $("#semana option:selected").text();
-                    $("#semana_nome_hidden").val(semanaescolhida);
-                });
-            });
-
-            $(".medida_id").change(function(){
-                $(".medida_id").each(function() {
-                    simbolomedida = $("option:selected", this).text();
-                    $(this).siblings("#medida_simbolo").val(simbolomedida)
-                });
-            });
-            /// Fim Adicionando o nome do produto no campo select
-
             /****************************************/
             /* FIM Só Funciona para a primeira linha /
             /****************************************/

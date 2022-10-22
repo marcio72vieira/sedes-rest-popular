@@ -63,6 +63,8 @@ class RegistrocompraController extends Controller
 
     public function search()
     {
-        return view('admin.registrocompra.search');
+        $records = DB::table('bigtable_data')->get();
+
+        return view('admin.registrocompra.search', compact('records'));
     }
 }
