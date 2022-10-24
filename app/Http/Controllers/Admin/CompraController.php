@@ -62,6 +62,7 @@ class CompraController extends Controller
 
     public function store(CompraCreateRequest $request, $idrestaurante)
     {
+        //dd($request->restaurante_id_hidden);
         //dd($request);
 
         $arrProdIds = [];
@@ -82,7 +83,14 @@ class CompraController extends Controller
         
             $arrComposto[$arrProdutos[$x]] = [
                 'quantidade' => $request->quantidade[$x], 'medida_id' => $request->medida_id[$x], 'detalhe' => $request->detalhe[$x], 'preco' => $request->preco[$x], 'af' => $request->af_hidden[$x], 'precototal' => $request->precototal[$x],
-                'produto_nome' => $request->produto_nome[$x], 'medida_simbolo' =>$request->medida_simbolo[$x], 'semana' => $request->semana_hidden, 'semana_nome' => $request->semana_nome_hidden
+                'produto_nome' => $request->produto_nome_hidden[$x], 'medida_simbolo' => $request->medida_simbolo[$x], 'semana' => $request->semana_hidden, 'semana_nome' => $request->semana_nome_hidden,
+                'data_ini' => $request->data_ini_hidden, 'data_fin' => $request->data_fin_hidden, 
+                'valor' => $request->valor_hidden, 'valoraf' => $request->valoraf_hidden, 'valortotal' => $request->valortotal_hidden,
+                'categoria_id' => $request->categoria_id_hidden[$x], 'categoria_nome' => $request->categoria_nome_hidden[$x],
+                'restaurante_id' => $request->restaurante_idhidden, 'identificacao' => $request->identificacao_hidden,
+                'regional_id' => $request->regional_id_hidden, 'regional_nome' => $request->regional_nome_hidden, 
+                'municipio_id' =>$request->municipio_id_hidden, 'municipio_nome' => $request->municipio_nome_hidden,
+                'bairro_id' => $request->bairro_id_hidden, 'bairro_nome' => $request->bairro_nome_hidden
             ];
 
         }

@@ -27,9 +27,6 @@ class CreateBigtableDataTable extends Migration
             $table->string('medida_simbolo');
             $table->smallInteger('semana');
             $table->string('semana_nome');
-            /*
-            $table->smallInteger('mes_id');
-            $table->string('mes_nome');
             $table->date('data_ini');
             $table->date('data_fin');
             $table->decimal('valor',12, 2);
@@ -45,6 +42,7 @@ class CreateBigtableDataTable extends Migration
             $table->string('municipio_nome');
             $table->integer('bairro_id');
             $table->string('bairro_nome');
+            /*
             $table->integer('empresa_id');
             $table->string('razaosocial');
             $table->string('nomefantasia');

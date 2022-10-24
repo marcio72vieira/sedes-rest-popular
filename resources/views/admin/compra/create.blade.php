@@ -19,6 +19,26 @@
                     {{-- campo input para ser gravado juntamente com os demais campos do model Compra --}}
                     <input type="hidden" name="restaurante_id" value="{{ $restaurante->id }}">
 
+                    {{-- 
+                        campos inputs para serem gravados juntamente com os demais campos para a tabela bigtable_data
+                        além dos demais dispostos estrategicamente para fazer jus à logica de captura de seus respecitovos
+                        valores, com a função  'siblings do Jquery'. Obs: estes campos serão comuns para todos as entradas
+                        de produtos_id que o usuário escolha, por isso não ha a necessidade de colocá-los como campos do 
+                        tipo array[] Exemplo: produto_id[]; produto_nome_hidden[] ou medida_id[] ou medida_id_hidden[] etc...    
+                    --}}
+                    <input type="hidden" name="restaurante_idhidden" id="restaurante_idhidden" value="{{ $restaurante->id }}">
+                    <input type="hidden" name="identificacao_hidden" id="identificacao_hidden" value="{{ $restaurante->identificacao }}">
+                    
+                    <input type="hidden" name="regional_id_hidden" id="regional_id_hidden" value="{{ $restaurante->municipio->regional->id }}">
+                    <input type="hidden" name="regional_nome_hidden" id="regional_nome_hidden" value="{{ $restaurante->municipio->regional->nome }}">
+
+                    <input type="hidden" name="municipio_id_hidden" id="municipio_id_hidden" value="{{ $restaurante->municipio->id }}">
+                    <input type="hidden" name="municipio_nome_hidden" id="municipio_nome_hidden" value="{{ $restaurante->municipio->nome }}">
+
+                    <input type="hidden" name="bairro_id_hidden" id="bairro_id_hidden" value="{{ $restaurante->bairro->id }}">
+                    <input type="hidden" name="bairro_nome_hidden" id="bairro_nome_hidden" value="{{ $restaurante->bairro->nome }}">
+
+
                     <div class="row">
                         <div class="col-sm-5">
                             <div class="card">
@@ -53,7 +73,7 @@
                                                 </select>
                                                 <input type="hidden" name="semana_hidden" id="semana_hidden"  value="">
                                                 <input type="hidden" name="semana_nome_hidden" id="semana_nome_hidden"  value="">
-                                
+                                            
                                                 @error('semana')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -65,6 +85,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="data_ini">Data Inicial<span class="small text-danger">*</span></label>
                                                 <input type="date" id="data_ini" class="form-control" name="data_ini" value="{{old('data_ini')}}" required>
+                                                <input type="hidden" name="data_ini_hidden" id="data_ini_hidden"  value="">
                                                 @error('data_ini')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -76,6 +97,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="data_fin">Data Final<span class="small text-danger">*</span></label>
                                                 <input type="date" id="data_fin" class="form-control" name="data_fin" value="{{old('data_fin')}}" required>
+                                                <input type="hidden" name="data_fin_hidden" id="data_fin_hidden"  value="">
                                                 @error('data_fin')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -89,6 +111,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valor">Valor (R$)<span class="small text-danger">*</span></label>
                                                 <input type="text" class="form-control text-right" id="valor" name="valor" value="0.00" readonly>
+                                                <input type="hidden" name="valor_hidden" id="valor_hidden"  value="">
                                                 @error('valor')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -100,6 +123,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valoraf">Valor AF (R$)<span class="small text-danger">*</span></label>
                                                 <input type="text" class="form-control  text-right" id="valoraf" name="valoraf" value="0.00" readonly>
+                                                <input type="hidden" name="valoraf_hidden" id="valoraf_hidden"  value="">
                                                 @error('valoraf')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -111,6 +135,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valortotal">Valor Total (R$)<span class="small text-danger">*</span></label>
                                                 <input type="text" class="form-control text-right" id="valortotal" name="valortotal" value="0.00" readonly>
+                                                <input type="hidden" name="valortotal_hidden" id="valortotal_hidden"  value="">
                                                 @error('valortotal')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -197,10 +222,14 @@
                                                 <select name="produto_id[]" id="produto_id" class="form-control produto_id" required>
                                                     <option value="" selected disabled>Escolha...</option>
                                                     @foreach($produtos  as $produto)
-                                                        <option value="{{$produto->id}}" {{old('produto_id') == $produto->id ? 'selected' : ''}}>{{$produto->nome}}</option>
+                                                        <option value="{{$produto->id}}" {{old('produto_id') == $produto->id ? 'selected' : ''}} 
+                                                            data-idcategoria = "{{$produto->categoria->id}}" 
+                                                            data-nomecategoria = "{{$produto->categoria->nome}}">{{$produto->nome}}</option>
                                                     @endforeach
                                                 </select>
-                                                <input type="hidden" name="produto_nome[]" id="produto_nome"  value="">
+                                                <input type="hidden" name="produto_nome_hidden[]" id="produto_nome_hidden"  value="">
+                                                <input type="hidden" name="categoria_id_hidden[]" id="categoria_id_hidden" value="">
+                                                <input type="hidden" name="categoria_nome_hidden[]" id="categoria_nome_hidden" value="">
                                                 @error('produto_id')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -324,7 +353,7 @@
             //$('form').on('click', '.add-linha', function () {
 
                 var linhaDados =  "<div class='row linhaDados'>";
-                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><select name='produto_id[]' id='produto_id' class='form-control produto_id' required><option value='' selected disabled>Escolha...</option>@foreach($produtos  as $produto)<option value='{{$produto->id}}' {{old('produto_id') == $produto->id ? 'selected' : ''}}>{{$produto->nome}}</option>@endforeach</select> <input type='hidden' name='produto_nome[]' id='produto_nome' value=''></div></div>";
+                        linhaDados += "<div class='col-lg-2'><div class='form-group focused'><select name='produto_id[]' id='produto_id' class='form-control produto_id' required><option value='' selected disabled>Escolha...</option>@foreach($produtos  as $produto)<option value='{{$produto->id}}' {{old('produto_id') == $produto->id ? 'selected' : ''}} data-idcategoria = '{{$produto->categoria->id}}' data-nomecategoria = '{{$produto->categoria->nome}}'>{{$produto->nome}}</option>@endforeach</select> <input type='hidden' name='produto_nome_hidden[]' id='produto_nome_hidden' value=''> <input type='hidden' name='categoria_id_hidden[]' id='categoria_id_hidden' value=''> <input type='hidden' name='categoria_nome_hidden[]' id='categoria_nome_hidden' value=''></div></div>";
                         linhaDados += "<div class='col-lg-1'><div class='form-group focused'><input type='text' class='form-control text-right quantidade' id='quantidade' name='quantidade[]' value='{{old('quantidade')}}' required></div></div>";
                         linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select> <input type='hidden' name='medida_simbolo[]' id='medida_simbolo'  value=''></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control' id='detalhe' name='detalhe[]' value='{{old('detalhe')}}'></div></div>";
@@ -383,20 +412,52 @@
                         });
                     });
                 }); */
-                /// Remove opção do select escolhido
+                /// FIM Remove opção do select escolhido
+
+
 
                 /// Adicionando o texto do produto_id, da medida_id e o simbolo da medida dos campos selects
-                $(".produto_id").change(function(){
+                /// Obs: Assim que um produto é escolhido, valor, valorAf e Valortotal para a primeira linha não existem
+                ///      até o preço perder o foco, então esses valores não existem, fazendo com que sejam são zerados 
+                //       quando existe apenas uma única linha de dados. No meu entender, esse procedimento deveria ser invocado
+                //       assim que preço perdesse o foco e não produto_id
+                
+                //$(".produto_id").change(function(){
+                $(".preco").focusout(function(){
                     $(".produto_id").each(function() {
-                        //nomeproduto = $(this).find('option:selected').text();
-                        //nomeproduto = $(this).children("option:selected").text();
+                        
                         nomeproduto = $("option:selected", this).text();
-                        $(this).siblings("#produto_nome").val(nomeproduto)
+                        $(this).siblings("#produto_nome_hidden").val(nomeproduto)
+
+                        idcategoria = $(this).find(':selected').data('idcategoria')
+                        $(this).siblings("#categoria_id_hidden").val(idcategoria);
+
+                        nomecategoria = $(this).find(':selected').data('nomecategoria');
+                        $(this).siblings("#categoria_nome_hidden").val(nomecategoria);
+
+                        
+
+
 
                         semana = $("#semana").val();
                         $("#semana_hidden").val(semana);
                         semanaescolhida = $("#semana option:selected").text();
                         $("#semana_nome_hidden").val(semanaescolhida);
+
+                        datainicial = $("#data_ini").val();
+                        $("#data_ini_hidden").val(datainicial);
+
+                        datafinal = $("#data_fin").val();
+                        $("#data_fin_hidden").val(datafinal);
+
+                        valor = $("#valor").val();
+                        $("#valor_hidden").val(valor);
+
+                        valoraf = $("#valoraf").val();
+                        $("#valoraf_hidden").val(valoraf);
+
+                        valortotal = $("#valortotal").val();
+                        $("#valortotal_hidden").val(valortotal);
                     });
                 });
 
@@ -657,17 +718,42 @@
 
 
             /// Adicionando o nome do produto no campo select
-            $(".produto_id").change(function(){
+            /// Obs: Assim que um produto é escolhido, valor, valorAf e Valortotal para a primeira linha não existem
+            ///      então esses valores são zerados quando existe apenas uma única linha de dados.
+            
+            
+            //$(".produto_id").change(function(){
+            $(".preco").focusout(function(){
                 $(".produto_id").each(function() {
-                    //nomeproduto = $(this).find('option:selected').text();
-                    //nomeproduto = $(this).children("option:selected").text();
                     nomeproduto = $("option:selected", this).text();
-                    $(this).siblings("#produto_nome").val(nomeproduto);
+                    $(this).siblings("#produto_nome_hidden").val(nomeproduto);
+
+                    idcategoria = $(this).find(':selected').data('idcategoria')
+                    $(this).siblings("#categoria_id_hidden").val(idcategoria);
+
+                    nomecategoria = $(this).find(':selected').data('nomecategoria');
+                    $(this).siblings("#categoria_nome_hidden").val(nomecategoria);
+
 
                     semana = $("#semana").val();
                     $("#semana_hidden").val(semana);
                     semanaescolhida = $("#semana option:selected").text();
                     $("#semana_nome_hidden").val(semanaescolhida);
+
+                    datainicial = $("#data_ini").val();
+                    $("#data_ini_hidden").val(datainicial);
+
+                    datafinal = $("#data_fin").val();
+                    $("#data_fin_hidden").val(datafinal);
+
+                    valor = $("#valor").val();
+                    $("#valor_hidden").val(valor);
+
+                    valoraf = $("#valoraf").val();
+                    $("#valoraf_hidden").val(valoraf);
+
+                    valortotal = $("#valortotal").val();
+                    $("#valortotal_hidden").val(valortotal);
                 });
             });
 
@@ -721,12 +807,20 @@
             }
 
 
+
+
+
             //Comentários diversos
             //Obs: campo_precototal.val(calculo).toFixed(2) forma errada, dá error!
             //Obs: campo_precototal.val(calculo.toFixed(2)) maneira correta!
             //.css({"color": "red", "border": "1px solid red"});
             //mask
             //$('.preco').mask('#.###,##', {reverse : true});
+            //Formas de capturar o texto de um select
+            //nomeproduto =  $("#meselect option:selected").text();
+            //nomeproduto = $(this).find('option:selected').text();
+            //nomeproduto = $(this).children("option:selected").text();
+            //nomeproduto = $("option:selected", this).text();
 
         });
 

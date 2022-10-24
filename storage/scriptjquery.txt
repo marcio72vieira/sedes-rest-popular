@@ -105,3 +105,10 @@ change sum += parseFloat(num) with sum *= parseFloat(num)
 
     </script>
 @endsection
+
+
+
+
+data-idcategoria = '{{$produto->categoria->id}}' data-nomecategoria = '{{$produto->categoria->nome}}'
+
+<input type='hidden' name='categoria_id_hidden[]' id='categoria_id_hidden' value=''> <input type='hidden' name='categoria_nome_hidden[]' id='categoria_nome_hidden' value=''>
