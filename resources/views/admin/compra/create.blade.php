@@ -19,14 +19,14 @@
                     {{-- campo input para ser gravado juntamente com os demais campos do model Compra --}}
                     <input type="hidden" name="restaurante_id" value="{{ $restaurante->id }}">
 
-                    {{-- 
-                        campos inputs para serem gravados juntamente com os demais campos para a tabela bigtable_data
-                        além dos demais dispostos estrategicamente para fazer jus à logica de captura de seus respecitovos
+                    {{--campos inputs para serem gravados juntamente com os demais campos para a tabela bigtable_data
+                        além dos demais dispostos estrategicamente para fazer jus à logica de captura de seus respectivos
                         valores, com a função  'siblings do Jquery'. Obs: estes campos serão comuns para todos as entradas
                         de produtos_id que o usuário escolha, por isso não ha a necessidade de colocá-los como campos do 
-                        tipo array[] Exemplo: produto_id[]; produto_nome_hidden[] ou medida_id[] ou medida_id_hidden[] etc...    
-                    --}}
-                    <input type="hidden" name="restaurante_idhidden" id="restaurante_idhidden" value="{{ $restaurante->id }}">
+                        tipo array[] Exemplo: produto_id[]; produto_nome_hidden[] ou medida_id[] ou medida_id_hidden[] etc...
+                        pois seus valores serão comuns a todas as entradas de produtos.--}}
+
+                    <input type="hidden" name="restaurante_id_hidden" id="restaurante_id_hidden" value="{{ $restaurante->id }}">
                     <input type="hidden" name="identificacao_hidden" id="identificacao_hidden" value="{{ $restaurante->identificacao }}">
                     
                     <input type="hidden" name="regional_id_hidden" id="regional_id_hidden" value="{{ $restaurante->municipio->regional->id }}">
@@ -37,6 +37,22 @@
 
                     <input type="hidden" name="bairro_id_hidden" id="bairro_id_hidden" value="{{ $restaurante->bairro->id }}">
                     <input type="hidden" name="bairro_nome_hidden" id="bairro_nome_hidden" value="{{ $restaurante->bairro->nome }}">
+
+                    <input type="hidden" name="empresa_id_hidden" id="empresa_id_hidden" value="{{ $restaurante->empresa->id }}">
+                    <input type="hidden" name="razaosocial_hidden" id="razaosocial_hidden" value="{{ $restaurante->empresa->razaosocial }}">
+                    <input type="hidden" name="nomefantasia_hidden" id="nomefantasia_hidden" value="{{ $restaurante->empresa->nomefantasia }}">
+                    <input type="hidden" name="cnpj_hidden" id="cnpj_hidden" value="{{ $restaurante->empresa->cnpj }}">
+                    
+                    <input type="hidden" name="nutricionista_id_hidden" id="nutricionista_id_hidden" value="{{ $restaurante->nutricionista->id }}">
+                    <input type="hidden" name="nutricionista_nomecompleto_hidden" id="nutricionista_nomecompleto_hidden" value="{{ $restaurante->nutricionista->nomecompleto }}">
+                    <input type="hidden" name="nutricionista_cpf_hidden" id="nutricionista_cpf_hidden" value="{{ $restaurante->nutricionista->cpf }}">
+                    <input type="hidden" name="nutricionista_crn_hidden" id="nutricionista_crn_hidden" value="{{ $restaurante->nutricionista->crn }}">
+                    <input type="hidden" name="nutricionista_empresa_id_hidden" id="nutricionista_empresa_id_hidden" value="{{ $restaurante->nutricionista->empresa->id }}">
+                    
+                    <input type="hidden" name="user_id_hidden" id="user_id_hidden" value="{{ $restaurante->user->id }}">
+                    <input type="hidden" name="user_nomecompleto_hidden" id="user_nomecompleto_hidden" value="{{ $restaurante->user->nomecompleto }}">
+                    <input type="hidden" name="user_cpf_hidden" id="user_cpf_hidden" value="{{ $restaurante->user->cpf }}">
+                    <input type="hidden" name="user_crn_hidden" id="user_crn_hidden" value="{{ $restaurante->user->crn }}">
 
 
                     <div class="row">

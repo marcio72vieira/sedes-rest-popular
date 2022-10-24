@@ -15,6 +15,7 @@ class CreateBigtableDataTable extends Migration
     {
         Schema::create('bigtable_data', function (Blueprint $table) {
             $table->id();
+            
             $table->foreignId('compra_id')->constrained()->onDelete('cascade');
             $table->foreignId('produto_id')->constrained()->onDelete('cascade');
             $table->decimal('quantidade',12,2);
@@ -42,7 +43,6 @@ class CreateBigtableDataTable extends Migration
             $table->string('municipio_nome');
             $table->integer('bairro_id');
             $table->string('bairro_nome');
-            /*
             $table->integer('empresa_id');
             $table->string('razaosocial');
             $table->string('nomefantasia');
@@ -56,7 +56,7 @@ class CreateBigtableDataTable extends Migration
             $table->string('user_nomecompleto');
             $table->string('user_cpf');
             $table->string('user_crn');
-            */
+            
             $table->timestamps();
         });
     }
