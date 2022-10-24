@@ -26,7 +26,7 @@ class CompraController extends Controller
 
     public function index($idrestaurante)
     {
-        
+
         /* //Recupera em uma collection o número de registros relacionados, para impedir deleção acidental.
         //Todos os registros relacionados entre comprovante e compra, independente de seus IDs serão recuperados
         $comprovantes = Comprovante::withCount('compra')->get();
@@ -36,7 +36,7 @@ class CompraController extends Controller
         //Na view, comparo o id da compra corrente dentro do foreach com os id's do array $regsvinculados
         $regsvinculado = Arr::pluck($turnarray, 'compra_id');
         return view('admin.compra.index', compact('restaurante', 'compras', 'produtos', 'regsvinculado')); */
-        
+
 
         $restaurante = Restaurante::findOrFail($idrestaurante);
         $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
@@ -81,11 +81,11 @@ class CompraController extends Controller
             // Campos a serem gravados na tabela compra_produto
             // $user->roles()->sync([1 => ['expires' => true], 2, 3]);
             $arrMesclado[$arrProdIds[$x]] = [
-                'quantidade'    => $request->quantidade[$x], 
-                'medida_id'     => $request->medida_id[$x], 
-                'detalhe'       => $request->detalhe[$x], 
-                'preco'         => $request->preco[$x], 
-                'af'            => $request->af_hidden[$x], 
+                'quantidade'    => $request->quantidade[$x],
+                'medida_id'     => $request->medida_id[$x],
+                'detalhe'       => $request->detalhe[$x],
+                'preco'         => $request->preco[$x],
+                'af'            => $request->af_hidden[$x],
                 'precototal'    => $request->precototal[$x]];
 
             // Campos a serem gravados na tabela bigtable_data para consultas rápidas
@@ -98,7 +98,7 @@ class CompraController extends Controller
                 'precototal'                    => $request->precototal[$x],
                 'produto_nome'                  => $request->produto_nome_hidden[$x],
                 'medida_simbolo'                => $request->medida_simbolo[$x],
-                'semana'                        => $request->semana_hidden, 
+                'semana'                        => $request->semana_hidden,
                 'semana_nome'                   => $request->semana_nome_hidden,
                 'data_ini'                      => $request->data_ini_hidden,
                 'data_fin'                      => $request->data_fin_hidden,
@@ -136,8 +136,8 @@ class CompraController extends Controller
         DB::beginTransaction();
             //Com o $resquest->all(), só os campos definidos no model (propriedade $fillable) serão gravados
              $compra = Compra::create($request->all());
-            
-            $compra->produtos()->sync($arrMesclado); 
+
+            $compra->produtos()->sync($arrMesclado);
 
             $compra->allProdutos()->sync($arrComposto);
 
@@ -176,6 +176,7 @@ class CompraController extends Controller
     }
 
 
+    /*
     public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
     {
 
@@ -197,7 +198,38 @@ class CompraController extends Controller
 
             $compra->update($request->all());
 
-            $compra->produtos()->sync($arrMesclado); 
+            $compra->produtos()->sync($arrMesclado);
+
+        DB::commit();
+
+        $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
+
+        return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
+    }
+    */
+
+    public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
+    {
+
+        $compra = Compra::findOrFail($idcompra);
+
+        $arrProdIds = [];
+        $arrCampos = [];
+        $arrMesclado = [];
+
+
+        for($x=0; $x < count($request->produto_id); $x++){
+            $arrProdIds[] = $request->produto_id[$x];
+            $arrCampos[] = $request->quantidade[$x];
+
+            $arrMesclado[$arrProdIds[$x]] = ['quantidade' => $request->quantidade[$x], 'medida_id' => $request->medida_id[$x], 'detalhe' => $request->detalhe[$x], 'preco' => $request->preco[$x], 'af' => $request->af_hidden[$x], 'precototal' => $request->precototal[$x]];
+        }
+
+        DB::beginTransaction();
+
+            $compra->update($request->all());
+
+            $compra->produtos()->sync($arrMesclado);
 
         DB::commit();
 

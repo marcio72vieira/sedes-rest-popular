@@ -552,7 +552,7 @@ remover opção de select
 // https://stackoverflow.com/questions/1518216/jquery-remove-options-from-select
 // https://www.tutorialrepublic.com/faq/how-to-get-the-value-of-selected-option-in-a-select-box-using-jquery.php
 
-Trabalhando com datas 
+Trabalhando com datas
 // https://dev.to/nicolus/how-the-new-one-of-many-laravel-relationship-made-my-project-600-times-faster-27ll
 // https://dev.to/nicolus/how-to-properly-retrieve-laravel-models-between-two-dates-1bek
 // https://stackoverflow.com/questions/33247908/get-only-records-created-today-in-laravel
@@ -576,9 +576,10 @@ Trabalhando com mais de uma tabela pivo para os mesmos dados
 // https://stackoverflow.com/questions/4017910/jquery-work-with-date
 // https://stackoverflow.com/questions/8345666/on-select-change-get-data-attribute-value
 // https://www.stechies.com/notice-array-string-conversion-php/
+// https://stackoverflow.com/questions/1313373/jquery-same-click-event-for-multiple-elements
 
 //
-// 
+//
 
 
 
@@ -670,7 +671,7 @@ public function store(CompraCreateRequest $request, $idrestaurante)
     {
         /*
         //dd($request->all());
-        
+
         //Capturando os valores dos campos diretamente
         Compra::create([
             'semana'            => $request['semana'],
@@ -703,10 +704,10 @@ public function store(CompraCreateRequest $request, $idrestaurante)
                 if ($produto[$item] != '') {
 
 
-                    /* 
+                    /*
                     //ASSOCIAÇÃO COM MÉTODO ATTACH e campos adicionais
                     //Obs: $produto[$item] é o id do produto atual ($produto_id) dentro do loop for
-                    $compra->produtos()->attach($produto[$item],    
+                    $compra->produtos()->attach($produto[$item],
                         [
                             'quantidade' => $quantidade[$item],
                             'medida_id' => $medida_id[$item],
@@ -717,13 +718,13 @@ public function store(CompraCreateRequest $request, $idrestaurante)
                             'precototal' => $precototal[$item],
                         ]);
                     */
-                    
+
 
                     //ASSOCIAÇÃO COM MÉTODO SYNC e campos adicionais
                     //Obs: $produto[$item] é o id do produto atual ($produto_id) dentro do loop for
 
-                    //$compra->produtos()->syncWithoutDetaching([$produto[$item] => 
-                    $compra->produtos()->sync([$produto[$item] => 
+                    //$compra->produtos()->syncWithoutDetaching([$produto[$item] =>
+                    $compra->produtos()->sync([$produto[$item] =>
                         [
                             'quantidade' => $quantidade[$item],
                             'medida_id' => $medida_id[$item],
@@ -741,7 +742,7 @@ public function store(CompraCreateRequest $request, $idrestaurante)
             /*
             //Tenho que transformar o loop for acima neste estrutura, onde 1, 2, 3 são os IDs do produtos e os arraya que
             //eles se referem 1 => [], corresponde aos campos e seus devidos valores em uma tabela do tipo pivot.
-            //Obs: com o segundo parâmetro 'false', não ha a necessidade de transformar o loop acima na estrutura abaixo, 
+            //Obs: com o segundo parâmetro 'false', não ha a necessidade de transformar o loop acima na estrutura abaixo,
             //     mas também caso seja deletada uma linha a mesma não será apagada.
             $compra->produtos()->sync([
                 1 => ['quantidade' => 10, 'medida_id' => 1, 'detalhe' => 'avocado', 'preco' => 5.00, 'af' => 'sim', 'precototal' => 50.00],
@@ -789,8 +790,8 @@ public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
                     //ASSOCIAÇÃO COM MÉTODO SYNC e campos adicionais
                     //Obs: $produto[$item] é o id do produto atual ($produto_id) dentro do loop for
 
-                    //$compra->produtos()->syncWithoutDetaching([$produto[$item] => 
-                    $compra->produtos()->sync([$produto[$item] => 
+                    //$compra->produtos()->syncWithoutDetaching([$produto[$item] =>
+                    $compra->produtos()->sync([$produto[$item] =>
                         [
                             'quantidade' => $quantidade[$item],
                             'medida_id' => $medida_id[$item],
@@ -813,7 +814,7 @@ public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
 =========================
 EXPORTANDO DADOS COM MPDF
 =========================
-1 - Páginas de referência: 
+1 - Páginas de referência:
     video tutorial =    https://www.youtube.com/watch?v=07XlgQuX_dA&t=603s (Export Data to PDF - Become a Master in Laravel - 39)
     criar tabelas =     https://divtable.com/table-styler/
     biblioteca =        https://github.com/mpdf/mpdf
@@ -868,7 +869,7 @@ EXPORTANDO DADOS COM MPDF
 
 
 8 - Substitua o conteúdo do método relatoriopdfproduto criado no passo 4, pelo descrito abaixo
-    
+
     public function relatoriopdfproduto()
     {
         $produtos =  Produto::all();
@@ -1017,7 +1018,7 @@ CRIANDO SEEDER PARA POPULAR TABELAS APÓS INSTALAÇÃO
 ==============================
 COMENTÁRIOS SOLTOS DE CÓDIGOS
 ==============================
-//dd($request->file('comprovante')); ou 
+//dd($request->file('comprovante')); ou
 //dd($request->'comprovante');
 
 
@@ -1041,9 +1042,9 @@ MODELOS E MIGRATIONS QUE NÃO OBEDECEM O PADRÃO DO PLURAL DOS NOMES DAS TABELAS
     $table->foreignId('regional_id')->constrained('regionais')->onDelete('cascade');
     ...
     Explicando
-    Irá criar o campo regional_id na tabela cidade referenciando a tabela 'regionais'. 
-    Houve a necessidde de explicitar o nome da tabela relacionada dentro da função contrained('regionais'), 
-    visto que o laravel esperava uma tabela com o nome 'regionals' que é o plural de regional, como essa 
+    Irá criar o campo regional_id na tabela cidade referenciando a tabela 'regionais'.
+    Houve a necessidde de explicitar o nome da tabela relacionada dentro da função contrained('regionais'),
+    visto que o laravel esperava uma tabela com o nome 'regionals' que é o plural de regional, como essa
     tabela não existe e sim a tabela 'regionais' é necessário indicar seu nome na função constrained().
 
 3 - No modelo Regional (criado com o comando: php artisan make:model Regional) tem-se que indicar o nome
@@ -1060,15 +1061,15 @@ MODELOS E MIGRATIONS QUE NÃO OBEDECEM O PADRÃO DO PLURAL DOS NOMES DAS TABELAS
 =============================
 TABELA ESTATÍSTICAS ou VIEWS
 ============================
-1 - Crio uma tabela estatisticas com seu respectivo modelo, cujos dados serão salvos/atualizados 
+1 - Crio uma tabela estatisticas com seu respectivo modelo, cujos dados serão salvos/atualizados
     sempre que houver adição/alteção de uma compra no estilo com compra_produto onde deverá constar os seguintes campos:
     id;
     id_compra; id_produto, quantidade, medida_id, detalhe, preco, af, precototal,
     semana_num, semana_desc, mes_num, mes_desc, data_ini, data_fin, valor, valoraf, valortotal,
     regional_id, nome_regional, municipio_id, nome_municipio_, bairro_id, nome_bairro,
     empresa_id, nome_fantasia, nutricionista_id, nome_nutricionista, user_id, nome_user,
-    restaurante_id, identificacao, 
-    
+    restaurante_id, identificacao,
+
 How I know whats records ware deleted with function sync in the laravel
 
 
@@ -1083,7 +1084,7 @@ public function alldatasCompras()
         'semana_id', 'semana_nome', 'mes_id', 'mes_nome', 'data_ini', 'data_fin', 'valor', 'valor_af', 'valortotal',
         'categoria_id', 'categoria_nome', 'restaurante_id', 'identificacao',
         'regional_id', 'regional_nome', 'municipio_id', 'municipio_nome', 'bairro_id', 'bairro_nome',
-        'empresa_id', 'razaosocial', 'nomefantasia', 'cnpj', 
+        'empresa_id', 'razaosocial', 'nomefantasia', 'cnpj',
         'nutricionista_id', 'nutricionista_nomecompleto', 'nutricionista_cpf', nutricionista_crn', 'nutricionista_emp_id',
         'user_id', 'user_nomecompleto', 'user_cpf', 'user_crn'
         'restaurante_id', 'identificacao'

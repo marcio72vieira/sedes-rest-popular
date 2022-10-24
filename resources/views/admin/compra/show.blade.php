@@ -165,7 +165,7 @@
                                 @foreach ($compra->produtos as $item)
                                     <div id="corpoDados">
 
-                                        <div class="row linhaDados">
+                                        <div class="row linhaDados destaque">
                                             {{-- produto_id --}}
                                             <div class="col-lg-2">
                                                 <div class="form-group focused">
