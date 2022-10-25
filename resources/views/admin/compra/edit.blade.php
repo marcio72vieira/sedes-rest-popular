@@ -102,6 +102,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="data_ini">Data Inicial<span class="small text-danger">*</span></label>
                                                 <input type="date" id="data_ini" class="form-control" name="data_ini" value="{{old('data_ini', $compra->data_ini)}}" required>
+                                                <input type="hidden" name="data_ini_hidden" id="data_ini_hidden"  value="">
                                                 @error('data_ini')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -113,6 +114,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="data_fin">Data Final<span class="small text-danger">*</span></label>
                                                 <input type="date" id="data_fin" class="form-control" name="data_fin" value="{{old('data_fin', $compra->data_fin)}}" required>
+                                                <input type="hidden" name="data_fin_hidden" id="data_fin_hidden"  value="">
                                                 @error('data_fin')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -126,6 +128,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valor">Valor (R$)<span class="small text-danger">*</span></label>
                                                 <input type="text" class="form-control text-right" id="valor" name="valor" value="{{old('valor', $compra->valor)}}" readonly>
+                                                <input type="hidden" name="valor_hidden" id="valor_hidden"  value="">
                                                 @error('valor')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -137,6 +140,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valoraf">Valor AF (R$)<span class="small text-danger">*</span></label>
                                                 <input type="text" class="form-control  text-right" id="valoraf" name="valoraf" value="{{old('valor', $compra->valoraf)}}" readonly>
+                                                <input type="hidden" name="valoraf_hidden" id="valoraf_hidden"  value="">
                                                 @error('valoraf')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -148,6 +152,7 @@
                                             <div class="form-group focused">
                                                 <label class="form-control-label" for="valortotal">Valor Total (R$)<span class="small text-danger">*</span></label>
                                                 <input type="text" class="form-control text-right" id="valortotal" name="valortotal" value="{{old('valor', $compra->valortotal)}}" readonly>
+                                                <input type="hidden" name="valortotal_hidden" id="valortotal_hidden"  value="">
                                                 @error('valortotal')
                                                     <small style="color: red">{{$message}}</small>
                                                 @enderror
@@ -268,6 +273,7 @@
                                                             <option value="{{$medida->id}}" {{old('medida_id', $item->pivot->medida_id) ==$medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>
                                                         @endforeach
                                                     </select>
+                                                    <input type="hidden" name="medida_simbolo[]" id="medida_simbolo"  value="">
                                                     @error('medida_id')
                                                         <small style="color: red">{{$message}}</small>
                                                     @enderror
@@ -377,17 +383,86 @@
 
 
 
+            /*********************************************************************************/
+            /* INICIO CARREGA OS DADOS PARA PRODUTOS E MEDIDAS LOGO QUE A PÁGINA É CARREGADA  */
+            /*********************************************************************************/
+            $(".produto_id").each(function() {
+                nomeproduto = $("option:selected", this).text();
+                $(this).siblings("#produto_nome_hidden").val(nomeproduto);
 
-            /*****************************/
-            /* INICIO Adiciona linhaDados*/
-            /*****************************/
+                idcategoria = $(this).find(':selected').data('idcategoria')
+                $(this).siblings("#categoria_id_hidden").val(idcategoria);
+
+                nomecategoria = $(this).find(':selected').data('nomecategoria');
+                $(this).siblings("#categoria_nome_hidden").val(nomecategoria);
+
+                semana = $("#semana").val();
+                $("#semana_hidden").val(semana);
+                semanaescolhida = $("#semana option:selected").text();
+                $("#semana_nome_hidden").val(semanaescolhida);
+
+                datainicial = $("#data_ini").val();
+                $("#data_ini_hidden").val(datainicial);
+
+                datafinal = $("#data_fin").val();
+                $("#data_fin_hidden").val(datafinal);
+
+                valor = $("#valor").val();
+                $("#valor_hidden").val(valor);
+
+                valoraf = $("#valoraf").val();
+                $("#valoraf_hidden").val(valoraf);
+
+                valortotal = $("#valortotal").val();
+                $("#valortotal_hidden").val(valortotal);
+            });
+
+            $(".medida_id").each(function() {
+                simbolomedida = $("option:selected", this).text();
+                $(this).siblings("#medida_simbolo").val(simbolomedida)
+            });
+            /*********************************************************************************/
+            /* FIM CARREGA OS DADOS DOS PRODUTOS E MEDIDAS LOGO QUE A PÁGINA É CARREGADA  */
+            /*********************************************************************************/
+
+
+
+            /*******************************************************************/
+            /*   CASO O USUÁRIO QUEIRA ALTERAR A SEMANA, DATA_INI OU DATA_FIN  */
+            /*******************************************************************/
+            // Se o usuário mudar a semana
+            $("#semana").change(function() {
+                semana = $("#semana").val();
+                $("#semana_hidden").val(semana);
+                semanaescolhida = $("#semana option:selected").text();
+                $("#semana_nome_hidden").val(semanaescolhida);
+            });
+
+            $("#data_ini").change(function() {
+                datainicial = $("#data_ini").val();
+                $("#data_ini_hidden").val(datainicial);
+            });
+
+            $("#data_fin").change(function() {
+                datafinal = $("#data_fin").val();
+                $("#data_fin_hidden").val(datafinal);
+            });
+            /**********************************************************************/
+            /*  FIM CASO O USUÁRIO QUEIRA ALTERAR A SEMANA, DATA_INI OU DATA_FIN  */
+            /**********************************************************************/
+
+
+
+            /***********************************************/
+            /*  INICIO Adiciona linhaDados DINAMICAMENTE   */
+            /***********************************************/
             $(document).on('click', '.add-linha', function () {
             //$('form').on('click', '.add-linha', function () {
 
                 var linhaDados =  "<div class='row linhaDados'>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><select name='produto_id[]' id='produto_id' class='form-control produto_id' required><option value='' selected disabled>Escolha...</option>@foreach($produtos  as $produto)<option value='{{$produto->id}}' {{old('produto_id') == $produto->id ? 'selected' : ''}}  data-idcategoria = '{{$produto->categoria->id}}' data-nomecategoria = '{{$produto->categoria->nome}}'>{{$produto->nome}}</option>@endforeach</select>  <input type='hidden' name='produto_nome_hidden[]' id='produto_nome_hidden' value=''> <input type='hidden' name='categoria_id_hidden[]' id='categoria_id_hidden' value=''> <input type='hidden' name='categoria_nome_hidden[]' id='categoria_nome_hidden' value=''></div></div>";
                         linhaDados += "<div class='col-lg-1'><div class='form-group focused'><input type='text' class='form-control text-right quantidade' id='quantidade' name='quantidade[]' value='{{old('quantidade')}}' required></div></div>";
-                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select></div></div>";
+                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select> <input type='hidden' name='medida_simbolo[]' id='medida_simbolo'  value=''></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control' id='detalhe' name='detalhe[]' value='{{old('detalhe')}}'></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right preco' id='preco' name='preco[]' value='{{old('preco')}}' required></div></div>";
                         linhaDados += "<div class='col-lg-1' style='margin-right: -70px'><div class='form-group focused'><input type='checkbox' class='af' id='af' name='af[]' value='sim' style='margin-top: 15px;'><input type='hidden' name='af_hidden[]' id='af_hidden' value='nao'></div></div>";
@@ -420,15 +495,10 @@
                     // Caso possua algum campo obrigatório não preenchido
                     alert("Preencha todos os campos!");
                 }
+    
 
-
-                /// Adicionando o texto do produto_id, da medida_id e o simbolo da medida dos campos selects
-                /// Obs: Assim que um produto é escolhido, valor, valorAf e Valortotal para a primeira linha não existem
-                ///      até o preço perder o foco, então esses valores não existem, fazendo com que sejam são zerados
-                //       quando existe apenas uma única linha de dados. No meu entender, esse procedimento deveria ser invocado
-                //       assim que preço perdesse o foco e não produto_id
-
-                //$(".produto_id").change(function(){
+                // Adiciona o texto do produto, categoria, semana inicial e final valores etc... assim que uma nova
+                // linha é adicionada e perde o foco do preço
                 $(".preco").focusout(function(){
                     $(".produto_id").each(function() {
 
@@ -440,12 +510,6 @@
 
                         nomecategoria = $(this).find(':selected').data('nomecategoria');
                         $(this).siblings("#categoria_nome_hidden").val(nomecategoria);
-
-
-
-                        alert(idcategoria + nomecategoria);
-
-
 
                         semana = $("#semana").val();
                         $("#semana_hidden").val(semana);
@@ -466,6 +530,7 @@
 
                         valortotal = $("#valortotal").val();
                         $("#valortotal_hidden").val(valortotal);
+
                     });
                 });
 
@@ -475,9 +540,8 @@
                         $(this).siblings("#medida_simbolo").val(simbolomedida)
                     });
                 });
+                
                 /// FIM Adicionando o texto do produto_id, da medida_id e o simbolo da medida dos campos selects
-
-
 
 
                 // Funciona para as linhas criadas dinamicamente. Quando quantidade  perde o foco
@@ -724,13 +788,12 @@
             });
 
 
-
-                        /// Adicionando o nome do produto no campo select
-            /// Obs: Assim que um produto é escolhido, valor, valorAf e Valortotal para a primeira linha não existem
-            ///      então esses valores são zerados quando existe apenas uma única linha de dados.
+            
 
 
-            //$(".produto_id").change(function(){
+
+
+            // Executa a função normal como no create se caso algum produto ou medida forem alterados ou adicionados
             $(".preco").focusout(function(){
                 $(".produto_id").each(function() {
                     nomeproduto = $("option:selected", this).text();
@@ -741,13 +804,6 @@
 
                     nomecategoria = $(this).find(':selected').data('nomecategoria');
                     $(this).siblings("#categoria_nome_hidden").val(nomecategoria);
-
-
-
-                    alert(idcategoria + nomecategoria);
-
-
-
 
                     semana = $("#semana").val();
                     $("#semana_hidden").val(semana);
@@ -768,9 +824,11 @@
 
                     valortotal = $("#valortotal").val();
                     $("#valortotal_hidden").val(valortotal);
+
                 });
             });
 
+            // Carrega os valores assim que a página é carregada para cada uma das medidas_id
             $(".medida_id").change(function(){
                 $(".medida_id").each(function() {
                     simbolomedida = $("option:selected", this).text();

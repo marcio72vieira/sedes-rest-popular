@@ -66,7 +66,6 @@ class CompraController extends Controller
         //dd($request);
 
         $arrProdIds = [];
-        $arrCampos = [];
         $arrMesclado = [];
 
         $arrProdutos = [];
@@ -75,8 +74,6 @@ class CompraController extends Controller
         for($x = 0; $x < count($request->produto_id); $x++){
             $arrProdIds[] = $request->produto_id[$x];
             $arrProdutos[] = $request->produto_id[$x];
-
-            //**$arrCampos[] = $request->quantidade[$x];**/
 
             // Campos a serem gravados na tabela compra_produto
             // $user->roles()->sync([1 => ['expires' => true], 2, 3]);
@@ -135,7 +132,7 @@ class CompraController extends Controller
 
         DB::beginTransaction();
             //Com o $resquest->all(), só os campos definidos no model (propriedade $fillable) serão gravados
-             $compra = Compra::create($request->all());
+            $compra = Compra::create($request->all());
 
             $compra->produtos()->sync($arrMesclado);
 
@@ -210,19 +207,73 @@ class CompraController extends Controller
 
     public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
     {
+        
+        //dd($request);
 
         $compra = Compra::findOrFail($idcompra);
 
         $arrProdIds = [];
-        $arrCampos = [];
         $arrMesclado = [];
+
+        $arrProdutos = [];
+        $arrComposto = [];
 
 
         for($x=0; $x < count($request->produto_id); $x++){
             $arrProdIds[] = $request->produto_id[$x];
-            $arrCampos[] = $request->quantidade[$x];
+            $arrProdutos[] = $request->produto_id[$x];
 
-            $arrMesclado[$arrProdIds[$x]] = ['quantidade' => $request->quantidade[$x], 'medida_id' => $request->medida_id[$x], 'detalhe' => $request->detalhe[$x], 'preco' => $request->preco[$x], 'af' => $request->af_hidden[$x], 'precototal' => $request->precototal[$x]];
+            $arrMesclado[$arrProdIds[$x]] = [
+                'quantidade' => $request->quantidade[$x], 
+                'medida_id' => $request->medida_id[$x], 
+                'detalhe' => $request->detalhe[$x], 
+                'preco' => $request->preco[$x], 
+                'af' => $request->af_hidden[$x], 
+                'precototal' => $request->precototal[$x]
+            ];
+            
+
+            // Campos a serem gravados na tabela bigtable_data para consultas rápidas
+            $arrComposto[$arrProdutos[$x]] = [
+                'quantidade'                    => $request->quantidade[$x],
+                'medida_id'                     => $request->medida_id[$x],
+                'detalhe'                       => $request->detalhe[$x],
+                'preco'                         => $request->preco[$x],
+                'af'                            => $request->af_hidden[$x],
+                'precototal'                    => $request->precototal[$x],
+                'produto_nome'                  => $request->produto_nome_hidden[$x],
+                'medida_simbolo'                => $request->medida_simbolo[$x],
+                'semana'                        => $request->semana_hidden,
+                'semana_nome'                   => $request->semana_nome_hidden,
+                'data_ini'                      => $request->data_ini_hidden,
+                'data_fin'                      => $request->data_fin_hidden,
+                'valor'                         => $request->valor_hidden,
+                'valoraf'                       => $request->valoraf_hidden,
+                'valortotal'                    => $request->valortotal_hidden,
+                'categoria_id'                  => $request->categoria_id_hidden[$x],
+                'categoria_nome'                => $request->categoria_nome_hidden[$x],
+                'restaurante_id'                => $request->restaurante_id_hidden,
+                'identificacao'                 => $request->identificacao_hidden,
+                'regional_id'                   => $request->regional_id_hidden,
+                'regional_nome'                 => $request->regional_nome_hidden,
+                'municipio_id'                  => $request->municipio_id_hidden,
+                'municipio_nome'                => $request->municipio_nome_hidden,
+                'bairro_id'                     => $request->bairro_id_hidden,
+                'bairro_nome'                   => $request->bairro_nome_hidden,
+                'empresa_id'                    => $request->empresa_id_hidden,
+                'razaosocial'                   => $request->razaosocial_hidden,
+                'nomefantasia'                  => $request->nomefantasia_hidden,
+                'cnpj'                          => $request->cnpj_hidden,
+                'nutricionista_id'              => $request->nutricionista_id_hidden,
+                'nutricionista_nomecompleto'    => $request->nutricionista_nomecompleto_hidden,
+                'nutricionista_cpf'             => $request->nutricionista_cpf_hidden,
+                'nutricionista_crn'             => $request->nutricionista_crn_hidden,
+                'nutricionista_empresa_id'      => $request->nutricionista_empresa_id_hidden,
+                'user_id'                       => $request->user_id_hidden,
+                'user_nomecompleto'             => $request->user_nomecompleto_hidden,
+                'user_cpf'                      => $request->user_cpf_hidden,
+                'user_crn'                      => $request->user_crn_hidden
+            ];
         }
 
         DB::beginTransaction();
@@ -230,6 +281,8 @@ class CompraController extends Controller
             $compra->update($request->all());
 
             $compra->produtos()->sync($arrMesclado);
+
+            $compra->allProdutos()->sync($arrComposto);
 
         DB::commit();
 
