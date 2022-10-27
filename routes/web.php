@@ -129,6 +129,9 @@ Route::get('admin/empresa/pdf/relpdfempresa', [EmpresaController::class, 'relpdf
 Route::get('admin/empresa/{id}/pdf/relpdfempresanutricionistas', [EmpresaController::class, 'relpdfempresanutricionistas'])->name('admin.empresa.relpdfempresanutricionistas')->middleware(['auth']);
 
 
+// RELATÓRIOS RESTAURANTES
+Route::get('admin/restaurante/pdf/relpdfrestaurante', [RestauranteController::class, 'relpdfrestaurante'])->name('admin.restaurante.relpdfrestaurante')->middleware(['auth']);
+
 
 // RELATÓRIOS REGIONAIS
 Route::get('admin/regional/pdf/relpdfregional', [RegionalController::class, 'relpdfregional'])->name('admin.regional.relpdfregional')->middleware(['auth']);

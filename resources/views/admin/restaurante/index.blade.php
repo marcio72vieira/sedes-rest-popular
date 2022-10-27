@@ -13,6 +13,11 @@
         </a>
 
 
+        <a class="btn btn-primary btn-danger" href="{{route('admin.restaurante.relpdfrestaurante')}}" role="button" style="margin-bottom: 10px" target="_blank">
+          <i class="far fa-file-pdf"></i> pdf
+        </a>
+
+
         @if(session('sucesso'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>OK!</strong> {{session('sucesso')}}

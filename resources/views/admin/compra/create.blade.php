@@ -483,6 +483,23 @@
                         $(this).siblings("#medida_nome_hidden").val(nomemedida);
                     });
                 });
+
+                $("#semana").change(function(){
+                    semana = $("#semana").val();
+                    $("#semana_hidden").val(semana);
+                    semanaescolhida = $("#semana option:selected").text();
+                    $("#semana_nome_hidden").val(semanaescolhida);
+                });
+
+                $("#data_ini").change(function() {
+                    datainicial = $("#data_ini").val();
+                    $("#data_ini_hidden").val(datainicial);
+                });
+
+                $("#data_fin").change(function() {
+                    datafinal = $("#data_fin").val();
+                    $("#data_fin_hidden").val(datafinal);
+                });
                 /// FIM Adicionando o texto do produto_id, da medida_id e o simbolo da medida dos campos selects
 
 
@@ -493,6 +510,10 @@
                 // Alterar quantidade
                 $(".quantidade").each(function() {
                     $(this).focusout(function(){
+
+                        // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
+                        $(this).val(this.value.replace(',','.'));
+                        $(this).val(this.value.replace(/[^0-9.]+/g, ""));
 
                         //Obtém o conteúdo da caixa quantidade
                         quantidade =  $(this).val();
@@ -530,6 +551,10 @@
                 // Alterar preço
                 $(".preco").each(function() {
                     $(this).focusout(function(){
+
+                        // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
+                        $(this).val(this.value.replace(',','.'));
+                        $(this).val(this.value.replace(/[^0-9.]+/g, ""));
 
                         //Obtém o conteúdo da caixa quantidade
                         quantidade =  $(this).parents(".linhaDados").find(".quantidade").val();
@@ -632,6 +657,12 @@
             /*******************************************/
             $(".quantidade").focusout(function() {
 
+                
+                // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
+                $(this).val(this.value.replace(',','.'));
+                $(this).val(this.value.replace(/[^0-9.]+/g, ""));
+                
+
                 //Obtém o conteúdo da caixa quantidade
                 quantidade =  $(this).val();
 
@@ -664,6 +695,11 @@
 
 
             $(".preco").focusout(function() {
+
+
+                // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
+                $(this).val(this.value.replace(',','.'));
+                $(this).val(this.value.replace(/[^0-9.]+/g, ""));
 
                 //Obtém o conteúdo da caixa quantidade
                 quantidade =  $(this).parents(".linhaDados").find(".quantidade").val();
@@ -750,9 +786,6 @@
                     nomecategoria = $(this).find(':selected').data('nomecategoria');
                     $(this).siblings("#categoria_nome_hidden").val(nomecategoria);
 
-
-
-
                     semana = $("#semana").val();
                     $("#semana_hidden").val(semana);
                     semanaescolhida = $("#semana option:selected").text();
@@ -783,6 +816,24 @@
                     nomemedida = $(this).find(':selected').data('nomemedida');
                     $(this).siblings("#medida_nome_hidden").val(nomemedida);
                 });
+            });
+
+
+            $("#semana").change(function(){
+                semana = $("#semana").val();
+                $("#semana_hidden").val(semana);
+                semanaescolhida = $("#semana option:selected").text();
+                $("#semana_nome_hidden").val(semanaescolhida);
+            });
+
+            $("#data_ini").change(function() {
+                datainicial = $("#data_ini").val();
+                $("#data_ini_hidden").val(datainicial);
+            });
+
+            $("#data_fin").change(function() {
+                datafinal = $("#data_fin").val();
+                $("#data_fin_hidden").val(datafinal);
             });
             /// Fim Adicionando o nome do produto no campo select
 
@@ -842,6 +893,10 @@
             //nomeproduto = $(this).find('option:selected').text();
             //nomeproduto = $(this).children("option:selected").text();
             //nomeproduto = $("option:selected", this).text();
+            //Substitui qualquer caracter que não seja digito ou ponto
+            //$(this).val(this.value.replace(/[^\d\.]/gi, ''));
+            //$(this).val(this.value.replace(/\D/g, ''));
+
 
         });
 
