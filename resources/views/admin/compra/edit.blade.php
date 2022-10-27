@@ -270,9 +270,10 @@
                                                     <select name="medida_id[]" id="medida_id" class="form-control medida_id" required>
                                                         <option value="" selected disabled>Escolha...</option>
                                                         @foreach($medidas  as $medida)
-                                                            <option value="{{$medida->id}}" {{old('medida_id', $item->pivot->medida_id) ==$medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>
+                                                            <option value="{{$medida->id}}" {{old('medida_id', $item->pivot->medida_id) ==$medida->id ? 'selected' : ''}}  data-nomemedida = "{{$medida->nome}}">{{$medida->simbolo}}</option>
                                                         @endforeach
                                                     </select>
+                                                    <input type="hidden" name="medida_nome_hidden[]" id="medida_nome_hidden" value="">
                                                     <input type="hidden" name="medida_simbolo[]" id="medida_simbolo"  value="">
                                                     @error('medida_id')
                                                         <small style="color: red">{{$message}}</small>
@@ -419,7 +420,10 @@
 
             $(".medida_id").each(function() {
                 simbolomedida = $("option:selected", this).text();
-                $(this).siblings("#medida_simbolo").val(simbolomedida)
+                $(this).siblings("#medida_simbolo").val(simbolomedida);
+
+                nomemedida = $(this).find(':selected').data('nomemedida');
+                $(this).siblings("#medida_nome_hidden").val(nomemedida);
             });
             /*********************************************************************************/
             /* FIM CARREGA OS DADOS DOS PRODUTOS E MEDIDAS LOGO QUE A PÁGINA É CARREGADA  */
@@ -462,7 +466,7 @@
                 var linhaDados =  "<div class='row linhaDados'>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><select name='produto_id[]' id='produto_id' class='form-control produto_id' required><option value='' selected disabled>Escolha...</option>@foreach($produtos  as $produto)<option value='{{$produto->id}}' {{old('produto_id') == $produto->id ? 'selected' : ''}}  data-idcategoria = '{{$produto->categoria->id}}' data-nomecategoria = '{{$produto->categoria->nome}}'>{{$produto->nome}}</option>@endforeach</select>  <input type='hidden' name='produto_nome_hidden[]' id='produto_nome_hidden' value=''> <input type='hidden' name='categoria_id_hidden[]' id='categoria_id_hidden' value=''> <input type='hidden' name='categoria_nome_hidden[]' id='categoria_nome_hidden' value=''></div></div>";
                         linhaDados += "<div class='col-lg-1'><div class='form-group focused'><input type='text' class='form-control text-right quantidade' id='quantidade' name='quantidade[]' value='{{old('quantidade')}}' required></div></div>";
-                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}}>{{$medida->simbolo}}</option>@endforeach</select> <input type='hidden' name='medida_simbolo[]' id='medida_simbolo'  value=''></div></div>";
+                        linhaDados += "<div class='col-lg-1'><div class='form-group focused'><select name='medida_id[]' id='medida_id' class='form-control medida_id' required><option value='' selected disabled>Escolha...</option>@foreach($medidas  as $medida)<option value='{{$medida->id}}' {{old('medida_id') == $medida->id ? 'selected' : ''}} data-nomemedida = '{{$medida->nome}}'>{{$medida->simbolo}}</option>@endforeach</select>  <input type='hidden' name='medida_nome_hidden[]' id='medida_nome_hidden' value=''> <input type='hidden' name='medida_simbolo[]' id='medida_simbolo'  value=''></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control' id='detalhe' name='detalhe[]' value='{{old('detalhe')}}'></div></div>";
                         linhaDados += "<div class='col-lg-2'><div class='form-group focused'><input type='text' class='form-control text-right preco' id='preco' name='preco[]' value='{{old('preco')}}' required></div></div>";
                         linhaDados += "<div class='col-lg-1' style='margin-right: -70px'><div class='form-group focused'><input type='checkbox' class='af' id='af' name='af[]' value='sim' style='margin-top: 15px;'><input type='hidden' name='af_hidden[]' id='af_hidden' value='nao'></div></div>";
@@ -470,20 +474,20 @@
                         linhaDados += "<div class='pl-lg-1'><a class='btn btn-success add-linha' href='#' role='button' style='margin-right: 10px'><i class='fas fa-plus'></i></a>&nbsp;&nbsp;<a class='btn btn-danger removelinha' href='#' role='button'><i class='fas fa-minus'></i></a></div>";
                     linhaDados += "</div>";
 
-               // Recupera os valores dos campos da linha de dados atual.
-               var campo_produto    = $(this).parents(".linhaDados").find(".produto_id").val();
-               var campo_quantidade = $(this).parents(".linhaDados").find(".quantidade").val();
-               var campo_medida     = $(this).parents(".linhaDados").find(".medida_id").val();
-               var campo_preco      = $(this).parents(".linhaDados").find(".preco").val();
-               var campo_af         = $(this).parents(".linhaDados").find(".af").is(':checked');
+                // Recupera os valores dos campos da linha de dados atual.
+                var campo_produto    = $(this).parents(".linhaDados").find(".produto_id").val();
+                var campo_quantidade = $(this).parents(".linhaDados").find(".quantidade").val();
+                var campo_medida     = $(this).parents(".linhaDados").find(".medida_id").val();
+                var campo_preco      = $(this).parents(".linhaDados").find(".preco").val();
+                var campo_af         = $(this).parents(".linhaDados").find(".af").is(':checked');
 
-               var campo_precototal = $(this).parents(".linhaDados").find(".precototal");
+                var campo_precototal = $(this).parents(".linhaDados").find(".precototal");
 
-               var totalLinhaDados = $('.linhaDados').length;
+                var totalLinhaDados = $('.linhaDados').length;
 
 
-               // Se todos os campos obrigatórios foram preechidos, realiza os cálculos e acrescenta uma nova linha.
-               if  (campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') {
+                // Se todos os campos obrigatórios foram preechidos, realiza os cálculos e acrescenta uma nova linha.
+                if  (campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') {
                     // Acrescenta uma nova linha
                     // $("#corpoDados").append(linhaDados);
 
@@ -499,7 +503,7 @@
 
                 // Adiciona o texto do produto, categoria, semana inicial e final valores etc... assim que uma nova
                 // linha é adicionada e perde o foco do preço
-                $(".preco").focusout(function(){
+                $(".produto_id").focusout(function(){
                     $(".produto_id").each(function() {
 
                         nomeproduto = $("option:selected", this).text();
@@ -537,10 +541,12 @@
                 $(".medida_id").change(function(){
                     $(".medida_id").each(function() {
                         simbolomedida = $("option:selected", this).text();
-                        $(this).siblings("#medida_simbolo").val(simbolomedida)
+                        $(this).siblings("#medida_simbolo").val(simbolomedida);
+
+                        nomemedida = $(this).find(':selected').data('nomemedida');
+                        $(this).siblings("#medida_nome_hidden").val(nomemedida);
                     });
                 });
-                
                 /// FIM Adicionando o texto do produto_id, da medida_id e o simbolo da medida dos campos selects
 
 
@@ -794,7 +800,7 @@
 
 
             // Executa a função normal como no create se caso algum produto ou medida forem alterados ou adicionados
-            $(".preco").focusout(function(){
+            $(".produto_id").focusout(function(){
                 $(".produto_id").each(function() {
                     nomeproduto = $("option:selected", this).text();
                     $(this).siblings("#produto_nome_hidden").val(nomeproduto);
@@ -832,7 +838,10 @@
             $(".medida_id").change(function(){
                 $(".medida_id").each(function() {
                     simbolomedida = $("option:selected", this).text();
-                    $(this).siblings("#medida_simbolo").val(simbolomedida)
+                    $(this).siblings("#medida_simbolo").val(simbolomedida);
+
+                    nomemedida = $(this).find(':selected').data('nomemedida');
+                    $(this).siblings("#medida_nome_hidden").val(nomemedida);
                 });
             });
             /// Fim Adicionando o nome do produto no campo select

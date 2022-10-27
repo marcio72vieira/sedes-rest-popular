@@ -25,6 +25,7 @@ class CreateBigtableDataTable extends Migration
             $table->string('af');
             $table->decimal('precototal',12,2);
             $table->string('produto_nome');
+            $table->string('medida_nome');
             $table->string('medida_simbolo');
             $table->smallInteger('semana');
             $table->string('semana_nome');

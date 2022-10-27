@@ -94,6 +94,7 @@ class CompraController extends Controller
                 'af'                            => $request->af_hidden[$x],
                 'precototal'                    => $request->precototal[$x],
                 'produto_nome'                  => $request->produto_nome_hidden[$x],
+                'medida_nome'                   => $request->medida_nome_hidden[$x],
                 'medida_simbolo'                => $request->medida_simbolo[$x],
                 'semana'                        => $request->semana_hidden,
                 'semana_nome'                   => $request->semana_nome_hidden,
@@ -164,8 +165,8 @@ class CompraController extends Controller
 
         $compra = Compra::with('produtos')->findOrFail($idcompra);
 
-        //$produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $produtos = Produto::where('ativo', '=', '1')->get();
+        $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        //$produtos = Produto::where('ativo', '=', '1')->get();
         $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
 
 
@@ -242,6 +243,7 @@ class CompraController extends Controller
                 'af'                            => $request->af_hidden[$x],
                 'precototal'                    => $request->precototal[$x],
                 'produto_nome'                  => $request->produto_nome_hidden[$x],
+                'medida_nome'                   => $request->medida_nome_hidden[$x],
                 'medida_simbolo'                => $request->medida_simbolo[$x],
                 'semana'                        => $request->semana_hidden,
                 'semana_nome'                   => $request->semana_nome_hidden,

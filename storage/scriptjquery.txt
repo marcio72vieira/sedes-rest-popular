@@ -114,3 +114,5 @@ data-idcategoria = '{{$produto->categoria->id}}' data-nomecategoria = '{{$produt
 <input type='hidden' name='categoria_id_hidden[]' id='categoria_id_hidden' value=''> <input type='hidden' name='categoria_nome_hidden[]' id='categoria_nome_hidden' value=''>
 
 <input type='hidden' name='medida_simbolo[]' id='medida_simbolo'  value=''>
+
+<input type='hidden' name='medida_nome_hidden[]' id='medida_nome_hidden' value=''>
