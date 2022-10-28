@@ -11,7 +11,7 @@ use App\Models\Municipio;
 use App\Models\Bairro;
 use App\Models\Empresa;
 use App\Models\User;
-use App\Models\Bigdatatable;
+use App\Models\Bigtabledata;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\RestauranteCreateRequest;
@@ -64,12 +64,22 @@ class RegistrocompraController extends Controller
 
     public function search()
     {
-        //$records = DB::table('bigtable_data')->get();
-        //$records = DB::table('bigtable_data')->where('restaurante_id', '=', 1)->where('categoria_id', '=', 1)->get();
-        //$records = DB::table('bigtable_data')->where('restaurante_id', '=', 1)->where('semana', '=', 1)->get();
+        if(Auth::user()->perfil == 'adm') {
 
-        $records = Bigdatatable::comprasDoMes(2, 11);
+            $records = Bigtabledata::comprasDoMes(1, 10);
+            return view('admin.registrocompra.search', compact('records'));
 
-        return view('admin.registrocompra.search', compact('records'));
+        } else {
+            //$records = DB::table('bigtable_data')->get();
+            //$records = DB::table('bigtable_data')->where('restaurante_id', '=', 1)->where('categoria_id', '=', 1)->get();
+            //$records = DB::table('bigtable_data')->where('restaurante_id', '=', 1)->where('semana', '=', 1)->get();
+
+            //$records = Bigtabledata::comprasDoMes(1, 10);
+            $records = Bigtabledata::comprasMes(1, 10);
+
+            //return view('admin.registrocompra.search', compact('records'));
+            return view('admin.registrocompra.consultasnut.comprasmes', compact('records'));
+
+        }
     }
 }

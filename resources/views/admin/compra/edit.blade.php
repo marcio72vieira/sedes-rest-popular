@@ -499,7 +499,7 @@
                     // Caso possua algum campo obrigatório não preenchido
                     alert("Preencha todos os campos!");
                 }
-    
+
 
                 // Adiciona o texto do produto, categoria, semana inicial e final valores etc... assim que uma nova
                 // linha é adicionada e perde o foco do preço
@@ -555,6 +555,10 @@
                 $(".quantidade").each(function() {
                     $(this).focusout(function(){
 
+                        // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
+                        $(this).val(this.value.replace(',','.'));
+                        $(this).val(this.value.replace(/[^0-9.]+/g, ""));
+
                         //Obtém o conteúdo da caixa quantidade
                         quantidade =  $(this).val();
 
@@ -591,6 +595,10 @@
                 // Alterar preço
                 $(".preco").each(function() {
                     $(this).focusout(function(){
+
+                        // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
+                        $(this).val(this.value.replace(',','.'));
+                        $(this).val(this.value.replace(/[^0-9.]+/g, ""));
 
                         //Obtém o conteúdo da caixa quantidade
                         quantidade =  $(this).parents(".linhaDados").find(".quantidade").val();
@@ -693,6 +701,10 @@
             /*******************************************/
             $(".quantidade").focusout(function() {
 
+                // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
+                $(this).val(this.value.replace(',','.'));
+                $(this).val(this.value.replace(/[^0-9.]+/g, ""));
+
                 //Obtém o conteúdo da caixa quantidade
                 quantidade =  $(this).val();
 
@@ -725,6 +737,10 @@
 
 
             $(".preco").focusout(function() {
+
+                // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
+                $(this).val(this.value.replace(',','.'));
+                $(this).val(this.value.replace(/[^0-9.]+/g, ""));
 
                 //Obtém o conteúdo da caixa quantidade
                 quantidade =  $(this).parents(".linhaDados").find(".quantidade").val();
@@ -794,7 +810,7 @@
             });
 
 
-            
+
 
 
 
