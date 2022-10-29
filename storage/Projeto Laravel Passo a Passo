@@ -1,7 +1,7 @@
 =============================
 CONFIGURAÇÕES INICIAIS
 ============================
-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
+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
 
 1 - Criar um projeto com o Laravel:
     composer create-project --prefer-dist laravel/laravel sedes-rest-popular "8.5"
@@ -598,7 +598,12 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/7151159/javascript-regular-expression-remove-spaces
 // https://stackoverflow.com/questions/9309278/javascript-regex-replace-all-characters-other-than-numbers
 // https://stackoverflow.com/questions/49630564/regex-only-1-dot
-// 
+// https://stackoverflow.com/questions/32957568/laravel-string-to-lower
+// https://imasters.com.br/banco-de-dados/aprenda-9-truques-para-o-eloquent-laravel
+// https://stackoverflow.com/questions/33361628/how-to-query-between-two-dates-using-laravel-and-eloquent
+// https://stackoverflow.com/questions/72445611/how-to-generate-last-date-of-every-month-between-two-dates-in-postgresql
+// https://www.w3resource.com/php-exercises/php-math-exercise-7.php
+
 
 
 

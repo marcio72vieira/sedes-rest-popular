@@ -45,7 +45,8 @@ class RegistrocompraController extends Controller
             //      $compras = Compra::where('restaurante_id', '=', $restaurantes[0]['id'])->orderBy('data_ini', 'DESC')->get();
             //      return view('admin.compra.index', compact('restaurantes', 'compras'));
             //Obs:  Na view (admin.compra.index), para acessar a identificacao do restarurante dever-se-ia colocar:
-            //      <strong>COMPRAS: Restaurante {{ $restaurantes[0]['identificacao'] }}</strong>
+            //      <strong>COMPRAS: Restaurante {{ $restaurantes[0]['identificacao'] }}</strong> OU
+            //      <strong>COMPRAS: Restaurante {{ $restaurantes[0]->'identificacao' }}</strong>
 
 
             //Obs:  Como a nutricionista da SEDES é responsável por apenas um restaurante, utiliza-se a query com ->first(), pois retorna só um objeto
@@ -77,8 +78,31 @@ class RegistrocompraController extends Controller
             //$records = Bigtabledata::comprasDoMes(1, 10);
             $records = Bigtabledata::comprasMes(1, 10);
 
-            //return view('admin.registrocompra.search', compact('records'));
-            return view('admin.registrocompra.consultasnut.comprasmes', compact('records'));
+            // Recupera só as datas inicial e final de todas as compras retornadas em "$records" e atribui a um array
+            $arrDatasIniFin = [];
+            
+            // Variáveis para calcular totais
+            $somapreco = 0;
+            $somaprecoaf = 0;
+            $somafinal = 0;
+            
+            foreach($records as $datarecords) {
+                // populando array com datainicial e datafinal
+                $arrDatasIniFin[] = $datarecords->data_ini;
+                $arrDatasIniFin[] = $datarecords->data_fin;
+            
+                // somatório preco normal e precoaf
+                $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0; 
+                $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0; 
+            }
+
+            $somafinal += ($somapreco + $somaprecoaf);
+
+            // Atribuindo a menor e a maior data (do array de datas "$arrDatasIniFin") para data inicial e data final
+            $dataInicial =  min($arrDatasIniFin);
+            $dataFinal = max($arrDatasIniFin);
+
+            return view('admin.registrocompra.consultasnut.comprasmes', compact('records', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
 
         }
     }

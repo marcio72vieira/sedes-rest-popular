@@ -27,7 +27,7 @@ class Bigtabledata extends Model
         $mes = date("m");
         $ano = date("Y");
 
-        $records = DB::table('bigtable_data')->where('restaurante_id', '=', $restauranteId)->whereMonth('data_ini', $mes)->orderBy('produto_nome', 'ASC')->get();
+        $records = DB::table('bigtable_data')->where('restaurante_id', '=', $restauranteId)->whereMonth('data_ini', $mes)->orderBy('semana', 'ASC')->get();
 
         return $records;
     }
