@@ -1058,6 +1058,15 @@ $comprovanteURL = $request->comprovante->store("documentos/$restaurante/$compra-
  //return "Comprovantes relativos à compra: {$idcompra} ".$idcompra ;
 
 
+//$records = DB::table('bigtable_data')->get();
+//$records = DB::table('bigtable_data')->where('restaurante_id', '=', 1)->where('categoria_id', '=', 1)->get();
+//$records = DB::table('bigtable_data')->where('restaurante_id', '=', 1)->where('semana', '=', 1)->get();
+
+//$records = Bigtabledata::comprasDoMes(1, 10);
+//Recupera as compras realizadas pelo nutricionista (user_id) logado, do restaurante que este é responsável (restaurante_id) no mês determinado (mes)
+
+
+
 ==============================================================================
 MODELOS E MIGRATIONS QUE NÃO OBEDECEM O PADRÃO DO PLURAL DOS NOMES DAS TABELAS
 ==============================================================================

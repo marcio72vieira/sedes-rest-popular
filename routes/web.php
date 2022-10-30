@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\CategoriaController;
 use App\Http\Controllers\Admin\ComprovanteController;
 use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\Admin\MedidaController;
-use App\Http\Controllers\Admin\RegistrocompraController;
+use App\Http\Controllers\Admin\RegistrocompraController; //RegistroconsultaController
 
 /*
 |--------------------------------------------------------------------------
@@ -169,5 +169,8 @@ Route::get('admin/medida/pdf/relpdfmedida', [MedidaController::class, 'relpdfmed
 
 // RELATÓRIOS COMPRAS
 //Route::get('admin/compra/pdf/{id}/relpdfcompra', [CompraController::class, 'relpdfcompra'])->name('admin.compra.relpdfcompra')->middleware(['auth']);
-Route::get('admin/restaurante/{idrest}compra/{idcompra}/pdf/relpdfcompra', [CompraController::class, 'relpdfcompra'])->name('admin.restaurante.compra.relpdfcompra')->middleware(['auth']);
+Route::get('admin/restaurante/{idrest}/compra/{idcompra}/pdf/relpdfcompra', [CompraController::class, 'relpdfcompra'])->name('admin.restaurante.compra.relpdfcompra')->middleware(['auth']);
 
+
+// RELATÓRIOS REGISTROSCOMPRA - REGISTROCONSULTA
+Route::get('admin/registrocompra/{idrest}/mes/pdf/relpdfcomprasmes', [RegistrocompraController::class, 'relpdfcomprasmes'])->name('admin.registrocompra.comprasmes.relpdfcomprasmes')->middleware(['auth']);
