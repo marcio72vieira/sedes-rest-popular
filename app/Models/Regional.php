@@ -22,6 +22,12 @@ class Regional extends Model
         return $this->hasMany(Municipio::class);
     }
 
+    //Obtendo os restaurante(que não possuem uma relação direta com Regional) através da classe município
+    public function restaurantes ()
+    {
+        return $this->hasManyThrough(Restaurante::class, Municipio::class);
+    }
+
     public function qtdmunicipiosvinc($id)
     {
         $qtd = DB::table('municipios')->where('regional_id', '=', $id)->count();

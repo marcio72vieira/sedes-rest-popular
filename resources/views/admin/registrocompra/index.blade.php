@@ -7,6 +7,21 @@
 
     <h5><strong>RESTAURANTES</strong></h5>
 
+    <form action="{{route('admin.registrocompra.index')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+      <div class="form-group mx-sm-3 mb-2">
+        <select name="regional_id" id="regional_id" class="form-control">
+          <option value="" disabled>Região...</option>
+          @foreach($regionais  as $regional)
+            <option value="{{$regional->id}}" {{($regional->id == $idRegional ? 'selected' : '')}}> {{$regional->nome}} </option>
+          @endforeach
+          <option value="" disabled>-------------</option>
+          <option value="100" {{($idRegional == 100 ? 'selected' : '')}}>TODAS</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
+    </form>
+
+
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
 
@@ -16,6 +31,7 @@
           <thead>
             <tr>
               <th>Id</th>
+              <th>Regional</th>
               {{--<th>Município - Bairro</th>--}}
               <th>Município</th>
               <th>Identificacao</th>
@@ -31,6 +47,7 @@
           @foreach($restaurantes as $restaurante)
              <tr>
                 <td>{{$restaurante->id}}</td>
+                <td>{{$restaurante->municipio->regional->nome}}</td>
                 {{-- <td>{{$restaurante->municipio->nome}} - {{$restaurante->bairro->nome}}</td>--}}
                 <td>{{$restaurante->municipio->nome}}</td>
                 <td>{{$restaurante->identificacao}}</td>
@@ -63,4 +80,3 @@
 
 </div>
 @endsection
-

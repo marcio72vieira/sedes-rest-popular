@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Regional;
 use App\Models\Restaurante;
 use App\Models\Compra;
 use App\Models\Municipio;
@@ -27,15 +28,50 @@ use Illuminate\Support\Facades\Auth;
 // class RegistroconsultaController extends Controller
 class RegistrocompraController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, e a partir destes, vai para o processo de COMPRA, caso contrário irá presquisar apenas
         // o(s) restaurante(s) da NUTRICIONISTA responsável(logada) no momento.
         // if(Auth::user()->perfil == 'adm' && Auth::user()->ativo == 1 ){
         if(Auth::user()->perfil == 'adm'){
+
+            //Regionais para compor o campo select no index
+            $regionais = Regional::orderBy('nome', 'ASC')->get();
+
+            //$restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
             $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
 
-            return view('admin.registrocompra.index', compact('restaurantes'));
+            // Verifica se uma regional foi escolhida para fazer a pesquisa através do relacionamento cruzado hasManyThrough
+            // no model Regional, uma vez que restaurante não possui relacionamento com Regional e sim com município, do tipo:
+            // Restaurante --< Municipio --< Restaurante (Regional possui Municipios que possui Restaurantes). 
+        
+            if($request->regional_id) {
+                
+                //Se a opção escolhida for 100 (todos), não há a necessidade de fazer relacionamento cruzado, busca-se todos os restaurantes independente da regional
+                if($request->regional_id == 100) {
+                    $idRegional = $request->regional_id;
+                    $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
+                
+                //Se uma regional for escolhida, busca-se a regional primerio, depois os restaurantes dos municípios pertencentes a esta regional, através do relacionamento cruzado
+                } else {
+                    $idRegional = $request->regional_id;
+                    $regional = Regional::findOrFail($idRegional);
+                    $restaurantes =  $regional->restaurantes;
+                }
+
+            } else {
+
+                //Regional fixa (metropolitana)
+                $idRegional = 1;
+                $regional = Regional::findOrFail($idRegional);
+                $restaurantes =  $regional->restaurantes;
+
+            }
+
+
+            return view('admin.registrocompra.index', compact('regionais', 'restaurantes', 'idRegional'));
+
+
 
         //elseif (Auth::user()->perfil == 'nut' && Auth::user()->ativo == 1 )
         } else {
@@ -64,6 +100,8 @@ class RegistrocompraController extends Controller
 
     }
 
+    
+
     public function search()
     {
         if(Auth::user()->perfil == 'adm') {
@@ -81,7 +119,7 @@ class RegistrocompraController extends Controller
             //Recupera só o id do restaurante
             $restauranteId =  $restaurante->id;
 
-            $records = Bigtabledata::comprasMes($restauranteId, 10);
+            $records = Bigtabledata::comprasMes($restauranteId, 11);
 
             if($records->count() > 0){
 
@@ -124,7 +162,7 @@ class RegistrocompraController extends Controller
     public function relpdfcomprasmes($restauranteId)
     {
         // Obtendo os dados
-        $records = Bigtabledata::comprasMes($restauranteId, 10);
+        $records = Bigtabledata::comprasMes($restauranteId, 11);
 
         // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
         $arrDatasIniFin = [];
@@ -160,7 +198,7 @@ class RegistrocompraController extends Controller
         $mpdf = new \Mpdf\Mpdf([
             'margin_left' => 10,
             'margin_right' => 10,
-            'margin_top' => 58,
+            'margin_top' => 60,
             'margin_bottom' => 15,
             'margin-header' => 10,
             'margin_footer' => 5
@@ -203,14 +241,14 @@ class RegistrocompraController extends Controller
                 <tr>
                     <td style="width: 417px;" class="label-ficha">Restaurante</td>
                     <td style="width: 100px;" class="label-ficha">Valor</td>
-                    <td style="width: 100px;" class="label-ficha">Valor AF (%)</td>
+                    <td style="width: 100px;" class="label-ficha">Valor AF ('.intval(mrc_calc_percentaf($somafinal, $somaprecoaf )).'%)</td>
                     <td style="width: 100px;" class="label-ficha">Valor Total</td>
                 </tr>
                 <tr>
                     <td style="width: 417px;" class="dados-ficha">'.$records[0]->identificacao.'</td>
-                    <td style="width: 100px; text-align:right" class="dados-ficha">'.$somapreco.'</td>
-                    <td style="width: 100px; text-align:right" class="dados-ficha">'.$somaprecoaf.'</td>
-                    <td style="width: 100px; text-align:right" class="dados-ficha">'.$somafinal.'</td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($somapreco).' </td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($somaprecoaf).' </td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($somafinal).' </td>
                 </tr>
             </table>
 

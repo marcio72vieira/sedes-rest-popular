@@ -115,9 +115,9 @@ Route::prefix('admin')->name('admin.')->group(function() {
 /*   ROTAS PARA REGISTRO E CONSULTA DE COMPRAS */
 /***********************************************/
 //Compras :Registros e Consultas
-Route::get('registrocompra', [RegistrocompraController::class, 'index'])->name('admin.registrocompra.index')->middleware(['auth']);
-Route::get('registroconsulta', [RegistrocompraController::class, 'search'])->name('admin.registroconsulta.search')->middleware(['auth']);
-
+Route::get('admin/registrocompra', [RegistrocompraController::class, 'index'])->name('admin.registrocompra.index')->middleware(['auth']);
+Route::get('admin/registroconsulta', [RegistrocompraController::class, 'search'])->name('admin.registroconsulta.search')->middleware(['auth']);
+Route::get('admin/registrocompra/getrestaurantesdaregional',[RegistrocompraController::class, 'obterrestaurantesdaregional'])->name('admin.getrestaurantesdaregional')->middleware(['auth']);
 
 
 

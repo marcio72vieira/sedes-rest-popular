@@ -603,7 +603,11 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/33361628/how-to-query-between-two-dates-using-laravel-and-eloquent
 // https://stackoverflow.com/questions/72445611/how-to-generate-last-date-of-every-month-between-two-dates-in-postgresql
 // https://www.w3resource.com/php-exercises/php-math-exercise-7.php
-
+// https://www.google.com/search?channel=fs&client=ubuntu&q=how+reload+page+with+an+jquey+and+ajax
+// https://stackoverflow.com/questions/7881089/reload-the-page-after-ajax-success
+// https://stackoverflow.com/questions/42407147/font-awesome-and-bootstrap-button-with-icons-syntaxhttps://stackoverflow.com/questions/133310/how-can-i-get-jquery-to-perform-a-synchronous-rather-than-asynchronous-ajax-re
+// https://stackoverflow.com/questions/11686007/font-awesome-input-type-submit
+// 
 
 
 
@@ -1037,9 +1041,63 @@ CRIANDO SEEDER PARA POPULAR TABELAS APÓS INSTALAÇÃO
     c) php artisan migrate:fresh --seed
 
 
+===========================================================================
+RECUPERANDO REGISTROS ATRAVÉS DE UM RELACIONAMENTO CRUZADO (hasManyThrough)
+===========================================================================
+1 - Situação:
+    Regionais tem um relacionamento um para muitos com municípios (hasMany)
+    Municipios tem um relacionamento um para muitos com restaurantes (hasMany)
+    Restaurante tem um relacionamento belongsTo com Municipio e Municipio tem um relacionamento belongsTo com Regionais
 
+    Regional não se relaciona diretamente com Restaurante e sim com Municipio que por sua vez se relaciona com Restaurante
 
+2 - No model Regional acrescentar o relacionamento cruzado hasManyThrough, como abaixo:
+    class Regional extends Model
+    
+    public function restaurantes ()
+    {
+        return $this->hasManyThrough(Restaurante::class, Municipio::class);
+    }
 
+3 - Em um controller para obter todos os Restaurantes de todas as Regionais, colocar como abaixo: 1 é o id da Regional
+    use App\Models\Regional;
+
+    $regionais = Regional::all(); ou 
+    $regionais =  Regional::findOrFail(1);
+
+    foreach($regionais as $regional) {
+        
+        //var_dump ($regional->restaurantes);
+
+        foreach ($regional->restaurantes as $restaurante) {
+            echo $restaurante->identificacao. "<br>";
+        }
+    }
+
+    OU 
+
+    // Recupera todas as Regionais
+    //$regionais = Regional::all(); 
+
+    ou
+
+    // Recupera só a regional cujo ID é 3
+    $regionais = Regional::findOrFail(3);   
+
+    $restsRegional = $regionais->restaurantes;   // ->restaurante é o método no model Regional
+
+    foreach($restsRegional as $restaurante){
+        echo $restaurante->identificacao;
+    }
+
+    ou
+
+    //$regionais = Regional::all();
+    $regionais = Regional::findOrFail(3);
+    $restaurantes = $regionais->restaurantes;
+    foreach($restaurantes as $restaurante){
+        echo $restaurante->identificacao;
+    } 
 
 
 ==============================

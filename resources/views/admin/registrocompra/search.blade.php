@@ -13,6 +13,84 @@
 
         <div class="card-body">
 
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                  <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Compras por Restaurante
+                      </button>
+                    </h2>
+                  </div>
+              
+                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <form class="form-inline">
+                            <div class="form-group mb-2">
+                                <label for="staticEmail2" class="sr-only">Email</label>
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="inputPassword2" class="sr-only">Password</label>
+                                <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">pesquisar</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                      <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Collapsible Group Item #2
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <form class="form-inline">
+                            <div class="form-group mb-2">
+                                <label for="staticEmail2" class="sr-only">Email</label>
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="inputPassword2" class="sr-only">Password</label>
+                                <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">pesquisar</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                      <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThreer" aria-expanded="false" aria-controls="collapseThree">
+                        Collapsible Group Item #3
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseThreer" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <form class="form-inline">
+                            <div class="form-group mb-2">
+                                <label for="staticEmail2" class="sr-only">Email</label>
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="inputPassword2" class="sr-only">Password</label>
+                                <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">pesquisar</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            {{--
             <div class="input-group mb-3">
                 <select class="custom-select" id="inputGroupSelect02">
                   <option selected>Escolha a consulta...</option>
@@ -52,7 +130,7 @@
             </div>
 
 
-            {{-- 
+             
                 <!-- Collapsable Card Example -->
                 <div class="card shadow mb-4">
                     <!-- Card Header - Accordion -->

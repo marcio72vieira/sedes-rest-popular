@@ -23,10 +23,8 @@ class Bigtabledata extends Model
 
     public static function comprasMes($restauranteId, $mes)
     {
-        $dia = date("d");
-        $mes = date("m");
-        $ano = date("Y");
-
+        // $dia = date("d"); $mes = date("m"); $ano = date("Y");
+        
         $records = DB::table('bigtable_data')->where('restaurante_id', '=', $restauranteId)->whereMonth('data_ini', $mes)->orderBy('semana', 'ASC')->get();
 
         return $records;
