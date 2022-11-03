@@ -607,7 +607,16 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/7881089/reload-the-page-after-ajax-success
 // https://stackoverflow.com/questions/42407147/font-awesome-and-bootstrap-button-with-icons-syntaxhttps://stackoverflow.com/questions/133310/how-can-i-get-jquery-to-perform-a-synchronous-rather-than-asynchronous-ajax-re
 // https://stackoverflow.com/questions/11686007/font-awesome-input-type-submit
+// https://stackoverflow.com/questions/38172857/how-to-select-specific-columns-in-laravel-eloquent
+// https://www.w3resource.com/mysql/aggregate-functions-and-grouping/aggregate-functions-and-grouping-sum-with-group-by.php
+// https://www.dialhost.com.br/blog/eloquent-simplificando-models-laravel/
+// https://laracasts.com/discuss/channels/laravel/to-find-the-sum-with-group-by
+// https://stackoverflow.com/questions/36950857/sqlstate42000-syntax-error-or-access-violation-1055-expression-3-of-select
+// https://laracasts.com/discuss/channels/laravel/productionerror-sqlstate42000-syntax-error-or-access-violation-1055-expression-1-of-order-by-clause-is-not-in-group-by-in-ubuntu
+// https://dev.mysql.com/doc/refman/8.0/en/group-by-handling.html
+// https://stackoverflow.com/questions/24887708/laravel-eloquent-sum-with-groupby
 // 
+
 
 
 
@@ -1106,6 +1115,8 @@ COMENTÁRIOS SOLTOS DE CÓDIGOS
 //dd($request->file('comprovante')); ou
 //dd($request->'comprovante');
 
+//groupBy() and sum() devem vir sempre depois de uma coleção do tipo: ->get(), all(), where()->get(), etc...
+
 
 // primeiro parâmetro, local onde se quer armazenar o arquivo (dentro da pasta : documentos/restaurante/compra). Se não existir é criado a pasta
 // segundo parâmetro, qual disco (local, public ou S3), deseja-se armazenar o upload. No caso será o 'public'.
@@ -1185,3 +1196,65 @@ public function alldatasCompras()
     ])->withTimestamps();
 
 }
+
+
+
+==================
+QUERYS
+==================
+$records = Bigtabledata::groupBy('produto_nome')
+    ->where('restaurante_id', '=', $restaurante_id)
+    ->whereMonth('data_ini', $mes_id)
+    ->whereYear('data_ini',  $ano_id)
+    ->get()->sum('precototal');
+
+
+            /*
+            Account::where('th_comp_code', auth()->user()->company)
+            ->groupBy('th_exp_cat_id')
+            ->selectRaw('*, sum(th_bill_amt)')->get();
+            */
+
+            /* 
+            $records = DB::table('bigtable_data')
+                            ->where('restaurante_id', '=', $restaurante_id)
+                            ->whereMonth('data_ini', $mes_id)
+                            ->whereYear('data_ini', $ano_id)
+                            ->select('identificacao', 'produto_nome')
+                            ->get(); 
+            */
+
+            /* 
+            $records = DB::table('bigtable_data')
+                            ->where('restaurante_id', '=', $restaurante_id)
+                            ->whereMonth('data_ini', $mes_id)
+                            ->whereYear('data_ini', $ano_id)
+                            ->pluck('identificacao', 'produto_nome'); 
+            */
+
+            
+            /* 
+            $records = DB::table('bigtable_data')
+                            ->where('restaurante_id', '=', $restaurante_id)
+                            ->whereMonth('data_ini', $mes_id)
+                            ->whereYear('data_ini', $ano_id)
+                            ->select('identificacao', 'produto_nome', 'precototal')
+                            ->get(); 
+            */
+
+            /* $records = DB::table('bigtable_data')
+                ->where('restaurante_id', '=', $restaurante_id)
+                ->whereMonth('data_ini', $mes_id)
+                ->whereYear('data_ini', $ano_id)
+                ->get(); */
+
+
+$records = Bigtabledata::where('restaurante_id', '=', $restaurante_id)
+                                    ->whereMonth('data_ini', $mes_id)
+                                    ->whereYear('data_ini',  $ano_id)
+                                    ->select('identificacao')
+                                    ->get()
+                                    //->sum('precototal');
+                                    ->groupBy('produto_nome');
+
+

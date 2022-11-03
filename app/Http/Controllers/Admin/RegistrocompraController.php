@@ -107,7 +107,10 @@ class RegistrocompraController extends Controller
         if(Auth::user()->perfil == 'adm') {
 
             $records = Bigtabledata::comprasDoMes(1, 10);
-            return view('admin.registrocompra.search', compact('records'));
+            $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
+            
+            return view('admin.registrocompra.search', compact('records', 'restaurantes'));
+
 
         } else {
             //Fazer um teste aqui, se o usuário logado está ativo (depois de incluir esse campo na tabela e no model User)
@@ -151,6 +154,33 @@ class RegistrocompraController extends Controller
                 
             }     
         }
+    }
+
+
+    public function producaorestmesano(Request $request) 
+    {
+        if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
+            $restaurante_id = $request->restaurante_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            
+            $records = Bigtabledata::groupBy('produto_nome', 'medida_simbolo')
+            ->selectRaw('regional_nome, municipio_nome, identificacao, produto_id, produto_nome, medida_simbolo, sum(precototal) as somaprecototal, sum(quantidade) as somaquantidade')
+            ->orderBy('produto_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->where('restaurante_id', '=', $restaurante_id)
+            ->whereMonth('data_ini', '=', $mes_id)
+            ->whereYear('data_ini', '=', $ano_id)
+            ->get();
+
+            return view('admin.registrocompra.consultasadm.producaorestaurantemesano', compact('records'));
+
+        } else {
+
+            return view('admin.registrocompra.search', compact('records', 'restaurantes'));
+        }
+            
     }
 
 
