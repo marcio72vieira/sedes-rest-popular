@@ -43,15 +43,15 @@ class RegistrocompraController extends Controller
 
             // Verifica se uma regional foi escolhida para fazer a pesquisa através do relacionamento cruzado hasManyThrough
             // no model Regional, uma vez que restaurante não possui relacionamento com Regional e sim com município, do tipo:
-            // Restaurante --< Municipio --< Restaurante (Regional possui Municipios que possui Restaurantes). 
-        
+            // Restaurante --< Municipio --< Restaurante (Regional possui Municipios que possui Restaurantes).
+
             if($request->regional_id) {
-                
+
                 //Se a opção escolhida for 100 (todos), não há a necessidade de fazer relacionamento cruzado, busca-se todos os restaurantes independente da regional
                 if($request->regional_id == 100) {
                     $idRegional = $request->regional_id;
                     $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
-                
+
                 //Se uma regional for escolhida, busca-se a regional primerio, depois os restaurantes dos municípios pertencentes a esta regional, através do relacionamento cruzado
                 } else {
                     $idRegional = $request->regional_id;
@@ -100,7 +100,7 @@ class RegistrocompraController extends Controller
 
     }
 
-    
+
 
     public function search()
     {
@@ -117,7 +117,7 @@ class RegistrocompraController extends Controller
             //$restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
             //return view('admin.registrocompra.search', compact('records', 'restaurantes'));
 
-            
+
             $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
             return view('admin.registrocompra.search', compact('restaurantes', 'mesespesquisa', 'anospesquisa'));
 
@@ -138,31 +138,31 @@ class RegistrocompraController extends Controller
 
                 // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
                 $arrDatasIniFin = [];
-                
+
                 // Variáveis para calcular totais
                 $somapreco = 0;
                 $somaprecoaf = 0;
                 $somafinal = 0;
-                
+
                 foreach($records as $datarecords) {
                     // populando array com datainicial e datafinal
                     $arrDatasIniFin[] = $datarecords->data_ini;
                     $arrDatasIniFin[] = $datarecords->data_fin;
-                
+
                     // somatório preco normal e precoaf
-                    $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0; 
-                    $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0; 
+                    $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0;
+                    $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0;
                 }
-    
+
                 $somafinal += ($somapreco + $somaprecoaf);
-    
+
                 // Atribuindo a menor e a maior data (do array de datas "$arrDatasIniFin") para data inicial e data final
                 $dataInicial =  min($arrDatasIniFin);
                 $dataFinal = max($arrDatasIniFin);
-    
+
                 return view('admin.registrocompra.consultasnut.comprasmes', compact('records', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
-                
-            }     
+
+            }
         }
     }
 
@@ -173,7 +173,7 @@ class RegistrocompraController extends Controller
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
-            if(Auth::user()->perfil == 'adm') { 
+            if(Auth::user()->perfil == 'adm') {
                 $restaurante = Restaurante::where('id', '=', $rest_id)->first();
             } else {
                 $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first();
@@ -188,20 +188,20 @@ class RegistrocompraController extends Controller
 
                 // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
                 $arrDatasIniFin = [];
-                
+
                 // Variáveis para calcular totais
                 $somapreco = 0;
                 $somaprecoaf = 0;
                 $somafinal = 0;
-                
+
                 foreach($records as $datarecords) {
                     // populando array com datainicial e datafinal
                     $arrDatasIniFin[] = $datarecords->data_ini;
                     $arrDatasIniFin[] = $datarecords->data_fin;
-                
+
                     // somatório preco normal e precoaf
-                    $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0; 
-                    $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0; 
+                    $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0;
+                    $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0;
                 }
 
                 $somafinal += ($somapreco + $somaprecoaf);
@@ -211,7 +211,7 @@ class RegistrocompraController extends Controller
                 $dataFinal = max($arrDatasIniFin);
 
                 return view('admin.registrocompra.consultasnut.comprasmes', compact('records', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
-                
+
             } else {
                 $request->session()->flash('error_compramensalrestaurante', 'Nenhum registro encontrado para esta pesquisa!');
                 return redirect()->route('admin.registroconsulta.search');
@@ -220,19 +220,19 @@ class RegistrocompraController extends Controller
         } else {
 
             return redirect()->route('admin.registroconsulta.search');
-        }             
+        }
     }
 
 
 
-    public function producaorestmesano(Request $request) 
+    public function producaorestmesano(Request $request)
     {
         if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
             $rest_id = $request->restaurante_id;
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
-            /* 
+            /*
             $records = Bigtabledata::groupBy('produto_nome', 'medida_simbolo')
             ->selectRaw('regional_nome, municipio_nome, identificacao, produto_id, produto_nome, medida_simbolo, avg(preco) as mediapreco, sum(precototal) as somaprecototal, sum(quantidade) as somaquantidade')
             ->orderBy('produto_nome', 'ASC')
@@ -240,7 +240,7 @@ class RegistrocompraController extends Controller
             ->where('restaurante_id', '=', $rest_id)
             ->whereMonth('data_ini', '=', $mes_id)
             ->whereYear('data_ini', '=', $ano_id)
-            ->get(); 
+            ->get();
             */
 
             $records = Bigtabledata::producaorestaurantemesano($rest_id, $mes_id, $ano_id);
@@ -260,7 +260,7 @@ class RegistrocompraController extends Controller
 
             return redirect()->route('admin.registroconsulta.search');
         }
-            
+
     }
 
 
@@ -276,20 +276,20 @@ class RegistrocompraController extends Controller
 
         // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
         $arrDatasIniFin = [];
-                
+
         // Variáveis para calcular totais
         $somapreco = 0;
         $somaprecoaf = 0;
         $somafinal = 0;
-        
+
         foreach($records as $datarecords) {
             // populando array com datainicial e datafinal
             $arrDatasIniFin[] = $datarecords->data_ini;
             $arrDatasIniFin[] = $datarecords->data_fin;
-        
+
             // somatório preco normal e precoaf
-            $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0; 
-            $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0; 
+            $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0;
+            $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0;
         }
 
         $somafinal += ($somapreco + $somaprecoaf);
@@ -300,7 +300,7 @@ class RegistrocompraController extends Controller
 
         //dd($records);
 
-        
+
         // Definindo o nome do arquivo a ser baixado
         $fileName = ('compras_mes10'.'.pdf');
 

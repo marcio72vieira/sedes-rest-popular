@@ -615,7 +615,11 @@ how to avoid with some characters become typed in text box with jquery
 // https://laracasts.com/discuss/channels/laravel/productionerror-sqlstate42000-syntax-error-or-access-violation-1055-expression-1-of-order-by-clause-is-not-in-group-by-in-ubuntu
 // https://dev.mysql.com/doc/refman/8.0/en/group-by-handling.html
 // https://stackoverflow.com/questions/24887708/laravel-eloquent-sum-with-groupby
-// 
+// https://dev.mysql.com/doc/refman/8.0/en/counting-rows.html
+// https://mpdf.github.io/paging/page-breaks.html
+// https://laracasts.com/discuss/channels/eloquent/how-i-detect-current-collection-is-odd-or-even
+// https://tutsforweb.com/loop-variable-foreach-blade-laravel/
+// https://github.com/mccarlosen/laravel-mpdf/issues/29
 
 
 
@@ -1062,7 +1066,7 @@ RECUPERANDO REGISTROS ATRAVÉS DE UM RELACIONAMENTO CRUZADO (hasManyThrough)
 
 2 - No model Regional acrescentar o relacionamento cruzado hasManyThrough, como abaixo:
     class Regional extends Model
-    
+
     public function restaurantes ()
     {
         return $this->hasManyThrough(Restaurante::class, Municipio::class);
@@ -1071,11 +1075,11 @@ RECUPERANDO REGISTROS ATRAVÉS DE UM RELACIONAMENTO CRUZADO (hasManyThrough)
 3 - Em um controller para obter todos os Restaurantes de todas as Regionais, colocar como abaixo: 1 é o id da Regional
     use App\Models\Regional;
 
-    $regionais = Regional::all(); ou 
+    $regionais = Regional::all(); ou
     $regionais =  Regional::findOrFail(1);
 
     foreach($regionais as $regional) {
-        
+
         //var_dump ($regional->restaurantes);
 
         foreach ($regional->restaurantes as $restaurante) {
@@ -1083,15 +1087,15 @@ RECUPERANDO REGISTROS ATRAVÉS DE UM RELACIONAMENTO CRUZADO (hasManyThrough)
         }
     }
 
-    OU 
+    OU
 
     // Recupera todas as Regionais
-    //$regionais = Regional::all(); 
+    //$regionais = Regional::all();
 
     ou
 
     // Recupera só a regional cujo ID é 3
-    $regionais = Regional::findOrFail(3);   
+    $regionais = Regional::findOrFail(3);
 
     $restsRegional = $regionais->restaurantes;   // ->restaurante é o método no model Regional
 
@@ -1106,7 +1110,7 @@ RECUPERANDO REGISTROS ATRAVÉS DE UM RELACIONAMENTO CRUZADO (hasManyThrough)
     $restaurantes = $regionais->restaurantes;
     foreach($restaurantes as $restaurante){
         echo $restaurante->identificacao;
-    } 
+    }
 
 
 ==============================
@@ -1215,31 +1219,31 @@ $records = Bigtabledata::groupBy('produto_nome')
             ->selectRaw('*, sum(th_bill_amt)')->get();
             */
 
-            /* 
+            /*
             $records = DB::table('bigtable_data')
                             ->where('restaurante_id', '=', $restaurante_id)
                             ->whereMonth('data_ini', $mes_id)
                             ->whereYear('data_ini', $ano_id)
                             ->select('identificacao', 'produto_nome')
-                            ->get(); 
+                            ->get();
             */
 
-            /* 
+            /*
             $records = DB::table('bigtable_data')
                             ->where('restaurante_id', '=', $restaurante_id)
                             ->whereMonth('data_ini', $mes_id)
                             ->whereYear('data_ini', $ano_id)
-                            ->pluck('identificacao', 'produto_nome'); 
+                            ->pluck('identificacao', 'produto_nome');
             */
 
-            
-            /* 
+
+            /*
             $records = DB::table('bigtable_data')
                             ->where('restaurante_id', '=', $restaurante_id)
                             ->whereMonth('data_ini', $mes_id)
                             ->whereYear('data_ini', $ano_id)
                             ->select('identificacao', 'produto_nome', 'precototal')
-                            ->get(); 
+                            ->get();
             */
 
             /* $records = DB::table('bigtable_data')

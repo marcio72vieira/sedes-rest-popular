@@ -24,7 +24,7 @@ class Bigtabledata extends Model
     public static function comprasMes($restauranteId, $mes)
     {
         // $dia = date("d"); $mes = date("m"); $ano = date("Y");
-        
+
         $records = DB::table('bigtable_data')->where('restaurante_id', '=', $restauranteId)->whereMonth('data_ini', $mes)->orderBy('semana', 'ASC')->get();
 
         return $records;
@@ -33,7 +33,7 @@ class Bigtabledata extends Model
 
     public static function compramensal($restauranteId, $mes, $ano)
     {
-       
+
         $records = DB::table('bigtable_data')->where('restaurante_id', '=', $restauranteId)->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->orderBy('semana', 'ASC')->get();
 
         return $records;
@@ -43,8 +43,8 @@ class Bigtabledata extends Model
     //Produção Restaurante por Mês e Ano
     public static function producaorestaurantemesano ($idrest, $mes, $ano)
     {
-        $records = Bigtabledata::groupBy('produto_nome', 'medida_simbolo')
-            ->selectRaw('regional_nome, municipio_nome, identificacao, produto_id, produto_nome, medida_simbolo, avg(preco) as mediapreco, sum(precototal) as somaprecototal, sum(quantidade) as somaquantidade')
+        $records = Bigtabledata::groupBy('produto_id', 'medida_simbolo')
+            ->selectRaw('regional_nome, municipio_nome, identificacao, produto_id, produto_nome, medida_simbolo, count(*) as numvezescomprado, data_ini, avg(preco) as mediapreco, sum(precototal) as somaprecototal, sum(quantidade) as somaquantidade')
             ->orderBy('produto_nome', 'ASC')
             ->orderBy('medida_simbolo', 'ASC')
             ->where('restaurante_id', '=', $idrest)

@@ -42,7 +42,7 @@
                                 <th scope="col" style="width: 40px; text-align: center">Id</th>
                                 <th scope="col" style="width: 100px; text-align: center">semana</th>
                                 <th scope="col" style="width: 200px; text-align: center">Produto</th>
-                                <th scope="col" style="text-align: center">Detalhe</th>
+                                <th scope="col" style="text-align: center">Nº de ocorrências no mês</th>
                                 <th scope="col" style="width: 40px; text-align: center">AF</th>
                                 <th scope="col" style="width: 100px; text-align: center">Quant.</th>
                                 <th scope="col" style="width: 100px; text-align: center">Unidade</th>
@@ -56,7 +56,7 @@
                                         <th scope="row">{{ $item->produto_id }}</th>
                                         <td>{{ Str::lower($item->semana_nome) }}</td>
                                         <td>{{ $item->produto_nome }}</td>
-                                        <td>{{ $item->detalhe }}</td>
+                                        <td>{{ $item->numvezescomprado }} vezes no mês</td>
                                         <td style="text-align: center">{{ ($item->af == "sim" ? "x" : "" ) }}</td>
                                         <td style="text-align: right">{{ $item->somaquantidade }}</td>
                                         <td style="text-align: center">{{ $item->medida_simbolo }}</td>
@@ -65,12 +65,12 @@
                                     </tr>
                                 @endforeach
                                 <tr class="bg-gray-100">
-                                    <td colspan="8" style="text-align: right"><strong>Valor R$</strong> </td> 
+                                    <td colspan="8" style="text-align: right"><strong>Valor R$</strong> </td>
                                     <td style="text-align: right" ></td>
                                 </tr>
                                 <tr class="bg-gray-100">
                                     <td colspan="8" style="text-align: right">
-                                        <strong>Valor AF (%) R$ </strong> 
+                                        <strong>Valor AF (%) R$ </strong>
                                     </td>
                                     <td style="text-align: right" ></td>
                                 </tr>
@@ -80,7 +80,7 @@
                                 </tr>
                         </tbody>
                       </table>
-                      
+
                 </div>
 
                 <div class="tab-pane fade" id="fev" role="tabpanel" aria-labelledby="fevereiro-tab">Relação de compras de Fevereiro</div>
