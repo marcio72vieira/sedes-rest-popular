@@ -14,18 +14,18 @@
         <div class="card-body">
 
             <div class="accordion" id="accordionExample">
-                
-                {{-- Produção Restaurante Mês Ano --}}
+
+                {{-- Compra Mensal por Restaurante --}}
                 <div class="card">
                   <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
-                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <strong>Produção mês por Restaurantes</strong>
+                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseum" aria-expanded="true" aria-controls="collapseum">
+                        <strong>Compra mensal por restaurante</strong>
                       </button>
                     </h2>
-                    @if(session('error'))
+                    @if(session('error_compramensalrestaurante'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Atenção! </strong> {{session('error')}}
+                                <strong>Atenção! </strong> {{session('error_compramensalrestaurante')}}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                                 </button>
@@ -33,7 +33,60 @@
                         @endif
                   </div>
               
-                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                  <div id="collapseum" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <form action="{{route('admin.consulta.compramensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <select name="restaurante_id" id="restaurante_id" class="form-control" required>
+                              <option value="" selected disabled>Restaurante...</option>
+                              @foreach($restaurantes  as $restaurante)
+                                <option value="{{$restaurante->id}}"> {{$restaurante->identificacao}} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="mes_id" id="mes_id" class="form-control" required>
+                              <option value="" selected disabled>Mês...</option>
+                              @foreach($mesespesquisa as $key => $value)
+                                <option value="{{ $key }}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="ano_id" id="ano_id" class="form-control" required>
+                              <option value="" selected disabled>Ano...</option>
+                              @foreach($anospesquisa as $value)
+                                <option value="{{ $value}}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+                
+                {{-- Produção Restaurante Mês Ano --}}
+                <div class="card">
+                  <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsedois" aria-expanded="true" aria-controls="collapsedois">
+                        <strong>Produção mês por Restaurantes</strong>
+                      </button>
+                    </h2>
+                    @if(session('error_prodrestmesano'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Atenção! </strong> {{session('error_prodrestmesano')}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                  </div>
+              
+                  <div id="collapsedois" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
                         <form action="{{route('admin.consulta.producaorestmesano')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
                           <div class="form-group mx-sm-3 mb-2">
@@ -48,28 +101,18 @@
 
                             <select name="mes_id" id="mes_id" class="form-control" required>
                               <option value="" selected disabled>Mês...</option>
-                              <option value="1">Jan </option>
-                              <option value="2">Fev </option>
-                              <option value="3">Mar </option>
-                              <option value="4">Abr </option>
-                              <option value="5">Mai </option>
-                              <option value="6">Jun </option>
-                              <option value="7">Jul </option>
-                              <option value="8">Ags </option>
-                              <option value="9">Set </option>
-                              <option value="10">Out </option>
-                              <option value="11">Nov </option>
-                              <option value="12">Dez </option>
+                              @foreach($mesespesquisa as $key => $value)
+                                <option value="{{ $key }}"> {{ $value }} </option>
+                              @endforeach
                             </select>
 
                             &nbsp;&nbsp;&nbsp;
 
                             <select name="ano_id" id="ano_id" class="form-control" required>
                               <option value="" selected disabled>Ano...</option>
-                              <option value="{{ date("Y") }}">{{ date("Y") }}</option>
-                              <option value="{{ date("Y") -1 }}">{{ date("Y") - 1 }}</option>
-                              <option value="{{ date("Y") -2 }}">{{ date("Y") - 2 }}</option>
-                              <option value="{{ date("Y") -3 }}">{{ date("Y") - 3 }}</option>
+                              @foreach($anospesquisa as $value)
+                                <option value="{{ $value}}"> {{ $value }} </option>
+                              @endforeach
                             </select>
                           </div>
                           <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
@@ -81,12 +124,12 @@
                 <div class="card">
                   <div class="card-header" id="headingTwo">
                     <h2 class="mb-0">
-                      <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapsetres" aria-expanded="false" aria-controls="collapsetres">
                         Collapsible Group Item #2
                       </button>
                     </h2>
                   </div>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                  <div id="collapsetres" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                     <div class="card-body">
                         <form class="form-inline">
                             <div class="form-group mb-2">

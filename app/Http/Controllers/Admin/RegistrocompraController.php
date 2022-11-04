@@ -104,15 +104,22 @@ class RegistrocompraController extends Controller
 
     public function search()
     {
+        $mesespesquisa = [
+            '1' => 'Jan', '2' => 'Fev', '3' => 'Mar', '4' => 'Abr', '5' => 'Mai', '6' => 'Jun',
+            '7' => 'Jul', '8' => 'Ags', '9' => 'Set', '10' => 'Out', '11' => 'Nov', '12' => 'Dez'
+        ];
+
+        $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
         if(Auth::user()->perfil == 'adm') {
 
             //$records = Bigtabledata::comprasDoMes(1, 10);
             //$restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
             //return view('admin.registrocompra.search', compact('records', 'restaurantes'));
 
+            
             $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
-            return view('admin.registrocompra.search', compact('restaurantes'));
-
+            return view('admin.registrocompra.search', compact('restaurantes', 'mesespesquisa', 'anospesquisa'));
 
 
         } else {
@@ -159,6 +166,64 @@ class RegistrocompraController extends Controller
         }
     }
 
+    public function compramensalrestaurante(Request $request)
+    {
+        if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
+            $rest_id = $request->restaurante_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            if(Auth::user()->perfil == 'adm') { 
+                $restaurante = Restaurante::where('id', '=', $rest_id)->first();
+            } else {
+                $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first();
+            }
+
+            //Recupera só o id do restaurante
+            $restauranteId =  $restaurante->id;
+
+            $records = Bigtabledata::compramensal($restauranteId, $mes_id, $ano_id);
+
+            if($records->count() > 0){
+
+                // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
+                $arrDatasIniFin = [];
+                
+                // Variáveis para calcular totais
+                $somapreco = 0;
+                $somaprecoaf = 0;
+                $somafinal = 0;
+                
+                foreach($records as $datarecords) {
+                    // populando array com datainicial e datafinal
+                    $arrDatasIniFin[] = $datarecords->data_ini;
+                    $arrDatasIniFin[] = $datarecords->data_fin;
+                
+                    // somatório preco normal e precoaf
+                    $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0; 
+                    $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0; 
+                }
+
+                $somafinal += ($somapreco + $somaprecoaf);
+
+                // Atribuindo a menor e a maior data (do array de datas "$arrDatasIniFin") para data inicial e data final
+                $dataInicial =  min($arrDatasIniFin);
+                $dataFinal = max($arrDatasIniFin);
+
+                return view('admin.registrocompra.consultasnut.comprasmes', compact('records', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
+                
+            } else {
+                $request->session()->flash('error_compramensalrestaurante', 'Nenhum registro encontrado para esta pesquisa!');
+                return redirect()->route('admin.registroconsulta.search');
+            }
+
+        } else {
+
+            return redirect()->route('admin.registroconsulta.search');
+        }             
+    }
+
+
 
     public function producaorestmesano(Request $request) 
     {
@@ -182,7 +247,7 @@ class RegistrocompraController extends Controller
 
             if($records->count() <= 0) {
 
-                $request->session()->flash('error', 'Nenhum registro encontrado para esta consulta!');
+                $request->session()->flash('error_prodrestmesano', 'Nenhum registro encontrado para esta pesquisa!');
                 return redirect()->route('admin.registroconsulta.search');
 
             } else {
@@ -191,11 +256,9 @@ class RegistrocompraController extends Controller
             }
 
 
-
         } else {
 
-            $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
-            return view('admin.registrocompra.search', compact('restaurantes'));
+            return redirect()->route('admin.registroconsulta.search');
         }
             
     }
