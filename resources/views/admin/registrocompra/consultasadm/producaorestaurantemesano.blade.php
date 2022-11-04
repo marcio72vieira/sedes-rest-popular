@@ -7,6 +7,11 @@
 
     <h5><strong>Produção Mês: {{ $records[0]->identificacao }}</h5>
 
+    <a class="btn btn-primary" href="{{route('admin.registroconsulta.search')}}" role="button" style="margin-bottom: 6px;">
+        <i class="fas fa-undo-alt"></i>
+        Voltar
+    </a>
+
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -41,7 +46,7 @@
                                 <th scope="col" style="width: 40px; text-align: center">AF</th>
                                 <th scope="col" style="width: 100px; text-align: center">Quant.</th>
                                 <th scope="col" style="width: 100px; text-align: center">Unidade</th>
-                                <th scope="col" style="width: 120px; text-align: center">Preço</th>
+                                <th scope="col" style="width: 120px; text-align: center">Preço Médio</th>
                                 <th scope="col" style="width: 120px; text-align: center">Total</th>
                             </tr>
                         </thead>
@@ -55,7 +60,7 @@
                                         <td style="text-align: center">{{ ($item->af == "sim" ? "x" : "" ) }}</td>
                                         <td style="text-align: right">{{ $item->somaquantidade }}</td>
                                         <td style="text-align: center">{{ $item->medida_simbolo }}</td>
-                                        <td style="text-align: right">{{ mrc_turn_value($item->preco) }}</td>
+                                        <td style="text-align: right">{{ mrc_turn_value($item->mediapreco) }}</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
                                     </tr>
                                 @endforeach

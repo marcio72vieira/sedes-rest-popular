@@ -20,24 +20,34 @@
                   <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Produção mês por Restaurantes
+                        <strong>Produção mês por Restaurantes</strong>
                       </button>
                     </h2>
+                    @if(session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Atenção! </strong> {{session('error')}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
                   </div>
               
                   <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
                         <form action="{{route('admin.consulta.producaorestmesano')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
                           <div class="form-group mx-sm-3 mb-2">
-                            <select name="restaurante_id" id="restaurante_id" class="form-control">
-                              <option value="" disabled>Restaurante...</option>
+                            <select name="restaurante_id" id="restaurante_id" class="form-control" required>
+                              <option value="" selected disabled>Restaurante...</option>
                               @foreach($restaurantes  as $restaurante)
                                 <option value="{{$restaurante->id}}"> {{$restaurante->identificacao}} </option>
                               @endforeach
                             </select>
+
                             &nbsp;&nbsp;&nbsp;
-                            <select name="mes_id" id="mes_id" class="form-control">
-                              <option value="" disabled>Mês...</option>
+
+                            <select name="mes_id" id="mes_id" class="form-control" required>
+                              <option value="" selected disabled>Mês...</option>
                               <option value="1">Jan </option>
                               <option value="2">Fev </option>
                               <option value="3">Mar </option>
@@ -51,9 +61,11 @@
                               <option value="11">Nov </option>
                               <option value="12">Dez </option>
                             </select>
+
                             &nbsp;&nbsp;&nbsp;
-                            <select name="ano_id" id="ano_id" class="form-control">
-                              <option value="" disabled>Ano...</option>
+
+                            <select name="ano_id" id="ano_id" class="form-control" required>
+                              <option value="" selected disabled>Ano...</option>
                               <option value="{{ date("Y") }}">{{ date("Y") }}</option>
                               <option value="{{ date("Y") -1 }}">{{ date("Y") - 1 }}</option>
                               <option value="{{ date("Y") -2 }}">{{ date("Y") - 2 }}</option>

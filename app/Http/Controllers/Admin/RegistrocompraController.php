@@ -106,10 +106,13 @@ class RegistrocompraController extends Controller
     {
         if(Auth::user()->perfil == 'adm') {
 
-            $records = Bigtabledata::comprasDoMes(1, 10);
+            //$records = Bigtabledata::comprasDoMes(1, 10);
+            //$restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
+            //return view('admin.registrocompra.search', compact('records', 'restaurantes'));
+
             $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
-            
-            return view('admin.registrocompra.search', compact('records', 'restaurantes'));
+            return view('admin.registrocompra.search', compact('restaurantes'));
+
 
 
         } else {
@@ -122,7 +125,7 @@ class RegistrocompraController extends Controller
             //Recupera só o id do restaurante
             $restauranteId =  $restaurante->id;
 
-            $records = Bigtabledata::comprasMes($restauranteId, 11);
+            $records = Bigtabledata::comprasMes($restauranteId, 10);
 
             if($records->count() > 0){
 
@@ -160,25 +163,39 @@ class RegistrocompraController extends Controller
     public function producaorestmesano(Request $request) 
     {
         if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
-            $restaurante_id = $request->restaurante_id;
+            $rest_id = $request->restaurante_id;
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
-            
+            /* 
             $records = Bigtabledata::groupBy('produto_nome', 'medida_simbolo')
-            ->selectRaw('regional_nome, municipio_nome, identificacao, produto_id, produto_nome, medida_simbolo, sum(precototal) as somaprecototal, sum(quantidade) as somaquantidade')
+            ->selectRaw('regional_nome, municipio_nome, identificacao, produto_id, produto_nome, medida_simbolo, avg(preco) as mediapreco, sum(precototal) as somaprecototal, sum(quantidade) as somaquantidade')
             ->orderBy('produto_nome', 'ASC')
             ->orderBy('medida_simbolo', 'ASC')
-            ->where('restaurante_id', '=', $restaurante_id)
+            ->where('restaurante_id', '=', $rest_id)
             ->whereMonth('data_ini', '=', $mes_id)
             ->whereYear('data_ini', '=', $ano_id)
-            ->get();
+            ->get(); 
+            */
 
-            return view('admin.registrocompra.consultasadm.producaorestaurantemesano', compact('records'));
+            $records = Bigtabledata::producaorestaurantemesano($rest_id, $mes_id, $ano_id);
+
+            if($records->count() <= 0) {
+
+                $request->session()->flash('error', 'Nenhum registro encontrado para esta consulta!');
+                return redirect()->route('admin.registroconsulta.search');
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.producaorestaurantemesano', compact('records'));
+            }
+
+
 
         } else {
 
-            return view('admin.registrocompra.search', compact('records', 'restaurantes'));
+            $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
+            return view('admin.registrocompra.search', compact('restaurantes'));
         }
             
     }
@@ -192,7 +209,7 @@ class RegistrocompraController extends Controller
     public function relpdfcomprasmes($restauranteId)
     {
         // Obtendo os dados
-        $records = Bigtabledata::comprasMes($restauranteId, 11);
+        $records = Bigtabledata::comprasMes($restauranteId, 10);
 
         // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
         $arrDatasIniFin = [];

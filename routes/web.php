@@ -117,7 +117,6 @@ Route::prefix('admin')->name('admin.')->group(function() {
 //Compras :Registros e Consultas
 Route::get('admin/registrocompra', [RegistrocompraController::class, 'index'])->name('admin.registrocompra.index')->middleware(['auth']);
 Route::get('admin/registroconsulta', [RegistrocompraController::class, 'search'])->name('admin.registroconsulta.search')->middleware(['auth']);
-
 Route::get('admin/registrocompra/producaorestmesano',[RegistrocompraController::class, 'producaorestmesano'])->name('admin.consulta.producaorestmesano')->middleware(['auth']);
 
 
