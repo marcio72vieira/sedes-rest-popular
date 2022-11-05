@@ -5,21 +5,41 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Compras {{ date("Y") - 1 }}</h5>
+    <h5><strong>Consultar Compras</h5>
 
 
-    {{--
-        Esta view é compartilhada tanto pelo ADM como pelo Usuário Nutricionista (Reaproveitamento de código)
-        Se acessada pelo ADM, deverá exibir o botão voltar (para) o "menu de consultas" se User Nutricionista
-        deverá exibir o formulário para pesquisar o mês e o ano da compra
-    --}}
+    {{--Esta View é compartilhada tanto pelo Administrador como pelo Nutricionista responsável pelo restaurante atual
+        Se acessada pelo ADM, exibirá o botão voltar para o "menu de consultas" do Administrador 
+        Se acessada pelo NUT, exibirá formulário com campos Mês  e Ano para pesquisa das compras realizadas --}}
+
     @if(Auth::user()->perfil == 'adm')
         <a class="btn btn-primary" href="{{route('admin.registroconsulta.search')}}" role="button" style="margin-bottom: 6px;">
             <i class="fas fa-undo-alt"></i>
             Voltar
         </a>
     @else
-        Formulario pesquisa [MES] e [ANO] [pesquisar]
+        <form action="{{route('admin.consulta.compramensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="hidden" name="restaurante_id" value="{{ $restaurante->id }}">
+
+                <select name="mes_id" id="mes_id" class="form-control" required>
+                    <option value="" selected disabled>Mês...</option>
+                    @foreach($mesespesquisa as $key => $value)
+                        <option value="{{ $key }}"> {{ $value }} </option>
+                    @endforeach
+                </select>
+
+                &nbsp;&nbsp;&nbsp;
+
+                <select name="ano_id" id="ano_id" class="form-control" required>
+                    <option value="" selected disabled>Ano...</option>
+                    @foreach($anospesquisa as $value)
+                        <option value="{{ $value}}"> {{ $value }} </option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
+        </form>
     @endif
 
     <div class="card shadow mb-4">
@@ -32,7 +52,7 @@
                         {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
                         <th colspan="4">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
                         <th colspan="4">{{ $records[0]->identificacao }}</th>
-                        <th colspan="4" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registrocompra.comprasmes.relpdfcomprasmes', $records[0]->restaurante_id) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                        <th colspan="4" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registrocompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                     </tr>
                     <tr>
                         <th colspan="4">Nutricionista Empresa: {{ $records[0]->nutricionista_nomecompleto }}</th>
@@ -85,7 +105,7 @@
                             <td style="text-align: right" >{{  mrc_turn_value($somafinal) }} </td>
                         </tr>
                 </tbody>
-              </table>
+            </table>
         </div>
    </div>
 </div>

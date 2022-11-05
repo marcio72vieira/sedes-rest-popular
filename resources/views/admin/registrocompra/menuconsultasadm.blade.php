@@ -24,13 +24,13 @@
                       </button>
                     </h2>
                     @if(session('error_compramensalrestaurante'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Atenção! </strong> {{session('error_compramensalrestaurante')}}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Atenção! </strong> {{session('error_compramensalrestaurante')}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
                   </div>
               
                   <div id="collapseum" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">

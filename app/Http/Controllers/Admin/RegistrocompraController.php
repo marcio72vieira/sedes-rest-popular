@@ -113,14 +113,8 @@ class RegistrocompraController extends Controller
 
         if(Auth::user()->perfil == 'adm') {
 
-            //$records = Bigtabledata::comprasDoMes(1, 10);
-            //$restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
-            //return view('admin.registrocompra.search', compact('records', 'restaurantes'));
-
-
             $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
-            return view('admin.registrocompra.search', compact('restaurantes', 'mesespesquisa', 'anospesquisa'));
-
+            return view('admin.registrocompra.menuconsultasadm', compact('restaurantes', 'mesespesquisa', 'anospesquisa'));
 
         } else {
             //Fazer um teste aqui, se o usuário logado está ativo (depois de incluir esse campo na tabela e no model User)
@@ -130,51 +124,35 @@ class RegistrocompraController extends Controller
             $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first();
 
             //Recupera só o id do restaurante
-            $restauranteId =  $restaurante->id;
+            /*$restauranteId =  $restaurante->id;*/
 
-            $records = Bigtabledata::comprasMes($restauranteId, 10);
+            return view('admin.registrocompra.consultasnut.formularioconsultanut', compact('restaurante', 'mesespesquisa', 'anospesquisa'));
 
-            if($records->count() > 0){
-
-                // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
-                $arrDatasIniFin = [];
-
-                // Variáveis para calcular totais
-                $somapreco = 0;
-                $somaprecoaf = 0;
-                $somafinal = 0;
-
-                foreach($records as $datarecords) {
-                    // populando array com datainicial e datafinal
-                    $arrDatasIniFin[] = $datarecords->data_ini;
-                    $arrDatasIniFin[] = $datarecords->data_fin;
-
-                    // somatório preco normal e precoaf
-                    $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0;
-                    $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0;
-                }
-
-                $somafinal += ($somapreco + $somaprecoaf);
-
-                // Atribuindo a menor e a maior data (do array de datas "$arrDatasIniFin") para data inicial e data final
-                $dataInicial =  min($arrDatasIniFin);
-                $dataFinal = max($arrDatasIniFin);
-
-                return view('admin.registrocompra.consultasnut.comprasmes', compact('records', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
-
-            }
         }
     }
 
     public function compramensalrestaurante(Request $request)
     {
+        $mesespesquisa = [
+            '1' => 'Jan', '2' => 'Fev', '3' => 'Mar', '4' => 'Abr', '5' => 'Mai', '6' => 'Jun',
+            '7' => 'Jul', '8' => 'Ags', '9' => 'Set', '10' => 'Out', '11' => 'Nov', '12' => 'Dez'
+        ];
+
+        $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+
         if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
             $rest_id = $request->restaurante_id;
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
             if(Auth::user()->perfil == 'adm') {
-                $restaurante = Restaurante::where('id', '=', $rest_id)->first();
+                //Abaixo, se usuário colocar id de restaurante que não existe diretamente na URL "quebra" a aplicacao 
+                //$restaurante = Restaurante::where('id', '=', $rest_id)->first();
+
+                //Com findOrFail, evita a quebra, mesmo se o usuário colocar um ID de um restaurante que não exista
+                //diretamente na URL, ançando-o para a página de error 404
+                $restaurante = Restaurante::findOrFail($rest_id);
             } else {
                 $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first();
             }
@@ -210,11 +188,13 @@ class RegistrocompraController extends Controller
                 $dataInicial =  min($arrDatasIniFin);
                 $dataFinal = max($arrDatasIniFin);
 
-                return view('admin.registrocompra.consultasnut.comprasmes', compact('records', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
+                return view('admin.registrocompra.consultasnut.comprasmes', compact('mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
 
             } else {
+
                 $request->session()->flash('error_compramensalrestaurante', 'Nenhum registro encontrado para esta pesquisa!');
                 return redirect()->route('admin.registroconsulta.search');
+
             }
 
         } else {
@@ -269,10 +249,20 @@ class RegistrocompraController extends Controller
     /*    RELATÓRIOS PDF's, Excel e CSV    */
     /***************************************/
 
-    public function relpdfcomprasmes($restauranteId)
+    public function relpdfcomprasmes($rest, $mes, $ano)
     {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $restaurante = Restaurante::findOrFail($rest);
+
+        $restauranteId = $restaurante->id;
+
         // Obtendo os dados
-        $records = Bigtabledata::comprasMes($restauranteId, 10);
+        $records = Bigtabledata::comprasMes($restauranteId, $mes, $ano);
 
         // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
         $arrDatasIniFin = [];
@@ -328,7 +318,7 @@ class RegistrocompraController extends Controller
                         Secretaria do Estado de Desenvolvimento Social/SEDES
                     </td>
                     <td style="width: 352px;" class="titulo-rel">
-                        '.$records[0]->identificacao.' <br> mês nº 10
+                        '.$records[0]->identificacao.' <br> compras ref.: '.$meses[$mes].'/'.$ano.'
                     </td>
                 </tr>
             </table>
