@@ -39,6 +39,12 @@ class AcessoController extends Controller
 
         if(Auth::attempt($credentials)){
             $userInfo = User::where('email', '=', $request->email)->first();
+
+            if($userInfo->perfil == 'ina'){
+                Auth::logout();
+                return redirect()->back()->withInput()->withErrors(['Usuário inativo!']);
+            }
+
             $request->session()->put('idUsuarioLogado', $userInfo->id);
             $request->session()->put('nameUsuarioLogado', $userInfo->name);
             $request->session()->put('emailUsuarioLogado', $userInfo->email);

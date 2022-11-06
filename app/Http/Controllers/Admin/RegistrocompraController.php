@@ -89,6 +89,13 @@ class RegistrocompraController extends Controller
             //Obs:  Como a nutricionista da SEDES é responsável por apenas um restaurante, utiliza-se a query com ->first(), pois retorna só um objeto
             //      $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first(); OU a query abaixo
             $restaurante = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->where('user_id', '=', Auth::user()->id)->first();
+            
+
+            //Se nenhum restaurante estiver associado ao User logado, desló-ga-o do sistema
+            if($restaurante == null) {
+                return redirect()->route('acesso.logout');
+            }
+            
             $compras = Compra::where('restaurante_id', '=', $restaurante->id)->orderBy('data_ini', 'DESC')->get();
 
 
@@ -123,8 +130,10 @@ class RegistrocompraController extends Controller
             //Recupera o restaurante do usuário-nutricionista logado. ->first(), porque um usuário é responsável por um único restaurante.
             $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first();
 
-            //Recupera só o id do restaurante
-            /*$restauranteId =  $restaurante->id;*/
+            //Se nenhum restaurante estiver associado ao User logado, desló-ga-o do sistema
+            if($restaurante == null) {
+                return redirect()->route('acesso.logout');
+            }
 
             return view('admin.registrocompra.consultasnut.formularioconsultanut', compact('restaurante', 'mesespesquisa', 'anospesquisa'));
 
