@@ -167,10 +167,15 @@ class RegistrocompraController extends Controller
                 // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
                 $arrDatasIniFin = [];
 
+                // Criando arrays para guardar produtos adquiridos em compra normal e compra pela agricultura familiar
+                $compranormal = [];
+                $compraaf = [];
+
                 // Variáveis para calcular totais
                 $somapreco = 0;
                 $somaprecoaf = 0;
                 $somafinal = 0;
+
 
                 foreach($records as $datarecords) {
                     // populando array com datainicial e datafinal
@@ -178,17 +183,32 @@ class RegistrocompraController extends Controller
                     $arrDatasIniFin[] = $datarecords->data_fin;
 
                     // somatório preco normal e precoaf
-                    $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0;
-                    $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0;
-                }
+                    // $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0;
+                    // $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0;
 
-                $somafinal += ($somapreco + $somaprecoaf);
+
+                    // Verifica se o registro atual é uma compra da AF ou não para popular os respectivos arrays
+                    // bem como faz o somatório de seus respectivos preços. A separação em arrays é para serem
+                    // exibidos na view separadamente.
+                    if($datarecords->af == 'sim') {
+
+                        $compraaf[] = $datarecords;
+                        $somaprecoaf += $datarecords->precototal;
+
+                    } else {
+
+                        $compranormal[] = $datarecords;
+                        $somapreco += $datarecords->precototal;
+                    }
+                }
+                
+                $somafinal += ($somaprecoaf + $somapreco);
 
                 // Atribuindo a menor e a maior data (do array de datas "$arrDatasIniFin") para data inicial e data final
                 $dataInicial =  min($arrDatasIniFin);
                 $dataFinal = max($arrDatasIniFin);
 
-                return view('admin.registrocompra.consultasnut.comprasmes', compact('mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
+                return view('admin.registrocompra.consultasnut.comprasmes', compact('mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'compranormal', 'compraaf', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
 
             } else {
 
@@ -267,6 +287,10 @@ class RegistrocompraController extends Controller
         // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
         $arrDatasIniFin = [];
 
+        // Criando arrays para guardar produtos adquiridos em compra normal e compra pela agricultura familiar
+        $compranormal = [];
+        $compraaf = [];
+
         // Variáveis para calcular totais
         $somapreco = 0;
         $somaprecoaf = 0;
@@ -277,12 +301,19 @@ class RegistrocompraController extends Controller
             $arrDatasIniFin[] = $datarecords->data_ini;
             $arrDatasIniFin[] = $datarecords->data_fin;
 
-            // somatório preco normal e precoaf
-            $somapreco += $datarecords->af == 'nao' ? $datarecords->precototal : 0;
-            $somaprecoaf += $datarecords->af == 'sim' ? $datarecords->precototal : 0;
+            if($datarecords->af == 'sim') {
+
+                $compraaf[] = $datarecords;
+                $somaprecoaf += $datarecords->precototal;
+
+            } else {
+
+                $compranormal[] = $datarecords;
+                $somapreco += $datarecords->precototal;
+            }
         }
 
-        $somafinal += ($somapreco + $somaprecoaf);
+        $somafinal += ($somaprecoaf + $somapreco);
 
         // Atribuindo a menor e a maior data (do array de datas "$arrDatasIniFin") para data inicial e data final
         $dataInicial =  min($arrDatasIniFin);
@@ -394,7 +425,7 @@ class RegistrocompraController extends Controller
 
 
         // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
-        $html = \View::make('admin.registrocompra.pdf.pdfcomprasmes', compact('records', 'somapreco', 'somaprecoaf', 'somafinal'));
+        $html = \View::make('admin.registrocompra.pdf.pdfcomprasmes', compact('records', 'compranormal', 'compraaf', 'somapreco', 'somaprecoaf', 'somafinal'));
         $html = $html->render();
 
         // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')

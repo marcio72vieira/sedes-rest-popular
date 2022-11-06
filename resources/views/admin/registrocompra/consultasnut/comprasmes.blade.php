@@ -77,7 +77,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @foreach ($records as $item)
+                        @foreach ($compranormal as $item)
                             <tr>
                                 <th scope="row">{{ $item->produto_id }}</th>
                                 <td>{{ Str::lower($item->semana_nome) }}</td>
@@ -90,6 +90,23 @@
                                 <td style="text-align: right">{{ mrc_turn_value($item->precototal) }}</td>
                             </tr>
                         @endforeach
+                        {{-- Só exibe "Compras AF" se o array não estiver vazio --}}
+                        @if(count($compraaf) > 0)
+                            <tr><td colspan="9"><strong>COMPRAS AF</strong></td></tr>
+                            @foreach ($compraaf as $item)
+                                <tr>
+                                    <th scope="row">{{ $item->produto_id }}</th>
+                                    <td>{{ Str::lower($item->semana_nome) }}</td>
+                                    <td>{{ $item->produto_nome }}</td>
+                                    <td>{{ $item->detalhe }}</td>
+                                    <td style="text-align: center">{{ ($item->af == "sim" ? "x" : "" ) }}</td>
+                                    <td style="text-align: right">{{ $item->quantidade }}</td>
+                                    <td style="text-align: center">{{ $item->medida_simbolo }}</td>
+                                    <td style="text-align: right">{{ mrc_turn_value($item->preco) }}</td>
+                                    <td style="text-align: right">{{ mrc_turn_value($item->precototal) }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                         <tr class="bg-gray-100">
                             <td colspan="8" style="text-align: right"><strong>Valor R$</strong> </td>
                             <td style="text-align: right" >{{ mrc_turn_value($somapreco) }} </td>
