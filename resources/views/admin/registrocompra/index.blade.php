@@ -7,7 +7,7 @@
 
     <h5><strong>RESTAURANTES</strong></h5>
 
-    <form action="{{route('admin.registrocompra.index')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+    <form action="{{route('admin.registroconsultacompra.index')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
       <div class="form-group mx-sm-3 mb-2">
         <select name="regional_id" id="regional_id" class="form-control">
           <option value="" disabled>Região...</option>

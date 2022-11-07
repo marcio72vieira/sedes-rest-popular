@@ -13,7 +13,7 @@
         Se acessada pelo NUT, exibirá formulário com campos Mês  e Ano para pesquisa das compras realizadas --}}
 
     @if(Auth::user()->perfil == 'adm')
-        <a class="btn btn-primary" href="{{route('admin.registroconsulta.search')}}" role="button" style="margin-bottom: 6px;">
+        <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
             <i class="fas fa-undo-alt"></i>
             Voltar
         </a>
@@ -52,7 +52,7 @@
                         {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
                         <th colspan="4">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
                         <th colspan="4">{{ $records[0]->identificacao }}</th>
-                        <th colspan="4" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registrocompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                        <th colspan="4" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                     </tr>
                     <tr>
                         <th colspan="4">Nutricionista Empresa: {{ $records[0]->nutricionista_nomecompleto }}</th>

@@ -26,7 +26,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 // class RegistroconsultaController extends Controller
-class RegistrocompraController extends Controller
+class RegistroconsultacompraController extends Controller
 {
     public function index(Request $request)
     {
@@ -111,9 +111,10 @@ class RegistrocompraController extends Controller
 
     public function search()
     {
+        // Meses e anos para popular campos selects
         $mesespesquisa = [
-            '1' => 'Jan', '2' => 'Fev', '3' => 'Mar', '4' => 'Abr', '5' => 'Mai', '6' => 'Jun',
-            '7' => 'Jul', '8' => 'Ags', '9' => 'Set', '10' => 'Out', '11' => 'Nov', '12' => 'Dez'
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
         ];
 
         $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
@@ -142,18 +143,21 @@ class RegistrocompraController extends Controller
 
     public function compramensalrestaurante(Request $request)
     {
-        $mesespesquisa = [
-            '1' => 'Jan', '2' => 'Fev', '3' => 'Mar', '4' => 'Abr', '5' => 'Mai', '6' => 'Jun',
-            '7' => 'Jul', '8' => 'Ags', '9' => 'Set', '10' => 'Out', '11' => 'Nov', '12' => 'Dez'
-        ];
-
-        $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
-
-
+        
+        
         if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
             $rest_id = $request->restaurante_id;
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
+            
+
+            // Meses e anos para popular campos selects
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
 
             if(Auth::user()->perfil == 'adm') {
                 //Abaixo, se usuário colocar id de restaurante que não existe diretamente na URL "quebra" a aplicacao 
@@ -221,14 +225,14 @@ class RegistrocompraController extends Controller
 
             } else {
 
-                $request->session()->flash('error_compramensalrestaurante', 'Nenhum registro encontrado para esta pesquisa!');
-                return redirect()->route('admin.registroconsulta.search');
+                $request->session()->flash('error_compramensalrestaurante', 'Nenhum registro encontrado para esta pesquisa.');
+                return redirect()->route('admin.registroconsultacompra.search');
 
             }
 
         } else {
 
-            return redirect()->route('admin.registroconsulta.search');
+            return redirect()->route('admin.registroconsultacompra.search');
         }
     }
 
@@ -241,7 +245,19 @@ class RegistrocompraController extends Controller
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
+            // Meses e anos para popular campos selects
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Monta mês/ano de pesquisa
+            $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
+
+
             /*
+            // Recuperação de regitros pode ser feita a partir daqui ou no model Bigtabledata
             $records = Bigtabledata::groupBy('produto_nome', 'medida_simbolo')
             ->selectRaw('regional_nome, municipio_nome, identificacao, produto_id, produto_nome, medida_simbolo, avg(preco) as mediapreco, sum(precototal) as somaprecototal, sum(quantidade) as somaquantidade')
             ->orderBy('produto_nome', 'ASC')
@@ -256,18 +272,18 @@ class RegistrocompraController extends Controller
 
             if($records->count() <= 0) {
 
-                $request->session()->flash('error_prodrestmesano', 'Nenhum registro encontrado para esta pesquisa!');
-                return redirect()->route('admin.registroconsulta.search');
+                $request->session()->flash('error_prodrestmesano', 'Nenhum registro encontrado para esta pesquisa.');
+                return redirect()->route('admin.registroconsultacompra.search');
 
             } else {
 
-                return view('admin.registrocompra.consultasadm.producaorestaurantemesano', compact('records'));
+                return view('admin.registrocompra.consultasadm.producaorestaurantemesano', compact('records', 'mesano'));
             }
 
 
         } else {
 
-            return redirect()->route('admin.registroconsulta.search');
+            return redirect()->route('admin.registroconsultacompra.search');
         }
 
     }

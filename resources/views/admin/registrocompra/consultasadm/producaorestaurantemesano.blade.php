@@ -7,7 +7,7 @@
 
     <h5><strong>Produção Mês: {{ $records[0]->identificacao }}</h5>
 
-    <a class="btn btn-primary" href="{{route('admin.registroconsulta.search')}}" role="button" style="margin-bottom: 6px;">
+    <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>
         Voltar
     </a>
@@ -30,7 +30,7 @@
                             </tr>
                             <tr>
                                 <th colspan="4">Nutricionista Empresa: {{ $records[0]->nutricionista_nomecompleto }}</th>
-                                <th colspan="4">Mês: OUTUBRO/2022 </th>
+                                <th colspan="4">Mês: {{ $mesano }} </th>
                                 <th colspan="4"></th>
                             </tr>
                             <tr>

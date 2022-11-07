@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\CategoriaController;
 use App\Http\Controllers\Admin\ComprovanteController;
 use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\Admin\MedidaController;
-use App\Http\Controllers\Admin\RegistrocompraController; //RegistroconsultaController
+use App\Http\Controllers\Admin\RegistroconsultacompraController; //RegistroconsultaController
 
 /*
 |--------------------------------------------------------------------------
@@ -115,11 +115,10 @@ Route::prefix('admin')->name('admin.')->group(function() {
 /*   ROTAS PARA REGISTRO E CONSULTA DE COMPRAS */
 /***********************************************/
 //Compras :Registros e Consultas
-Route::get('admin/registrocompra', [RegistrocompraController::class, 'index'])->name('admin.registrocompra.index')->middleware(['auth']);
-Route::get('admin/registroconsulta', [RegistrocompraController::class, 'search'])->name('admin.registroconsulta.search')->middleware(['auth']);
-Route::get('admin/registrocompra/producaorestmesano',[RegistrocompraController::class, 'producaorestmesano'])->name('admin.consulta.producaorestmesano')->middleware(['auth']);
-Route::get('admin/registrocompra/compramensalrestaurante',[RegistrocompraController::class, 'compramensalrestaurante'])->name('admin.consulta.compramensalrestaurante')->middleware(['auth']);
-
+Route::get('admin/registroconsultacompra/registro', [RegistroconsultacompraController::class, 'index'])->name('admin.registroconsultacompra.index')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/consulta', [RegistroconsultacompraController::class, 'search'])->name('admin.registroconsultacompra.search')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/producaorestmesano',[RegistroconsultacompraController::class, 'producaorestmesano'])->name('admin.consulta.producaorestmesano')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/compramensalrestaurante',[RegistroconsultacompraController::class, 'compramensalrestaurante'])->name('admin.consulta.compramensalrestaurante')->middleware(['auth']);
 
 
 /***********************************************/
@@ -174,4 +173,4 @@ Route::get('admin/restaurante/{idrest}/compra/{idcompra}/pdf/relpdfcompra', [Com
 
 
 // RELATÓRIOS REGISTROSCOMPRA - REGISTROCONSULTA
-Route::get('admin/registrocompra/{idrest}/{mes}/{ano}/pdf/relpdfcomprasmes', [RegistrocompraController::class, 'relpdfcomprasmes'])->name('admin.registrocompra.comprasmes.relpdfcomprasmes')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/{idrest}/{mes}/{ano}/pdf/relpdfcomprasmes', [RegistroconsultacompraController::class, 'relpdfcomprasmes'])->name('admin.registroconsultacompra.comprasmes.relpdfcomprasmes')->middleware(['auth']);
