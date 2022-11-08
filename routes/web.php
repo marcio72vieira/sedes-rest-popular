@@ -119,7 +119,7 @@ Route::get('admin/registroconsultacompra/registro', [RegistroconsultacompraContr
 Route::get('admin/registroconsultacompra/consulta', [RegistroconsultacompraController::class, 'search'])->name('admin.registroconsultacompra.search')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/producaorestmesano',[RegistroconsultacompraController::class, 'producaorestmesano'])->name('admin.consulta.producaorestmesano')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/compramensalrestaurante',[RegistroconsultacompraController::class, 'compramensalrestaurante'])->name('admin.consulta.compramensalrestaurante')->middleware(['auth']);
-Route::get('admin/registroconsultacompra/producaomensalmunicipio',[RegistroconsultacompraController::class, 'producaomensalmunicipio'])->name('admin.consulta.producaomensalmunicipio')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/compramensalmunicipio',[RegistroconsultacompraController::class, 'compramensalmunicipio'])->name('admin.consulta.compramensalmunicipio')->middleware(['auth']);
 
 
 /***********************************************/
@@ -173,5 +173,6 @@ Route::get('admin/medida/pdf/relpdfmedida', [MedidaController::class, 'relpdfmed
 Route::get('admin/restaurante/{idrest}/compra/{idcompra}/pdf/relpdfcompra', [CompraController::class, 'relpdfcompra'])->name('admin.restaurante.compra.relpdfcompra')->middleware(['auth']);
 
 
-// RELATÓRIOS REGISTROSCOMPRA - REGISTROCONSULTA
+// RELATÓRIOS REGISTROCONSULTACOMPRA
 Route::get('admin/registroconsultacompra/{idrest}/{mes}/{ano}/pdf/relpdfcomprasmes', [RegistroconsultacompraController::class, 'relpdfcomprasmes'])->name('admin.registroconsultacompra.comprasmes.relpdfcomprasmes')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/{idmun}/{mes}/{ano}/pdf/relpdfcompramensalmunicipio', [RegistroconsultacompraController::class, 'relpdfcompramensalmunicipio'])->name('admin.registroconsultacompra.relpdfcompramensalmunicipio')->middleware(['auth']);

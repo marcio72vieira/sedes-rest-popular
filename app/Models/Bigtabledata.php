@@ -56,8 +56,8 @@ class Bigtabledata extends Model
     }
 
 
-     //Produção mensal município
-     public static function producaomensalmunicipio ($idmun, $mes, $ano)
+     //Compra mensal município
+     public static function compramensalmunicipio ($idmun, $mes, $ano)
      {
          $records = Bigtabledata::groupBy('produto_id', 'medida_simbolo')
              ->selectRaw('regional_nome, municipio_nome, produto_id, produto_nome, medida_simbolo, count(*) as numvezescomprado, avg(preco) as mediapreco, sum(precototal) as somaprecototal, sum(quantidade) as somaquantidade')
@@ -67,7 +67,7 @@ class Bigtabledata extends Model
              ->whereMonth('data_ini', '=', $mes)
              ->whereYear('data_ini', '=', $ano)
              ->get();
- 
+
          return $records;
      }
 }

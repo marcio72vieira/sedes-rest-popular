@@ -89,13 +89,13 @@ class RegistroconsultacompraController extends Controller
             //Obs:  Como a nutricionista da SEDES é responsável por apenas um restaurante, utiliza-se a query com ->first(), pois retorna só um objeto
             //      $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first(); OU a query abaixo
             $restaurante = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->where('user_id', '=', Auth::user()->id)->first();
-            
+
 
             //Se nenhum restaurante estiver associado ao User logado, desló-ga-o do sistema
             if($restaurante == null) {
                 return redirect()->route('acesso.logout');
             }
-            
+
             $compras = Compra::where('restaurante_id', '=', $restaurante->id)->orderBy('data_ini', 'DESC')->get();
 
 
@@ -118,14 +118,14 @@ class RegistroconsultacompraController extends Controller
         ];
 
         $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
-        
+
         if(Auth::user()->perfil == 'adm') {
-            
-            
+
+
             $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
-            
+
             $municipios = Municipio::select('id', 'nome')->orderBy('nome', 'ASC')->get();
-            
+
             return view('admin.registrocompra.menuconsultasadm', compact('mesespesquisa', 'anospesquisa', 'restaurantes', 'municipios'));
 
         } else {
@@ -147,13 +147,13 @@ class RegistroconsultacompraController extends Controller
 
     public function compramensalrestaurante(Request $request)
     {
-        
-        
+
+
         if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
             $rest_id = $request->restaurante_id;
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
-            
+
 
             // Meses e anos para popular campos selects
             $mesespesquisa = [
@@ -164,7 +164,7 @@ class RegistroconsultacompraController extends Controller
 
 
             if(Auth::user()->perfil == 'adm') {
-                //Abaixo, se usuário colocar id de restaurante que não existe diretamente na URL "quebra" a aplicacao 
+                //Abaixo, se usuário colocar id de restaurante que não existe diretamente na URL "quebra" a aplicacao
                 //$restaurante = Restaurante::where('id', '=', $rest_id)->first();
 
                 //Com findOrFail, evita a quebra, mesmo se o usuário colocar um ID de um restaurante que não exista
@@ -218,7 +218,7 @@ class RegistroconsultacompraController extends Controller
                         $somapreco += $datarecords->precototal;
                     }
                 }
-                
+
                 $somafinal += ($somaprecoaf + $somapreco);
 
                 // Atribuindo a menor e a maior data (do array de datas "$arrDatasIniFin") para data inicial e data final
@@ -294,10 +294,10 @@ class RegistroconsultacompraController extends Controller
 
 
 
-    public function producaomensalmunicipio(Request $request)
+    public function compramensalmunicipio(Request $request)
     {
         if($request->municipio_id && $request->mes_id && $request->ano_id ) {
-            $munic_id = $request->municipio_id;
+            $muni_id = $request->municipio_id;
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
@@ -311,16 +311,16 @@ class RegistroconsultacompraController extends Controller
             // Monta mês/ano de pesquisa
             $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
 
-            $records = Bigtabledata::producaomensalmunicipio($munic_id, $mes_id, $ano_id);
+            $records = Bigtabledata::compramensalmunicipio($muni_id, $mes_id, $ano_id);
 
             if($records->count() <= 0) {
 
-                $request->session()->flash('error_prodmunicipio', 'Nenhum registro encontrado para esta pesquisa.');
+                $request->session()->flash('error_compramensalmunicipio', 'Nenhum registro encontrado para esta pesquisa.');
                 return redirect()->route('admin.registroconsultacompra.search');
 
             } else {
 
-                return view('admin.registrocompra.consultasadm.producaomensalmunicipio', compact('records', 'mesano'));
+                return view('admin.registrocompra.consultasadm.compramensalmunicipio', compact('records', 'mesano', 'muni_id', 'mes_id', 'ano_id'));
             }
 
 
@@ -505,4 +505,103 @@ class RegistroconsultacompraController extends Controller
         $mpdf->Output($fileName, 'I');
 
     }
+
+
+    // Relatório PDF Compra mensal por município
+    public function relpdfcompramensalmunicipio($muni, $mes, $ano)
+    {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $municipio = Municipio::findOrFail($muni);
+
+        $municipioId = $municipio->id;
+
+        // Obtendo os dados
+        $records = Bigtabledata::compramensalmunicipio($municipioId, $mes, $ano);
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('compramensalmunicipio'.'.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 40,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 83px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 352px;" class="titulo-rel">
+                        COMPRA MENSAL <br>'.$records[0]->municipio_nome.': '.$meses[$mes].'/'.$ano.'
+                    </td>
+                </tr>
+            </table>
+            <table style="width:717px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 717px;" class="label-ficha">Região - Município</td>
+                </tr>
+                <tr>
+                    <td style="width: 717px;" class="dados-ficha">'.$records[0]->regional_nome.' - '.$records[0]->municipio_nome.'</td>
+                </tr>
+            </table>
+
+            <table style="width:717px; border-collapse: collapse">
+                <tr>
+                    <td width="30px" class="col-header-table" style="text-align:center">Id</td>
+                    <td width="200px" class="col-header-table" style="text-align:center">Produto</td>
+                    <td width="235px" class="col-header-table" style="text-align:center">Nº de ocorrências no mês</td>
+                    <td width="50px" class="col-header-table" style="text-align:center">Quant.</td>
+                    <td width="50px" class="col-header-table" style="text-align:center">Unid.</td>
+                    <td width="72px" class="col-header-table" style="text-align:center">Preço Médio</td>
+                    <td width="80px" class="col-header-table" style="text-align:center">Total</td>
+                </tr>
+            </table>
+
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="239px">São Luis(MA) {DATE d/m/Y H:i}</td>
+                    <td width="239px" align="center"></td>
+                    <td width="239px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.registrocompra.pdf.pdfcompramensalmunicipio', compact('records'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
+
+
 }

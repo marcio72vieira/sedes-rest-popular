@@ -26,7 +26,7 @@
                       </button>
                     </h2>
                   </div>
-              
+
                   <div id="collapseum" @if(session('error_compramensalrestaurante')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
                         <form action="{{route('admin.consulta.compramensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
@@ -66,7 +66,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 {{-- Produção Restaurante Mês Ano --}}
                 <div class="card">
                   <div class="card-header" id="headingTwo">
@@ -78,7 +78,7 @@
                       </button>
                     </h2>
                   </div>
-              
+
                   <div id="collapsedois" @if(session('error_prodrestmesano')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingTwo" data-parent="#accordionExample">
                     <div class="card-body">
                         <form action="{{route('admin.consulta.producaorestmesano')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
@@ -125,16 +125,16 @@
                   <div class="card-header" id="headingtres">
                     <h2 class="mb-0">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsetres" aria-expanded="true" aria-controls="collapsetres">
-                        <strong>Produção mensal por Município</strong>
+                        <strong>Compra mensal por Município</strong>
                         <br>
-                        <span>Recupera a quantidade e valor dos produtos comprados, por unidade, no município no mês e ano específico!</span>
+                        <span>Recupera as compras realizadas por todos os restaurantes localizados no município, com suas respectivas quantidades, unidades e valores, no mês e ano especificados!</span>
                       </button>
                     </h2>
                   </div>
-              
-                  <div id="collapsetres" @if(session('error_prodmunicipio')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingtres" data-parent="#accordionExample">
+
+                  <div id="collapsetres" @if(session('error_compramensalmunicipio')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingtres" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="{{route('admin.consulta.producaomensalmunicipio')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+                        <form action="{{route('admin.consulta.compramensalmunicipio')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
                           <div class="form-group mx-sm-3 mb-2">
                             <select name="municipio_id" id="municipio_id" class="form-control" required>
                               <option value="" selected disabled>Município...</option>
@@ -162,18 +162,16 @@
                             </select>
                           </div>
                           <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
-                          @if(session('error_prodmunicipio'))
+                          @if(session('error_compramensalmunicipio'))
                               <p class="alert-danger alert-dismissible fade show" role="alert" style="margin-left: 30px; margin-bottom: 5px; padding: 5px">
-                                  <strong>Atenção! </strong> {{session('error_prodmunicipio')}}
+                                  <strong>Atenção! </strong> {{session('error_compramensalmunicipio')}}
                               </p>
                           @endif
                         </form>
                     </div>
                   </div>
                 </div>
-
-                
-              </div>
+            </div>
         </div>
    </div>
 </div>
