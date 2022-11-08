@@ -119,6 +119,7 @@ Route::get('admin/registroconsultacompra/registro', [RegistroconsultacompraContr
 Route::get('admin/registroconsultacompra/consulta', [RegistroconsultacompraController::class, 'search'])->name('admin.registroconsultacompra.search')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/producaorestmesano',[RegistroconsultacompraController::class, 'producaorestmesano'])->name('admin.consulta.producaorestmesano')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/compramensalrestaurante',[RegistroconsultacompraController::class, 'compramensalrestaurante'])->name('admin.consulta.compramensalrestaurante')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/producaomensalmunicipio',[RegistroconsultacompraController::class, 'producaomensalmunicipio'])->name('admin.consulta.producaomensalmunicipio')->middleware(['auth']);
 
 
 /***********************************************/

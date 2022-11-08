@@ -74,7 +74,7 @@
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsedois" aria-expanded="true" aria-controls="collapsedois">
                         <strong>Produção mensal por Restaurantes</strong>
                         <br>
-                        <span>Recupera a quantidade e o valor de produtos por unidade, comprados no restaurante por mês/ano!</span>
+                        <span>Recupera a quantidade e valor dos produtos comprados, por unidade, no restaurante no mês e ano específico!</span>
                       </button>
                     </h2>
                   </div>
@@ -120,26 +120,26 @@
                 </div>
 
 
-                {{-- Produção Município Mês Ano --}}
+                {{-- Produção mensal municipio --}}
                 <div class="card">
-                  <div class="card-header" id="headingTwo">
+                  <div class="card-header" id="headingtres">
                     <h2 class="mb-0">
-                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsedois" aria-expanded="true" aria-controls="collapsedois">
+                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsetres" aria-expanded="true" aria-controls="collapsetres">
                         <strong>Produção mensal por Município</strong>
                         <br>
-                        <span>Recupera a quantidade e o valor de produtos por unidade, comprados no restaurante por mês/ano!</span>
+                        <span>Recupera a quantidade e valor dos produtos comprados, por unidade, no município no mês e ano específico!</span>
                       </button>
                     </h2>
                   </div>
               
-                  <div id="collapsedois" @if(session('error_prodrestmesano')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingTwo" data-parent="#accordionExample">
+                  <div id="collapsetres" @if(session('error_prodmunicipio')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingtres" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="{{route('admin.consulta.producaorestmesano')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+                        <form action="{{route('admin.consulta.producaomensalmunicipio')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
                           <div class="form-group mx-sm-3 mb-2">
-                            <select name="restaurante_id" id="restaurante_id" class="form-control" required>
-                              <option value="" selected disabled>Restaurante...</option>
-                              @foreach($restaurantes  as $restaurante)
-                                <option value="{{$restaurante->id}}"> {{$restaurante->identificacao}} </option>
+                            <select name="municipio_id" id="municipio_id" class="form-control" required>
+                              <option value="" selected disabled>Município...</option>
+                              @foreach($municipios  as $municipio)
+                                <option value="{{$municipio->id}}"> {{$municipio->nome}} </option>
                               @endforeach
                             </select>
 
@@ -162,9 +162,9 @@
                             </select>
                           </div>
                           <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
-                          @if(session('error_prodrestmesano'))
+                          @if(session('error_prodmunicipio'))
                               <p class="alert-danger alert-dismissible fade show" role="alert" style="margin-left: 30px; margin-bottom: 5px; padding: 5px">
-                                  <strong>Atenção! </strong> {{session('error_prodrestmesano')}}
+                                  <strong>Atenção! </strong> {{session('error_prodmunicipio')}}
                               </p>
                           @endif
                         </form>

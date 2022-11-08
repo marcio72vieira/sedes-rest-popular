@@ -118,11 +118,15 @@ class RegistroconsultacompraController extends Controller
         ];
 
         $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
-
+        
         if(Auth::user()->perfil == 'adm') {
-
+            
+            
             $restaurantes =  Restaurante::select('id', 'identificacao')->orderBy('identificacao', 'ASC')->get();
-            return view('admin.registrocompra.menuconsultasadm', compact('restaurantes', 'mesespesquisa', 'anospesquisa'));
+            
+            $municipios = Municipio::select('id', 'nome')->orderBy('nome', 'ASC')->get();
+            
+            return view('admin.registrocompra.menuconsultasadm', compact('mesespesquisa', 'anospesquisa', 'restaurantes', 'municipios'));
 
         } else {
             //Fazer um teste aqui, se o usuário logado está ativo (depois de incluir esse campo na tabela e no model User)
@@ -278,6 +282,45 @@ class RegistroconsultacompraController extends Controller
             } else {
 
                 return view('admin.registrocompra.consultasadm.producaorestaurantemesano', compact('records', 'mesano'));
+            }
+
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+
+    }
+
+
+
+    public function producaomensalmunicipio(Request $request)
+    {
+        if($request->municipio_id && $request->mes_id && $request->ano_id ) {
+            $munic_id = $request->municipio_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para popular campos selects
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Monta mês/ano de pesquisa
+            $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
+
+            $records = Bigtabledata::producaomensalmunicipio($munic_id, $mes_id, $ano_id);
+
+            if($records->count() <= 0) {
+
+                $request->session()->flash('error_prodmunicipio', 'Nenhum registro encontrado para esta pesquisa.');
+                return redirect()->route('admin.registroconsultacompra.search');
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.producaomensalmunicipio', compact('records', 'mesano'));
             }
 
 
