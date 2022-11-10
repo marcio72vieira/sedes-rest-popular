@@ -6,24 +6,30 @@
     /*background-color: #787878;
 }*/
 
+#psdtable{
+    float: left;
+    width: 100%;
+    border: 0.5px solid #cbc9c9
+}
+
 
 .psdthead{
-    float:left; 
+    float:left;
     width:100%
 }
 
 .psdbody{
-    float:left; 
+    float:left;
     width:100%
 }
 
 .psdfooter{
-    float:left; 
+    float:left;
     width:100%
 }
 
 .psdtr{
-    float:left; 
+    float:left;
     width:100%;
 }
 
@@ -78,13 +84,13 @@
 }
 
 
-
 .psdtd-lt {
     float: left;
     height: 35px;
     color: #858796;
     padding-left: 3px;
     padding-top: 3px;
+    padding-right: 3px;
     border-left: 1px solid #c9bdbd;
     border-top: 1px solid #c9bdbd;
 }

@@ -22,7 +22,7 @@
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseum" aria-expanded="true" aria-controls="collapseum">
                         <strong>Compra mensal por restaurante</strong>
                         <br>
-                        <span>Recupera todas as compras realizadas no restaurante durante o mês/ano!</span>
+                        <span>Recupera as compras realizadas no restaurante no mês e ano especificado.</span>
                       </button>
                     </h2>
                   </div>
@@ -72,9 +72,11 @@
                   <div class="card-header" id="headingTwo">
                     <h2 class="mb-0">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsedois" aria-expanded="true" aria-controls="collapsedois">
-                        <strong>Produção mensal por Restaurantes</strong>
+                        <strong>Produtos comprados no mês por Restaurante</strong>
                         <br>
-                        <span>Recupera a quantidade e valor dos produtos comprados, por unidade, no restaurante no mês e ano específico!</span>
+                        <span>
+                            Recupera os produtos comprados pelo restaurante com suas respecitvas quantidades, unidades e valor total, no mês e ano especificado.
+                        </span>
                       </button>
                     </h2>
                   </div>
@@ -125,9 +127,11 @@
                   <div class="card-header" id="headingtres">
                     <h2 class="mb-0">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsetres" aria-expanded="true" aria-controls="collapsetres">
-                        <strong>Compra mensal por Município</strong>
+                        <strong>Produtos comprados no mês por Município</strong>
                         <br>
-                        <span>Recupera as compras realizadas por todos os restaurantes localizados no município, com suas respectivas quantidades, unidades e valores, no mês e ano especificados!</span>
+                        <span>
+                            Recupera os produtos comprados pelos restaurantes de um município, em suas respectivas quantidadades, unidades e valor total, no mês e ano especificado.
+                        </span>
                       </button>
                     </h2>
                   </div>
@@ -179,9 +183,11 @@
                   <div class="card-header" id="headingquatro">
                     <h2 class="mb-0">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsequatro" aria-expanded="true" aria-controls="collapsequatro">
-                        <strong>Compra mensal por Município</strong>
+                        <strong>Valores Comprados no mês por Município</strong>
                         <br>
-                        <span>Recupera os totais das compras realizadas por todos os restaurantes localizados no Município no mês e ano especificados!</span>
+                        <span>
+                            Recupera o valor total das compras realizadas pelos restaurantes de um município, no mês e ano especificados.
+                        </span>
                       </button>
                     </h2>
                   </div>

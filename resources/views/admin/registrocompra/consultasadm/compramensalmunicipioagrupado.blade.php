@@ -24,15 +24,17 @@
                         <thead  class="bg-gray-100">
                             <tr>
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
-                                <th colspan="2">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
-                                <th>Mês: {{ $mesano }} </th>
+                                <th colspan="3">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
+                                <th colspan="2">Mês: {{ $mesano }} </th>
                                 <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcompramensalmunicipio', [$muni_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th scope="col" style="width: 40px; text-align: center">Id</th>
-                                <th scope="col" style="width: 800px; text-align: center">Restaurante</th>
+                                <th scope="col" style="width: 500px; text-align: center">Restaurante</th>
                                 <th scope="col" style="width: 180px; text-align: center">Visualizar</th>
-                                <th scope="col" style="width: 200px; text-align: center">Valor Comprado R$</th>
+                                <th scope="col" style="width: 150px; text-align: center">Compra Normal R$</th>
+                                <th scope="col" style="width: 150px; text-align: center">Compra AF R$</th>
+                                <th scope="col" style="width: 200px; text-align: center">Valor Total R$</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,15 +45,17 @@
                                         <td>{{ $item->identificacao }}</td>
                                         {{-- Como a rota do link abaixo é originalmente acessada a partir da submissão de um formulário pelo método GET,
                                              houve a necessidade de indicar/nomear os índices dos parâmetros na rota, para que os mesmos coincidam com o que
-                                             é esperado pelo método a ser executado 
+                                             é esperado pelo método a ser executado
                                         <td style="text-align: center"><a href="{{route('admin.consulta.compramensalrestaurante', ['restaurante_id' => $item->restaurante_id, 'mes_id' => $mes_id, 'ano_id' => $ano_id])}}"><i class="fas fa-eye text-warning mr-2"></i></a></td>
                                         --}}
                                         <td style="text-align: center">
-                                            <a class="verdetalhe" data-idrestaurante="{{$item->restaurante_id}}" data-idmes="{{$mes_id}}" data-idano="{{$ano_id}}" 
+                                            <a class="verdetalhe" data-idrestaurante="{{$item->restaurante_id}}" data-idmes="{{$mes_id}}" data-idano="{{$ano_id}}"
                                                 data-toggle="modal" data-target="#exampleModal{{$item->restaurante_id}}" href="#">
                                                 <i class="fas fa-eye text-warning mr-2"></i>
                                             </a>
                                         </td>
+                                        <td style="text-align: right">{{ mrc_turn_value(0) }}</td>
+                                        <td style="text-align: right">{{ mrc_turn_value(0) }}</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
                                         @php $totalgeral  = $totalgeral += $item->somaprecototal; @endphp
                                     </tr>
@@ -62,7 +66,7 @@
                                         <div class="modal-dialog modal-dialog-scrollable modal-xl">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Compra detalhada {{ $item->identificacao }} em <span id="mesano"></span></h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel">Compra detalhada {{ $item->identificacao }} em <span class="mesano"></span></h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -71,68 +75,63 @@
                                                 <span class="mensagem"></span>
 
                                                 <div class="modal-body">
-                                                {{-- INICIO CORPO MODAL --}}
-                                            
 
-<div id="psdtable" style="float: left; width: 100%;border: 0.5px solid #c9bdbd">
-    <div class="psdthead">
-        <div class="psdtr">
-            <div class="psdth-lt" style="width: 55%;">Região: <span class="regional"></span> - Município: <span class="municipio"></span></div>
-            <div class="psdth-lt" style="width: 35%;"><span class="identificacao"></span></div>
-            <div class="psdth-ltr" style="width: 10%; text-align:right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 10px;"></i> pdf</a></div>
-        </div>
+                                                    {{-- INICIO CONTEÚDO CORPO MODAL --}}
+                                                    <div id="psdtable">
+                                                        <div class="psdthead">
+                                                            <div class="psdtr">
+                                                                <div class="psdth-lt" style="width: 55%;">Região: <span class="regional"></span> - Município: <span class="municipio"></span></div>
+                                                                <div class="psdth-lt" style="width: 35%;"><span class="identificacao"></span></div>
+                                                                <div class="psdth-ltr" style="width: 10%; text-align:right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 10px;"></i> pdf</a></div>
+                                                            </div>
 
-        <div class="psdtr">
-            <div class="psdth-lt" style="width: 55%;">Nutricionista Empresa:<span class="nutricionistaempresa"></span></div>
-            <div class="psdth-lt" style="width: 35%;">De <span class="datainicial"></span> a <span class="datafinal"></span></div>
-            <div class="psdth-ltr" style="width: 10%;">&nbsp;</div>
-        </div>
+                                                            <div class="psdtr">
+                                                                <div class="psdth-lt" style="width: 55%;">Nutricionista Empresa:<span class="nutricionistaempresa"></span></div>
+                                                                <div class="psdth-lt" style="width: 35%;">De <span class="datainicial"></span> a <span class="datafinal"></span></div>
+                                                                <div class="psdth-ltr" style="width: 10%;">&nbsp;</div>
+                                                            </div>
 
-        <div class="psdtr">
-            <div class="psdth-lt" style="width: 55%;">Nutricionista Sedes:<span class="nutricionistasedes"></span></div>
-            <div class="psdth-lt" style="width: 35%;">&nbsp;</div>
-            <div class="psdth-ltr" style="width: 10%;">&nbsp;</div>
-        </div>
+                                                            <div class="psdtr">
+                                                                <div class="psdth-lt" style="width: 55%;">Nutricionista Sedes:<span class="nutricionistasedes"></span></div>
+                                                                <div class="psdth-lt" style="width: 35%;">&nbsp;</div>
+                                                                <div class="psdth-ltr" style="width: 10%;">&nbsp;</div>
+                                                            </div>
 
-        <div class="psdtr">
-            <div class="psdth-lt" style="width: 5%; text-align: center; font-weight: bold">Id</div>
-            <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">semana</div>
-            <div class="psdth-lt" style="width: 20%; text-align: center; font-weight: bold">Produto</div>
-            <div class="psdth-lt" style="width: 20%; text-align: center; font-weight: bold">Detalhe</div>
-            <div class="psdth-lt" style="width: 5%; text-align: center; font-weight: bold">AF</div>
-            <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Quant.</div>
-            <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Unid.</div>
-            <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Preço</div>
-            <div class="psdth-ltr" style="width: 10%; text-align: center; font-weight: bold">Total</div>
-        </div>
-    </div>
+                                                            <div class="psdtr">
+                                                                <div class="psdth-lt" style="width: 5%; text-align: center; font-weight: bold">Id</div>
+                                                                <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">semana</div>
+                                                                <div class="psdth-lt" style="width: 20%; text-align: center; font-weight: bold">Produto</div>
+                                                                <div class="psdth-lt" style="width: 20%; text-align: center; font-weight: bold">Detalhe</div>
+                                                                <div class="psdth-lt" style="width: 5%; text-align: center; font-weight: bold">AF</div>
+                                                                <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Quant.</div>
+                                                                <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Unid.</div>
+                                                                <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Preço</div>
+                                                                <div class="psdth-ltr" style="width: 10%; text-align: center; font-weight: bold">Total</div>
+                                                            </div>
+                                                        </div>
 
-    <div class="psdbody">
-        <div class="dadosbody">
-            
-        </div>
-    </div>
+                                                        <div class="psdbody">
+                                                            <div class="dadosbody">
 
-    <div class="psdfooter">
-        <div class="psdtr">
-            <div class="psdth-lt" style="width: 90%; text-align:right">Valor R$</div>
-            <div class="psdth-ltr" style="width: 10%;"></div>
-        <div class="psdtr">
-            <div class="psdth-lt" style="width: 90%; text-align:right">Valor AF (%) R$</div>
-            <div class="psdth-ltr" style="width: 10%;"></div>
-        </div>
-        <div class="psdtr">
-            <div class="psdth-lt" style="width: 90%; text-align:right">Valor Total R$</div>
-            <div class="psdth-ltr" style="width: 10%;"></div>
-        </div>
-    </div>
+                                                            </div>
+                                                        </div>
 
-    
-</div>
+                                                        <div class="psdfooter">
+                                                            <div class="psdtr">
+                                                                <div class="psdth-lt" style="width: 90%; text-align:right">Valor R$</div>
+                                                                <div class="psdth-ltr" style="width: 10%; text-align:right"><span class="somapreconormal">0,00</span></div>
+                                                            <div class="psdtr">
+                                                                <div class="psdth-lt" style="width: 90%; text-align:right">Valor AF (<span class="procentagemaf">0</span>%) R$</div>
+                                                                <div class="psdth-ltr" style="width: 10%; text-align:right"><span class="somaprecoaf">0,00</span></div>
+                                                            </div>
+                                                            <div class="psdtr">
+                                                                <div class="psdth-lt" style="width: 90%; text-align:right">Valor Total R$</div>
+                                                                <div class="psdth-ltr" style="width: 10%; text-align:right"><span class="somaprecofinal">0,00</span></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{-- FIM CONTEÚDO CORPO MODAL --}}
 
-
-
-                                                {{-- FIM CORPO MODAL --}}
                                                 </div>
 
                                                 <div class="modal-footer">
@@ -145,7 +144,9 @@
 
                                 @endforeach
                                 <tr class="bg-gray-100">
-                                    <td colspan="3" style="text-align: right"><strong>Valor Total R$</strong> </td>
+                                    <td colspan="3" style="text-align: right"><strong>Totais R$</strong> </td>
+                                    <td style="text-align: right"><strong>Total NORMAL</strong> </td>
+                                    <td style="text-align: right"><strong>Valor AF</strong> </td>
                                     <td style="text-align: right" ><strong>{{ mrc_turn_value($totalgeral) }}</strong></td>
                                 </tr>
                         </tbody>
@@ -182,42 +183,68 @@
                     dataType : 'json',
                     success: function(result){
                         if(result.numregs >= 1){
- 
+                            // Exibe informações gerais
                             $(".regional").text(result.regional);
                             $(".municipio").text(result.municipio);
                             $(".identificacao").text(result.identificacao);
                             $(".nutricionistaempresa").text(result.nutricionistaempresa);
                             $(".nutricionistasedes").text(result.nutricionistasedes);
-
-                            $("#mesano").text(result.mesano);
+                            $(".mesano").text(result.mesano);
                             $(".datainicial").text(result.datainicial);
                             $(".datafinal").text(result.datafinal);
-                            $("button[type=submit]").hide();
-                            
+
                             //Limpa a tabelad e dados
                             $('.dadosbody').html('');
 
-                            //Itera sobre os dados retornados
-                            $.each(result.records,function(key,value){
+                            // Verifica se há dados de compra normal
+                            if(result.numregscompranormal > 0 ) {
+                                //Itera sobre os dados retornados em data['compranormal']
+                                $.each(result.compranormal,function(key,value){
+                                    $(".dadosbody").append(
+                                        '<div class="psdtr">' +
+                                            '<div class="psdtd-lt" style="width: 5%;">'+ value.produto_id +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 10%;">'+ value.semana_nome +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 20%;">'+ value.produto_nome +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 20%;">'+ value.detalhe +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 5%; text-align: center">'+ (value.af == 'sim' ? 'x' : '') +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 10%; text-align: right">'+ value.quantidade +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 10%; text-align: center">'+ value.medida_simbolo +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 10%; text-align: right">'+ value.preco +'</div>' +
+                                            '<div class="psdtd-ltr" style="width: 10%; text-align: right">'+ value.precototal + '</div>' +
+                                        '</div>'
+                                    );
+                                });
+                                $(".somapreconormal").text(result.somapreconormal);
+                            }
 
-                                $(".dadosbody").append(
-                                    
-                                    '<div class="psdtr">' +
-                                        '<div class="psdtd-lt" style="width: 5%;">'+ value.produto_id +'</div>' +
-                                        '<div class="psdtd-lt" style="width: 10%;">'+ value.semana_nome +'</div>' +
-                                        '<div class="psdtd-lt" style="width: 20%;">'+ value.produto_nome +'</div>' +
-                                        '<div class="psdtd-lt" style="width: 20%;">'+ value.detalhe +'</div>' +
-                                        '<div class="psdtd-lt" style="width: 5%;">'+ value.af +'</div>' +
-                                        '<div class="psdtd-lt" style="width: 10%;">'+ value.quantidade +'</div>' +
-                                        '<div class="psdtd-lt" style="width: 10%;">'+ value.medida_simbolo +'</div>' +
-                                        '<div class="psdtd-lt" style="width: 10%;">'+ value.preco +'</div>' +
-                                        '<div class="psdtd-ltr" style="width: 10%;">'+ value.precototal + '</div>' +
-                                    '</div>'
-                                );
-                            });
+                            // Verifica se há dados de compra AF (Agricultura Familiar)
+                            if(result.numregscompraaf > 0 ) {
+                                // Cria linha que separa os tipos de compra
+                                $(".dadosbody").append('<div class="psdtr"> <div class="psdtd-lt psdtd-ltr" style="width: 100%; font-weight: bold;">COMPRAS AF</div></div>');
+                                //Itera sobre os dados retornados em data['compraaf']
+                                $.each(result.compraaf,function(key,value){
+                                    $(".dadosbody").append(
+                                        '<div class="psdtr">' +
+                                            '<div class="psdtd-lt" style="width: 5%;">'+ value.produto_id +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 10%;">'+ value.semana_nome +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 20%;">'+ value.produto_nome +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 20%;">'+ value.detalhe +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 5%; text-align: center">'+ (value.af == 'sim' ? 'x' : '') +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 10%; text-align: right">'+ value.quantidade +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 10%; text-align: center">'+ value.medida_simbolo +'</div>' +
+                                            '<div class="psdtd-lt" style="width: 10%; text-align: right">'+ value.preco +'</div>' +
+                                            '<div class="psdtd-ltr" style="width: 10%; text-align: right">'+ value.precototal + '</div>' +
+                                        '</div>'
+                                    );
+                                });
+                                $(".somaprecoaf").text(result.somaprecoaf);
+                                $(".procentagemaf").text(result.porcentagemaf);
+                            }
+
+                            // Exibe soma preço normal + preço AF
+                            $(".somaprecofinal").text(result.somaprecofinal);
 
                         }else{
-                            $("button[type=submit]").show();
                             $(".mensagem").text("FALHA NO RETORNO DOS REGISTROS");
                         }
                     }

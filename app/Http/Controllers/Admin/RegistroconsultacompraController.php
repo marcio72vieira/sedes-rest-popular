@@ -148,7 +148,7 @@ class RegistroconsultacompraController extends Controller
     public function compramensalrestaurante(Request $request)
     {
 
-        
+
         if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
             $rest_id = $request->restaurante_id;
             $mes_id = $request->mes_id;
@@ -328,7 +328,7 @@ class RegistroconsultacompraController extends Controller
             return redirect()->route('admin.registroconsultacompra.search');
         }
 
-    }    
+    }
 
 
 
@@ -375,7 +375,7 @@ class RegistroconsultacompraController extends Controller
     //================================================================================
     public function ajaxgetdetalhecompra(Request $request)
     {
-       
+
         /* $id = $request->municipio_id;
         $data['qtd_bairros'] = DB::table('bairros')->where('municipio_id', '=', $id)->count();
         return response()->json($data); */
@@ -397,8 +397,8 @@ class RegistroconsultacompraController extends Controller
             //montando mes/ano
             $meseano = $mesespesquisa[$mes_id]. "/".$ano_id;
 
-            
-            if(Auth::user()->perfil == 'adm') {               
+
+            if(Auth::user()->perfil == 'adm') {
                 $restaurante = Restaurante::findOrFail($rest_id);
             } else {
                 $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first();
@@ -419,9 +419,9 @@ class RegistroconsultacompraController extends Controller
                 $compraaf = [];
 
                 // Variáveis para calcular totais
-                $somapreco = 0;
+                $somapreconormal = 0;
                 $somaprecoaf = 0;
-                $somafinal = 0;
+                $somaprecofinal = 0;
 
 
                 foreach($records as $datarecords) {
@@ -437,19 +437,21 @@ class RegistroconsultacompraController extends Controller
                     } else {
 
                         $compranormal[] = $datarecords;
-                        $somapreco += $datarecords->precototal;
+                        $somapreconormal += $datarecords->precototal;
                     }
                 }
 
-                $somafinal += ($somaprecoaf + $somapreco);
+                $somaprecofinal += ($somaprecoaf + $somapreconormal);
 
                 $dataInicial =  min($arrDatasIniFin);
                 $dataFinal = max($arrDatasIniFin);
 
-
                 // retornando os dados para a requisição AJAX
                 $data['numregs'] = $records->count();
                 $data['records'] = $records;
+
+                $data['numregscompraaf']        = count($compraaf);
+                $data['numregscompranormal']    = count($compranormal);
 
                 $data['regional']               = $records[0]->regional_nome;
                 $data['municipio']              = $records[0]->municipio_nome;
@@ -457,16 +459,25 @@ class RegistroconsultacompraController extends Controller
                 $data['nutricionistaempresa']   = $records[0]->nutricionista_nomecompleto;
                 $data['nutricionistasedes']     = $records[0]->user_nomecompleto;
                 $data['mesano']                 = $meseano;
-                
-                $data['datainicial']    = mrc_turn_data($dataInicial);
-                $data['datafinal']      = mrc_turn_data($dataFinal);
 
-                
+                $data['compraaf']               = $compraaf;
+                $data['somaprecoaf']            = mrc_turn_value($somaprecoaf);
+
+                $data['compranormal']           = $compranormal;
+                $data['somapreconormal']        = mrc_turn_value($somapreconormal);
+
+                $data['somaprecofinal']         = mrc_turn_value($somaprecofinal);
+
+                $data['porcentagemaf']          = intval(mrc_calc_percentaf($somaprecofinal, $somaprecoaf));
+
+                $data['datainicial']            = mrc_turn_data($dataInicial);
+                $data['datafinal']              = mrc_turn_data($dataFinal);
+
 
                 return response()->json($data);
 
 
-                return view('admin.registrocompra.consultasnut.comprasmes', compact('mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'compranormal', 'compraaf', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
+                //return view('admin.registrocompra.consultasnut.comprasmes', compact('mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'compranormal', 'compraaf', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
 
             } else {
 

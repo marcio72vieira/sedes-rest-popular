@@ -625,9 +625,10 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/642650/how-to-convert-string-into-float-in-javascript
 // https://stackoverflow.com/questions/3053205/how-create-table-only-using-div-tag-and-css
 // https://wisdmlabs.com/blog/responsive-tables-using-css-div-tag/
+// https://www.folkstalk.com/2022/09/laravel-eloquent-sum-column-with-code-examples.html
 
 
-'<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>' 
+'<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
 
 
 
