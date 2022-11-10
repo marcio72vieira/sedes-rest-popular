@@ -109,10 +109,99 @@ change sum += parseFloat(num) with sum *= parseFloat(num)
 
 
 
-data-idcategoria = '{{$produto->categoria->id}}' data-nomecategoria = '{{$produto->categoria->nome}}'
 
-<input type='hidden' name='categoria_id_hidden[]' id='categoria_id_hidden' value=''> <input type='hidden' name='categoria_nome_hidden[]' id='categoria_nome_hidden' value=''>
 
-<input type='hidden' name='medida_simbolo[]' id='medida_simbolo'  value=''>
 
-<input type='hidden' name='medida_nome_hidden[]' id='medida_nome_hidden' value=''>
+
+
+
+
+
+{{-- INICIO CORPO MODAL --}}
+<div class="modal-body">
+
+    <span class="mensagem"></span>
+    De  a 
+
+    <table class="table table-sm table-bordered  table-hover">
+        <thead  class="bg-gray-100">
+            <tr>
+                <th colspan="4">Região: <span class="regiao"></span> - Município: <span class="municipio"></span></th>
+                <th colspan="4">{{ $records[0]->identificacao }}</th>
+                <th colspan="4" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+            </tr>
+            <tr>
+                <th colspan="4">Nutricionista Empresa: <span class="nutricionistaempresa"></span></th>
+                <th colspan="4">De:<span class="datainicial"></span>  a <span class="datafinal"></span>  </th>
+                <th colspan="4"></th>
+            </tr>
+            <tr>
+                <th colspan="4">Nutricionista SEDES: <span class="nutricionistasedes"></span></th>
+                <th colspan="4"></th>
+                <th colspan="4"></th>
+            </tr>
+            <tr>
+                <th scope="col" style="width: 40px; text-align: center">Id</th>
+                <th scope="col" style="width: 100px; text-align: center">semana</th>
+                <th scope="col" style="width: 200px; text-align: center">Produto</th>
+                <th scope="col" style="text-align: center">Detalhe</th>
+                <th scope="col" style="width: 40px; text-align: center">AF</th>
+                <th scope="col" style="width: 100px; text-align: center">Quant.</th>
+                <th scope="col" style="width: 100px; text-align: center">Unidade</th>
+                <th scope="col" style="width: 120px; text-align: center">Preço</th>
+                <th scope="col" style="width: 120px; text-align: center">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+                
+                    <tr>
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center"></td>
+                        <td style="text-align: right"></td>
+                        <td style="text-align: center"></td>
+                        <td style="text-align: right"></td>
+                        <td style="text-align: right"></td>
+                    </tr>
+                
+
+                
+                
+                    <tr><td colspan="9"><strong>COMPRAS AF</strong></td></tr>
+                    
+                        <tr>
+                            <th scope="row"></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: center"></td>
+                            <td style="text-align: right"></td>
+                            <td style="text-align: center"></td>
+                            <td style="text-align: right"></td>
+                            <td style="text-align: right"></td>
+                        </tr>
+                    
+                
+                <tr class="bg-gray-100">
+                    <td colspan="8" style="text-align: right"><strong>Valor R$</strong> </td>
+                    <td style="text-align: right" > </td>
+                </tr>
+                <tr class="bg-gray-100">
+                    <td colspan="8" style="text-align: right">
+                        <strong>Valor AF (%) R$ </strong>
+                    </td>
+                    <td style="text-align: right" ></td>
+                </tr>
+                <tr class="bg-gray-100">
+                    <td colspan="8" style="text-align: right"><strong>Valor Total R$</strong> </td>
+                    <td style="text-align: right" ></td>
+                </tr>
+        </tbody>
+    </table>
+
+</div>
+                                            
+
+

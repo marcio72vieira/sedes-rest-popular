@@ -43,10 +43,10 @@
                                 <th scope="col" style="width: 100px; text-align: center">semana</th>
                                 <th scope="col" style="width: 200px; text-align: center">Produto</th>
                                 <th scope="col" style="text-align: center">Nº de ocorrências no mês</th>
-                                <th scope="col" style="width: 40px; text-align: center">AF</th>
                                 <th scope="col" style="width: 100px; text-align: center">Quant.</th>
                                 <th scope="col" style="width: 100px; text-align: center">Unidade</th>
                                 <th scope="col" style="width: 120px; text-align: center">Preço Médio</th>
+                                <th scope="col" style="width: 40px; text-align: center">variação</th>
                                 <th scope="col" style="width: 120px; text-align: center">Total</th>
                             </tr>
                         </thead>
@@ -57,10 +57,13 @@
                                         <td>{{ Str::lower($item->semana_nome) }}</td>
                                         <td>{{ $item->produto_nome }}</td>
                                         <td>{{ $item->numvezescomprado }} vezes no mês</td>
-                                        <td style="text-align: center">{{ ($item->af == "sim" ? "x" : "" ) }}</td>
                                         <td style="text-align: right">{{ $item->somaquantidade }}</td>
                                         <td style="text-align: center">{{ $item->medida_simbolo }}</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->mediapreco) }}</td>
+                                        <td style="text-align: center">  
+                                            <i class="{{$item->somaquantidade * $item->mediapreco > $item->somaprecototal ? 'fas fa-sort-amount-up-alt text-danger' : 
+                                            $item->somaquantidade * $item->mediapreco == $item->somaprecototal ? '' : 'fas fa-sort-amount-down-alt text-success' }}"></i>
+                                        </td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
                                     </tr>
                                 @endforeach

@@ -171,6 +171,60 @@
                     </div>
                   </div>
                 </div>
+
+
+
+                {{-- Compra mensal municipio agrupado --}}
+                <div class="card">
+                  <div class="card-header" id="headingquatro">
+                    <h2 class="mb-0">
+                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsequatro" aria-expanded="true" aria-controls="collapsequatro">
+                        <strong>Compra mensal por Município</strong>
+                        <br>
+                        <span>Recupera os totais das compras realizadas por todos os restaurantes localizados no Município no mês e ano especificados!</span>
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapsequatro" @if(session('error_compramensalmunicipioagrupado')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingquatro" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <form action="{{route('admin.consulta.compramensalmunicipioagrupado')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <select name="municipio_id" id="municipio_id" class="form-control" required>
+                              <option value="" selected disabled>Município...</option>
+                              @foreach($municipios  as $municipio)
+                                <option value="{{$municipio->id}}"> {{$municipio->nome}} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="mes_id" id="mes_id" class="form-control" required>
+                              <option value="" selected disabled>Mês...</option>
+                              @foreach($mesespesquisa as $key => $value)
+                                <option value="{{ $key }}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="ano_id" id="ano_id" class="form-control" required>
+                              <option value="" selected disabled>Ano...</option>
+                              @foreach($anospesquisa as $value)
+                                <option value="{{ $value}}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
+                          @if(session('error_compramensalmunicipioagrupado'))
+                              <p class="alert-danger alert-dismissible fade show" role="alert" style="margin-left: 30px; margin-bottom: 5px; padding: 5px">
+                                  <strong>Atenção! </strong> {{session('error_compramensalmunicipioagrupado')}}
+                              </p>
+                          @endif
+                        </form>
+                    </div>
+                  </div>
+                </div>
             </div>
         </div>
    </div>

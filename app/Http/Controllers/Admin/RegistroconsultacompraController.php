@@ -148,7 +148,7 @@ class RegistroconsultacompraController extends Controller
     public function compramensalrestaurante(Request $request)
     {
 
-
+        
         if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
             $rest_id = $request->restaurante_id;
             $mes_id = $request->mes_id;
@@ -293,6 +293,44 @@ class RegistroconsultacompraController extends Controller
     }
 
 
+    public function compramensalmunicipioagrupado(Request $request)
+    {
+        if($request->municipio_id && $request->mes_id && $request->ano_id ) {
+            $muni_id = $request->municipio_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para popular campos selects
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Monta mês/ano de pesquisa
+            $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
+
+            $records = Bigtabledata::compramensalmunicipioagrupado($muni_id, $mes_id, $ano_id);
+
+            if($records->count() <= 0) {
+
+                $request->session()->flash('error_compramensalmunicipioagrupado', 'Nenhum registro encontrado para esta pesquisa.');
+                return redirect()->route('admin.registroconsultacompra.search');
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.compramensalmunicipioagrupado', compact('records', 'mesano', 'muni_id', 'mes_id', 'ano_id'));
+            }
+
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+
+    }    
+
+
 
     public function compramensalmunicipio(Request $request)
     {
@@ -329,6 +367,118 @@ class RegistroconsultacompraController extends Controller
             return redirect()->route('admin.registroconsultacompra.search');
         }
 
+    }
+
+
+    //================================================================================
+    // Método invocado pelo AJAX para Preecher modal detalhes da compra do restaurante
+    //================================================================================
+    public function ajaxgetdetalhecompra(Request $request)
+    {
+       
+        /* $id = $request->municipio_id;
+        $data['qtd_bairros'] = DB::table('bairros')->where('municipio_id', '=', $id)->count();
+        return response()->json($data); */
+
+
+
+        if($request->restaurante && $request->mes && $request->ano ) {
+            $rest_id = $request->restaurante;
+            $mes_id = $request->mes;
+            $ano_id = $request->ano;
+
+            // Meses e anos para formatar perído da pesquisa
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            //montando mes/ano
+            $meseano = $mesespesquisa[$mes_id]. "/".$ano_id;
+
+            
+            if(Auth::user()->perfil == 'adm') {               
+                $restaurante = Restaurante::findOrFail($rest_id);
+            } else {
+                $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first();
+            }
+
+            //Recupera só o id do restaurante
+            $restauranteId =  $restaurante->id;
+
+            $records = Bigtabledata::compramensal($restauranteId, $mes_id, $ano_id);
+
+            if($records->count() > 0){
+
+                // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
+                $arrDatasIniFin = [];
+
+                // Criando arrays para guardar produtos adquiridos em compra normal e compra pela agricultura familiar
+                $compranormal = [];
+                $compraaf = [];
+
+                // Variáveis para calcular totais
+                $somapreco = 0;
+                $somaprecoaf = 0;
+                $somafinal = 0;
+
+
+                foreach($records as $datarecords) {
+                    // populando array com datainicial e datafinal
+                    $arrDatasIniFin[] = $datarecords->data_ini;
+                    $arrDatasIniFin[] = $datarecords->data_fin;
+
+                    if($datarecords->af == 'sim') {
+
+                        $compraaf[] = $datarecords;
+                        $somaprecoaf += $datarecords->precototal;
+
+                    } else {
+
+                        $compranormal[] = $datarecords;
+                        $somapreco += $datarecords->precototal;
+                    }
+                }
+
+                $somafinal += ($somaprecoaf + $somapreco);
+
+                $dataInicial =  min($arrDatasIniFin);
+                $dataFinal = max($arrDatasIniFin);
+
+
+                // retornando os dados para a requisição AJAX
+                $data['numregs'] = $records->count();
+                $data['records'] = $records;
+
+                $data['regional']               = $records[0]->regional_nome;
+                $data['municipio']              = $records[0]->municipio_nome;
+                $data['identificacao']          = $records[0]->identificacao;
+                $data['nutricionistaempresa']   = $records[0]->nutricionista_nomecompleto;
+                $data['nutricionistasedes']     = $records[0]->user_nomecompleto;
+                $data['mesano']                 = $meseano;
+                
+                $data['datainicial']    = mrc_turn_data($dataInicial);
+                $data['datafinal']      = mrc_turn_data($dataFinal);
+
+                
+
+                return response()->json($data);
+
+
+                return view('admin.registrocompra.consultasnut.comprasmes', compact('mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'compranormal', 'compraaf', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
+
+            } else {
+
+                $request->session()->flash('error_compramensalrestaurante', 'Nenhum registro encontrado para esta pesquisa.');
+                return redirect()->route('admin.registroconsultacompra.search');
+
+            }
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
     }
 
 
