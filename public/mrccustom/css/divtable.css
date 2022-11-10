@@ -1,0 +1,120 @@
+#resp-table {
+    background-color: #f8e1e1;
+    width: 100%;
+    display: table;
+}
+
+#resp-table-caption{
+    display: table-caption;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#resp-table-header{
+    display: table-header-group;
+    background-color: gray;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.table-header-cell{
+    display: table-cell;
+    padding: 10px;
+    text-align: justify;
+    border-bottom: 1px solid black;
+}
+
+#resp-table-body{
+    display: table-row-group;
+}
+
+.resp-table-row{
+    display: table-row;
+}
+
+.table-body-cell{
+    display: table-cell;
+}
+
+#resp-table-footer {
+    display: table-footer-group;
+    background-color: gray;
+    font-weight: bold;
+    font-size: 25px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.table-footer-cell{
+    display: table-cell;
+    padding: 10px;
+    text-align: justify;
+    border-bottom: 1px solid black;
+}
+
+
+/*TABELA 
+
+<div id="resp-table">
+    <div id=“resp-table-caption”>
+        Responsive Table without Table tag
+    </div>
+
+    <div id=“resp-table-header”>
+        <div class=“table-header-cell”>
+            Header 1
+        </div>
+        <div class=“table-header-cell”>
+            Header 2
+        </div>
+        <div class=“table-header-cell”>
+            Header 3
+        </div>
+        <div class=“table-header-cell”>
+            Header 4
+        </div>
+        <div class=“table-header-cell”>
+            Header 5
+        </div>
+    </div>
+
+    <div id=“resp-table-body”>
+        <div class=“resp-table-row”>
+            <div class=“table-body-cell”>
+                Cell 1–1
+            </div>
+            <div class=“table-body-cell”>
+                Cell 1–2
+            </div>
+            <div class=“table-body-cell”>
+                Cell 1–3
+            </div>
+            <div class=“table-body-cell”>
+                Cell 1–4
+            </div>
+            <div class=“table-body-cell”>
+                Cell 1–5
+            </div>
+        </div>
+    </div>
+
+    <div id=“resp-table-footer”>
+        <div class=“table-footer-cell”>
+            Footer 1
+        </div>
+        <div class=“table-footer-cell”>
+            Footer 2
+        </div>
+        <div class=“table-footer-cell”>
+            Footer 3
+        </div>
+        <div class=“table-footer-cell”>
+            Footer 4
+        </div>
+        <div class=“table-footer-cell”>
+            Footer 5
+        </div>
+    </div>
+</div>
+*/
+

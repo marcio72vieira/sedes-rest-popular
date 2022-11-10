@@ -74,48 +74,61 @@
                                                 {{-- INICIO CORPO MODAL --}}
                                             
 
-<div id="psdtable" style="float: left; width: 100%;">
+<div id="psdtable" style="float: left; width: 100%;border: 0.5px solid #c9bdbd">
     <div class="psdthead">
-        <div class="psdtr" style="float:left; width:100%;">
-            <div class="psdth" style="float: left; width: 55%; height: 40px; border: 1px solid #c9bdbd">Região: <span class="regional"></span> - Município: <span class="municipio"></span></div>
-            <div class="psdth" style="float: left; width: 35%; height: 40px; border: 1px solid #c9bdbd"><span class="identificacao"></span></div>
-            <div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i>pdf</a></div>
+        <div class="psdtr">
+            <div class="psdth-lt" style="width: 55%;">Região: <span class="regional"></span> - Município: <span class="municipio"></span></div>
+            <div class="psdth-lt" style="width: 35%;"><span class="identificacao"></span></div>
+            <div class="psdth-ltr" style="width: 10%; text-align:right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 10px;"></i> pdf</a></div>
         </div>
 
-        <div class="psdtr" style="float:left; width:100%">
-            <div class="psdth" style="float: left; width: 55%; height: 40px; border: 1px solid #c9bdbd">Nutricionista Empresa:<span class="nutricionistaempresa"></span></div>
-            <div class="psdth" style="float: left; width: 35%; height: 40px; border: 1px solid #c9bdbd">De <span class="datainicial"></span> a <span class="datafinal"></span></div>
-            <div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">&nbsp;</div>
+        <div class="psdtr">
+            <div class="psdth-lt" style="width: 55%;">Nutricionista Empresa:<span class="nutricionistaempresa"></span></div>
+            <div class="psdth-lt" style="width: 35%;">De <span class="datainicial"></span> a <span class="datafinal"></span></div>
+            <div class="psdth-ltr" style="width: 10%;">&nbsp;</div>
         </div>
 
-        <div class="psdtr" style="float:left; width:100%">
-            <div class="psdth" style="float: left; width: 55%; height: 40px; border: 1px solid #c9bdbd">Nutricionista Sedes:<span class="nutricionistasedes"></span></div>
-            <div class="psdth" style="float: left; width: 35%; height: 40px; border: 1px solid #c9bdbd">&nbsp;</div>
-            <div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">&nbsp;</div>
+        <div class="psdtr">
+            <div class="psdth-lt" style="width: 55%;">Nutricionista Sedes:<span class="nutricionistasedes"></span></div>
+            <div class="psdth-lt" style="width: 35%;">&nbsp;</div>
+            <div class="psdth-ltr" style="width: 10%;">&nbsp;</div>
         </div>
 
-        <div class="psdtr" style="float:left; width:100%">
-            <div class="psdth" style="float: left; width: 5%; height: 40px; border: 1px solid #c9bdbd">Id</div>
-            <div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">semana</div>
-            <div class="psdth" style="float: left; width: 20%; height: 40px; border: 1px solid #c9bdbd">Produto</div>
-            <div class="psdth" style="float: left; width: 20%; height: 40px; border: 1px solid #c9bdbd">Detalhe</div>
-            <div class="psdth" style="float: left; width: 5%; height: 40px; border: 1px solid #c9bdbd">AF</div>
-            <div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">Quant.</div>
-            <div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">Unid.</div>
-            <div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">Preço</div>
-            <div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">Total</div>
+        <div class="psdtr">
+            <div class="psdth-lt" style="width: 5%; text-align: center; font-weight: bold">Id</div>
+            <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">semana</div>
+            <div class="psdth-lt" style="width: 20%; text-align: center; font-weight: bold">Produto</div>
+            <div class="psdth-lt" style="width: 20%; text-align: center; font-weight: bold">Detalhe</div>
+            <div class="psdth-lt" style="width: 5%; text-align: center; font-weight: bold">AF</div>
+            <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Quant.</div>
+            <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Unid.</div>
+            <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">Preço</div>
+            <div class="psdth-ltr" style="width: 10%; text-align: center; font-weight: bold">Total</div>
         </div>
+    </div>
 
-        <div class="psdtr dadostabela" style="float:left; width:100%">
+    <div class="psdbody">
+        <div class="dadosbody">
             
         </div>
-
     </div>
+
+    <div class="psdfooter">
+        <div class="psdtr">
+            <div class="psdth-lt" style="width: 90%; text-align:right">Valor R$</div>
+            <div class="psdth-ltr" style="width: 10%;"></div>
+        <div class="psdtr">
+            <div class="psdth-lt" style="width: 90%; text-align:right">Valor AF (%) R$</div>
+            <div class="psdth-ltr" style="width: 10%;"></div>
+        </div>
+        <div class="psdtr">
+            <div class="psdth-lt" style="width: 90%; text-align:right">Valor Total R$</div>
+            <div class="psdth-ltr" style="width: 10%;"></div>
+        </div>
+    </div>
+
     
 </div>
-
-
-       
 
 
 
@@ -181,21 +194,24 @@
                             $(".datafinal").text(result.datafinal);
                             $("button[type=submit]").hide();
                             
+                            //Limpa a tabelad e dados
+                            $('.dadosbody').html('');
 
+                            //Itera sobre os dados retornados
                             $.each(result.records,function(key,value){
 
-                                $(".dadostabela").append(
+                                $(".dadosbody").append(
                                     
-                                    '<div class="psdtr" style="float:left; width:100%">' +
-                                        '<div class="psdth" style="float: left; width: 5%; height: 40px; border: 1px solid #c9bdbd">'+ value.produto_id +'</div>' +
-                                        '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">'+ value.semana_nome +'</div>' +
-                                        '<div class="psdth" style="float: left; width: 20%; height: 40px; border: 1px solid #c9bdbd">'+ value.produto_nome +'</div>' +
-                                        '<div class="psdth" style="float: left; width: 20%; height: 40px; border: 1px solid #c9bdbd">'+ value.detalhe +'</div>' +
-                                        '<div class="psdth" style="float: left; width: 5%; height: 40px; border: 1px solid #c9bdbd">'+ value.af +'</div>' +
-                                        '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">'+ value.quantidade +'</div>' +
-                                        '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">'+ value.medida_simbolo +'</div>' +
-                                        '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">'+ value.preco +'</div>' +
-                                        '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd">'+ value.precototal + '</div>' +
+                                    '<div class="psdtr">' +
+                                        '<div class="psdtd-lt" style="width: 5%;">'+ value.produto_id +'</div>' +
+                                        '<div class="psdtd-lt" style="width: 10%;">'+ value.semana_nome +'</div>' +
+                                        '<div class="psdtd-lt" style="width: 20%;">'+ value.produto_nome +'</div>' +
+                                        '<div class="psdtd-lt" style="width: 20%;">'+ value.detalhe +'</div>' +
+                                        '<div class="psdtd-lt" style="width: 5%;">'+ value.af +'</div>' +
+                                        '<div class="psdtd-lt" style="width: 10%;">'+ value.quantidade +'</div>' +
+                                        '<div class="psdtd-lt" style="width: 10%;">'+ value.medida_simbolo +'</div>' +
+                                        '<div class="psdtd-lt" style="width: 10%;">'+ value.preco +'</div>' +
+                                        '<div class="psdtd-ltr" style="width: 10%;">'+ value.precototal + '</div>' +
                                     '</div>'
                                 );
                             });
