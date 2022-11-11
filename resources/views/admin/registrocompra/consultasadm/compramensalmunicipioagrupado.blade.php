@@ -25,16 +25,22 @@
                             <tr>
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
                                 <th colspan="3">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
-                                <th colspan="2">Mês: {{ $mesano }} </th>
+                                <th colspan="3">Mês: {{ $mesano }} </th>
                                 <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcompramensalmunicipio', [$muni_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
-                                <th scope="col" style="width: 40px; text-align: center">Id</th>
-                                <th scope="col" style="width: 500px; text-align: center">Restaurante</th>
-                                <th scope="col" style="width: 180px; text-align: center">Visualizar</th>
-                                <th scope="col" style="width: 150px; text-align: center">Compra Normal R$</th>
-                                <th scope="col" style="width: 150px; text-align: center">Compra AF R$</th>
-                                <th scope="col" style="width: 200px; text-align: center">Valor Total R$</th>
+                                <th rowspan="2" scope="col" style="width: 40px; text-align: center; vertical-align:middle">Id</th>
+                                <th rowspan="2" scope="col" style="width: 500px; text-align: center; vertical-align:middle">Restaurantes</th>
+                                <th rowspan="2" scope="col" style="width: 180px; text-align: center; vertical-align:middle">Ver detalhes das compras</th>
+                                <th colspan="2" scope="col" style="width: 150px; text-align: center">Compras</th>
+                                <th rowspan="2" scope="col" style="width: 150px; text-align: center; vertical-align:middle">% AF</th>
+                                <th scope="col" style="width: 200px; text-align: center">Total R$</th>
+                            </tr>
+                            <tr>
+                                
+                                <th scope="col" style="width: 150px; text-align: center">Normal (R$)</th>
+                                <th scope="col" style="width: 150px; text-align: center">AF (R$)</th>
+                                <th scope="col" style="width: 200px; text-align: center"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,6 +67,7 @@
                                         </td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somapreconormal) }}</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecoaf) }}</td>
+                                        <td style="text-align: right">&#177; {{ intval(mrc_calc_percentaf($item->somaprecototal, $item->somaprecoaf))}} %</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
                                         @php 
                                             $totalsomapreconormal = $totalsomapreconormal += $item->somapreconormal;
@@ -86,12 +93,19 @@
                                                 <div class="modal-body">
 
                                                     {{-- INICIO CONTEÚDO CORPO MODAL --}}
-                                                    <div id="psdtable">
+                                                    {{-- Houve a necessidade de criar uma pseudo tabela com div's porque a confeccão de uma tabela normal, exibe a 
+                                                         mesma abaixo da tabela principal de dados, ou seja, era renderizada independente de se clicar no botão de
+                                                         visualização. --}}
+                                                    <div class="psdtable">
                                                         <div class="psdthead">
                                                             <div class="psdtr">
                                                                 <div class="psdth-lt" style="width: 55%;">Região: <span class="regional"></span> - Município: <span class="municipio"></span></div>
                                                                 <div class="psdth-lt" style="width: 35%;"><span class="identificacao"></span></div>
-                                                                <div class="psdth-ltr" style="width: 10%; text-align:right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 10px;"></i> pdf</a></div>
+                                                                <div class="psdth-ltr" style="width: 10%; text-align:right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$item->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank" style="padding: 0px 3px;"><i class="far fa-file-pdf fa-sm"></i> pdf</a></div>
+                                                                {{--
+                                                                    Esta linha funciona perfeitamente em conjunto com o trecho de código comentado abaixo com a flag: ##LINKBTNPDF##
+                                                                    <div class="psdth-ltr" style="width: 10%; text-align:right"><a class="linkbtnpdf btn btn-primary btn-danger btn-sm" data-numrestaurante="{{$item->restaurante_id}}" data-nummes="{{$mes_id}}" data-numano="{{$ano_id}}" href="" role="button" target="_blank" style="padding: 0px 3px;"><i class="far fa-file-pdf fa-sm"></i> pdf</a></div>
+                                                                --}}
                                                             </div>
 
                                                             <div class="psdtr">
@@ -107,7 +121,7 @@
                                                             </div>
 
                                                             <div class="psdtr">
-                                                                <div class="psdth-lt" style="width: 5%; text-align: center; font-weight: bold">Id</div>
+                                                                <div class="psdth-lt" style="width: 5%; text-align: center; font-weight: bold;">Id</div>
                                                                 <div class="psdth-lt" style="width: 10%; text-align: center; font-weight: bold">semana</div>
                                                                 <div class="psdth-lt" style="width: 20%; text-align: center; font-weight: bold">Produto</div>
                                                                 <div class="psdth-lt" style="width: 20%; text-align: center; font-weight: bold">Detalhe</div>
@@ -156,6 +170,7 @@
                                     <td colspan="3" style="text-align: right"><strong>Totais R$</strong> </td>
                                     <td style="text-align: right"><strong>{{ mrc_turn_value($totalsomapreconormal) }}</strong> </td>
                                     <td style="text-align: right"><strong>{{ mrc_turn_value($totalsomaprecoaf) }}</strong> </td>
+                                    <td style="text-align: right"><strong>&#177;  {{ intval(mrc_calc_percentaf($totalgeral, $totalsomaprecoaf))}} %</strong> </td>
                                     <td style="text-align: right" ><strong>{{ mrc_turn_value($totalgeral) }}</strong></td>
                                 </tr>
                         </tbody>
@@ -173,6 +188,7 @@
         $(document).ready(function(){
             $('#myTable').on('click', '.verdetalhe', function(){
 
+                // Dados a serem passados para a requisição AJAX (visualização detalhada da compra na MODAL)
                 var idRest = $(this).data('idrestaurante');
                 var idMes  = $(this).data('idmes');
                 var idAno  = $(this).data('idano');
@@ -210,7 +226,7 @@
                                 //Itera sobre os dados retornados em data['compranormal']
                                 $.each(result.compranormal,function(key,value){
                                     $(".dadosbody").append(
-                                        '<div class="psdtr">' +
+                                        '<div class="psdtr destaque">' +
                                             '<div class="psdtd-lt" style="width: 5%;">'+ value.produto_id +'</div>' +
                                             '<div class="psdtd-lt" style="width: 10%;">'+ value.semana_nome +'</div>' +
                                             '<div class="psdtd-lt" style="width: 20%;">'+ value.produto_nome +'</div>' +
@@ -233,7 +249,7 @@
                                 //Itera sobre os dados retornados em data['compraaf']
                                 $.each(result.compraaf,function(key,value){
                                     $(".dadosbody").append(
-                                        '<div class="psdtr">' +
+                                        '<div class="psdtr destaque">' +
                                             '<div class="psdtd-lt" style="width: 5%;">'+ value.produto_id +'</div>' +
                                             '<div class="psdtd-lt" style="width: 10%;">'+ value.semana_nome +'</div>' +
                                             '<div class="psdtd-lt" style="width: 20%;">'+ value.produto_nome +'</div>' +
@@ -254,11 +270,32 @@
                             $(".somaprecofinal").text(result.somaprecofinal);
 
                         }else{
+
                             $(".mensagem").text("FALHA NO RETORNO DOS REGISTROS");
+                            
+
                         }
                     }
                 });
             });
+
+
+            /*
+            Este trecho de código funciona perfeitamente emm conjunto com o trecho de código comentado acima com a flag: ##LINKBTNPDF##
+            $(".linkbtnpdf").on('click', function(){
+
+                var numrestaurante = $(this).data('numrestaurante');
+                var nummes = $(this).data('nummes');
+                var numano = $(this).data('numano');
+                
+                // Montando rota para link do botão .pdf dentro da MODAL. (substituição de varios parâmetros com replace encadeado)
+                var routepdf = "{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', ['restaurante', 'nummes', 'numano']) }}";
+                    routepdf = routepdf.replace(/restaurante/g, numrestaurante).replace(/nummes/g, nummes).replace(/numano/g, numano);
+
+                $('.linkbtnpdf').attr('href', routepdf);
+            });
+            */
+
 
         });
     </script>

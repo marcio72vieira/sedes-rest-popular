@@ -63,6 +63,8 @@ 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
 FONTES AWESOME PARA COLOCAR NO PROJETO COM ESTE TEMPLATE
 =========================================================
 https://fontawesome.com/v5/search?o=r&m=free
+https://fontawesome.com/v5/docs/web/style/size
+https://www.online-toolz.com/tools/character-map.php
 versão do bootstrap: Bootstrap v4.5.3
 para aumentar o tamanho dos ícones utilize as classes
 To increase icon sizes relative to their container, use the fa-lg (33% increase), fa-2x , fa-3x , fa-4x , or fa-5x classes
@@ -638,6 +640,13 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.mysqltutorial.org/mysql-if-function.aspx
 // https://pt.stackoverflow.com/questions/188190/formatar-moeda-com-separador-de-milhar
 // https://www.google.com/search?channel=fs&client=ubuntu&q=como+formatar+um+numero+com+separacao+de+milhar+com+ponto+e+separacao+de+decimal+com+virgulla+no+javascript
+// https://www.devmedia.com.br/javascript-replace-substituindo-valores-em-uma-string/39176
+// https://www.geeksforgeeks.org/javascript-replace-multiple-strings-with-multiple-other-strings/
+// https://www.google.com/search?channel=fs&client=ubuntu&q=how+replace+several+values+with+javascript
+// https://tutorial.eyehunts.com/js/javascript-string-replace-multiple-example-code/
+// https://muhimasri.com/blogs/how-to-replace-multiple-words-and-characters-in-javascript/
+// https://bobbyhadz.com/blog/javascript-replace-multiple-characters-in-string
+// https://acervolima.com/como-simular-um-clique-com-javascript/
 
 
 
