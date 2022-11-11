@@ -626,6 +626,19 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/3053205/how-create-table-only-using-div-tag-and-css
 // https://wisdmlabs.com/blog/responsive-tables-using-css-div-tag/
 // https://www.folkstalk.com/2022/09/laravel-eloquent-sum-column-with-code-examples.html
+// https://stackoverflow.com/questions/69394899/laravel-use-sum-with-a-few-conditions
+// https://laracasts.com/discuss/channels/laravel/how-to-using-sumif-in-mysql-query-to-laravel-eloquent
+// https://www.itsolutionstuff.com/post/laravel-sum-query-with-where-condition-exampleexample.html
+// https://pt.stackoverflow.com/questions/131869/como-funciona-o-select-sumif
+// https://www.google.com/search?channel=fs&client=ubuntu&q=how+to+make+a+sum+conditional+with+mysql+in+laravel
+// https://www.itsolutionstuff.com/post/laravel-sum-query-with-where-condition-exampleexample.html
+// https://laracasts.com/discuss/channels/laravel/how-to-using-sumif-in-mysql-query-to-laravel-eloquent
+// https://stackoverflow.com/questions/69394899/laravel-use-sum-with-a-few-conditions
+// https://pt.stackoverflow.com/questions/131869/como-funciona-o-select-sumif
+// https://www.mysqltutorial.org/mysql-if-function.aspx
+// https://pt.stackoverflow.com/questions/188190/formatar-moeda-com-separador-de-milhar
+// https://www.google.com/search?channel=fs&client=ubuntu&q=como+formatar+um+numero+com+separacao+de+milhar+com+ponto+e+separacao+de+decimal+com+virgulla+no+javascript
+
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'

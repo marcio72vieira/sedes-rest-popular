@@ -312,6 +312,7 @@ class RegistroconsultacompraController extends Controller
 
             $records = Bigtabledata::compramensalmunicipioagrupado($muni_id, $mes_id, $ano_id);
 
+
             if($records->count() <= 0) {
 
                 $request->session()->flash('error_compramensalmunicipioagrupado', 'Nenhum registro encontrado para esta pesquisa.');

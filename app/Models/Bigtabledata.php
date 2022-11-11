@@ -55,11 +55,26 @@ class Bigtabledata extends Model
         return $records;
     }
 
-    //Compra mensal município por grupo de restaurantes
+    /* //Compra mensal município por grupo de restaurantes ORIGINAL
     public static function compramensalmunicipioagrupado ($idmun, $mes, $ano)
     {
         $records = Bigtabledata::groupBy('restaurante_id')
             ->selectRaw('regional_nome, municipio_nome, restaurante_id, identificacao, sum(precototal) as somaprecototal')
+            ->orderBy('identificacao', 'ASC')
+            ->where('municipio_id', '=', $idmun)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+
+        return $records;
+    } */
+
+
+    //Compra mensal município por grupo de restaurantes
+    public static function compramensalmunicipioagrupado ($idmun, $mes, $ano)
+    {
+        $records = Bigtabledata::groupBy('restaurante_id')
+            ->selectRaw('regional_nome, municipio_nome, restaurante_id, identificacao, sum(IF(af = "sim", precototal, 0)) as somaprecoaf,  sum(IF(af = "nao", precototal, 0)) as somapreconormal, sum(precototal) as somaprecototal')
             ->orderBy('identificacao', 'ASC')
             ->where('municipio_id', '=', $idmun)
             ->whereMonth('data_ini', '=', $mes)

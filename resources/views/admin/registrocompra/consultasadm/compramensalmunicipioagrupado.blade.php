@@ -38,7 +38,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                                @php $totalgeral = 0 @endphp
+                                @php 
+                                    $totalsomapreconormal = 0;
+                                    $totalsomaprecoaf = 0;
+                                    $totalgeral = 0;
+
+                                @endphp
                                 @foreach ($records as $item)
                                     <tr>
                                         <th scope="row">{{ $item->restaurante_id }}</th>
@@ -54,10 +59,14 @@
                                                 <i class="fas fa-eye text-warning mr-2"></i>
                                             </a>
                                         </td>
-                                        <td style="text-align: right">{{ mrc_turn_value(0) }}</td>
-                                        <td style="text-align: right">{{ mrc_turn_value(0) }}</td>
+                                        <td style="text-align: right">{{ mrc_turn_value($item->somapreconormal) }}</td>
+                                        <td style="text-align: right">{{ mrc_turn_value($item->somaprecoaf) }}</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
-                                        @php $totalgeral  = $totalgeral += $item->somaprecototal; @endphp
+                                        @php 
+                                            $totalsomapreconormal = $totalsomapreconormal += $item->somapreconormal;
+                                            $totalsomaprecoaf = $totalsomaprecoaf += $item->somaprecoaf;
+                                            $totalgeral  = $totalgeral += $item->somaprecototal; 
+                                        @endphp
                                     </tr>
 
                                     {{-- INICIO MODAL --}}
@@ -145,8 +154,8 @@
                                 @endforeach
                                 <tr class="bg-gray-100">
                                     <td colspan="3" style="text-align: right"><strong>Totais R$</strong> </td>
-                                    <td style="text-align: right"><strong>Total NORMAL</strong> </td>
-                                    <td style="text-align: right"><strong>Valor AF</strong> </td>
+                                    <td style="text-align: right"><strong>{{ mrc_turn_value($totalsomapreconormal) }}</strong> </td>
+                                    <td style="text-align: right"><strong>{{ mrc_turn_value($totalsomaprecoaf) }}</strong> </td>
                                     <td style="text-align: right" ><strong>{{ mrc_turn_value($totalgeral) }}</strong></td>
                                 </tr>
                         </tbody>
