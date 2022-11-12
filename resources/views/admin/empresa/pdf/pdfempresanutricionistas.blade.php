@@ -13,11 +13,14 @@
 
         @foreach ($nutricionistas as $nutricionista)
             <tr @if($loop->even) style="background-color: #e3e3e3;" @endif>
-                <td style="width: 50px;" class="dados-lista">{{$nutricionista->id}}</td>
-                <td style="width: 275px;" class="dados-lista">{{$nutricionista->nomecompleto}}</td>
-                <td style="width: 137px" class="dados-lista">{{$nutricionista->email}}</td>
-                <td style="width: 138px" class="dados-lista">{{$nutricionista->telefone}}</td>
-                <td style="width: 115px;" class="dados-lista">@if($nutricionista->ativo == 1) SIM @else NÃO @endif</td>
+                <td style="width: 30px;" class="dados-lista">{{$nutricionista->id}}</td>
+                <td style="width: 215px;" class="dados-lista">{{$nutricionista->nomecompleto}}</td>
+                <td style="width: 202px" class="dados-lista">{{$nutricionista->email}}; {{$nutricionista->telefone}}</td>
+                <td style="width: 230px" class="dados-lista">
+                    @isset($nutricionista->restaurante->identificacao)
+                        {{$nutricionista->restaurante->identificacao}}
+                    @endisset</td>
+                <td style="width: 40px;" class="dados-lista">@if($nutricionista->ativo == 1) SIM @else NÃO @endif</td>
             </tr>
         @endforeach
     </table>

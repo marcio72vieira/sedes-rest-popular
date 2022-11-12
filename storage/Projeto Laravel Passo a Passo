@@ -1233,6 +1233,16 @@ public function alldatasCompras()
 
 
 
+//Recupera todos os nutricionistas cujo que estejamm ativo, apenas os campos id e nomecompleto
+$nutricionistas = Nutricionista::select('id', 'nomecompleto')->where('ativo', '=', '1')->orderBy('nomecompleto', 'ASC')->get();
+$nutricionistasAlocadosRestaurante =  Restaurante::select('nutricionista_id')->get();
+$nutricionistas = $nutricionistas->diff(Nutricionista::whereIn('id', $nutricionistasAlocadosRestaurante)->get());
+
+
+na view index de empresas
+<tr><td>{{ $empresa->restaurantes[0]->identificacao }}</td></tr>
+
+
 ==================
 QUERYS
 ==================

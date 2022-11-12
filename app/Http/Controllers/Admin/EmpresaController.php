@@ -305,11 +305,11 @@ class EmpresaController extends Controller
 
             <table style="width:717px; border-collapse: collapse;">
                 <tr>
-                    <td width="50px" class="col-header-table">ID</td>
-                    <td width="275px" class="col-header-table">NOME</td>
-                    <td width="137px" class="col-header-table">E-MAIL</td>
-                    <td width="138px" class="col-header-table">CONTATO</td>
-                    <td width="115px" class="col-header-table">ATIVO</td>
+                    <td width="30px" class="col-header-table">ID</td>
+                    <td width="215px" class="col-header-table">NOME</td>
+                    <td width="202px" class="col-header-table">CONTATO</td>
+                    <td width="230px" class="col-header-table">RESTAURANTE</td>
+                    <td width="40px" class="col-header-table">ATIVO</td>
                 </tr>
             </table>
         ');

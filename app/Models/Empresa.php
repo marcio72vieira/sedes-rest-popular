@@ -40,4 +40,8 @@ class Empresa extends Model
         return $qtd;
     }
 
+    public function restaurantes(){
+        return $this->hasMany(Restaurante::class);
+    }
+
 }

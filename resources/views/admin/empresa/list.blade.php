@@ -27,6 +27,8 @@
                         <tr>
                             <th>Id</th>
                             <th>Nome</th>
+                            <th>Contato</th>
+                            <th>Restaurante</th>
                             <th>Ativo</th>
                         </tr>
                     </thead>
@@ -36,6 +38,11 @@
                             <tr>
                                 <td>{{$nutricionista->id}}</td>
                                 <td>{{$nutricionista->nomecompleto}}</td>
+                                <td>{{$nutricionista->email}}; {{$nutricionista->telefone}}</td>
+                                <td>
+                                    @isset($nutricionista->restaurante->identificacao)
+                                        {{$nutricionista->restaurante->identificacao}}
+                                    @endisset</td>
                                 <td>
                                     @if($nutricionista->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> 
                                     @else <b><i class="fas fa-times  text-danger mr-2"></i></b> 

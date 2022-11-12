@@ -51,6 +51,20 @@ class RestauranteController extends Controller
     }
 
 
+    /*
+    MÉTODO ORIGINAL
+    public function getnutricionistasempresas(Request $request)
+    {
+        $condicoes = [
+            ['empresa_id', '=', $request->empresa_id],
+            ['ativo', '=', 1]
+        ];
+
+        $data['nutricionistas'] = Nutricionista::where($condicoes)->orderBy('nomecompleto', 'ASC')->get();
+        return response()->json($data);
+    }
+    */
+
     public function getnutricionistasempresas(Request $request)
     {
         $condicoes = [
@@ -63,6 +77,8 @@ class RestauranteController extends Controller
     }
 
 
+    /*
+    MÉTODO ORIGINAL - PERMITE QUE UM NUTRICIONISTA E UM USUÁRIO SEJAM ALOCADOS PARA MAIS DE UM RESTAURANTE
     public function create()
     {
         $municipios = Municipio::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
@@ -71,6 +87,30 @@ class RestauranteController extends Controller
         $nutricionistas = Nutricionista::where('ativo', '=', '1')->orderBy('nomecompleto', 'ASC')->get();
         $users = User::where('perfil', '=', 'nut')->orderBy('nomecompleto', 'ASC')->get();
 
+        return view('admin.restaurante.create', compact('municipios', 'bairros', 'empresas', 'nutricionistas','users'));
+    }
+    */
+
+
+    public function create()
+    {
+        $municipios = Municipio::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        $bairros = Bairro::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        $empresas = Empresa::where('ativo', '=', '1')->orderBy('nomefantasia', 'ASC')->get();
+
+        //Recupera todos os nutricionistas cujo que estejamm ativo, apenas os campos id e nomecompleto
+        $nutricionistas = Nutricionista::select('id', 'nomecompleto')->where('ativo', '=', '1')->orderBy('nomecompleto', 'ASC')->get();
+
+        //Recupera todos os usuários cujo perfil seja igual a "nut", apenas os campos id e nomecompleto
+        $users = User::select('id', 'nomecompleto')->where('perfil', '=', 'nut')->orderBy('nomecompleto', 'ASC')->get();
+        //Recupera todos os usuários associados a um Restaurante, apenas o campo 'user_id'
+        $usersAlocadosRestaurante = Restaurante::select('user_id')->get();
+
+        //Recupera apenas os usuários que não estejam previamente associados a um Restaurante(evita selecionar o mesmo
+        //usuário para mais de um restaurante). Observação: Essa regra não deve ser aplicada para a edição de um 
+        //restaurante, devendo nesse caso, serem exibidos todos os usuários.
+        $users = $users->diff(User::whereIn('id', $usersAlocadosRestaurante)->get());
+       
         return view('admin.restaurante.create', compact('municipios', 'bairros', 'empresas', 'nutricionistas','users'));
     }
 
