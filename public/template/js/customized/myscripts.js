@@ -1,7 +1,7 @@
 
 $(function(){
     // Configurações do DataTable
-    $('#dataTable').dataTable({
+    $('#dataTable, #dataTable2').dataTable({
         "ordering": true,
         "order": [[ 0, "desc" ]],
         /*

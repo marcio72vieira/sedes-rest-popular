@@ -1,7 +1,7 @@
 =============================
 CONFIGURAÇÕES INICIAIS
 ============================
-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
+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
 
 1 - Criar um projeto com o Laravel:
     composer create-project --prefer-dist laravel/laravel sedes-rest-popular "8.5"
@@ -647,6 +647,7 @@ how to avoid with some characters become typed in text box with jquery
 // https://muhimasri.com/blogs/how-to-replace-multiple-words-and-characters-in-javascript/
 // https://bobbyhadz.com/blog/javascript-replace-multiple-characters-in-string
 // https://acervolima.com/como-simular-um-clique-com-javascript/
+// https://stackoverflow.com/questions/1313373/jquery-same-click-event-for-multiple-elements
 
 
 

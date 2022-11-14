@@ -145,6 +145,7 @@ Route::get('admin/regional/{id}/pdf/relpdfregionalmunicipios', [RegionalControll
 // RELATÓRIOS MUNICÍPIOS
 Route::get('admin/municipio/pdf/relpdfmunicipio', [MunicipioController::class, 'relpdfmunicipio'])->name('admin.municipio.relpdfmunicipio')->middleware(['auth']);
 Route::get('admin/municipio/{id}/pdf/relpdfmunicipiobairros', [MunicipioController::class, 'relpdfmunicipiobairros'])->name('admin.municipio.relpdfmunicipiobairros')->middleware(['auth']);
+Route::get('admin/municipio/{id}/pdf/relpdfmunicipiorestaurantes', [MunicipioController::class, 'relpdfmunicipiorestaurantes'])->name('admin.municipio.relpdfmunicipiorestaurantes')->middleware(['auth']);
 
 
 

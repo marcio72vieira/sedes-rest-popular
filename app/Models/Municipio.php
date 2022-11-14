@@ -37,9 +37,20 @@ class Municipio extends Model
         return $this->belongsTo(Regional::class);
     }
 
+    public function restaurantes(){
+        return $this->hasMany(Bairro::class);
+    }
+
     public function qtdbairrosvinc($id)
     {
         $qtd = DB::table('bairros')->where('municipio_id', '=', $id)->count();
+
+        return $qtd;
+    }
+
+    public function qtdrestaurantesvinc($id)
+    {
+        $qtd = DB::table('restaurantes')->where('municipio_id', '=', $id)->count();
 
         return $qtd;
     }
