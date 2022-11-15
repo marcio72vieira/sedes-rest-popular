@@ -126,7 +126,9 @@ class RegistroconsultacompraController extends Controller
 
             $municipios = Municipio::select('id', 'nome')->orderBy('nome', 'ASC')->get();
 
-            return view('admin.registrocompra.menuconsultasadm', compact('mesespesquisa', 'anospesquisa', 'restaurantes', 'municipios'));
+            $regioes = Regional::select('id', 'nome')->orderBy('nome', 'ASC')->get();
+
+            return view('admin.registrocompra.menuconsultasadm', compact('mesespesquisa', 'anospesquisa', 'restaurantes', 'municipios', 'regioes'));
 
         } else {
             //Fazer um teste aqui, se o usuário logado está ativo (depois de incluir esse campo na tabela e no model User)
@@ -307,6 +309,11 @@ class RegistroconsultacompraController extends Controller
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
 
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
             // Monta mês/ano de pesquisa
             $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
 
@@ -347,6 +354,11 @@ class RegistroconsultacompraController extends Controller
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
 
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
             // Monta mês/ano de pesquisa
             $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
 
@@ -369,6 +381,54 @@ class RegistroconsultacompraController extends Controller
         }
 
     }
+
+
+
+    public function compramensalregiaovalor(Request $request)
+    {
+        if($request->regiao_id && $request->mes_id && $request->ano_id ) {
+            $reg_id = $request->regiao_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para popular campos selects
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
+            // Monta mês/ano de pesquisa
+            $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
+
+            $records = Bigtabledata::compramensalregiaovalor($reg_id, $mes_id, $ano_id);
+
+
+            if($records->count() <= 0) {
+
+                $request->session()->flash('error_compramensalregiaovalor', 'Nenhum registro encontrado para esta pesquisa.');
+                return redirect()->route('admin.registroconsultacompra.search');
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.compramensalregiaovalor', compact('records', 'mesano', 'reg_id', 'mes_id', 'ano_id'));
+            }
+
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+
+    }
+
+
+
 
 
     //================================================================================
@@ -493,6 +553,46 @@ class RegistroconsultacompraController extends Controller
         }
     }
 
+
+
+
+
+    public function ajaxgetdetalhecompramensalregiaovalor(Request $request)
+    {
+        if($request->municipio && $request->mes && $request->ano ) {
+            $muni_id = $request->municipio;
+            $mes_id = $request->mes;
+            $ano_id = $request->ano;
+
+            // Meses e anos para formatar período da pesquisa
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            
+            //montando mes/ano e depois cria-se um índice com essa composição
+            $meseano = $mesespesquisa[$mes_id]. "/".$ano_id;
+
+            //recupera o município
+            $municipio = Municipio::findOrFail($muni_id);
+            
+            //Recupera só o id do municipio
+            $municipioId =  $municipio->id;
+            
+            $records = Bigtabledata::compramensalmunicipioagrupado($municipioId, $mes_id, $ano_id);
+            
+            //Criando índices a serem enviados para a utilização na view
+            $data['mesano']  = $meseano;        //um índice arbitrário para ser utilizado na view
+            $data['records'] = $records;        //resultado vindo do banco de dados
+            
+            //Retornando os dados juntamente com o índice criado acima para a view que chamou este json para serem exibidos.
+            return response()->json($data);
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+    }
 
 
     /***************************************/

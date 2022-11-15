@@ -123,6 +123,8 @@ Route::get('admin/registroconsultacompra/compramensalmunicipio',[Registroconsult
 Route::get('admin/registroconsultacompra/compramensalmunicipioagrupado',[RegistroconsultacompraController::class, 'compramensalmunicipioagrupado'])->name('admin.consulta.compramensalmunicipioagrupado')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/ajaxgetdetalhecompra',[RegistroconsultacompraController::class, 'ajaxgetdetalhecompra'])->name('admin.consulta.ajaxgetdetalhecompra')->middleware(['auth']);
 
+Route::get('admin/registroconsultacompra/compramensalregiaovalor',[RegistroconsultacompraController::class, 'compramensalregiaovalor'])->name('admin.consulta.compramensalregiaovalor')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/ajaxgetdetalhecompramensalregiaovalor',[RegistroconsultacompraController::class, 'ajaxgetdetalhecompramensalregiaovalor'])->name('admin.consulta.ajaxgetdetalhecompramensalregiaovalor')->middleware(['auth']);
 
 /***********************************************/
 /*   ROTAS PARA RELATÓRIOS PDF's, Excel e CSV  */
