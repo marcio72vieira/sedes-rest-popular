@@ -26,7 +26,7 @@
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
                                 <th colspan="3">Região: {{ $records[0]->regional_nome }}</th>
                                 <th colspan="3">Mês: {{ $mesano }} </th>
-                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcompramensalmunicipio', [$reg_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfrelpdfcompramensalregiaovalor', [$reg_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th rowspan="2" scope="col" style="width: 40px; text-align: center; vertical-align:middle">Id</th>

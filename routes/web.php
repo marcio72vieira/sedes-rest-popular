@@ -181,3 +181,4 @@ Route::get('admin/restaurante/{idrest}/compra/{idcompra}/pdf/relpdfcompra', [Com
 // RELATÓRIOS REGISTROCONSULTACOMPRA
 Route::get('admin/registroconsultacompra/{idrest}/{mes}/{ano}/pdf/relpdfcomprasmes', [RegistroconsultacompraController::class, 'relpdfcomprasmes'])->name('admin.registroconsultacompra.comprasmes.relpdfcomprasmes')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/{idmun}/{mes}/{ano}/pdf/relpdfcompramensalmunicipio', [RegistroconsultacompraController::class, 'relpdfcompramensalmunicipio'])->name('admin.registroconsultacompra.relpdfcompramensalmunicipio')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/{idreg}/{mes}/{ano}/pdf/relpdfcompramensalregiaovalor', [RegistroconsultacompraController::class, 'relpdfcompramensalregiaovalor'])->name('admin.registroconsultacompra.relpdfrelpdfcompramensalregiaovalor')->middleware(['auth']);
