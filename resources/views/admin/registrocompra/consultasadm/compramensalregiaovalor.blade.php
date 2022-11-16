@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Valores comprados no mês por região: {{ $records[0]->regional_nome }}, {{ $mesano }} </h5>
+    <h5><strong>Valores comprados no mês pela região: {{ $records[0]->regional_nome }} em {{ $mesano }} </h5>
 
     <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>
@@ -26,7 +26,7 @@
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
                                 <th colspan="3">Região: {{ $records[0]->regional_nome }}</th>
                                 <th colspan="3">Mês: {{ $mesano }} </th>
-                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfrelpdfcompramensalregiaovalor', [$reg_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcompramensalregiaovalor', [$reg_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th rowspan="2" scope="col" style="width: 40px; text-align: center; vertical-align:middle">Id</th>
@@ -37,14 +37,14 @@
                                 <th scope="col" style="width: 200px; text-align: center">Total R$</th>
                             </tr>
                             <tr>
-                                
+
                                 <th scope="col" style="width: 150px; text-align: center">Normal (R$)</th>
                                 <th scope="col" style="width: 150px; text-align: center">AF (R$)</th>
                                 <th scope="col" style="width: 200px; text-align: center"></th>
                             </tr>
                         </thead>
                         <tbody>
-                                @php 
+                                @php
                                     $totalsomapreconormal = 0;
                                     $totalsomaprecoaf = 0;
                                     $totalgeral = 0;
@@ -64,10 +64,10 @@
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecoaf) }}</td>
                                         <td style="text-align: right">&#177; {{ intval(mrc_calc_percentaf($item->somaprecototal, $item->somaprecoaf))}} %</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
-                                        @php 
+                                        @php
                                             $totalsomapreconormal = $totalsomapreconormal += $item->somapreconormal;
                                             $totalsomaprecoaf = $totalsomaprecoaf += $item->somaprecoaf;
-                                            $totalgeral  = $totalgeral += $item->somaprecototal; 
+                                            $totalgeral  = $totalgeral += $item->somaprecototal;
                                         @endphp
                                     </tr>
 
@@ -77,7 +77,7 @@
                                         <div class="modal-dialog modal-dialog-scrollable modal-xl">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Compras no município: {{ $item->nomemunicipio }} em <span class="mesano"></span></h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel">Compras realizadas pelos restaurantes no município: {{ $item->nomemunicipio }} em <span class="mesano"></span></h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -183,7 +183,7 @@
                     dataType : 'json',
 
                     success: function(result){
-                            //Obs:  result recebe o valor do array $data, vindo com dois índices, data['mesano'] que só possui um valor e 
+                            //Obs:  result recebe o valor do array $data, vindo com dois índices, data['mesano'] que só possui um valor e
                             //      data['records'] que é um outro array (a collection vindo do banco de dados) em resposta à solicitação
                             //      AJAX (return response()->json($data) no controller.
 

@@ -177,8 +177,7 @@
                 </div>
 
 
-
-                {{-- Compra mensal municipio agrupado --}}
+                {{-- Compra mensal municipio valor --}}
                 <div class="card">
                   <div class="card-header" id="headingquatro">
                     <h2 class="mb-0">
@@ -192,9 +191,9 @@
                     </h2>
                   </div>
 
-                  <div id="collapsequatro" @if(session('error_compramensalmunicipioagrupado')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingquatro" data-parent="#accordionExample">
+                  <div id="collapsequatro" @if(session('error_compramensalmunicipiovalor')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingquatro" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="{{route('admin.consulta.compramensalmunicipioagrupado')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+                        <form action="{{route('admin.consulta.compramensalmunicipiovalor')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
                           <div class="form-group mx-sm-3 mb-2">
                             <select name="municipio_id" id="municipio_id" class="form-control" required>
                               <option value="" selected disabled>Município...</option>
@@ -222,9 +221,9 @@
                             </select>
                           </div>
                           <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
-                          @if(session('error_compramensalmunicipioagrupado'))
+                          @if(session('error_compramensalmunicipiovalor'))
                               <p class="alert-danger alert-dismissible fade show" role="alert" style="margin-left: 30px; margin-bottom: 5px; padding: 5px">
-                                  <strong>Atenção! </strong> {{session('error_compramensalmunicipioagrupado')}}
+                                  <strong>Atenção! </strong> {{session('error_compramensalmunicipiovalor')}}
                               </p>
                           @endif
                         </form>

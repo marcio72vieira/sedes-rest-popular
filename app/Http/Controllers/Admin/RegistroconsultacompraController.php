@@ -295,7 +295,7 @@ class RegistroconsultacompraController extends Controller
     }
 
 
-    public function compramensalmunicipioagrupado(Request $request)
+    public function compramensalmunicipiovalor(Request $request)
     {
         if($request->municipio_id && $request->mes_id && $request->ano_id ) {
             $muni_id = $request->municipio_id;
@@ -317,17 +317,17 @@ class RegistroconsultacompraController extends Controller
             // Monta mês/ano de pesquisa
             $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
 
-            $records = Bigtabledata::compramensalmunicipioagrupado($muni_id, $mes_id, $ano_id);
+            $records = Bigtabledata::compramensalmunicipiovalor($muni_id, $mes_id, $ano_id);
 
 
             if($records->count() <= 0) {
 
-                $request->session()->flash('error_compramensalmunicipioagrupado', 'Nenhum registro encontrado para esta pesquisa.');
+                $request->session()->flash('error_compramensalmunicipiovalor', 'Nenhum registro encontrado para esta pesquisa.');
                 return redirect()->route('admin.registroconsultacompra.search');
 
             } else {
 
-                return view('admin.registrocompra.consultasadm.compramensalmunicipioagrupado', compact('records', 'mesano', 'muni_id', 'mes_id', 'ano_id'));
+                return view('admin.registrocompra.consultasadm.compramensalmunicipiovalor', compact('records', 'mesano', 'muni_id', 'mes_id', 'ano_id'));
             }
 
 
@@ -569,22 +569,22 @@ class RegistroconsultacompraController extends Controller
                 '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
                 '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
             ];
-            
+
             //montando mes/ano e depois cria-se um índice com essa composição
             $meseano = $mesespesquisa[$mes_id]. "/".$ano_id;
 
             //recupera o município
             $municipio = Municipio::findOrFail($muni_id);
-            
+
             //Recupera só o id do municipio
             $municipioId =  $municipio->id;
-            
-            $records = Bigtabledata::compramensalmunicipioagrupado($municipioId, $mes_id, $ano_id);
-            
+
+            $records = Bigtabledata::compramensalmunicipiovalor($municipioId, $mes_id, $ano_id);
+
             //Criando índices a serem enviados para a utilização na view
             $data['mesano']  = $meseano;        //um índice arbitrário para ser utilizado na view
             $data['records'] = $records;        //resultado vindo do banco de dados
-            
+
             //Retornando os dados juntamente com o índice criado acima para a view que chamou este json para serem exibidos.
             return response()->json($data);
 
@@ -867,7 +867,102 @@ class RegistroconsultacompraController extends Controller
 
 
 
-    // Relatório PDF Compra mensal por município
+    // Relatório PDF Compra mensal por município valor
+    public function relpdfcompramensalmunicipiovalor($mun, $mes, $ano)
+    {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $municipio = Municipio::findOrFail($mun);
+
+        $municipioId = $municipio->id;
+
+        // Obtendo os dados
+        $records = Bigtabledata::compramensalmunicipiovalor($municipioId, $mes, $ano);
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('compramensalmunicipiovalor'.'.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 37,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 83px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 352px;" class="titulo-rel">
+                        VALORES COMPRADOS NO MUNICÍPIO <br>'.$records[0]->municipio_nome.': '.$meses[$mes].'/'.$ano.'
+                    </td>
+                </tr>
+            </table>
+
+            <table style="width:717px; border-collapse: collapse">
+                <tr>
+                    <td rowspan="2" width="30px" class="col-header-table" style="text-align:center">Id</td>
+                    <td rowspan="2" width="387px" class="col-header-table" style="text-align:center">Restaurantes</td>
+                    <td colspan="2" width="160px" class="col-header-table" style="text-align:center">Compras</td>
+                    <td rowspan="2" width="60px" class="col-header-table" style="text-align:center">% AF</td>
+                    <td rowspan="2" width="80px" class="col-header-table" style="text-align:center">Total</td>
+                </tr>
+                <tr>
+                    <td width="80px" class="col-header-table" style="text-align:center">Normal (R$)</td>
+                    <td width="80px" class="col-header-table" style="text-align:center">AF (R$)</td>
+                </tr>
+            </table>
+
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="239px">São Luis(MA) {DATE d/m/Y H:i}</td>
+                    <td width="239px" align="center"></td>
+                    <td width="239px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.registrocompra.pdf.pdfcompramensalmunicipiovalor', compact('records'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
+
+
+
+
+
+
+    // Relatório PDF Compra mensal por região valor
     public function relpdfcompramensalregiaovalor($reg, $mes, $ano)
     {
         // Meses para compor cabeçalho do relatório
@@ -914,7 +1009,7 @@ class RegistroconsultacompraController extends Controller
                     </td>
                 </tr>
             </table>
-            
+
             <table style="width:717px; border-collapse: collapse">
                 <tr>
                     <td rowspan="2" width="30px" class="col-header-table" style="text-align:center">Id</td>
@@ -956,5 +1051,8 @@ class RegistroconsultacompraController extends Controller
         $mpdf->Output($fileName, 'I');
 
     }
+
+
+
 
 }

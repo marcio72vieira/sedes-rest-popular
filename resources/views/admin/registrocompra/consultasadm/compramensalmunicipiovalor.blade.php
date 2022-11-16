@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Compra mensal: {{ $records[0]->municipio_nome }}, {{ $mesano }} </h5>
+    <h5><strong>Valores comprados no mês pelo município: {{ $records[0]->municipio_nome }} em {{ $mesano }} </h5>
 
     <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>
@@ -26,25 +26,25 @@
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
                                 <th colspan="3">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
                                 <th colspan="3">Mês: {{ $mesano }} </th>
-                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcompramensalmunicipio', [$muni_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcompramensalmunicipiovalor', [$muni_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th rowspan="2" scope="col" style="width: 40px; text-align: center; vertical-align:middle">Id</th>
                                 <th rowspan="2" scope="col" style="width: 500px; text-align: center; vertical-align:middle">Restaurantes</th>
-                                <th rowspan="2" scope="col" style="width: 180px; text-align: center; vertical-align:middle">Ver detalhes das compras</th>
+                                <th rowspan="2" scope="col" style="width: 180px; text-align: center; vertical-align:middle">Ver detalhe no restaurante</th>
                                 <th colspan="2" scope="col" style="width: 150px; text-align: center">Compras</th>
                                 <th rowspan="2" scope="col" style="width: 150px; text-align: center; vertical-align:middle">% AF</th>
                                 <th scope="col" style="width: 200px; text-align: center">Total R$</th>
                             </tr>
                             <tr>
-                                
+
                                 <th scope="col" style="width: 150px; text-align: center">Normal (R$)</th>
                                 <th scope="col" style="width: 150px; text-align: center">AF (R$)</th>
                                 <th scope="col" style="width: 200px; text-align: center"></th>
                             </tr>
                         </thead>
                         <tbody>
-                                @php 
+                                @php
                                     $totalsomapreconormal = 0;
                                     $totalsomaprecoaf = 0;
                                     $totalgeral = 0;
@@ -69,10 +69,10 @@
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecoaf) }}</td>
                                         <td style="text-align: right">&#177; {{ intval(mrc_calc_percentaf($item->somaprecototal, $item->somaprecoaf))}} %</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
-                                        @php 
+                                        @php
                                             $totalsomapreconormal = $totalsomapreconormal += $item->somapreconormal;
                                             $totalsomaprecoaf = $totalsomaprecoaf += $item->somaprecoaf;
-                                            $totalgeral  = $totalgeral += $item->somaprecototal; 
+                                            $totalgeral  = $totalgeral += $item->somaprecototal;
                                         @endphp
                                     </tr>
 
@@ -82,7 +82,7 @@
                                         <div class="modal-dialog modal-dialog-scrollable modal-xl">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Compra detalhada {{ $item->identificacao }} em <span class="mesano"></span></h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel">Compra realizada no {{ $item->identificacao }} em <span class="mesano"></span></h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -93,7 +93,7 @@
                                                 <div class="modal-body">
 
                                                     {{-- INICIO CONTEÚDO CORPO MODAL --}}
-                                                    {{-- Houve a necessidade de criar uma pseudo tabela com div's porque a confeccão de uma tabela normal, exibe a 
+                                                    {{-- Houve a necessidade de criar uma pseudo tabela com div's porque a confeccão de uma tabela normal, exibe a
                                                          mesma abaixo da tabela principal de dados, ou seja, era renderizada independente de se clicar no botão de
                                                          visualização. --}}
                                                     <div class="psdtable">
@@ -272,7 +272,7 @@
                         }else{
 
                             $(".mensagem").text("FALHA NO RETORNO DOS REGISTROS");
-                            
+
 
                         }
                     }
@@ -287,7 +287,7 @@
                 var numrestaurante = $(this).data('numrestaurante');
                 var nummes = $(this).data('nummes');
                 var numano = $(this).data('numano');
-                
+
                 // Montando rota para link do botão .pdf dentro da MODAL. (substituição de varios parâmetros com replace encadeado)
                 var routepdf = "{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', ['restaurante', 'nummes', 'numano']) }}";
                     routepdf = routepdf.replace(/restaurante/g, numrestaurante).replace(/nummes/g, nummes).replace(/numano/g, numano);
