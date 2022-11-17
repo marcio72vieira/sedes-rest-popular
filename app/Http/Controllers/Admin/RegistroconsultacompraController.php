@@ -52,7 +52,7 @@ class RegistroconsultacompraController extends Controller
                     $idRegional = $request->regional_id;
                     $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
 
-                //Se uma regional for escolhida, busca-se a regional primerio, depois os restaurantes dos municípios pertencentes a esta regional, através do relacionamento cruzado
+                //Se uma regional for escolhida, busca-se a regional primerio, depois os restaurantes dos municípios pertencentes a esta regional, através do relacionamento cruzado hasManyThrough
                 } else {
                     $idRegional = $request->regional_id;
                     $regional = Regional::findOrFail($idRegional);

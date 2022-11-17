@@ -655,6 +655,8 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.alura.com.br/artigos/convertendo-string-para-numero-em-javascript?gclid=CjwKCAiAjs2bBhACEiwALTBWZTe-vkWh7mMPfpRh9L07KBy1xrD1cFT0gEwg2P_PUo6fRW6dFU-gWRoCS_cQAvD_BwE
 // https://laracasts.com/discuss/channels/laravel/counting-record-with-hasmanythrough-and-withcount
 // https://dev.to/mahmudulhsn/laravel-has-many-through-relationship-explained-with-example-22p4
+// https://stackoverflow.com/questions/47307705/count-from-hasmanythrough-relationship-with-eager-loading-need-only-count
+// https://www.schoolofnet.com/forum/topico/laravel-count-de-registro-11117
 
 
 

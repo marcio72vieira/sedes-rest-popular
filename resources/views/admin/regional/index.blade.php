@@ -37,6 +37,8 @@
                             <th>Id</th>
                             <th>Nome</th>
                             <th>Nº Municípios</th>
+                            {{-- <th>Nº Bairros</th> --}}
+                            <th>Nº Restaurantes</th>
                             <th>Ativo</th>
                             <th>Ações</th>
                         </tr>
@@ -48,6 +50,8 @@
                                 <td>{{$regional->id}}</td>
                                 <td>{{$regional->nome}}</td>
                                 <td>{{$regional->qtdmunicipiosvinc($regional->id)}}</td>
+                                {{-- <td>{{$regional->bairros->count()}} / {{$regional->countmunicipios()}}</td>   Obtendo a quantidade de bairros pelo hasManyThrough--}}
+                                <td>{{$regional->restaurantes->count()}}</td>
                                 <td>@if($regional->ativo == 1) <b>SIM</b> @else NÃO @endif</td>
                                 <td>
                                     {{--<a href="{{route('admin.regional.relpdfmunicipiosregional', $regional->id)}}" title="pdf municípios desta regional" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>--}}
@@ -74,6 +78,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <p class="alert alert-danger">ATENÇÃO! Esta operação não tem retorno!</p>
                                                     <h5>{{$regional->nome}}</h5>
                                                     <span class="mensagem" style="color: #f00;"></span>
                                                 </div>

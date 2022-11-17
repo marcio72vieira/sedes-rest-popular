@@ -14,8 +14,10 @@
         @foreach ($regionais as $regional)
             <tr @if($loop->even) style="background-color: #e3e3e3;" @endif>
                 <td style="width: 50px;" class="dados-lista">{{$regional->id}}</td>
-                <td style="width: 550px;" class="dados-lista">{{$regional->nome}}</td>
-                <td style="width: 115px;" class="dados-lista">@if($regional->ativo == 1) SIM @else NÃO @endif</td>
+                <td style="width: 350px;" class="dados-lista">{{$regional->nome}}</td>
+                <td style="width: 100px;" class="dados-lista" style="text-align: center">{{$regional->countmunicipios()}}</td>
+                <td style="width: 100px;" class="dados-lista" style="text-align: center">{{$regional->restaurantes->count()}}</td>
+                <td style="width: 115px; text-align:center" class="dados-lista">@if($regional->ativo == 1) SIM @else NÃO @endif</td>
             </tr>
         @endforeach
     </table>

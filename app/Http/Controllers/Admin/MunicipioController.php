@@ -270,76 +270,76 @@ class MunicipioController extends Controller
 
 
 
-        // --- Relatório PDF Restaurantes do Município
-        public function relpdfmunicipiorestaurantes($id)
-        {
-            // Obtendo os dados
-            $municipio = Municipio::findOrFail($id);
-            $restaurantes =  Restaurante::where('municipio_id', '=', $id)->orderBy('identificacao', 'ASC')->get();
-    
-            // Definindo o nome do arquivo a ser baixado
-            $fileName = ('RestaurantesMunicipio_lista.pdf');
-    
-            // Invocando a biblioteca mpdf e definindo as margens do arquivo
-            $mpdf = new \Mpdf\Mpdf([
-                'margin_left' => 10,
-                'margin_right' => 10,
-                'margin_top' => 32,
-                'margin_bottom' => 15,
-                'margin-header' => 10,
-                'margin_footer' => 5
-            ]);
-    
-            // Configurando o cabeçalho da página
-            $mpdf->SetHTMLHeader('
-                <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
-                    <tr>
-                        <td style="width: 83px">
-                            <img src="images/logo-ma.png" width="80"/>
-                        </td>
-                        <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
-                            Governo do Estado do Maranhão<br>
-                            Secretaria de Governo<br>
-                            Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
-                            Secretaria do Estado de Desenvolvimento Social/SEDES
-                        </td>
-                        <td style="width: 352px;" class="titulo-rel">
-                            Restaurantes do Município: '.$municipio->nome.'
-                        </td>
-                    </tr>
-                </table>
-                <table style="width:717px; border-collapse: collapse;">
-                    <tr>
-                        <td width="50px" class="col-header-table">ID</td>
-                        <td width="550px" class="col-header-table">NOME</td>
-                        <td width="115px" class="col-header-table">ATIVO</td>
-                    </tr>
-                </table>
-            ');
-    
-            // Configurando o rodapé da página
-            $mpdf->SetHTMLFooter('
-                <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
-                    <tr>
-                        <td width="239px">São Luis(MA) {DATE d/m/Y}</td>
-                        <td width="239px" align="center"></td>
-                        <td width="239px" align="right">{PAGENO}/{nbpg}</td>
-                    </tr>
-                </table>
-            ');
-    
-    
-            // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
-            $html = \View::make('admin.municipio.pdf.pdfmunicipiorestaurantes', compact('restaurantes'));
-            $html = $html->render();
-    
-            // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.regional.pdf.pdfregional')
-            $stylesheet = file_get_contents('pdf/mpdf.css');
-            $mpdf->WriteHTML($stylesheet, 1);
-    
-            // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
-            $mpdf->WriteHTML($html);
-            $mpdf->Output($fileName, 'I');
-    
-        }
+    // --- Relatório PDF Restaurantes do Município
+    public function relpdfmunicipiorestaurantes($id)
+    {
+        // Obtendo os dados
+        $municipio = Municipio::findOrFail($id);
+        $restaurantes =  Restaurante::where('municipio_id', '=', $id)->orderBy('identificacao', 'ASC')->get();
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('RestaurantesMunicipio_lista.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 32,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 83px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 352px;" class="titulo-rel">
+                        Restaurantes do Município: '.$municipio->nome.'
+                    </td>
+                </tr>
+            </table>
+            <table style="width:717px; border-collapse: collapse;">
+                <tr>
+                    <td width="50px" class="col-header-table">ID</td>
+                    <td width="550px" class="col-header-table">NOME</td>
+                    <td width="115px" class="col-header-table">ATIVO</td>
+                </tr>
+            </table>
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="239px">São Luis(MA) {DATE d/m/Y}</td>
+                    <td width="239px" align="center"></td>
+                    <td width="239px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.municipio.pdf.pdfmunicipiorestaurantes', compact('restaurantes'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.regional.pdf.pdfregional')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
 }

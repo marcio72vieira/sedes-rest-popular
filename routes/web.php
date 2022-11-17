@@ -140,7 +140,7 @@ Route::get('admin/restaurante/pdf/relpdfrestaurante', [RestauranteController::cl
 // RELATÓRIOS REGIONAIS
 Route::get('admin/regional/pdf/relpdfregional', [RegionalController::class, 'relpdfregional'])->name('admin.regional.relpdfregional')->middleware(['auth']);
 Route::get('admin/regional/{id}/pdf/relpdfregionalmunicipios', [RegionalController::class, 'relpdfregionalmunicipios'])->name('admin.regional.relpdfregionalmunicipios')->middleware(['auth']);
-
+Route::get('admin/regional/{id}/pdf/relpdfregionalrestaurantes', [RegionalController::class, 'relpdfregionalrestaurantes'])->name('admin.regional.relpdfregionalrestaurantes')->middleware(['auth']);
 
 
 // RELATÓRIOS MUNICÍPIOS
