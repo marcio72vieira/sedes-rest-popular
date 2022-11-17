@@ -74,6 +74,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <p class="alert alert-danger">ATENÇÃO! Esta operação não tem retorno!</p>
                                                     <h5>{{$municipio->nome}}</h5>
                                                     <span class="mensagem" style="color: #f00;"></span>
                                                 </div>

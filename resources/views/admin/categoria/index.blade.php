@@ -72,8 +72,8 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <p class="alert alert-danger">ATENÇÃO! Esta operação não tem retorno!</p>
                                                     <h5>{{$categoria->nome}}</h5>
-                                                    <span class="mensagem" style="color: #f00;"></span>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>

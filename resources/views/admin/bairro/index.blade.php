@@ -75,7 +75,12 @@
                                 <td>
                                     <a href="{{route('admin.bairro.show', $bairro->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.bairro.edit', $bairro->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                                    <a href="" data-toggle="modal" data-target="#formDelete{{$bairro->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    {{-- <a href="" data-toggle="modal" data-target="#formDelete{{$bairro->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a> --}}
+                                    @if($bairro->qtdrestaurantesvinc($bairro->id) == 0)
+                                        <a href="" data-toggle="modal" data-target="#formDelete{{$bairro->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    @else
+                                        <a href="" title="há restaurantes vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                                    @endif
 
                                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                                     <div class="modal fade" id="formDelete{{$bairro->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
@@ -88,6 +93,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <p class="alert alert-danger">ATENÇÃO! Esta operação não tem retorno!</p>
                                                     <h5>{{$bairro->nome}}</h5>
                                                 </div>
                                                 <div class="modal-footer">

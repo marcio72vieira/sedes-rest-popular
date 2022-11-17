@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Produto extends Model
 {
@@ -37,5 +38,12 @@ class Produto extends Model
             'user_id', 'user_nomecompleto', 'user_cpf', 'user_crn',
             'restaurante_id', 'identificacao'
         ])->withTimestamps();
+    }
+
+    public function qtdcomprasvinc($id)
+    {
+        $qtd = DB::table('compra_produto')->where('produto_id', '=', $id)->count();
+
+        return $qtd;
     }
 }

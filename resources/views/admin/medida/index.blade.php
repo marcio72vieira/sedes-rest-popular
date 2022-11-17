@@ -52,7 +52,14 @@
                                 <td>
                                     <a href="{{route('admin.medida.show', $medida->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                                     <a href="{{route('admin.medida.edit', $medida->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                                    <a data-idmedida="{{$medida->id}}" class="deletarmedida" href="" data-toggle="modal" data-target="#formDelete{{$medida->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    {{-- <a data-idmedida="{{$medida->id}}" class="deletarmedida" href="" data-toggle="modal" data-target="#formDelete{{$medida->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>--}}
+                                    @if($medida->qtdcomprasvinc($medida->id) == 0)
+                                        <a href="" data-toggle="modal" data-target="#formDelete{{$medida->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                                    @else
+                                        <a href="" title="há compras vinculadas!"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                                    @endif
+
+
 
                                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                                     <div class="modal fade" id="formDelete{{$medida->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
@@ -65,8 +72,8 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <p class="alert alert-danger">ATENÇÃO! Esta operação não tem retorno!</p>
                                                     <h5>{{$medida->nome}}</h5>
-                                                    <span class="mensagem" style="color: #f00;"></span>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>

@@ -91,7 +91,8 @@
                                                         <div class="psdthead">
                                                             <div class="psdtr">
                                                                 <div class="psdth-lt" style="width: 55%;">Região: <span class="regional"></span> - Município: <span class="municipio"></span></div>
-                                                                <div class="psdth-ltr" style="width: 45%;"><span class="mesano"></span></div>
+                                                                <div class="psdth-lt" style="width: 34%;"><span class="mesano"></span></div>
+                                                                <div class="psdth-ltr" style="width: 11%; text-align:right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcompramensalmunicipiovalor', [$item->municipio_id, $mes_id, $ano_id]) }}" role="button" target="_blank" style="padding: 0px 3px;"><i class="far fa-file-pdf fa-sm"></i> pdf</a></div>
                                                             </div>
 
                                                             <div class="psdtr">
