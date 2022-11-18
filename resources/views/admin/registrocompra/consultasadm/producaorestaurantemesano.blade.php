@@ -26,7 +26,7 @@
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
                                 <th colspan="4">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
                                 <th colspan="4">{{ $records[0]->identificacao }}</th>
-                                <th colspan="4" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th colspan="4" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfproducaorestaurantemesano', [$rest_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th colspan="4">Nutricionista Empresa: {{ $records[0]->nutricionista_nomecompleto }}</th>
@@ -51,6 +51,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                                @php $totalgeral = 0 @endphp
                                 @foreach ($records as $item)
                                     <tr>
                                         <th scope="row">{{ $item->produto_id }}</th>
@@ -65,21 +66,12 @@
                                             $item->somaquantidade * $item->mediapreco == $item->somaprecototal ? '' : 'fas fa-sort-amount-down-alt text-success' }}"></i>
                                         </td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
+                                        @php $totalgeral  = $totalgeral += $item->somaprecototal; @endphp
                                     </tr>
                                 @endforeach
                                 <tr class="bg-gray-100">
-                                    <td colspan="8" style="text-align: right"><strong>Valor R$</strong> </td>
-                                    <td style="text-align: right" ></td>
-                                </tr>
-                                <tr class="bg-gray-100">
-                                    <td colspan="8" style="text-align: right">
-                                        <strong>Valor AF (%) R$ </strong>
-                                    </td>
-                                    <td style="text-align: right" ></td>
-                                </tr>
-                                <tr class="bg-gray-100">
                                     <td colspan="8" style="text-align: right"><strong>Valor Total R$</strong> </td>
-                                    <td style="text-align: right" > </td>
+                                    <td style="text-align: right" ><strong>{{ mrc_turn_value($totalgeral) }}</strong></td>
                                 </tr>
                         </tbody>
                       </table>
