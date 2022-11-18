@@ -384,6 +384,51 @@ class RegistroconsultacompraController extends Controller
 
 
 
+
+    public function compramensalregionalproduto(Request $request)
+    {
+        if($request->regional_id && $request->mes_id && $request->ano_id ) {
+            $regi_id = $request->regional_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para popular campos selects
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
+            // Monta mês/ano de pesquisa
+            $mesano = $mesespesquisa[$mes_id]."/".$ano_id;
+
+            $records = Bigtabledata::compramensalregionalproduto($regi_id, $mes_id, $ano_id);
+
+            if($records->count() <= 0) {
+
+                $request->session()->flash('error_compramensalregionalproduto', 'Nenhum registro encontrado para esta pesquisa.');
+                return redirect()->route('admin.registroconsultacompra.search');
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.compramensalregionalproduto', compact('records', 'mesano', 'regi_id', 'mes_id', 'ano_id'));
+            }
+
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+
+    }
+
+
+
     public function compramensalregiaovalor(Request $request)
     {
         if($request->regiao_id && $request->mes_id && $request->ano_id ) {
@@ -864,6 +909,101 @@ class RegistroconsultacompraController extends Controller
         $mpdf->Output($fileName, 'I');
 
     }
+
+
+
+    // Relatório PDF Compra mensal de produtos por regional
+    public function relpdfcompramensalregionalproduto($regi, $mes, $ano)
+    {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $regional = Regional::findOrFail($regi);
+
+        $regionalId = $regional->id;
+
+        // Obtendo os dados
+        $records = Bigtabledata::compramensalregionalproduto($regionalId, $mes, $ano);
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('compramensalregionalproduto'.'.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 31,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 83px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 352px;" class="titulo-rel">
+                        COMPRA MENSAL DE PRODUTOS NA REGIONAL<br>'.$records[0]->regional_nome.': '.$meses[$mes].'/'.$ano.'
+                    </td>
+                </tr>
+            </table>
+            
+            <table style="width:717px; border-collapse: collapse">
+                <tr>
+                    <td width="30px" class="col-header-table" style="text-align:center">Id</td>
+                    <td width="200px" class="col-header-table" style="text-align:center">Produto</td>
+                    <td width="235px" class="col-header-table" style="text-align:center">Nº de ocorrências no mês</td>
+                    <td width="50px" class="col-header-table" style="text-align:center">Quant.</td>
+                    <td width="50px" class="col-header-table" style="text-align:center">Unid.</td>
+                    <td width="72px" class="col-header-table" style="text-align:center">Preço Médio</td>
+                    <td width="80px" class="col-header-table" style="text-align:center">Total</td>
+                </tr>
+            </table>
+
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="239px">São Luis(MA) {DATE d/m/Y H:i}</td>
+                    <td width="239px" align="center"></td>
+                    <td width="239px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.registrocompra.pdf.pdfcompramensalregionalproduto', compact('records'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
+
+
+
+
+
 
 
 

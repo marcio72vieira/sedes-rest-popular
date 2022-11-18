@@ -122,7 +122,7 @@
                 </div>
 
 
-                {{-- Produção mensal municipio --}}
+                {{-- Compra mensal municipio --}}
                 <div class="card">
                   <div class="card-header" id="headingtres">
                     <h2 class="mb-0">
@@ -175,6 +175,65 @@
                     </div>
                   </div>
                 </div>
+
+
+                {{-- Compra mensal regional produto --}}
+                <div class="card">
+                  <div class="card-header" id="headingseis">
+                    <h2 class="mb-0">
+                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseseis" aria-expanded="true" aria-controls="collapseseis">
+                        <strong>Produtos comprados no mês pela Regional</strong>
+                        <br>
+                        <span>
+                          Recupera os produtos comprados por todos os restaurantes de todos os municípios pertencentes a uma regional, em suas respectivas quantidadades, unidades e valor total, no mês e ano especificado.
+                        </span>
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseseis" @if(session('error_compramensalregionalproduto')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingtres" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <form action="{{route('admin.consulta.compramensalregionalproduto')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <select name="regional_id" id="regional_id" class="form-control" required>
+                              <option value="" selected disabled>Regional...</option>
+                              @foreach($regioes  as $regional)
+                                <option value="{{$regional->id}}"> {{$regional->nome}} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="mes_id" id="mes_id" class="form-control" required>
+                              <option value="" selected disabled>Mês...</option>
+                              @foreach($mesespesquisa as $key => $value)
+                                <option value="{{ $key }}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="ano_id" id="ano_id" class="form-control" required>
+                              <option value="" selected disabled>Ano...</option>
+                              @foreach($anospesquisa as $value)
+                                <option value="{{ $value}}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
+                          @if(session('error_compramensalregionalproduto'))
+                              <p class="alert-danger alert-dismissible fade show" role="alert" style="margin-left: 30px; margin-bottom: 5px; padding: 5px">
+                                  <strong>Atenção! </strong> {{session('error_compramensalregionalproduto')}}
+                              </p>
+                          @endif
+                        </form>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
 
 
                 {{-- Compra mensal municipio valor --}}
