@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Compra mensal de produtos feitos na regional: {{ $records[0]->regional_nome }}, {{ $mesano }} </h5>
+    <h5><strong>Consultas / Produtos comprados no mês pela regional: {{ $records[0]->regional_nome }} - {{ $mesano }} </h5>
 
     <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>

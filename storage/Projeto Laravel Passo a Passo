@@ -1208,6 +1208,37 @@ MODELOS E MIGRATIONS QUE NÃO OBEDECEM O PADRÃO DO PLURAL DOS NOMES DAS TABELAS
     }
 
 
+==============================
+ETAPAS CRIAÇÃO DE TOKEN GITHUB
+==============================
+Menu Profile
+	Settings
+
+Menu Esquerdo
+	Developer Settings
+		Personal access tokens
+			Tokens (classic)
+				botão Delete - clicar
+					Janela - I undestand - confirmar
+				botao Generate new token (classic) - clicar
+				Campo NOTE (digitar um nome)
+				Expiration 30 Days
+				Clicar no checkbox "Repo"
+				Clicar no botao Generate Toke (Parte de baixo)
+				Copiar o token gerando em uma área segura
+
+pwd
+git branch
+git status
+git git add .
+git commit -m "Mensagem para registrar"
+git push orign master (para github) ou 
+git push seati master (para gitlab)
+username for 'https://...'
+password for 'https://...'
+
+
+
 =============================
 TABELA ESTATÍSTICAS ou VIEWS
 ============================
@@ -1252,6 +1283,22 @@ $nutricionistas = $nutricionistas->diff(Nutricionista::whereIn('id', $nutricioni
 
 na view index de empresas
 <tr><td>{{ $empresa->restaurantes[0]->identificacao }}</td></tr>
+
+
+//POSSÍVEL SOLUÇÃO PARA ANO DE PESQUISA SER A PARTIR DO ANO DE PRODUÇÃO
+$anoproducao = 2022;
+$anospesquisa = [];
+for($ano = 0; $ano <= $anoproducao; $ano ++){
+    $anospesquisa[] = $anoproducao - $ano;
+}
+
+
+
+
+
+
+
+
 
 
 ==================

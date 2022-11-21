@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Produção Mês: {{ $records[0]->identificacao }}</h5>
+    <h5><strong>Consultas / Produtos comprado no mês por restaurante: {{ $records[0]->identificacao }}</h5>
 
     <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>

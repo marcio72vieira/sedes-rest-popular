@@ -476,6 +476,52 @@ class RegistroconsultacompraController extends Controller
 
 
 
+    
+    // Mapa mensal produto restaurante
+    public function mapamensalprodutorestaurante(Request $request)
+    {
+        if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
+            $rest_id = $request->restaurante_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para formatar perído da pesquisa
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            //montando mes/ano
+            $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
+
+            $restaurante = Restaurante::findOrFail($rest_id);
+
+            //Recupera só o id do restaurante
+            $restauranteId =  $restaurante->id;
+
+            $records = Bigtabledata::mapamensalprodutorestaurante($restauranteId, $mes_id, $ano_id);
+
+            //die($records);
+
+            if($records->count() <= 0){
+
+                $request->session()->flash('error_mapamensalprodutorestaurante', 'Nenhum registro encontrado para esta pesquisa.');
+                return redirect()->route('admin.registroconsultacompra.search');
+                
+            } else {
+                
+                return view('admin.registrocompra.consultasadm.mapamensalprodutorestaurante', compact('mes_id', 'ano_id', 'restaurante', 'mesano', 'records'));
+
+            }
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+    }    
+
+
     //================================================================================
     // Método invocado pelo AJAX para Preecher modal detalhes da compra do restaurante
     //================================================================================

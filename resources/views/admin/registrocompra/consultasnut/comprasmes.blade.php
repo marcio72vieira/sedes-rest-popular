@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Consultar Compras</h5>
+    <h5><strong>Consultas / Compra mensal por restaurante</h5>
 
 
     {{--Esta View é compartilhada tanto pelo Administrador como pelo Nutricionista responsável pelo restaurante atual

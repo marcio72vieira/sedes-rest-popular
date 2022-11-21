@@ -147,4 +147,20 @@ class Bigtabledata extends Model
 
          return $records;
      }
+
+
+
+     public static function mapamensalprodutorestaurante ($idrest, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('produto_id', 'medida_simbolo')
+            ->selectRaw('regional_nome, municipio_nome, identificacao, produto_id, produto_nome, medida_simbolo, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('produto_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->where('restaurante_id', '=', $idrest)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+            
+            return $records;
+     }
 }

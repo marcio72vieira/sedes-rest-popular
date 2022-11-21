@@ -117,9 +117,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
 //Compras :Registros e Consultas
 Route::get('admin/registroconsultacompra/registro', [RegistroconsultacompraController::class, 'index'])->name('admin.registroconsultacompra.index')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/consulta', [RegistroconsultacompraController::class, 'search'])->name('admin.registroconsultacompra.search')->middleware(['auth']);
-
 Route::get('admin/registroconsultacompra/producaorestmesano',[RegistroconsultacompraController::class, 'producaorestmesano'])->name('admin.consulta.producaorestmesano')->middleware(['auth']);
-
 Route::get('admin/registroconsultacompra/compramensalrestaurante',[RegistroconsultacompraController::class, 'compramensalrestaurante'])->name('admin.consulta.compramensalrestaurante')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/compramensalmunicipio',[RegistroconsultacompraController::class, 'compramensalmunicipio'])->name('admin.consulta.compramensalmunicipio')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/compramensalregionalproduto',[RegistroconsultacompraController::class, 'compramensalregionalproduto'])->name('admin.consulta.compramensalregionalproduto')->middleware(['auth']);
@@ -128,6 +126,7 @@ Route::get('admin/registroconsultacompra/ajaxgetdetalhecompra',[Registroconsulta
 Route::get('admin/registroconsultacompra/compramensalregiaovalor',[RegistroconsultacompraController::class, 'compramensalregiaovalor'])->name('admin.consulta.compramensalregiaovalor')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/ajaxgetdetalhecompramensalregiaovalor',[RegistroconsultacompraController::class, 'ajaxgetdetalhecompramensalregiaovalor'])->name('admin.consulta.ajaxgetdetalhecompramensalregiaovalor')->middleware(['auth']);
 
+Route::get('admin/registroconsultacompra/mapamensalprodutorestaurante',[RegistroconsultacompraController::class, 'mapamensalprodutorestaurante'])->name('admin.consulta.mapamensalprodutorestaurante')->middleware(['auth']);
 
 
 /***********************************************/
