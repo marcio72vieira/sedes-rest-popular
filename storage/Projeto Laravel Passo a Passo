@@ -657,7 +657,8 @@ how to avoid with some characters become typed in text box with jquery
 // https://dev.to/mahmudulhsn/laravel-has-many-through-relationship-explained-with-example-22p4
 // https://stackoverflow.com/questions/47307705/count-from-hasmanythrough-relationship-with-eager-loading-need-only-count
 // https://www.schoolofnet.com/forum/topico/laravel-count-de-registro-11117
-
+// https://stackoverflow.com/questions/13075505/mysql-is-it-possible-to-sum-if-or-to-count-if
+// https://www.mysqltutorial.org/mysql-count/
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
