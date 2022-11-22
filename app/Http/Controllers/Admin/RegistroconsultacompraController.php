@@ -476,7 +476,7 @@ class RegistroconsultacompraController extends Controller
 
 
 
-    
+
     // Mapa mensal produto restaurante
     public function mapamensalprodutorestaurante(Request $request)
     {
@@ -508,10 +508,10 @@ class RegistroconsultacompraController extends Controller
 
                 $request->session()->flash('error_mapamensalprodutorestaurante', 'Nenhum registro encontrado para esta pesquisa.');
                 return redirect()->route('admin.registroconsultacompra.search');
-                
+
             } else {
-                
-                return view('admin.registrocompra.consultasadm.mapamensalprodutorestaurante', compact('mes_id', 'ano_id', 'restaurante', 'mesano', 'records'));
+
+                return view('admin.registrocompra.consultasadm.mapamensalprodutorestaurante', compact('rest_id', 'mes_id', 'ano_id', 'restaurante', 'mesano', 'records'));
 
             }
 
@@ -519,7 +519,7 @@ class RegistroconsultacompraController extends Controller
 
             return redirect()->route('admin.registroconsultacompra.search');
         }
-    }    
+    }
 
 
     //================================================================================
@@ -1014,7 +1014,7 @@ class RegistroconsultacompraController extends Controller
                     <td style="width: 717px;" class="dados-ficha">'.$records[0]->regional_nome.' - '.$records[0]->municipio_nome.'</td>
                 </tr>
             </table>
-            
+
             <table style="width:717px; border-collapse: collapse">
                 <tr>
                     <td width="30px" class="col-header-table" style="text-align:center">Id</td>
@@ -1104,7 +1104,7 @@ class RegistroconsultacompraController extends Controller
                     </td>
                 </tr>
             </table>
-            
+
             <table style="width:717px; border-collapse: collapse">
                 <tr>
                     <td width="30px" class="col-header-table" style="text-align:center">Id</td>
@@ -1144,11 +1144,6 @@ class RegistroconsultacompraController extends Controller
         $mpdf->Output($fileName, 'I');
 
     }
-
-
-
-
-
 
 
 
@@ -1227,7 +1222,6 @@ class RegistroconsultacompraController extends Controller
             </table>
         ');
 
-
         // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
         $html = \View::make('admin.registrocompra.pdf.pdfcompramensalmunicipiovalor', compact('records'));
         $html = $html->render();
@@ -1241,10 +1235,6 @@ class RegistroconsultacompraController extends Controller
         $mpdf->Output($fileName, 'I');
 
     }
-
-
-
-
 
 
     // Relatório PDF Compra mensal por região valor
@@ -1322,7 +1312,6 @@ class RegistroconsultacompraController extends Controller
             </table>
         ');
 
-
         // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
         $html = \View::make('admin.registrocompra.pdf.pdfcompramensalregiaovalor', compact('records'));
         $html = $html->render();
@@ -1338,6 +1327,115 @@ class RegistroconsultacompraController extends Controller
     }
 
 
+    // Relatório PDF Mapa mensal de produtos adquiridos por unidade no restaurante
+    public function relpdfmapamensalprodutorestaurante($rest, $mes, $ano)
+    {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $restaurante = Restaurante::findOrFail($rest);
+
+        $restauranteId = $restaurante->id;
+
+        // Obtendo os dados
+        $records = Bigtabledata::mapamensalprodutorestaurante($restauranteId, $mes, $ano);
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('mapamensalprodutorestaurante'.'.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'orientation' => 'L',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 43,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 108px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 540px;" class="titulo-rel">
+                        MAPA MENSAL DE PRODUTOS ADQUIRIDOS POR UNIDADE <br>'.$records[0]->identificacao.': '.$meses[$mes].'/'.$ano.'
+                    </td>
+                </tr>
+            </table>
+
+            <table style="width:1080px; border-collapse: collapse">
+                <tr>
+                    <td rowspan="3" width="40px" class="col-header-table" style="text-align: center">Id</td>
+                    <td rowspan="3" width="280px" class="col-header-table" style="text-align: center">Produto</td>
+                    <td rowspan="3" width="40px" class="col-header-table" style="text-align: center">Und.</td>
+                    <td colspan="8" width="480px" class="col-header-table" style="text-align: center">COMPRAS</td>
+                    <td rowspan="2" colspan="2" width="120px" class="col-header-table" style="text-align: center">TOTAL</td>
+                    <td rowspan="2" colspan="2" width="120px" class="col-header-table" style="text-align: center"> &#177; (%) AF</td>
+                </tr>
+                <tr>
+                    <td colspan="4" width="240px" class="col-header-table" style="text-align: center">Normal</td>
+                    <td colspan="4" width="240px" class="col-header-table" style="text-align: center">AF</td>
+                </tr>
+                <tr>
+                    <td width="50px" class="col-header-table" style="text-align: center">nº vz</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">p.m (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">nº vz</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">p.m (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">% Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">% Valor (R$)</td>
+                </tr>
+            </table>
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:1080px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="200px">São Luis(MA) {DATE d/m/Y H:i}</td>
+                    <td width="830px" align="left">
+                        <span style="margin-right: 50px"><strong>Und.</strong> = unidade de medida;</span>
+                        <span style="margin-right: 50px"><strong>nº vz</strong> = número de vezes comprado;</span>
+                        <span style="margin-right: 50px"><strong>Qtd.</strong> = quantidade comprada;</span>
+                        <span style="margin-right: 50px"><strong>p.m</strong> = preço médio;</span>
+                    </td>
+                    <td width="50px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.registrocompra.pdf.pdfmapamensalprodutorestaurante', compact('records'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
 
 
 }

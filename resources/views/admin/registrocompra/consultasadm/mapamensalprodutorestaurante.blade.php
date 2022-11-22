@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Consultas / Mapa de produtos adquirido por unidade no restaurante: {{ $records[0]->identificacao }} - {{ $mesano }} </h5>
+    <h5><strong>Consultas / Mapa mensal de produtos adquirido por unidade no restaurante: {{ $records[0]->identificacao }} - {{ $mesano }} </h5>
 
     <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>
@@ -27,8 +27,7 @@
                                 <th colspan="6">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
                                 <th colspan="6">{{ $records[0]->identificacao }} </th>
                                 <th colspan="2">Mês: {{ $mesano }} </th>
-                                {{--<th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcompramensalmunicipiovalor', [$rest_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>--}}
-                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfmapamensalprodutorestaurante', [$rest_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th scope="col" rowspan="3" style="width: 40px; text-align: center; vertical-align:middle">Id</th>
@@ -39,7 +38,7 @@
                                 <th colspan="2" rowspan="2" scope="col" style="width: 100px; text-align: center; vertical-align:middle"> &#177; (%) AF</th>
                             </tr>
                             <tr>
-                                
+
                                 <th colspan="4" scope="col" style="width: 100px; text-align: center; vertical-align:middle">Normal</th>
                                 <th colspan="4" scope="col" style="width: 100px; text-align: center; vertical-align:middle">AF</th>
                             </tr>
@@ -57,7 +56,7 @@
                                 <th scope="col" style="width: 60px; text-align: center; vertical-align:middle">% Qtd.</th>
                                 <th scope="col" style="width: 100px; text-align: center; vertical-align:middle">% Valor (R$)</th>
                             </tr>
-                            
+
                         </thead>
                         <tbody>
                                 @php
@@ -104,13 +103,13 @@
                                     <td style="text-align: right" ><strong>{{ intval(mrc_calc_percentaf(($somacomprapreconormal + $somacompraprecorecoaf), $somacompraprecorecoaf))}} %</strong></td>
                                 </tr>
                         </tbody>
-                      </table>
-                      <div>
-                          <span style="margin-right: 50px">Und. = unidade de medida;</span>
-                          <span style="margin-right: 50px">nº vz = número de vezes comprado;</span>
-                          <span style="margin-right: 50px">Qtd. = quantidade comprada;</span>
-                          <span style="margin-right: 50px">p.m = preço médio;</span>
-                        </div>
+                    </table>
+                    <div>
+                        <span style="margin-right: 50px">Und. = unidade de medida;</span>
+                        <span style="margin-right: 50px">nº vz = número de vezes comprado;</span>
+                        <span style="margin-right: 50px">Qtd. = quantidade comprada;</span>
+                        <span style="margin-right: 50px">p.m = preço médio;</span>
+                    </div>
                 </div>
             </div>
         </div>
