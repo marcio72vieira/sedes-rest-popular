@@ -153,9 +153,12 @@ class RegistroconsultacompraController extends Controller
 
         if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
             $rest_id = $request->restaurante_id;
+            $sema_id = $request->semana;
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
+            // Semanas pesquisa
+            $semanaspesquisa = ['1' => 'um', '2' => 'dois', '3' => 'três', '4' => 'quatro', '5' => 'cinco'];
 
             // Meses e anos para popular campos selects
             $mesespesquisa = [
@@ -179,7 +182,17 @@ class RegistroconsultacompraController extends Controller
             //Recupera só o id do restaurante
             $restauranteId =  $restaurante->id;
 
-            $records = Bigtabledata::compramensal($restauranteId, $mes_id, $ano_id);
+            //Se o número da semana foi informado busca compras pela semana, caso contrário busca compras do mês inteiro (produção mensal)
+            if($sema_id != ''){
+                $descsemana = $semanaspesquisa[$sema_id];
+                $descmesano = $mesespesquisa[$mes_id];
+                $records = Bigtabledata::comprasemanal($restauranteId, $sema_id, $mes_id, $ano_id);
+            }else {
+                $descsemana = '';
+                $descmesano = $mesespesquisa[$mes_id];
+                $records = Bigtabledata::compramensal($restauranteId, $mes_id, $ano_id);
+            }
+
 
             if($records->count() > 0){
 
@@ -227,7 +240,7 @@ class RegistroconsultacompraController extends Controller
                 $dataInicial =  min($arrDatasIniFin);
                 $dataFinal = max($arrDatasIniFin);
 
-                return view('admin.registrocompra.consultasnut.comprasmes', compact('mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'compranormal', 'compraaf', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
+                return view('admin.registrocompra.consultasnut.comprasmes', compact('descsemana', 'descmesano', 'mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'compranormal', 'compraaf', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
 
             } else {
 
@@ -843,7 +856,6 @@ class RegistroconsultacompraController extends Controller
                 </tr>
             </table>
         ');
-
 
         // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
         $html = \View::make('admin.registrocompra.pdf.pdfcomprasmes', compact('records', 'compranormal', 'compraaf', 'somapreco', 'somaprecoaf', 'somafinal'));

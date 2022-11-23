@@ -31,6 +31,15 @@ class Bigtabledata extends Model
     }
 
 
+    public static function comprasemanal($restauranteId, $semana, $mes, $ano)
+    {
+
+        $records = DB::table('bigtable_data')->where('restaurante_id', '=', $restauranteId)->where('semana', '=', $semana)->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->orderBy('semana', 'ASC')->get();
+
+        return $records;
+    }
+
+
     public static function compramensal($restauranteId, $mes, $ano)
     {
 

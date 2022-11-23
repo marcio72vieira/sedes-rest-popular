@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Consultas / Compra mensal por restaurante</h5>
+    <h5><strong>Consultas / Compra  @if($descsemana != '') semanal  @else mensal por restaurante @endisset</h5>
 
 
     {{--Esta View é compartilhada tanto pelo Administrador como pelo Nutricionista responsável pelo restaurante atual
@@ -21,6 +21,17 @@
         <form action="{{route('admin.consulta.compramensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
             <div class="form-group mx-sm-3 mb-2">
                 <input type="hidden" name="restaurante_id" value="{{ $restaurante->id }}">
+
+                <select name="semana" id="semana" class="form-control">
+                    <option value="" selected>Semana ...</option>
+                    <option value="1" {{old('semana') == '1' ? 'selected' : ''}}>Um</option>
+                    <option value="2" {{old('semana') == '2' ? 'selected' : ''}}>Dois</option>
+                    <option value="3" {{old('semana') == '3' ? 'selected' : ''}}>Três</option>
+                    <option value="4" {{old('semana') == '4' ? 'selected' : ''}}>Quatro</option>
+                    <option value="5" {{old('semana') == '5' ? 'selected' : ''}}>Cinco</option>
+                </select>
+    
+                &nbsp;&nbsp;&nbsp;
 
                 <select name="mes_id" id="mes_id" class="form-control" required>
                     <option value="" selected disabled>Mês...</option>
@@ -56,17 +67,17 @@
                     </tr>
                     <tr>
                         <th colspan="4">Nutricionista Empresa: {{ $records[0]->nutricionista_nomecompleto }}</th>
-                        <th colspan="4">De: {{ mrc_turn_data($dataInicial) }} a {{ mrc_turn_data($dataFinal) }}</th>
+                    <th colspan="4">Semana: @if($descsemana == '') todas @else {{ Str::upper($descsemana) }} @endif de {{ $descmesano }}/{{ $ano_id }}</th>
                         <th colspan="4"></th>
                     </tr>
                     <tr>
                         <th colspan="4">Nutricionista SEDES: {{ $records[0]->user_nomecompleto }}</th>
-                        <th colspan="4"></th>
+                        <th colspan="4">De: {{ mrc_turn_data($dataInicial) }} a {{ mrc_turn_data($dataFinal) }}</th>
                         <th colspan="4"></th>
                     </tr>
                     <tr>
+                        <th scope="col" style="width: 60px; text-align: center">@if($descsemana == '') semana @else N/C @endif</th>
                         <th scope="col" style="width: 40px; text-align: center">Id</th>
-                        <th scope="col" style="width: 100px; text-align: center">semana</th>
                         <th scope="col" style="width: 200px; text-align: center">Produto</th>
                         <th scope="col" style="text-align: center">Detalhe</th>
                         <th scope="col" style="width: 40px; text-align: center">AF</th>
@@ -79,8 +90,8 @@
                 <tbody>
                         @foreach ($compranormal as $item)
                             <tr>
+                                <td>@if($descsemana == '') {{ Str::lower($item->semana_nome) }} @else {{ $item->compra_id}}   @endif</td>
                                 <th scope="row">{{ $item->produto_id }}</th>
-                                <td>{{ Str::lower($item->semana_nome) }}</td>
                                 <td>{{ $item->produto_nome }}</td>
                                 <td>{{ $item->detalhe }}</td>
                                 <td style="text-align: center">{{ ($item->af == "sim" ? "x" : "" ) }}</td>
@@ -95,8 +106,8 @@
                             <tr><td colspan="9"><strong>COMPRAS AF</strong></td></tr>
                             @foreach ($compraaf as $item)
                                 <tr>
+                                    <td>@if($descsemana == '') {{ Str::lower($item->semana_nome) }} @else {{ $item->compra_id}}   @endif</td>
                                     <th scope="row">{{ $item->produto_id }}</th>
-                                    <td>{{ Str::lower($item->semana_nome) }}</td>
                                     <td>{{ $item->produto_nome }}</td>
                                     <td>{{ $item->detalhe }}</td>
                                     <td style="text-align: center">{{ ($item->af == "sim" ? "x" : "" ) }}</td>

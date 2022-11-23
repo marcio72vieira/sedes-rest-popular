@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Consultar compras</h5>
+    <h5><strong>Consultar compras por semana e/ou mês</h5>
 
 
     <form action="{{route('admin.consulta.compramensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
@@ -13,6 +13,17 @@
 
             {{-- id do restaurante do restaurante do usuário nutricionista logado --}}
             <input type="hidden" name="restaurante_id" value="{{ $restaurante->id }}">
+
+            <select name="semana" id="semana" class="form-control">
+                <option value="" selected>Semana ...</option>
+                <option value="1" {{old('semana') == '1' ? 'selected' : ''}}>Um</option>
+                <option value="2" {{old('semana') == '2' ? 'selected' : ''}}>Dois</option>
+                <option value="3" {{old('semana') == '3' ? 'selected' : ''}}>Três</option>
+                <option value="4" {{old('semana') == '4' ? 'selected' : ''}}>Quatro</option>
+                <option value="5" {{old('semana') == '5' ? 'selected' : ''}}>Cinco</option>
+            </select>
+
+            &nbsp;&nbsp;&nbsp;
 
             <select name="mes_id" id="mes_id" class="form-control" required>
                 <option value="" selected disabled>Mês...</option>

@@ -421,6 +421,12 @@ class CompraController extends Controller
         ');
 
 
+        // Configurando marca D'agua
+        //$mpdf->WriteHTML('Hello World');
+        $mpdf->showWatermarkText = true;
+        $mpdf->SetWatermarkText('SEDES');
+        $mpdf->watermarkTextAlpha = 0.08;
+
         // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
         $html = \View::make('admin.compra.pdf.pdfcompra', compact('compra', 'medidas'));
         $html = $html->render();

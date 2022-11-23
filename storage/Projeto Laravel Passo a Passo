@@ -659,7 +659,10 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.schoolofnet.com/forum/topico/laravel-count-de-registro-11117
 // https://stackoverflow.com/questions/13075505/mysql-is-it-possible-to-sum-if-or-to-count-if
 // https://www.mysqltutorial.org/mysql-count/
-
+// https://forum.imasters.com.br/topic/351617-resolvido%C2%A0como-pegar-dia-ou-mes-ou-ano-de-data/
+// https://blog.betrybe.com/php/php-date/
+// https://laravel.com/docs/8.x/helpers#method-str-substr
+// https://mpdf.github.io/reference/mpdf-functions/setwatermarktext.html
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
 
@@ -705,7 +708,19 @@ Obs:  Na view (admin.compra.index), para acessar a identificacao do restarurante
             </div>
         </div>
 
+===============================================================================
+CONFIGURANDO UM NÚMERO DE COMPRA - Colocar no método store do CompraControlleer
+===============================================================================
+//Configurando o número da compra
+        $numrest = $request->restaurante_id_hidden;         //Id do restaurante
+        $numsemana = $request->semana;                      //Numero da semana
+        $numDiaIni = Str::substr($request->data_ini, 8,2);  //Dia inicial
+        $numDiaFin = Str::substr($request->data_fin, 8,2);  //Dia final
+        $numMesIni = Str::substr($request->data_ini, 5,2);  //Mês
+        $numAnoIni = Str::substr($request->data_ini, 2,2);  //Ano (só os dois últimos dígitos)
 
+        $numerocompra = $numrest.$numsemana.".".$numDiaIni.$numDiaFin."-".$numMesIni.$numAnoIni;
+//Fim configurando o número da compra
 
 
 
