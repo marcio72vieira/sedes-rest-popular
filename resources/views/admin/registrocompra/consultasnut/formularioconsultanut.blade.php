@@ -8,7 +8,7 @@
     <h5><strong>Consultar compras por semana e/ou mês</h5>
 
 
-    <form action="{{route('admin.consulta.compramensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+    <form action="{{route('admin.consulta.comprasemanalmensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
         <div class="form-group mx-sm-3 mb-2">
 
             {{-- id do restaurante do restaurante do usuário nutricionista logado --}}

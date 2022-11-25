@@ -34,8 +34,8 @@
                 <th>Nome</th>
                 <th>Perfil</th>
                 <th>Cidade</th>
-                <th>Fone</th>
-                <th>Email</th>
+                <th>Contato</th>
+                <th>Restaurante</th>
                 <th>CPF</th>
                 <th>CRN</th>
                 <th style="width: 165px;">Ação</th>
@@ -49,8 +49,8 @@
                 <td>{{$user->name}}</td>
                 <td>@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @elseif($user->perfil == 'nut') Nutricionista @else Inativo @endif </td>
                 <td>{{$user->municipio->nome}}</td>
-                <td>{{$user->telefone}}</td>
-                <td>{{$user->email}}</td>
+                <td>{{$user->email}} / {{$user->telefone}}</td>
+                <td>@isset($user->restaurante->identificacao) {{$user->restaurante->identificacao}} @endisset</td>
                 <td>{{$user->cpf}}</td>
                 <th>{{$user->crn}}</th>
                 <td>

@@ -20,16 +20,16 @@
                   <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseum" aria-expanded="true" aria-controls="collapseum">
-                        <strong>Compra mensal por restaurante</strong>
+                        <strong>Compra semanal ou mensal por restaurante</strong>
                         <br>
-                        <span>Recupera as compras realizadas no restaurante no mês e ano especificado.</span>
+                        <span>Recupera as compras realizadas na semana ou mês especificado pelo restaurante.</span>
                       </button>
                     </h2>
                   </div>
 
                   <div id="collapseum" @if(session('error_compramensalrestaurante')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="{{route('admin.consulta.compramensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+                        <form action="{{route('admin.consulta.comprasemanalmensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
                           <div class="form-group mx-sm-3 mb-2">
                             <select name="restaurante_id" id="restaurante_id" class="form-control" required>
                               <option value="" selected disabled>Restaurante...</option>
@@ -39,6 +39,17 @@
                             </select>
 
                             &nbsp;&nbsp;&nbsp;
+
+                            <select name="semana" id="semana" class="form-control">
+                              <option value="" selected>Semana ...</option>
+                              <option value="1" {{old('semana') == '1' ? 'selected' : ''}}>Um</option>
+                              <option value="2" {{old('semana') == '2' ? 'selected' : ''}}>Dois</option>
+                              <option value="3" {{old('semana') == '3' ? 'selected' : ''}}>Três</option>
+                              <option value="4" {{old('semana') == '4' ? 'selected' : ''}}>Quatro</option>
+                              <option value="5" {{old('semana') == '5' ? 'selected' : ''}}>Cinco</option>
+                          </select>
+              
+                          &nbsp;&nbsp;&nbsp;
 
                             <select name="mes_id" id="mes_id" class="form-control" required>
                               <option value="" selected disabled>Mês...</option>

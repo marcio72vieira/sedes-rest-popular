@@ -5,12 +5,12 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Consultas / Compra  @if($descsemana != '') semanal  @else mensal por restaurante @endisset</h5>
+    <h5><strong>Consultas / Compra  @if($descsemana != '') semanal  @else mensal  @endisset por restaurante</h5>
 
 
     {{--Esta View é compartilhada tanto pelo Administrador como pelo Nutricionista responsável pelo restaurante atual
         Se acessada pelo ADM, exibirá o botão voltar para o "menu de consultas" do Administrador 
-        Se acessada pelo NUT, exibirá formulário com campos Mês  e Ano para pesquisa das compras realizadas --}}
+        Se acessada pelo NUT, exibirá formulário com campos Semana, Mês e Ano para pesquisa das compras realizadas --}}
 
     @if(Auth::user()->perfil == 'adm')
         <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
@@ -18,7 +18,7 @@
             Voltar
         </a>
     @else
-        <form action="{{route('admin.consulta.compramensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+        <form action="{{route('admin.consulta.comprasemanalmensalrestaurante')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
             <div class="form-group mx-sm-3 mb-2">
                 <input type="hidden" name="restaurante_id" value="{{ $restaurante->id }}">
 
@@ -63,11 +63,17 @@
                         {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
                         <th colspan="4">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
                         <th colspan="4">{{ $records[0]->identificacao }}</th>
-                        <th colspan="4" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                        <th colspan="4" style="text-align: right">
+                            @if($descsemana == '')
+                                <a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprasmes.relpdfcomprasmes', [$records[0]->restaurante_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a>
+                            @else
+                                <a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.comprassemana.relpdfcomprassemana', [$records[0]->restaurante_id, $sema_id ,$mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a>
+                            @endif
+                        </th>
                     </tr>
                     <tr>
                         <th colspan="4">Nutricionista Empresa: {{ $records[0]->nutricionista_nomecompleto }}</th>
-                    <th colspan="4">Semana: @if($descsemana == '') todas @else {{ Str::upper($descsemana) }} @endif de {{ $descmesano }}/{{ $ano_id }}</th>
+                        <th colspan="4">@if($descsemana == '') mês: {{ Str::upper($descmesano) }}/{{ $ano_id }} @else semana {{ Str::upper($descsemana) }} de {{ $descmesano }}/{{ $ano_id }} @endif </th>
                         <th colspan="4"></th>
                     </tr>
                     <tr>
@@ -76,6 +82,7 @@
                         <th colspan="4"></th>
                     </tr>
                     <tr>
+                        {{-- Se a consulta for mensal, exibe o label das semanas, se for semanal, exibe o label N/C, número da compra --}}
                         <th scope="col" style="width: 60px; text-align: center">@if($descsemana == '') semana @else N/C @endif</th>
                         <th scope="col" style="width: 40px; text-align: center">Id</th>
                         <th scope="col" style="width: 200px; text-align: center">Produto</th>
@@ -90,6 +97,7 @@
                 <tbody>
                         @foreach ($compranormal as $item)
                             <tr>
+                                {{-- Se a consulta for mensal, exibe o identificador das semanas, se for semanal, exibe o número da compra --}}
                                 <td>@if($descsemana == '') {{ Str::lower($item->semana_nome) }} @else {{ $item->compra_id}}   @endif</td>
                                 <th scope="row">{{ $item->produto_id }}</th>
                                 <td>{{ $item->produto_nome }}</td>

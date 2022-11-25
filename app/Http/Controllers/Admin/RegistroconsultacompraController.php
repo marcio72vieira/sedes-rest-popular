@@ -147,7 +147,7 @@ class RegistroconsultacompraController extends Controller
         }
     }
 
-    public function compramensalrestaurante(Request $request)
+    public function comprasemanalmensalrestaurante(Request $request)
     {
 
 
@@ -240,7 +240,7 @@ class RegistroconsultacompraController extends Controller
                 $dataInicial =  min($arrDatasIniFin);
                 $dataFinal = max($arrDatasIniFin);
 
-                return view('admin.registrocompra.consultasnut.comprasmes', compact('descsemana', 'descmesano', 'mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'compranormal', 'compraaf', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
+                return view('admin.registrocompra.consultasnut.comprassemanames', compact('descsemana', 'descmesano', 'sema_id', 'mes_id', 'ano_id', 'restaurante', 'mesespesquisa', 'anospesquisa', 'records', 'compranormal', 'compraaf', 'dataInicial', 'dataFinal', 'somapreco', 'somaprecoaf', 'somafinal'));
 
             } else {
 
@@ -699,9 +699,186 @@ class RegistroconsultacompraController extends Controller
     }
 
 
+
+
+
+
     /***************************************/
     /*    RELATÓRIOS PDF's, Excel e CSV    */
     /***************************************/
+
+    public function relpdfcomprassemana($rest, $sema, $mes, $ano)
+    {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        // Semanas para compor o cabeçalho do relatório
+        $semanas = ['1' => 'um', '2' => 'dois', '3' => 'três', '4' => 'quatro', '5' => 'cinco'];
+
+        $restaurante = Restaurante::findOrFail($rest);
+
+        $restauranteId = $restaurante->id;
+
+        // Obtendo os dados
+        $records = Bigtabledata::comprasemanal($restauranteId, $sema, $mes, $ano);
+
+        // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
+        $arrDatasIniFin = [];
+
+        // Criando arrays para guardar produtos adquiridos em compra normal e compra pela agricultura familiar
+        $compranormal = [];
+        $compraaf = [];
+
+        // Variáveis para calcular totais
+        $somapreco = 0;
+        $somaprecoaf = 0;
+        $somafinal = 0;
+
+        foreach($records as $datarecords) {
+            // populando array com datainicial e datafinal
+            $arrDatasIniFin[] = $datarecords->data_ini;
+            $arrDatasIniFin[] = $datarecords->data_fin;
+
+            if($datarecords->af == 'sim') {
+
+                $compraaf[] = $datarecords;
+                $somaprecoaf += $datarecords->precototal;
+
+            } else {
+
+                $compranormal[] = $datarecords;
+                $somapreco += $datarecords->precototal;
+            }
+        }
+
+        $somafinal += ($somaprecoaf + $somapreco);
+
+        // Atribuindo a menor e a maior data (do array de datas "$arrDatasIniFin") para data inicial e data final
+        $dataInicial =  min($arrDatasIniFin);
+        $dataFinal = max($arrDatasIniFin);
+
+        //dd($records);
+
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('compras_semana'.'.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 60,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 83px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 352px;" class="titulo-rel">
+                        '.$records[0]->identificacao.' <br> compras ref.: semana '.Str::upper($semanas[$sema]). " de ".$meses[$mes].'/'.$ano.'
+                    </td>
+                </tr>
+            </table>
+            <table style="width:717px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 417px;" class="label-ficha">Município (Regional)</td>
+                    <td style="width: 100px;" class="label-ficha">Semana</td>
+                    <td style="width: 100px;" class="label-ficha">Data Inicial</td>
+                    <td style="width: 100px;" class="label-ficha">Data Final</td>
+                </tr>
+                <tr>
+                    <td style="width: 417px;" class="dados-ficha">'.$records[0]->municipio_nome.' ('.$records[0]->regional_nome.')</td>
+                    <td style="width: 100px;" class="dados-ficha">'.Str::upper($semanas[$sema]).'</td>
+                    <td style="width: 100px;" class="dados-ficha">'.mrc_turn_data($dataInicial).'</td>
+                    <td style="width: 100px;" class="dados-ficha">'.mrc_turn_data($dataFinal).'</td>
+                </tr>
+            </table>
+
+            <table style="width:717px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 417px;" class="label-ficha">Restaurante</td>
+                    <td style="width: 100px;" class="label-ficha">Valor</td>
+                    <td style="width: 100px;" class="label-ficha">Valor AF ('.intval(mrc_calc_percentaf($somafinal, $somaprecoaf )).'%)</td>
+                    <td style="width: 100px;" class="label-ficha">Valor Total</td>
+                </tr>
+                <tr>
+                    <td style="width: 417px;" class="dados-ficha">'.$records[0]->identificacao.'</td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($somapreco).' </td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($somaprecoaf).' </td>
+                    <td style="width: 100px; text-align:right" class="dados-ficha">'.mrc_turn_value($somafinal).' </td>
+                </tr>
+            </table>
+
+            <table style="width:717px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 417px;" class="label-ficha">Nutricionista Empresa</td>
+                    <td style="width: 300px;" class="label-ficha">Nutricionista SEDES</td>
+                </tr>
+                <tr>
+                    <td style="width: 417px;" class="dados-ficha">'.$records[0]->nutricionista_nomecompleto.'</td>
+                    <td style="width: 300px;" class="dados-ficha">'.$records[0]->user_nomecompleto.'</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="width:717px;" class="close-ficha"></td>
+                </tr>
+            </table>
+
+            <table style="width:717px; border-collapse: collapse">
+                <tr>
+                    <td width="30px" class="col-header-table" style="text-align:center">Id</td>
+                    <td width="200px" class="col-header-table" style="text-align:center">Produto</td>
+                    <td width="200px" class="col-header-table" style="text-align:center">Detalhe</td>
+                    <td width="35px" class="col-header-table" style="text-align:center">AF</td>
+                    <td width="50px" class="col-header-table" style="text-align:center">Quant.</td>
+                    <td width="50px" class="col-header-table" style="text-align:center">Unid.</td>
+                    <td width="72px" class="col-header-table" style="text-align:center">Preço</td>
+                    <td width="80px" class="col-header-table" style="text-align:center">Total</td>
+                </tr>
+            </table>
+
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="239px">São Luis(MA) {DATE d/m/Y H:i}</td>
+                    <td width="239px" align="center"></td>
+                    <td width="239px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.registrocompra.pdf.pdfcomprasmes', compact('records', 'compranormal', 'compraaf', 'somapreco', 'somaprecoaf', 'somafinal'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
+
+
 
     public function relpdfcomprasmes($rest, $mes, $ano)
     {
