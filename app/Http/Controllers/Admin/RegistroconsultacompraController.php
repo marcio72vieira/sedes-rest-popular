@@ -865,7 +865,7 @@ class RegistroconsultacompraController extends Controller
         ');
 
         // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
-        $html = \View::make('admin.registrocompra.pdf.pdfcomprasmes', compact('records', 'compranormal', 'compraaf', 'somapreco', 'somaprecoaf', 'somafinal'));
+        $html = \View::make('admin.registrocompra.pdf.pdfcomprassemana', compact('records', 'compranormal', 'compraaf', 'somapreco', 'somaprecoaf', 'somafinal'));
         $html = $html->render();
 
         // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')
@@ -893,7 +893,8 @@ class RegistroconsultacompraController extends Controller
         $restauranteId = $restaurante->id;
 
         // Obtendo os dados
-        $records = Bigtabledata::comprasMes($restauranteId, $mes, $ano);
+        //$records = Bigtabledata::comprasMes($restauranteId, $mes, $ano);
+        $records = Bigtabledata::compramensal($restauranteId, $mes, $ano);
 
         // Criando um array para deposita todas as datas inicial e final das compras retornadas em "$records"
         $arrDatasIniFin = [];
@@ -967,13 +968,13 @@ class RegistroconsultacompraController extends Controller
             <table style="width:717px; border-collapse: collapse;">
                 <tr>
                     <td style="width: 417px;" class="label-ficha">Município (Regional)</td>
-                    <td style="width: 100px;" class="label-ficha">Semana</td>
+                    <td style="width: 100px;" class="label-ficha">Mês</td>
                     <td style="width: 100px;" class="label-ficha">Data Inicial</td>
                     <td style="width: 100px;" class="label-ficha">Data Final</td>
                 </tr>
                 <tr>
                     <td style="width: 417px;" class="dados-ficha">'.$records[0]->municipio_nome.' ('.$records[0]->regional_nome.')</td>
-                    <td style="width: 100px;" class="dados-ficha">todas do mes</td>
+                    <td style="width: 100px;" class="dados-ficha">'.$meses[$mes].'</td>
                     <td style="width: 100px;" class="dados-ficha">'.mrc_turn_data($dataInicial).'</td>
                     <td style="width: 100px;" class="dados-ficha">'.mrc_turn_data($dataFinal).'</td>
                 </tr>
