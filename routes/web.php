@@ -127,6 +127,8 @@ Route::get('admin/registroconsultacompra/compramensalregiaovalor',[Registroconsu
 Route::get('admin/registroconsultacompra/ajaxgetdetalhecompramensalregiaovalor',[RegistroconsultacompraController::class, 'ajaxgetdetalhecompramensalregiaovalor'])->name('admin.consulta.ajaxgetdetalhecompramensalregiaovalor')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/mapamensalprodutorestaurante',[RegistroconsultacompraController::class, 'mapamensalprodutorestaurante'])->name('admin.consulta.mapamensalprodutorestaurante')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/mapamensalprodutomunicipio',[RegistroconsultacompraController::class, 'mapamensalprodutomunicipio'])->name('admin.consulta.mapamensalprodutomunicipio')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/mapamensalprodutoregional',[RegistroconsultacompraController::class, 'mapamensalprodutoregional'])->name('admin.consulta.mapamensalprodutoregional')->middleware(['auth']);
+
 
 
 
@@ -192,3 +194,4 @@ Route::get('admin/registroconsultacompra/{idmun}/{mes}/{ano}/pdf/relpdfcompramen
 Route::get('admin/registroconsultacompra/{idreg}/{mes}/{ano}/pdf/relpdfcompramensalregiaovalor', [RegistroconsultacompraController::class, 'relpdfcompramensalregiaovalor'])->name('admin.registroconsultacompra.relpdfcompramensalregiaovalor')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/{idrest}/{mes}/{ano}/pdf/relpdfmapamensalprodutorestaurante', [RegistroconsultacompraController::class, 'relpdfmapamensalprodutorestaurante'])->name('admin.registroconsultacompra.relpdfmapamensalprodutorestaurante')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/{idmun}/{mes}/{ano}/pdf/relpdfmapamensalprodutomunicipio', [RegistroconsultacompraController::class, 'relpdfmapamensalprodutomunicipio'])->name('admin.registroconsultacompra.relpdfmapamensalprodutomunicipio')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/{idreg}/{mes}/{ano}/pdf/relpdfmapamensalprodutoregional', [RegistroconsultacompraController::class, 'relpdfmapamensalprodutoregional'])->name('admin.registroconsultacompra.relpdfmapamensalprodutoregional')->middleware(['auth']);
