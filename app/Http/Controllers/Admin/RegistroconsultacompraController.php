@@ -640,7 +640,113 @@ class RegistroconsultacompraController extends Controller
     }    
 
 
-    
+////
+
+    // Mapa mensal geral produto
+    public function mapamensalgeralproduto(Request $request)
+    {
+        if($request->mes_id && $request->ano_id ) {
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para formatar perído da pesquisa
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            //montando mes/ano
+            $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
+
+
+            $records = Bigtabledata::mapamensalgeralproduto($mes_id, $ano_id);
+
+            //Crio uma coleção
+            $regionaisnome = collect();
+
+            foreach($records as $record) {
+                //Adiciona à coleção criada, apenas o nome das regionais, duplicadas ou não
+                $regionaisnome->push($record->regional_nome);
+            }
+
+            //Recupero o nome das regionais de forma única em uma outra collection
+            $regionaisenvolvidas = $regionaisnome->unique();
+
+            
+            if($records->count() <= 0){
+
+                $request->session()->flash('error_mapamensalgeralproduto', 'Nenhum registro encontrado para esta pesquisa.');
+                
+                //Redirecionamento com âncora
+                return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-onze');
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.mapamensalgeralproduto', compact('mes_id', 'ano_id', 'mesano', 'records', 'regionaisenvolvidas'));
+
+            }
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+    }
+
+
+////
+
+
+
+
+    // Mapa mensal categoria restaurante
+    public function mapamensalcategoriarestaurante(Request $request)
+    {
+        if($request->restaurante_id && $request->mes_id && $request->ano_id ) {
+            $rest_id = $request->restaurante_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para formatar perído da pesquisa
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            //montando mes/ano
+            $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
+
+            $restaurante = Restaurante::findOrFail($rest_id);
+
+            //Recupera só o id do restaurante
+            $restauranteId =  $restaurante->id;
+
+            $records = Bigtabledata::mapamensalcategoriarestaurante($restauranteId, $mes_id, $ano_id);
+
+            //die($records);
+
+            if($records->count() <= 0){
+
+                $request->session()->flash('error_mapamensalcategoriarestaurante', 'Nenhum registro encontrado para esta pesquisa.');
+                
+                //Redirecionamento com âncora
+                return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-onze');
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.mapamensalcategoriarestaurante', compact('rest_id', 'mes_id', 'ano_id', 'restaurante', 'mesano', 'records'));
+
+            }
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+    }
+
+
+
 
 
     

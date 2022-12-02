@@ -212,4 +212,58 @@ class Bigtabledata extends Model
             
             return $records; 
      }
+
+
+
+     /* public static function mapamensalgeralproduto ($mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('produto_id', 'medida_simbolo', 'regional_id')
+            ->selectRaw('regional_id, regional_nome, produto_id, produto_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('regional_nome', 'ASC')
+            ->orderBy('produto_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+            
+            return $records; 
+     } */
+
+
+     public static function mapamensalgeralproduto ($mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('produto_id', 'medida_simbolo')
+            ->selectRaw('regional_id, regional_nome, produto_id, produto_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('produto_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+            
+            return $records; 
+     }
+
+
+
+
+     public static function mapamensalcategoriarestaurante ($idrest, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('categoria_id', 'medida_simbolo')
+            ->selectRaw('regional_nome, municipio_nome, identificacao, categoria_id, categoria_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('categoria_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->where('restaurante_id', '=', $idrest)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+            
+            return $records; 
+     }
+
+
+
+
+     
+
+
 }

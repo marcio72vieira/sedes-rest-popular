@@ -129,6 +129,8 @@ Route::get('admin/registroconsultacompra/mapamensalprodutorestaurante',[Registro
 Route::get('admin/registroconsultacompra/mapamensalprodutomunicipio',[RegistroconsultacompraController::class, 'mapamensalprodutomunicipio'])->name('admin.consulta.mapamensalprodutomunicipio')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/mapamensalprodutoregional',[RegistroconsultacompraController::class, 'mapamensalprodutoregional'])->name('admin.consulta.mapamensalprodutoregional')->middleware(['auth']);
 
+Route::get('admin/registroconsultacompra/mapamensalgeralproduto',[RegistroconsultacompraController::class, 'mapamensalgeralproduto'])->name('admin.consulta.mapamensalgeralproduto')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/mapamensalcategoriarestaurante',[RegistroconsultacompraController::class, 'mapamensalcategoriarestaurante'])->name('admin.consulta.mapamensalcategoriarestaurante')->middleware(['auth']);
 
 
 
