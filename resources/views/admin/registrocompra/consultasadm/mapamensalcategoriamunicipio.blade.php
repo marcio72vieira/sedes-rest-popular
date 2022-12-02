@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Consultas / Mapa mensal GERAL de produtos adquirido por unidade: {{ $records[0]->identificacao }} - {{ $mesano }} </h5>
+    <h5><strong>Consultas / Mapa mensal de produtos adquirido por categorias em unidade no município: {{ $records[0]->municipio_nome }} - {{ $mesano }} </h5>
 
     <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>
@@ -24,21 +24,20 @@
                         <thead  class="bg-gray-100">
                             <tr>
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
-                                {{-- <th colspan="11">Regiões: @foreach ($regionaisenvolvidas as $nome) {{ $nome }}, &nbsp; @endforeach </th> --}}
-                                <th colspan="11">Regiões: {{ $regionais }} </th>
+                                <th colspan="6">Região: {{ $records[0]->regional_nome }} </th>
+                                <th colspan="6">Município: {{ $records[0]->municipio_nome }}</th>
                                 <th colspan="2">Mês: {{ $mesano }} </th>
-                                <th colspan="2" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfmapamensalgeralproduto', [$mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfmapamensalcategoriamunicipio', [$muni_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th scope="col" rowspan="3" style="width: 40px; text-align: center; vertical-align:middle">Id</th>
-                                <th scope="col" rowspan="3" style="width: 200px; text-align: center; vertical-align:middle">Produto</th>
+                                <th scope="col" rowspan="3" style="width: 200px; text-align: center; vertical-align:middle">Categoria</th>
                                 <th scope="col" rowspan="3" style="width: 50px; text-align: center; vertical-align:middle">Und.</th>
                                 <th colspan="8" scope="col" style="width: 100px; text-align: center; vertical-align:middle">COMPRAS</th>
                                 <th colspan="2" rowspan="2" scope="col" style="width: 100px; text-align: center; vertical-align:middle">TOTAL</th>
                                 <th colspan="2" rowspan="2" scope="col" style="width: 100px; text-align: center; vertical-align:middle"> &#177; (%) AF</th>
                             </tr>
                             <tr>
-
                                 <th colspan="4" scope="col" style="width: 100px; text-align: center; vertical-align:middle">Normal</th>
                                 <th colspan="4" scope="col" style="width: 100px; text-align: center; vertical-align:middle">AF</th>
                             </tr>
@@ -65,8 +64,8 @@
                                 @endphp
                                 @foreach ($records as $item)
                                     <tr>
-                                        <th scope="row">{{ $item->produto_id }}</th>
-                                        <td>{{ $item->produto_nome }}</td>
+                                        <th scope="row">{{ $item->categoria_id }}</th>
+                                        <td>{{ $item->categoria_nome }}</td>
                                         <td>{{ $item->medida_simbolo }}</td>
                                         <td style="text-align: right">{{ $item->numvezesnormal }}</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaquantidadenormal) }}</td>

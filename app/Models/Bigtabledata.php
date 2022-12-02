@@ -261,6 +261,22 @@ class Bigtabledata extends Model
      }
 
 
+     public static function mapamensalcategoriamunicipio ($idmuni, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('categoria_id', 'medida_simbolo')
+            ->selectRaw('regional_nome, municipio_nome, categoria_id, categoria_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('categoria_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->where('municipio_id', '=', $idmuni)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+            
+            return $records; 
+     }
+
+
+
 
 
      

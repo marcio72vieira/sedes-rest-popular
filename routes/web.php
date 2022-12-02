@@ -128,9 +128,9 @@ Route::get('admin/registroconsultacompra/ajaxgetdetalhecompramensalregiaovalor',
 Route::get('admin/registroconsultacompra/mapamensalprodutorestaurante',[RegistroconsultacompraController::class, 'mapamensalprodutorestaurante'])->name('admin.consulta.mapamensalprodutorestaurante')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/mapamensalprodutomunicipio',[RegistroconsultacompraController::class, 'mapamensalprodutomunicipio'])->name('admin.consulta.mapamensalprodutomunicipio')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/mapamensalprodutoregional',[RegistroconsultacompraController::class, 'mapamensalprodutoregional'])->name('admin.consulta.mapamensalprodutoregional')->middleware(['auth']);
-
 Route::get('admin/registroconsultacompra/mapamensalgeralproduto',[RegistroconsultacompraController::class, 'mapamensalgeralproduto'])->name('admin.consulta.mapamensalgeralproduto')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/mapamensalcategoriarestaurante',[RegistroconsultacompraController::class, 'mapamensalcategoriarestaurante'])->name('admin.consulta.mapamensalcategoriarestaurante')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/mapamensalcategoriamunicipio',[RegistroconsultacompraController::class, 'mapamensalcategoriamunicipio'])->name('admin.consulta.mapamensalcategoriamunicipio')->middleware(['auth']);
 
 
 
@@ -197,3 +197,6 @@ Route::get('admin/registroconsultacompra/{idreg}/{mes}/{ano}/pdf/relpdfcompramen
 Route::get('admin/registroconsultacompra/{idrest}/{mes}/{ano}/pdf/relpdfmapamensalprodutorestaurante', [RegistroconsultacompraController::class, 'relpdfmapamensalprodutorestaurante'])->name('admin.registroconsultacompra.relpdfmapamensalprodutorestaurante')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/{idmun}/{mes}/{ano}/pdf/relpdfmapamensalprodutomunicipio', [RegistroconsultacompraController::class, 'relpdfmapamensalprodutomunicipio'])->name('admin.registroconsultacompra.relpdfmapamensalprodutomunicipio')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/{idreg}/{mes}/{ano}/pdf/relpdfmapamensalprodutoregional', [RegistroconsultacompraController::class, 'relpdfmapamensalprodutoregional'])->name('admin.registroconsultacompra.relpdfmapamensalprodutoregional')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/{mes}/{ano}/pdf/relpdfmapamensalgeralproduto', [RegistroconsultacompraController::class, 'relpdfmapamensalgeralproduto'])->name('admin.registroconsultacompra.relpdfmapamensalgeralproduto')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/{idrest}/{mes}/{ano}/pdf/relpdfmapamensalcategoriarestaurante', [RegistroconsultacompraController::class, 'relpdfmapamensalcategoriarestaurante'])->name('admin.registroconsultacompra.relpdfmapamensalcategoriarestaurante')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/{idmun}/{mes}/{ano}/pdf/relpdfmapamensalcategoriamunicipio', [RegistroconsultacompraController::class, 'relpdfmapamensalcategoriamunicipio'])->name('admin.registroconsultacompra.relpdfmapamensalcategoriamunicipio')->middleware(['auth']);
