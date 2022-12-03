@@ -24,10 +24,10 @@
                         <thead  class="bg-gray-100">
                             <tr>
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
-                                <th colspan="6">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
+                                <th colspan="5">Região: {{ $records[0]->regional_nome }} - Município: {{ $records[0]->municipio_nome }}</th>
                                 <th colspan="6">{{ $records[0]->identificacao }} </th>
                                 <th colspan="2">Mês: {{ $mesano }} </th>
-                                <th style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfmapamensalcategoriarestaurante', [$rest_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th colspan="2"style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfmapamensalcategoriarestaurante', [$rest_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th scope="col" rowspan="3" style="width: 40px; text-align: center; vertical-align:middle">Id</th>

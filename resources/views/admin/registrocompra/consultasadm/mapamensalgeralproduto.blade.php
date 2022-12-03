@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Consultas / Mapa mensal GERAL de produtos adquirido por unidade: {{ $records[0]->identificacao }} - {{ $mesano }} </h5>
+    <h5><strong>Consultas / Mapa mensal GERAL de produtos adquirido por unidade: {{ $mesano }} </h5>
 
     <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>

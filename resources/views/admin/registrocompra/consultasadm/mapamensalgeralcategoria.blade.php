@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <h5><strong>Consultas / Mapa mensal de produtos adquirido por categorias em unidade no município: {{ $records[0]->municipio_nome }} - {{ $mesano }} </h5>
+    <h5><strong>Consultas / Mapa mensal GERAL de produtos adquirido por categorias em unidade: {{ $mesano }} </h5>
 
     <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.search')}}" role="button" style="margin-bottom: 6px;">
         <i class="fas fa-undo-alt"></i>
@@ -24,10 +24,10 @@
                         <thead  class="bg-gray-100">
                             <tr>
                                 {{-- Forma de acessar uma propriedade antes de um "FOREACH": $records[0]->coluna --}}
-                                <th colspan="6">Região: {{ $records[0]->regional_nome }} </th>
-                                <th colspan="5">Município: {{ $records[0]->municipio_nome }}</th>
+                                {{-- <th colspan="11">Regiões: @foreach ($regionaisenvolvidas as $nome) {{ $nome }}, &nbsp; @endforeach </th> --}}
+                                <th colspan="11">Regiões: {{ $regionais }} </th>
                                 <th colspan="2">Mês: {{ $mesano }} </th>
-                                <th colspan="2"style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfmapamensalcategoriamunicipio', [$muni_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th colspan="2" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfmapamensalgeralcategoria', [$mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th scope="col" rowspan="3" style="width: 40px; text-align: center; vertical-align:middle">Id</th>
@@ -38,6 +38,7 @@
                                 <th colspan="2" rowspan="2" scope="col" style="width: 100px; text-align: center; vertical-align:middle"> &#177; (%) AF</th>
                             </tr>
                             <tr>
+
                                 <th colspan="4" scope="col" style="width: 100px; text-align: center; vertical-align:middle">Normal</th>
                                 <th colspan="4" scope="col" style="width: 100px; text-align: center; vertical-align:middle">AF</th>
                             </tr>

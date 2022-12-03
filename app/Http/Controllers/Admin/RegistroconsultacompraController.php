@@ -486,7 +486,9 @@ class RegistroconsultacompraController extends Controller
     }
 
 
-
+    //========================================
+    // MAPAS DE PRODUTOS MES/ANO
+    //========================================
     // Mapa mensal produto restaurante
     public function mapamensalprodutorestaurante(Request $request)
     {
@@ -501,6 +503,11 @@ class RegistroconsultacompraController extends Controller
                 '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
 
             //montando mes/ano
             $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
@@ -555,6 +562,11 @@ class RegistroconsultacompraController extends Controller
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
 
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
             //montando mes/ano
             $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
 
@@ -606,6 +618,11 @@ class RegistroconsultacompraController extends Controller
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
 
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
             //montando mes/ano
             $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
 
@@ -656,6 +673,11 @@ class RegistroconsultacompraController extends Controller
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
 
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
             //montando mes/ano
             $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
 
@@ -697,6 +719,9 @@ class RegistroconsultacompraController extends Controller
     }
 
 
+    //========================================
+    // MAPAS DE CATEGORIAS MÊS/ANO
+    //========================================
     // Mapa mensal categoria restaurante
     public function mapamensalcategoriarestaurante(Request $request)
     {
@@ -711,6 +736,11 @@ class RegistroconsultacompraController extends Controller
                 '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
 
             //montando mes/ano
             $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
@@ -761,6 +791,13 @@ class RegistroconsultacompraController extends Controller
                 '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+            
+
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
 
             //montando mes/ano
             $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
@@ -795,6 +832,124 @@ class RegistroconsultacompraController extends Controller
         }
     }
     
+
+
+
+    // Mapa mensal categoria regional
+    public function mapamensalcategoriaregional(Request $request)
+    {
+        if($request->regional_id && $request->mes_id && $request->ano_id ) {
+            $regi_id = $request->regional_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para formatar perído da pesquisa
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
+            //montando mes/ano
+            $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
+
+            $regional = Regional::findOrFail($regi_id);
+
+            //Recupera só o id do regional
+            $regionalId =  $regional->id;
+
+            $records = Bigtabledata::mapamensalcategoriaregional($regionalId, $mes_id, $ano_id);
+
+            //die($records);
+
+            if($records->count() <= 0){
+
+                $request->session()->flash('error_mapamensalcategoriaregional', 'Nenhum registro encontrado para esta pesquisa.');
+                //return redirect()->route('admin.registroconsultacompra.search');
+
+                //Redirecionamento com âncora
+                return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-treze');
+
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.mapamensalcategoriaregional', compact('regi_id', 'mes_id', 'ano_id', 'regional', 'mesano', 'records'));
+
+            }
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+    }    
+
+
+
+    // Mapa mensal geral categoria
+    public function mapamensalgeralcategoria(Request $request)
+    {
+        if($request->mes_id && $request->ano_id ) {
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para formatar perído da pesquisa
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            //$anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
+            //montando mes/ano
+            $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
+
+
+            $records = Bigtabledata::mapamensalgeralcategoria($mes_id, $ano_id);
+
+            //Crio uma coleção
+            $regionaisnome = collect();
+
+            foreach($records as $record) {
+                //Adiciona à coleção criada, apenas o nome das regionais, duplicadas ou não
+                $regionaisnome->push($record->regional_nome);
+            }
+
+            //Recupero o nome das regionais de forma única em uma outra collection
+            $regionaisenvolvidas = $regionaisnome->unique();
+
+            //Junto os elementos da colection como uma string ligadas por uma vírgula, pelo método ->join();
+            $regionais = $regionaisenvolvidas->join(', ');
+
+            
+            if($records->count() <= 0){
+
+                $request->session()->flash('error_mapamensalgeralcategoria', 'Nenhum registro encontrado para esta pesquisa.');
+                
+                //Redirecionamento com âncora
+                return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-quatorze');
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.mapamensalgeralcategoria', compact('mes_id', 'ano_id', 'mesano', 'records', 'regionais'));
+
+            }
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+    }
+
+
 
 
 
@@ -2477,6 +2632,249 @@ class RegistroconsultacompraController extends Controller
 
     }    
 
+
+
+
+
+
+    // Relatório PDF Mapa mensal de categoria de produtos adquiridos por unidade na regional
+    public function relpdfmapamensalcategoriaregional($regi, $mes, $ano)
+    {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $regional = Regional::findOrFail($regi);
+
+        $regionalId = $regional->id;
+
+        // Obtendo os dados
+        $records = Bigtabledata::mapamensalcategoriaregional($regionalId, $mes, $ano);
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('mapamensalcategoriaregional'.'.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'orientation' => 'L',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 43,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 108px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 540px;" class="titulo-rel">
+                        MAPA MENSAL DE PRODUTOS ADQUIRIDOS POR CATEGORIA EM UNIDADE <br> Região '.$records[0]->regional_nome.': '.$meses[$mes].'/'.$ano.'
+                    </td>
+                </tr>
+            </table>
+
+            <table style="width:1080px; border-collapse: collapse">
+                <tr>
+                    <td rowspan="3" width="40px" class="col-header-table" style="text-align: center">Id</td>
+                    <td rowspan="3" width="280px" class="col-header-table" style="text-align: center">Categoria</td>
+                    <td rowspan="3" width="40px" class="col-header-table" style="text-align: center">Und.</td>
+                    <td colspan="8" width="480px" class="col-header-table" style="text-align: center">COMPRAS</td>
+                    <td rowspan="2" colspan="2" width="120px" class="col-header-table" style="text-align: center">TOTAL</td>
+                    <td rowspan="2" colspan="2" width="120px" class="col-header-table" style="text-align: center"> &#177; (%) AF</td>
+                </tr>
+                <tr>
+                    <td colspan="4" width="240px" class="col-header-table" style="text-align: center">Normal</td>
+                    <td colspan="4" width="240px" class="col-header-table" style="text-align: center">AF</td>
+                </tr>
+                <tr>
+                    <td width="50px" class="col-header-table" style="text-align: center">nº vz</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">p.m (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">nº vz</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">p.m (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">% Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">% Valor (R$)</td>
+                </tr>
+            </table>
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:1080px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="200px">São Luis(MA) {DATE d/m/Y H:i}</td>
+                    <td width="830px" align="left">
+                        <span style="margin-right: 50px"><strong>Und.</strong> = unidade de medida;</span>
+                        <span style="margin-right: 50px"><strong>nº vz</strong> = número de vezes comprado;</span>
+                        <span style="margin-right: 50px"><strong>Qtd.</strong> = quantidade comprada;</span>
+                        <span style="margin-right: 50px"><strong>p.m</strong> = preço médio;</span>
+                    </td>
+                    <td width="50px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.registrocompra.pdf.pdfmapamensalcategoriaregional', compact('records'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.categoria.pdf.pdfcategoria')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }    
+
+
+
+
+    // Relatório PDF Mapa mensal geral de produtos adquiridos por Categoria em unidade
+    public function relpdfmapamensalgeralcategoria($mes, $ano)
+    {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+
+        // Obtendo os dados
+        $records = Bigtabledata::mapamensalgeralcategoria($mes, $ano);
+
+        //Crio uma coleção
+        $regionaisnome = collect();
+        foreach($records as $record) {
+            //Adiciona à coleção criada, apenas o nome das regionais, duplicadas ou não
+            $regionaisnome->push($record->regional_nome);
+        }
+        //Recupero o nome das regionais de forma única em uma outra collection
+        $regionaisenvolvidas = $regionaisnome->unique();
+        
+        //Junto os elementos da colection como uma string ligadas por uma vírgula
+        $regionais = $regionaisenvolvidas->join(', ');
+
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('mapamensalgeralcategoria'.'.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'orientation' => 'L',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 47,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 108px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 540px;" class="titulo-rel">
+                        MAPA MENSAL GERAL DE PRODUTOS ADQUIRIDOS POR CATEGORIA <br>'.$meses[$mes].'/'.$ano.'
+                    </td>
+                </tr>
+            </table>
+
+            <table style="width:1080px; border-collapse: collapse">
+                <tr>
+                    <td colspan="21" width="1080px" class="col-header-table" style="text-left: center"><strong>Regiões: </strong>'.$regionais.'</td>
+                </tr>
+            </table>
+
+            <table style="width:1080px; border-collapse: collapse">
+                <tr>
+                    <td rowspan="3" width="40px" class="col-header-table" style="text-align: center">Id</td>
+                    <td rowspan="3" width="280px" class="col-header-table" style="text-align: center">Produto</td>
+                    <td rowspan="3" width="40px" class="col-header-table" style="text-align: center">Und.</td>
+                    <td colspan="8" width="480px" class="col-header-table" style="text-align: center">COMPRAS</td>
+                    <td rowspan="2" colspan="2" width="120px" class="col-header-table" style="text-align: center">TOTAL</td>
+                    <td rowspan="2" colspan="2" width="120px" class="col-header-table" style="text-align: center"> &#177; (%) AF</td>
+                </tr>
+                <tr>
+                    <td colspan="4" width="240px" class="col-header-table" style="text-align: center">Normal</td>
+                    <td colspan="4" width="240px" class="col-header-table" style="text-align: center">AF</td>
+                </tr>
+                <tr>
+                    <td width="50px" class="col-header-table" style="text-align: center">nº vz</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">p.m (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">nº vz</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">p.m (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">% Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">% Valor (R$)</td>
+                </tr>
+            </table>
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:1080px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="200px">São Luis(MA) {DATE d/m/Y H:i}</td>
+                    <td width="830px" align="left">
+                        <span style="margin-right: 50px"><strong>Und.</strong> = unidade de medida;</span>
+                        <span style="margin-right: 50px"><strong>nº vz</strong> = número de vezes comprado;</span>
+                        <span style="margin-right: 50px"><strong>Qtd.</strong> = quantidade comprada;</span>
+                        <span style="margin-right: 50px"><strong>p.m</strong> = preço médio;</span>
+                    </td>
+                    <td width="50px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.registrocompra.pdf.pdfmapamensalgeralcategoria', compact('records'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.categoria.pdf.pdfcategoria')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }    
 
 
 
