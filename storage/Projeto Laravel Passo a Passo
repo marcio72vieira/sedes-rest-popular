@@ -665,6 +665,9 @@ how to avoid with some characters become typed in text box with jquery
 // https://mpdf.github.io/reference/mpdf-functions/setwatermarktext.html
 // https://www.w3docs.com/snippets/html/how-to-create-an-anchor-link-to-jump-to-a-specific-part-of-a-page.html
 // https://stackoverflow.com/questions/37695864/how-to-put-route-in-anchor-tag-in-laravel-5-2
+// https://stackoverflow.com/questions/42614107/call-to-a-member-function-where-on-integer
+// https://laravel.com/docs/8.x/queries
+
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
 

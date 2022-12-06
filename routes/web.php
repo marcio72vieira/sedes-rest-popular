@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcessoController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EmpresaController;
 use App\Http\Controllers\Admin\RestauranteController;
 use App\Http\Controllers\Admin\NutricionistaController;
@@ -41,12 +42,22 @@ Route::get('/', function () {
 });
 
 
+
 //==================================
 //ROTAS DE LOGIN/LOGOUT/AUTENTICAÇÃO
 //==================================
 Route::get('/acesso/login', [AcessoController::class, 'login'])->name('acesso.login');
 Route::post('/acesso/check', [AcessoController::class, 'check'])->name('acesso.check');
 Route::get('/acesso/logout', [AcessoController::class, 'logout'])->name('acesso.logout');
+
+
+
+//=============================================
+//ROTA DO DASHBOARD (SEM SER DO TIPO RESOURCE)
+//=============================================
+// Dashboard
+Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth']);
+
 
 
 // =====================
@@ -59,6 +70,12 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Companhia
     // Route::post('getbairros',[CompanhiaController::class, 'getbairros'])->name('getbairros');
     // Route::resource('companhia', CompanhiaController::class);
+
+
+    // Dashboard
+    // Dashboard sendo a rota como do tipo resource
+    // Route::resource('dashboard', DashboardController::class)->except(['create', 'show', 'edit', 'update'])->middleware(['auth']);
+
 
     // Restaurante
     Route::post('getbairrosrestaurante',[RestauranteController::class, 'getbairrosrestaurante'])->name('getbairrosrestaurante')->middleware(['auth']);
