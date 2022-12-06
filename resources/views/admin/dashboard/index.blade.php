@@ -5,7 +5,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    {{-- 
+    {{--
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
@@ -13,7 +13,7 @@
     </div>
     --}}
 
-    <!-- Content Row -->
+    <!-- INICIO Content Row CARDS-->
     <div class="row">
 
         <!-- Empresas -->
@@ -22,8 +22,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Empresas</div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Empresas</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totEmpresas }}</div>
                         </div>
                         <div class="col-auto">
@@ -41,8 +40,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Nutricionistas</div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Nutricionistas</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totNutricionistas }}</div>
                         </div>
                         <div class="col-auto">
@@ -53,14 +51,66 @@
             </div>
         </div>
 
-        <!-- Restaurantes -->
+
+        <!-- Usuarios -->
         <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+            <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Restaurantes</div>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Usuarios</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totUsuarios }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-friends fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Regionais -->
+        <div class="col-xl-2 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Regionais</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totRegionais }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-globe-americas fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Municípios -->
+        <div class="col-xl-2 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Municípios</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totMunicipios }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-map-marked-alt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurantes -->
+        <div class="col-xl-2 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Restaurantes</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totRestaurantes}}</div>
                         </div>
                         <div class="col-auto">
@@ -78,8 +128,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Compras</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compras</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totCompras }}</div>
                         </div>
                         <div class="col-auto">
@@ -91,14 +140,31 @@
         </div>
 
 
-         <!-- Compras -->
+        <!-- Valor Total -->
+        <div class="col-xl-2 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalValorCompras, 2, ',', '.') }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+         <!-- Valor Compras Normal-->
          <div class="col-xl-2 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Compras</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compra Normal</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totComprasNormal, '2', ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
@@ -110,15 +176,13 @@
         </div>
 
 
-        <!-- Compras -->
+        <!-- Valor Compras AF-->
         <div class="col-xl-2 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Compras</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totComprasNormal, '2', ',', '.') }}</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compras AF</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totComprasAf, '2', ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
@@ -130,7 +194,46 @@
         </div>
 
 
-        <!-- Earnings (Monthly) Card Example -->
+
+        <!-- Categorias-->
+        <div class="col-xl-2 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Categorias</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totCategorias }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-stream fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Produtos-->
+        <div class="col-xl-2 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Produtos</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totProdutos }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-leaf fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        {{-- <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-2 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
@@ -157,48 +260,13 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Pending Requests Card Example -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Bairros atingidos</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pending Requests Card Example -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Cidades</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div> --}}
 
     </div>
+    <!-- FIM Content Row CARDS-->
 
-    <!-- Content Row -->
 
+    <!-- INÍCIO Content Row GRÁFICOS -->
     <div class="row">
 
         <!-- Area Chart -->
@@ -226,7 +294,7 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
+                        <canvas id="myChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -274,8 +342,11 @@
             </div>
         </div>
     </div>
+    <!-- FIM Content Row GRÁFICOS -->
 
-    <!-- Content Row -->
+
+    {{--
+    <!-- INÍCIO Content Row PROJECTS, ILUSTRATION, APPROACH -->
     <div class="row">
 
         <!-- Content Column -->
@@ -390,8 +461,8 @@
 
         </div>
 
-        <div class="col-lg-6 mb-4">
 
+        <div class="col-lg-6 mb-4">
             <!-- Illustrations -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -424,9 +495,95 @@
                         Bootstrap framework, especially the utility classes.</p>
                 </div>
             </div>
-
         </div>
+
+
     </div>
+    <!-- FIM Content Row PROJECTS, ILUSTRATION, APPROACH -->
+    --}}
+
 </div>
+
+@endsection
+
+@section('scripts')
+
+    <script>
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+
+        // Pie Chart Example
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["Direct", "Referral", "Social"],
+                datasets: [{
+                data: [55, 30, 15],
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+                },
+                legend: {
+                display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+
+
+
+
+    </script>
 
 @endsection

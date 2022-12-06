@@ -667,6 +667,7 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/37695864/how-to-put-route-in-anchor-tag-in-laravel-5-2
 // https://stackoverflow.com/questions/42614107/call-to-a-member-function-where-on-integer
 // https://laravel.com/docs/8.x/queries
+// https://www.chartjs.org/docs/2.9.4/
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
@@ -1253,7 +1254,7 @@ git branch
 git status
 git git add .
 git commit -m "Mensagem para registrar"
-git push orign master (para github) ou 
+git push orign master (para github) ou
 git push seati master (para gitlab)
 username for 'https://...'
 password for 'https://...'
