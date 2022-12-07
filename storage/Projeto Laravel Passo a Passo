@@ -72,6 +72,47 @@ Exemplo:
     <b><i class="fa-lg fas fa-check text-success mr-2"></i></b>
 
 
+==================================
+ALTERAÇÃO NA EXIBIÇÃO DOS GRÁFICOS
+==================================
+arquivo: /home/marcio/projetoslaravel/sedes-rest-popular/public/template/css/sb-admin-2.min.css
+classes: 
+.chart-area {
+  position: relative;
+  height: 5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .chart-area {
+    height: 20rem; ALTERAR PARA height: 27rem
+  }
+}
+
+.chart-bar {
+  position: relative;
+  height: 10rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .chart-bar {
+    height: 20rem; ALTERAR PARA height: 27rem
+  }
+}
+
+.chart-pie {
+  position: relative;
+  height: 15rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .chart-pie {
+    height: calc(20rem - 43px) !important; ALTERAR PARA calc(27rem - 43px)
+  }
+}
+
 =============================
 CRIAÇÃO MÓDULO DE LOGIN
 =============================
