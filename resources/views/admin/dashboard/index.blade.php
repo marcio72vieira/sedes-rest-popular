@@ -275,7 +275,7 @@
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Visão Geral de Compras</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">(R$) Compras por Categorias</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -327,6 +327,16 @@
                     <div class="chart-pie pt-4 pb-2">
                         <canvas id="myPieChart"></canvas>
                     </div>
+                    {{--
+                        @php 
+                            if(count($dataRecords)){ 
+                                foreach($dataRecords as $key => $values){
+                                    echo '<span class="mr-2">  <i class="fas fa-circle"></i>'.$key.' </span>';
+                                }
+                            }   
+                        @endphp 
+                    --}}
+                    
                     <div class="mt-4 text-center small">
                         <span class="mr-2">
                             <i class="fas fa-circle text-primary"></i> Direct
@@ -543,9 +553,132 @@
 @endsection
 
 @section('scripts')
+    @php
+        if(count($dataRecords)){
+            $labelRecords = array_keys($dataRecords);
+
+            $arrLabel = [];
+            foreach($labelRecords as $labelRecord){
+                $arrLabel[] = "'".$labelRecord."'";     //dd($arrLabel);
+            }
+            $labells = implode(',', $labelRecords);     //echo $labells;
+        }   
+    @endphp
+
 
     <script>
 
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
+                labels: [ {!! implode(',', $arrLabel) !!} ],
+                datasets: [{
+                    label: 'Compra por Categoria',
+                    data: [ {{ implode(',', $dataRecords) }} ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1,
+                    barPercentage: 0.5,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+
+        // Pie Chart Example
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                //labels: ["Direct", "Referral", "Social"],
+                labels: [ {!! implode(',', $arrLabel) !!} ],
+                datasets: [{
+                //data: [55, 30, 15],
+                data: [ {{ implode(',', $dataRecords) }} ],
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#36b9df', '#ff0000'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: true,
+                caretPadding: 10,
+                },
+                legend: {
+                display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+
+
+        var ctx = document.getElementById('myLineChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Ags', 'Sep', 'Out', 'Nov', 'Dec'],
+                datasets: [
+                    {
+                        label: 'Compra Normal',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 10, 5, 2, 20, 30, 45],
+                        fill: false
+                    },
+                    {
+                        label: 'Compra AF',
+                        backgroundColor: 'rgb(0, 0, 0)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 20, 10, 12, 0, 60, 85],
+                        fill: false
+                    }
+                ]
+            },
+
+            // Configuration options go here
+            options: {
+
+            }
+        });
+
+
+        //GŔAFICOS ORIGINAIS
+        /*
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
@@ -583,8 +716,9 @@
                 }
             }
         });
+        */
 
-
+        /*
         // Pie Chart Example
         var ctx = document.getElementById("myPieChart");
         var myPieChart = new Chart(ctx, {
@@ -616,6 +750,7 @@
                 cutoutPercentage: 80,
             },
         });
+        */
 
 
         /*
@@ -643,37 +778,8 @@
         });
         */
 
-        var ctx = document.getElementById('myLineChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
 
-            // The data for our dataset
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Ags', 'Sep', 'Out', 'Nov', 'Dec'],
-                datasets: [
-                    {
-                        label: 'Compra Normal',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 10, 5, 2, 20, 30, 45],
-                        fill: false
-                    },
-                    {
-                        label: 'Compra AF',
-                        backgroundColor: 'rgb(0, 0, 0)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 20, 10, 12, 0, 60, 85],
-                        fill: false
-                    }
-                ]
-            },
-
-            // Configuration options go here
-            options: {
-
-            }
-        });
+        
 
     </script>
 

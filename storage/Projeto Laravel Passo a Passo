@@ -113,6 +113,23 @@ classes:
   }
 }
 
+===============================
+RESOLVENDO PROBLEMA DO GROUP BY
+==============================
+Mensagem: 
+Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 
+'returntr_prod.tbl_customer_pod_uploads.id' which is not functionally dependent on columns in GROUP BY clause; 
+this is incompatible with sql_mode=only_full_group_by
+Site de Referência:
+https://stackoverflow.com/questions/41887460/select-list-is-not-in-group-by-clause-and-contains-nonaggregated-column-inc
+ 
+ 1 - No phpMyadmin, clicar no ícone "novo" para criar novo banco de dados
+ 2 - Na aba Variaveis (ou, Mais/Variáveis) rolar a tela para baixo até encontrar a variável "sql mode"
+ 3 - Clicque no ícone editar e retire do ínicio da caixa de texto que se abir a opção: ONLY_FULL_GROUP_BY,
+ 4 - Salve a alteração efetuada
+
+
+
 =============================
 CRIAÇÃO MÓDULO DE LOGIN
 =============================
@@ -709,6 +726,7 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/42614107/call-to-a-member-function-where-on-integer
 // https://laravel.com/docs/8.x/queries
 // https://www.chartjs.org/docs/2.9.4/
+// https://stackoverflow.com/questions/41887460/select-list-is-not-in-group-by-clause-and-contains-nonaggregated-column-inc
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'

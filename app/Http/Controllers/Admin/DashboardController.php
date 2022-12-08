@@ -34,8 +34,23 @@ class DashboardController extends Controller
         $totProdutos =  Produto::all()->count();
         $totUsuarios =  User::all()->count();
 
+        //$records = DB::select(DB::raw('SELECT categoria_id, categoria_nome, SUM(quantidade), SUM(precototal) FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id'));
+        //Obs:  O resultado de $records é um array, ou seja, uma collect, lido pela função dd(). Se eu quiser transformá-lo 
+        //      em um Json que é lido pela função die(), eu coloco: json_encode($records). die(json_encode($records));
+
+        $records = DB::select(DB::raw('SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY categoria_nome ASC'));
+        //dd($records);
+
+        $dataRecords = [];
+        foreach($records as $value) {
+            $dataRecords[$value->categoria_nome] =  $value->totalcompra;
+        }
+        //dd($dataRecords);
+
+
+
         return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totCompras',
                                             'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
-                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios'));
+                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords'));
     }
 }
