@@ -305,6 +305,45 @@ class Bigtabledata extends Model
             return $records; 
      }
 
+     /* 
+     //Query Original, faz a busca no banco independente da unidade de medida, ou seja, busca todas
+     public static function comparativomensalprodutomunicipio ($idprod, $idmuni, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('restaurante_id','produto_id', 'medida_simbolo')
+            ->selectRaw('regional_nome, municipio_nome, restaurante_id, identificacao, produto_id, produto_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('produto_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->orderBy('identificacao', 'ASC')
+            ->where('produto_id', '=', $idprod)
+            ->where('municipio_id', '=', $idmuni)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+            
+            return $records; 
+     }
+      */
+
+
+     public static function comparativomensalprodutomunicipio ($idprod, $idmedi, $idmuni, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('restaurante_id','produto_id')
+            ->selectRaw('regional_nome, municipio_nome, restaurante_id, identificacao, produto_id, produto_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('produto_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->orderBy('identificacao', 'ASC')
+            ->where('produto_id', '=', $idprod)
+            ->where('medida_id', '=', $idmedi)
+            ->where('municipio_id', '=', $idmuni)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+            
+            return $records; 
+     }
+
+
+
 
 
 

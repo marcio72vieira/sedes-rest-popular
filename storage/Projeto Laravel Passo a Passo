@@ -727,7 +727,7 @@ how to avoid with some characters become typed in text box with jquery
 // https://laravel.com/docs/8.x/queries
 // https://www.chartjs.org/docs/2.9.4/
 // https://stackoverflow.com/questions/41887460/select-list-is-not-in-group-by-clause-and-contains-nonaggregated-column-inc
-
+// https://laracasts.com/discuss/channels/eloquent/the-sql-select-distinct-statement
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
 
