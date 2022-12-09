@@ -152,6 +152,7 @@ Route::get('admin/registroconsultacompra/mapamensalcategoriaregional',[Registroc
 Route::get('admin/registroconsultacompra/mapamensalgeralcategoria',[RegistroconsultacompraController::class, 'mapamensalgeralcategoria'])->name('admin.consulta.mapamensalgeralcategoria')->middleware(['auth']);
 
 Route::get('admin/registroconsultacompra/comparativomensalprodutomunicipio',[RegistroconsultacompraController::class, 'comparativomensalprodutomunicipio'])->name('admin.consulta.comparativomensalprodutomunicipio')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/comparativomensalprodutoregional',[RegistroconsultacompraController::class, 'comparativomensalprodutoregional'])->name('admin.consulta.comparativomensalprodutoregional')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/ajaxgetmedidaproduto', [RegistroconsultacompraController::class, 'ajaxgetmedidaproduto'])->name('admin.registroconsultacompra.ajaxgetmedidaproduto')->middleware(['auth']);
 
 

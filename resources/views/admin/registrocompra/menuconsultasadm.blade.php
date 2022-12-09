@@ -358,7 +358,7 @@
                   <div class="card-header" id="headingsete">
                     <h2 class="mb-0" id="anchor-sete">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsesete" aria-expanded="true" aria-controls="collapsesete">
-                        <strong>Mapa de produtos adquiridos por unidade no restaurante:</strong>
+                        <strong>Mapa de produtos adquiridos por unidade no restaurante</strong>
                         <br>
                         <span>
                           Recupera os produtos adquiridos no mês em suas unidades, quantidades e valores, bem como seus respectivos percentuais na AF
@@ -413,7 +413,7 @@
                   <div class="card-header" id="headingoito">
                     <h2 class="mb-0" id="anchor-oito">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseoito" aria-expanded="true" aria-controls="collapseoito">
-                        <strong>Mapa de produtos adquiridos por unidade no município:</strong>
+                        <strong>Mapa de produtos adquiridos por unidade no município</strong>
                         <br>
                         <span>
                           Recupera os produtos adquiridos no mês em suas unidades, quantidades e valores, bem como seus respectivos percentuais na AF
@@ -469,7 +469,7 @@
                   <div class="card-header" id="headingnove">
                     <h2 class="mb-0" id="anchor-nove">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsenove" aria-expanded="true" aria-controls="collapsenove">
-                        <strong>Mapa de produtos adquiridos por unidade na região:</strong>
+                        <strong>Mapa de produtos adquiridos por unidade na região</strong>
                         <br>
                         <span>
                           Recupera os produtos adquiridos no mês em suas unidades, quantidades e valores, bem como seus respectivos percentuais na AF
@@ -524,7 +524,7 @@
                   <div class="card-header" id="headingdez">
                     <h2 class="mb-0" id="anchor-dez">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsedez" aria-expanded="true" aria-controls="collapsedez">
-                        <strong>Mapa mensal GERAL de produtos adquiridos por unidade:</strong>
+                        <strong>Mapa mensal GERAL de produtos adquiridos por unidade</strong>
                         <br>
                         <span>
                           Recupera os produtos adquiridos no mês em suas unidades, quantidades e valores, bem como seus respectivos percentuais na AF de todas as regionais
@@ -570,7 +570,7 @@
                   <div class="card-header" id="headingonze">
                     <h2 class="mb-0" id="anchor-onze">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseonze" aria-expanded="true" aria-controls="collapseonze">
-                        <strong>Mapa de produtos adquiridos por categorias em unidade no restaurante:</strong>
+                        <strong>Mapa de produtos adquiridos por categorias em unidade no restaurante</strong>
                         <br>
                         <span>
                           Recupera as categorias dos produtos adquiridos no mês em suas unidades, quantidades e valores, bem como seus respectivos percentuais na AF
@@ -626,7 +626,7 @@
                   <div class="card-header" id="headingdoze">
                     <h2 class="mb-0" id="anchor-doze">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsedoze" aria-expanded="true" aria-controls="collapsedoze">
-                        <strong>Mapa de produtos adquiridos por categorias em unidade no municipio:</strong>
+                        <strong>Mapa de produtos adquiridos por categorias em unidade no municipio</strong>
                         <br>
                         <span>
                           Recupera as categorias dos produtos adquiridos no mês em suas unidades, quantidades e valores, bem como seus respectivos percentuais na AF
@@ -681,7 +681,7 @@
                   <div class="card-header" id="headingtreze">
                     <h2 class="mb-0" id="anchor-treze">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsetreze" aria-expanded="true" aria-controls="collapsetreze">
-                        <strong>Mapa de produtos adquiridos por categorias em unidade na região:</strong>
+                        <strong>Mapa de produtos adquiridos por categorias em unidade na região</strong>
                         <br>
                         <span>
                           Recupera as categorias dos produtos adquiridos no mês em suas unidades, quantidades e valores, bem como seus respectivos percentuais na AF
@@ -736,7 +736,7 @@
                   <div class="card-header" id="headingquatorze">
                     <h2 class="mb-0" id="anchor-quatorze">
                       <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsequatorze" aria-expanded="true" aria-controls="collapsequatorze">
-                        <strong>Mapa mensal GERAL de produtos adquiridos por categoria em unidade:</strong>
+                        <strong>Mapa mensal GERAL de produtos adquiridos por categoria em unidade</strong>
                         <br>
                         <span>
                           Recupera os produtos adquiridos por categori no mês em suas unidades, quantidades e valores, bem como seus respectivos percentuais na AF de todas as regionais
@@ -795,7 +795,7 @@
                     <div class="card-body">
                         <form action="{{route('admin.consulta.comparativomensalprodutomunicipio')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
                           <div class="form-group mx-sm-3 mb-2">
-                            <select name="produto_id" id="produto_id" class="form-control" required>
+                            <select name="produto_id" class="form-control produto_id" required>
                               <option value="" selected disabled>Produto...</option>
                               @foreach($produtos  as $produto)
                                 <option value="{{$produto->id}}"> {{$produto->nome}} </option>
@@ -804,7 +804,7 @@
 
                             &nbsp;&nbsp;&nbsp;
 
-                            <select name="medida_id" id="medida_id" class="form-control" required>
+                            <select name="medida_id" class="form-control medida_id" required>
                               <option value="" selected disabled disabled>Medida...</option>
                             </select>
 
@@ -846,6 +846,78 @@
                   </div>
                 </div>
 
+
+
+                {{-- Comparativo mensal produtos por regional - inclui todos os municípios da regional --}}
+                <div class="card">
+                  <div class="card-header" id="headingdezesseis">
+                    <h2 class="mb-0" id="anchor-dezesseis">
+                      <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsedezesseis" aria-expanded="true" aria-controls="collapsedezesseis">
+                        <strong>Comparativo mensal de produto adquiridos na região</strong>
+                        <br>
+                        <span>
+                          Compara quantidades e valores das compras de um determinado produto em relação aos municípios de uma Regional específica.
+                        </span>
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapsedezesseis" @if(session('error_comparativomensalprodutoregional')) class="collapse show" @else class="collapse"  @endif aria-labelledby="headingtres" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <form action="{{route('admin.consulta.comparativomensalprodutoregional')}}"  method="GET" class="form-inline"  style="margin-left: -15px">
+                          <div class="form-group mx-sm-3 mb-2">
+                            <select name="produto_id" class="form-control produto_id" required>
+                              <option value="" selected disabled>Produto...</option>
+                              @foreach($produtos  as $produto)
+                                <option value="{{$produto->id}}"> {{$produto->nome}} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="medida_id" class="form-control medida_id" required>
+                              <option value="" selected disabled disabled>Medida...</option>
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="regional_id" id="regional_id" class="form-control" required>
+                              <option value="" selected disabled>Regional...</option>
+                              @foreach($regioes  as $regional)
+                                <option value="{{$regional->id}}"> {{$regional->nome}} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="mes_id" id="mes_id" class="form-control" required>
+                              <option value="" selected disabled>Mês...</option>
+                              @foreach($mesespesquisa as $key => $value)
+                                <option value="{{ $key }}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+
+                            <select name="ano_id" id="ano_id" class="form-control" required>
+                              <option value="" selected disabled>Ano...</option>
+                              @foreach($anospesquisa as $value)
+                                <option value="{{ $value}}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
+                          @if(session('error_comparativomensalprodutoregional'))
+                              <p class="alert-danger alert-dismissible fade show" role="alert" style="margin-left: 30px; margin-bottom: 5px; padding: 5px">
+                                  <strong>Atenção! </strong> {{session('error_comparativomensalprodutoregional')}}
+                              </p>
+                          @endif
+                        </form>
+                    </div>
+                  </div>
+                </div>
+
+
                 {{-- --}}
                 {{-- NOVA CONSULTA AQUI --}}
                 {{-- --}}
@@ -858,33 +930,81 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            //Recuperação dinâmica das unidades de medidas do produto a ser consultado
-            $('#produto_id').on('change', function() {
+          //Recuperação dinâmica das unidades de medidas do produto a ser consultado
+          $('.produto_id').on('change', function() {
 
-                var produto_id = this.value;
+            var produto_id = this.value;
+            
+            //selectmedidaid recebe o select (medida_id) mais próximo do elemento select (produto_id) selecionado no momento.
+            var selectmedidaid = $(this).parents(".form-group").find(".medida_id");
+            
+            $(this).parents(".form-group").find(".medida_id").html('');
 
-                $("#medida_id").html('');
+            $.ajax({
+              url:"{{route('admin.registroconsultacompra.ajaxgetmedidaproduto')}}",
+              type: "GET",
+              data: {
+                produto_id: produto_id
+              },
 
-                $.ajax({
-                    url:"{{route('admin.registroconsultacompra.ajaxgetmedidaproduto')}}",
-                    type: "GET",
-                    data: {
-                        produto_id: produto_id
-                    },
-                    dataType : 'json',
-                    success: function(result){
-                        $('#medida_id').html('<option value="" disabled>Medida...</option>');
-                        $.each(result.medidas,function(key,value){
-                            //console.log(value.medida_id);
-                            $("#medida_id").append('<option value="'+value.medida_id+'">'+value.medida_simbolo+'</option>');
-                        });
-                    },
-                    error: function(result){
-                      alert("Error ao retornar dados!");
-                    }
+              dataType : 'json',
+              success: function(result){
+                $(selectmedidaid).html('<option value="" disabled>Medida...</option>');
+                $.each(result.medidas,function(key,value){
+                  $(selectmedidaid).append('<option value="'+value.medida_id+'">'+value.medida_simbolo+'</option>');
                 });
+              },
+              error: function(result){
+                alert("Error ao retornar dados!");
+              }
             });
           });
+        });
+
+        /* SCRIPT ORIGINAL UTILIZADO PARA UM ÚNICO SELECT PRODUTO_ID E MEDIDA_ID .
+        Deverá haver os elementos select's com os respecitos id's: 
+        <select name="produto_id" id="produto_id" class="form-control" required>
+        <select name="medida_id" id="medida_id" class="form-control" required>
+        
+        $(document).ready(function() {
+          //Recuperação dinâmica das unidades de medidas do produto a ser consultado
+          $('#produto_id').on('change', function() {
+
+            var produto_id = this.value;
+
+            $("#medida_id").html('');
+
+            $.ajax({
+              url:"{{route('admin.registroconsultacompra.ajaxgetmedidaproduto')}}",
+              type: "GET",
+              data: {
+                produto_id: produto_id
+              },
+
+              dataType : 'json',
+              success: function(result){
+                $('#medida_id').html('<option value="" disabled>Medida...</option>');
+                $.each(result.medidas,function(key,value){
+                  //console.log(value.medida_id);
+                  $("#medida_id").append('<option value="'+value.medida_id+'">'+value.medida_simbolo+'</option>');
+                });
+              },
+              error: function(result){
+                alert("Error ao retornar dados!");
+              }
+            });
+          });
+        });
+        */
+
+        // var af_hidden = $(this).siblings("#af_hidden").val('sim');
+        // var preco = $(this).parents(".linhaDados").find(".precototal").val();
+        // $(this).parents(".form-group").find(".medida_id").html('').css("background-color", "yellow")
+        // Formas de capturar o texto de um select
+        // nomeproduto =  $("#meselect option:selected").text();
+        // nomeproduto = $(this).find('option:selected').text();
+        // nomeproduto = $(this).children("option:selected").text();
+        // nomeproduto = $("option:selected", this).text();
     </script>
 @endsection
 

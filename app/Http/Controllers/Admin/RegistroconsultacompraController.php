@@ -1005,6 +1005,61 @@ class RegistroconsultacompraController extends Controller
 
 
 
+    // Comparativo mensal de produto por regional
+    public function comparativomensalprodutoregional(Request $request)
+    {
+        if($request->produto_id && $request->medida_id && $request->regional_id && $request->mes_id && $request->ano_id ) {
+            $prod_id = $request->produto_id;
+            $medi_id = $request->medida_id;
+            $regi_id = $request->regional_id;
+            $mes_id = $request->mes_id;
+            $ano_id = $request->ano_id;
+
+            // Meses e anos para formatar perído da pesquisa
+            $mesespesquisa = [
+                '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            ];
+            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
+            //montando mes/ano
+            $mesano = $mesespesquisa[$mes_id]. "/".$ano_id;
+
+            $regional = Regional::findOrFail($regi_id);
+
+            //Recupera só o id do regional
+            $regionalId =  $regional->id;
+
+            $records = Bigtabledata::comparativomensalprodutoregional($prod_id, $medi_id, $regionalId, $mes_id, $ano_id);
+
+            //die($records);
+
+            if($records->count() <= 0){
+
+                $request->session()->flash('error_comparativomensalprodutoregional', 'Nenhum registro encontrado para esta pesquisa.');
+                //return redirect()->route('admin.registroconsultacompra.search');
+
+                //Redirecionamento com âncora
+                return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-dezesseis');
+
+
+            } else {
+
+                return view('admin.registrocompra.consultasadm.comparativomensalprodutoregional', compact('prod_id', 'medi_id', 'regi_id', 'mes_id', 'ano_id', 'regional', 'mesano', 'records'));
+
+            }
+
+        } else {
+
+            return redirect()->route('admin.registroconsultacompra.search');
+        }
+    }    
+
 
 
     //================================================================================

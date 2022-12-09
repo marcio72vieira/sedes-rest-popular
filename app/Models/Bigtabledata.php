@@ -322,7 +322,7 @@ class Bigtabledata extends Model
             
             return $records; 
      }
-      */
+     */
 
 
      public static function comparativomensalprodutomunicipio ($idprod, $idmedi, $idmuni, $mes, $ano)
@@ -342,6 +342,21 @@ class Bigtabledata extends Model
             return $records; 
      }
 
+
+     public static function comparativomensalprodutoregional ($idprod, $idmedi, $idregi, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('municipio_id','produto_id')
+            ->selectRaw('regional_nome, municipio_id, municipio_nome, produto_id, produto_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('municipio_nome', 'ASC')
+            ->where('produto_id', '=', $idprod)
+            ->where('medida_id', '=', $idmedi)
+            ->where('regional_id', '=', $idregi)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+            
+            return $records; 
+     }     
 
 
 
