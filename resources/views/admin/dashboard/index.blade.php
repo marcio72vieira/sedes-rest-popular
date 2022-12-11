@@ -276,8 +276,8 @@
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     
-                    <h6 class="m-0 font-weight-bold text-primary">GRÁFICOS</h6>
-                    <input type="month" id="start" name="start">
+                    {{-- <h6 class="m-0 font-weight-bold text-primary">GRÁFICOS</h6>
+                    <input type="month" id="start" name="start"> --}}
 
                     <div class="dropdown">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuTipografico"
@@ -287,8 +287,8 @@
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuTipografico">
                             <div class="dropdown-header">Tipo de Gráfico:</div>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-bars"></i></span> Coluna</a>
                             <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-bar"></i> Bar</a>
+                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-stream"></i></span> Coluna</a>
                             <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-pie"></i> Pizza</a>
                             <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-line"></i> Linha</a>
                         </div>
@@ -309,8 +309,11 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body"> {{-- <div class="chart-area"> <canvas id="myChart"></canvas></div> --}}
-                    <div>
-                        <canvas id="myChart"></canvas>
+                    <div id="areaparagraficos">
+                        <canvas id="myChartBar" style="display: none"></canvas>
+                        <canvas id="myChartColumn" style="display: none"></canvas>
+                        <canvas id="myChartPie" style="display: none"></canvas>
+                        <canvas id="myChartLine" style="display: none"></canvas>
                     </div>
                 </div>
             </div>
@@ -404,7 +407,24 @@
 
     <!-- INÍCIO MEUS GRÁFICOS -->
     <div class="card">
-        <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df">Comparativo Compra Normal x Agricultara Familiar</h5>
+        <div>
+            <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Comparativo Compra Normal x Agricultara Familiar</h5>
+            <div class="card-header"  style="float: right; margin-top: -41px;">
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
+                        Dados
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        aria-labelledby="dropdownMenuDados">
+                        <div class="dropdown-header">Dados:</div>
+                        <a class="dropdown-item" href="#">Categorias</a>
+                        <a class="dropdown-item" href="#">Produtos</a>
+                        <a class="dropdown-item" href="#">Regionais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div style="width: 100%; height: 20%; background-color: white;">
                 <div>
@@ -467,41 +487,61 @@
     <script>
         $(document).ready(function() {
 
-            //Renderiza gráfico padrão
-            //var ctx = document.getElementById('myChart').getContext('2d');
+            //Oculta todos os gráficos com execão do padrão (myChartBar)
+            $("#myChartColumn").hide();
+            $("#myChartPie").hide();
+            $("#myChartLine").hide();
 
-            renderGrafico("bar");
+            //Renderiza o gráfico padrão
+            $("#myChartBar").show();
+            renderGrafico("myChartBar","bar");
 
             $('.tipografico').on('click', function() {
 
-                //ctx.clearRect(0, 0, ctx.width, ctx.height);
-                // alert($(this).text());
-                
+                //Lipa espaço em branco no texto do link
                 var tipo = $(this).text().trim();
 
+                //Define um novo tipo de gráfico a ser gerado
                 var novotipo = "";
+                var novolocal = ";"
                 
+                //Testa o tipo de gráfico escolhido, define e exibte o novo tipo e oculta os demais
                 switch (tipo){
-                    case "Linha":
-                        novotipo = "line";
+                    case "Barra":
+                        novotipo = "bar";
+                        novolocal = "myChartBar";
+                        $("#myChartBar").show();
+                        $("#myChartColumn").hide();
+                        $("#myChartPie").hide();
+                        $("#myChartLine").hide();
                     break;
                     case "Coluna":
                         novotipo = "horizontalBar";
-                    break;
-                    case "Barra":
-                        novotipo = "bar";
-                    break;
-                    case "linha":
-                        novotipo = "line";
+                        novolocal = "myChartColumn";
+                        $("#myChartColumn").show();
+                        $("#myChartBar").hide();
+                        $("#myChartPie").hide();
+                        $("#myChartLine").hide();
                     break;
                     case "Pizza":
                         novotipo = "pie";
+                        novolocal = "myChartPie";
+                        $("#myChartPie").show();
+                        $("#myChartBar").hide();
+                        $("#myChartColumn").hide();
+                        $("#myChartLine").hide();
                     break;
-                    default:
-                        novotipo = "bar";
+                    case "Linha":
+                        novotipo = "line";
+                        novolocal = "myChartLine";
+                        $("#myChartLine").show();
+                        $("#myChartBar").hide();
+                        $("#myChartColumn").hide();
+                        $("#myChartPie").hide();
+                    break;
                 }
 
-                renderGrafico(novotipo);
+                renderGrafico(novolocal, novotipo);
 
                 //var produto_id = this.value;
 
@@ -533,9 +573,8 @@
         });
         
 
-        function renderGrafico(tipo){
-
-            var ctx = document.getElementById('myChart').getContext('2d');
+        function renderGrafico(local, tipo){
+            var ctx = document.getElementById(local).getContext('2d');
 
             var myChart = new Chart(ctx, {
                 type: tipo,
