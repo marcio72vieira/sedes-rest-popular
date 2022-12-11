@@ -25,6 +25,8 @@ class AcessoController extends Controller
         return view('acessologin');
     }
 
+    /*
+    MÉTODO ORIGINAL
     public function check(Request $request)
     {
 
@@ -56,6 +58,45 @@ class AcessoController extends Controller
         return redirect()->back()->withInput()->withErrors(['Usuário e/ou Senha não conferem!']);
 
     }
+    */
+
+    public function check(Request $request)
+    {
+
+        if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
+            return redirect()->back()->withInput()->withErrors(['O email não é válido!']);
+        }
+
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+
+        if(Auth::attempt($credentials)){
+            $userInfo = User::where('email', '=', $request->email)->first();
+
+            // Se o usário está com o perfil inativado sai da aplicação
+            if($userInfo->perfil == 'ina'){
+                Auth::logout();
+                return redirect()->back()->withInput()->withErrors(['Usuário inativo!']);
+            // Caso contrário (adm ou nut), registra as informações na seção e o redireciona para sua página padrão
+            }else{
+                $request->session()->put('idUsuarioLogado', $userInfo->id);
+                $request->session()->put('nameUsuarioLogado', $userInfo->name);
+                $request->session()->put('emailUsuarioLogado', $userInfo->email);
+
+                if($userInfo->perfil == 'adm'){
+                    return redirect()->route('admin.dashboard');
+                }else{
+                    return redirect()->route('admin.registroconsultacompra.index');
+                }
+            }
+        }
+
+        return redirect()->back()->withInput()->withErrors(['Usuário e/ou Senha não conferem!']);
+
+    }
+
 
 
     public function logout()

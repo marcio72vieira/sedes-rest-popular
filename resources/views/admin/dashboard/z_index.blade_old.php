@@ -275,35 +275,19 @@
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    
-                    <h6 class="m-0 font-weight-bold text-primary">GRÁFICOS</h6>
-                    <input type="month" id="start" name="start">
-
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuTipografico"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-                            Tipo de Gráfico
+                    <h6 class="m-0 font-weight-bold text-primary">(R$) Compras por Categorias</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuTipografico">
-                            <div class="dropdown-header">Tipo de Gráfico:</div>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-bars"></i></span> Coluna</a>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-bar"></i> Bar</a>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-pie"></i> Pizza</a>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-line"></i> Linha</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-                            Dados
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuDados">
-                            <div class="dropdown-header">Dados:</div>
-                            <a class="dropdown-item" href="#">Categorias</a>
-                            <a class="dropdown-item" href="#">Produtos</a>
-                            <a class="dropdown-item" href="#">Regionais</a>
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </div>
                 </div>
@@ -399,21 +383,170 @@
                 </div>
             </div>
         </div>
+
+
+
+
     </div>
     <!-- FIM Content Row GRÁFICOS -->
 
-    <!-- INÍCIO MEUS GRÁFICOS -->
-    <div class="card">
-        <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df">Comparativo Compra Normal x Agricultara Familiar</h5>
-        <div class="card-body">
-            <div style="width: 100%; height: 20%; background-color: white;">
-                <div>
-                    <canvas id="graficoLinha" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
+
+    {{--
+    <!-- INÍCIO Content Row PROJECTS, ILUSTRATION, APPROACH -->
+    <div class="row">
+
+        <!-- Content Column -->
+        <div class="col-lg-6 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                </div>
+                <div class="card-body">
+                    <h4 class="small font-weight-bold">Server Migration <span
+                            class="float-right">20%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Sales Tracking <span
+                            class="float-right">40%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
+                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Customer Database <span
+                            class="float-right">60%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar" role="progressbar" style="width: 60%"
+                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Payout Details <span
+                            class="float-right">80%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
+                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Account Setup <span
+                            class="float-right">Complete!</span></h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color System -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            Primary
+                            <div class="text-white-50 small">#4e73df</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-success text-white shadow">
+                        <div class="card-body">
+                            Success
+                            <div class="text-white-50 small">#1cc88a</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-info text-white shadow">
+                        <div class="card-body">
+                            Info
+                            <div class="text-white-50 small">#36b9cc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-warning text-white shadow">
+                        <div class="card-body">
+                            Warning
+                            <div class="text-white-50 small">#f6c23e</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-danger text-white shadow">
+                        <div class="card-body">
+                            Danger
+                            <div class="text-white-50 small">#e74a3b</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-secondary text-white shadow">
+                        <div class="card-body">
+                            Secondary
+                            <div class="text-white-50 small">#858796</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-light text-black shadow">
+                        <div class="card-body">
+                            Light
+                            <div class="text-black-50 small">#f8f9fc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-dark text-white shadow">
+                        <div class="card-body">
+                            Dark
+                            <div class="text-white-50 small">#5a5c69</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6 mb-4">
+            <!-- Illustrations -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                            src="{{asset('template/img/undraw_posting_photo.svg')}}" alt="">
+                    </div>
+                    <p>Add some quality, svg illustrations to your project courtesy of <a
+                            target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
+                        constantly updated collection of beautiful svg images that you can use
+                        completely free and without attribution!</p>
+                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
+                        unDraw &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Approach -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                </div>
+                <div class="card-body">
+                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
+                        CSS bloat and poor page performance. Custom CSS classes are used to create
+                        custom components and custom utility classes.</p>
+                    <p class="mb-0">Before working with this theme, you should become familiar with the
+                        Bootstrap framework, especially the utility classes.</p>
                 </div>
             </div>
         </div>
-      </div>
-    <!-- FIM MEUS GRÁFICOS -->
+
+
+    </div>
+    <!-- FIM Content Row PROJECTS, ILUSTRATION, APPROACH -->
+    --}}
 
 </div>
 
@@ -421,178 +554,59 @@
 
 @section('scripts')
     @php
-        // CONFIGURANDO OS LABELS PARA OS GRÁFICOS DO TIPO BAR, PIZZA E BARRA
         if(count($dataRecords)){
-            //Recuperando só as chaves do array, que será o label dos registros
             $labelRecords = array_keys($dataRecords);
 
             $arrLabel = [];
             foreach($labelRecords as $labelRecord){
-                // Substitui caracteres especiais no nome de um campo por espaço vazio, para evitar erro.
-                // Ex: farinha D'agua = faria Dagua
-                $arrbusca = ["'","/","."];
-                $arrtroca = [""];
-                $labelRecord = str_replace($arrbusca, $arrtroca, $labelRecord);
-
-                // Faz uma concatenação do tipo: 'labelX', 'labelY', 'labelZ', 'labelW', etc... 
-                // para gráficos do tipo BAR, PIZZA, COLUNA
                 $arrLabel[] = "'".$labelRecord."'";     //dd($arrLabel);
             }
-
-            //$labells = implode(',', $labelRecords);     //echo $labells;
-        }
-
-        // Obtendo os valores de preço AF
-        if(count($dataRecordsAf)){
-            $dataAf =  array_values($dataRecordsAf);
-            
-        }
-        // Obtendo os valores de preço NORMAL
-        if(count($dataRecordsNormal)){
-            $dataNormal =  array_values($dataRecordsNormal);
-            
-        }
-
-        // Obtendo os valores das méidas de preços por seman AF e NORMAL
-        if(count($dataRecordsMediaPrecoAf)){
-            $dataAf =  array_values($dataRecordsMediaPrecoAf);
-        }
-        if(count($dataRecordsMediaPrecoNorm)){
-            $dataNormal =  array_values($dataRecordsMediaPrecoNorm);
-        }
-        
+            $labells = implode(',', $labelRecords);     //echo $labells;
+        }   
     @endphp
 
 
     <script>
-        $(document).ready(function() {
 
-            //Renderiza gráfico padrão
-            //var ctx = document.getElementById('myChart').getContext('2d');
-
-            renderGrafico("bar");
-
-            $('.tipografico').on('click', function() {
-
-                //ctx.clearRect(0, 0, ctx.width, ctx.height);
-                // alert($(this).text());
-                
-                var tipo = $(this).text().trim();
-
-                var novotipo = "";
-                
-                switch (tipo){
-                    case "Linha":
-                        novotipo = "line";
-                    break;
-                    case "Coluna":
-                        novotipo = "horizontalBar";
-                    break;
-                    case "Barra":
-                        novotipo = "bar";
-                    break;
-                    case "linha":
-                        novotipo = "line";
-                    break;
-                    case "Pizza":
-                        novotipo = "pie";
-                    break;
-                    default:
-                        novotipo = "bar";
-                }
-
-                renderGrafico(novotipo);
-
-                //var produto_id = this.value;
-
-                //$("#medida_id").html('');
-
-                // $.ajax({
-                //     url:"{{route('admin.registroconsultacompra.ajaxgetmedidaproduto')}}",
-                //     type: "GET",
-                //     data: {
-                //         produto_id: produto_id
-                //     },
-
-                //     dataType : 'json',
-                //     success: function(result){
-                //         $('#medida_id').html('<option value="" disabled>Medida...</option>');
-                //         $.each(result.medidas,function(key,value){
-                //             //console.log(value.medida_id);
-                //             $("#medida_id").append('<option value="'+value.medida_id+'">'+value.medida_simbolo+'</option>');
-                //         });
-                //     },
-                //     error: function(result){
-                //         alert("Error ao retornar dados!");
-                //     }
-                // });
-
-            });
-
-            
-        });
-        
-
-        function renderGrafico(tipo){
-
-            var ctx = document.getElementById('myChart').getContext('2d');
-
-            var myChart = new Chart(ctx, {
-                type: tipo,
-                data: {
-                    //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
-                    labels: [ {!! implode(',', $arrLabel) !!} ],
-                    datasets: [{
-                        label: 'Categoria',
-                        data: [ {{ implode(',', $dataRecords) }} ],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(255, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(100, 159, 64, 0.2)',
-                            'rgba(100, 255, 192, 0.2)',
-                            'rgba(183, 90, 255, 0.2)',
-                            'rgba(255, 159, 100, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(255, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(100, 159, 64, 1)',
-                            'rgba(100, 255, 192, 1)',
-                            'rgba(183, 90, 255, 1)',
-                            'rgba(255, 159, 100, 1)'
-                        ],
-                        borderWidth: 2,
-                        barPercentage: 0.5,
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
+                labels: [ {!! implode(',', $arrLabel) !!} ],
+                datasets: [{
+                    label: 'Compra por Categoria',
+                    data: [ {{ implode(',', $dataRecords) }} ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1,
+                    barPercentage: 0.5,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
                     }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    title: {
-                        display: true,
-                        text: 'Gastos com compra (R$)'
-                    },
                 }
-            });
-        }        
-
+            }
+        });
 
 
         // Pie Chart Example
@@ -643,19 +657,14 @@
                         label: 'Compra Normal',
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
-                        //data: [0, 10, 5, 2, 20, 30, 45],
-                        //Digamos: pegar o preço do arroz comprados em todos os restaurantes em cada mês e fazer uma média
-                        //Digamos: rest Liberdade, Coroadinho, São Jose de Ribamar, Bacuri (em imperatriz)
-                        data: [4.50, 4.80, 5, 5.50, 5.80, 5.80, 5.80, 6, 6.2, 5.80, 4.90, 6],
+                        data: [0, 10, 5, 2, 20, 30, 45],
                         fill: false
                     },
                     {
                         label: 'Compra AF',
                         backgroundColor: 'rgb(0, 0, 0)',
                         borderColor: 'rgb(255, 99, 132)',
-                        //data: [0, 20, 10, 12, 0, 60, 85],
-                        //Digamos o preço do arroz da AF
-                        data: [4.50, 4.50, 4, 4.25, 4.40, 4.80, 5.80, 5.80, 6.2, 5.80, 6, 6],
+                        data: [0, 20, 10, 12, 0, 60, 85],
                         fill: false
                     }
                 ]
@@ -668,45 +677,109 @@
         });
 
 
-        var ctx = document.getElementById('graficoLinha').getContext('2d');
+        //GŔAFICOS ORIGINAIS
+        /*
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+        */
+
+        /*
+        // Pie Chart Example
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["Direct", "Referral", "Social"],
+                datasets: [{
+                data: [55, 30, 15],
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+                },
+                legend: {
+                display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+        */
+
+
+        /*
+        var ctx = document.getElementById('myLineChart').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
             type: 'line',
 
             // The data for our dataset
             data: {
-                //labels: ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'],
-                labels: ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11','s12','s13','s14','s15','s16','s17','s18','s19','s20','s21','s22','s23','s24','s25','s26','s27','s28','s29','s30','s31','s32','s33','s34','s35','s36','s37','s38','s39','s40','s41','s42','s43','s44','s45','s46','s47','s48','s49','s50','s51','s52'],
-                datasets: [
-                    {
-                        label: 'Compra Normal',
-                        backgroundColor: 'rgb(255, 0, 0, 0.2)',
-                        borderColor: 'rgb(255, 0, 0, 0.2)',
-                        //data: [0, 10, 5, 2, 20, 30, 45],
-                        //Digamos: pegar o preço do arroz comprados em todos os restaurantes em cada mês e fazer uma média
-                        //Digamos: rest Liberdade, Coroadinho, São Jose de Ribamar, Bacuri (em imperatriz)
-                        //data: [3.80, 4.80, 5, 5.50, 5.80, 5.80, 5.80, 6, 6.2, 5.80, 4.90, 6],
-                        data: [ {{ implode(',', $dataNormal) }} ],
-                        fill: true
-                    },
-                    {
-                        label: 'Compra AF',
-                        backgroundColor: 'rgb(0, 0, 255, 0.2)',
-                        borderColor: 'rgb(0, 0, 255, 0.2)',
-                        //data: [0, 20, 10, 12, 0, 60, 85],
-                        //Digamos o preço do arroz da AF
-                        //data: [3.50, 4.50, 4, 4.25, 4.40, 4.80, 5.80, 5.80, 6.2, 5.80, 6, 6],
-                        data: [ {{ implode(',', $dataAf) }} ],
-                        fill: true
-                    }
-                ]
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [0, 10, 5, 2, 20, 30, 45],
+                    fill: false
+                }]
             },
 
             // Configuration options go here
             options: {
 
             }
-        });        
+        });
+        */
+
+
+        
 
     </script>
 

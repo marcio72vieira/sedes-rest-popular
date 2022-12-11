@@ -38,19 +38,70 @@ class DashboardController extends Controller
         //Obs:  O resultado de $records é um array, ou seja, uma collect, lido pela função dd(). Se eu quiser transformá-lo 
         //      em um Json que é lido pela função die(), eu coloco: json_encode($records). die(json_encode($records));
 
-        $records = DB::select(DB::raw('SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY categoria_nome ASC'));
-        //dd($records);
-
+        //Dados Categoria
+        //$records = DB::select(DB::raw('SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY categoria_nome ASC'));
+        //$dataRecords = [];
+        //foreach($records as $value) {
+        //    $dataRecords[$value->categoria_nome] =  $value->totalcompra;
+        //}
+        
+        //Dados Produtos
+        $records = DB::select(DB::raw('SELECT produto_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_nome ORDER BY produto_nome ASC'));
         $dataRecords = [];
         foreach($records as $value) {
-            $dataRecords[$value->categoria_nome] =  $value->totalcompra;
+            $dataRecords[$value->produto_nome] =  $value->totalcompra;
         }
+
+        //Dados Preço AF
+        $records = DB::select(DB::raw('SELECT produto_nome, semana_nome, af, preco, data_ini FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY data_ini ASC, preco ASC'));
+        $dataRecordsAf = [];
+        $dataRecordsNormal = [];
+        foreach($records as $value) {
+            if($value->af == "sim"){
+                $dataRecordsAf[] = $value->preco ;
+            }else{
+                $dataRecordsNormal[] = $value->preco;
+            }
+        }
+
+        //Dados Méida de preco AF e NORMAL
+        $records = DB::select(DB::raw('SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));        
+        $dataRecordsMediaPrecoAf = [];
+        $dataRecordsMediaPrecoNorm = [];
+        foreach($records as $value) {
+            if($value->semana == 1){
+                $dataRecordsMediaPrecoAf[] = $value->mdprcaf;
+                $dataRecordsMediaPrecoNorm[] = $value->mdprcnorm;
+            }
+            if($value->semana == 2){
+                $dataRecordsMediaPrecoAf[] = $value->mdprcaf;
+                $dataRecordsMediaPrecoNorm[] = $value->mdprcnorm;
+            }
+            if($value->semana == 3){
+                $dataRecordsMediaPrecoAf[] = $value->mdprcaf;
+                $dataRecordsMediaPrecoNorm[] = $value->mdprcnorm;
+            }
+            if($value->semana == 4){
+                $dataRecordsMediaPrecoAf[] = $value->mdprcaf;
+                $dataRecordsMediaPrecoNorm[] = $value->mdprcnorm;
+            }
+            if($value->semana == 5){
+                $dataRecordsMediaPrecoAf[] = $value->mdprcaf;
+                $dataRecordsMediaPrecoNorm[] = $value->mdprcnorm;
+            }
+        }
+        
+        
+
+        //dd($records);
         //dd($dataRecords);
+        //dd($dataRecordsNormal); 
+        //dd($dataRecordsMediaPrecoAf);
 
 
 
         return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totCompras',
                                             'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
-                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords'));
+                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'dataRecordsAf', 'dataRecordsNormal', 'dataRecordsMediaPrecoAf', 'dataRecordsMediaPrecoNorm'));
     }
 }

@@ -728,13 +728,14 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.chartjs.org/docs/2.9.4/
 // https://stackoverflow.com/questions/41887460/select-list-is-not-in-group-by-clause-and-contains-nonaggregated-column-inc
 // https://laracasts.com/discuss/channels/eloquent/the-sql-select-distinct-statement
+// https://stackoverflow.com/questions/2142535/how-to-clear-the-canvas-for-redrawing
+// https://acervolima.com/php-funcao-str_replace/
+// https://stackoverflow.com/questions/57301625/input-date-field-should-display-month-year-only
+// https://stackoverflow.com/questions/31131275/create-a-multi-line-chart-using-chart-js
+// https://www.chartjs.org/docs/latest/samples/area/line-datasets.html
+
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
-
-
-
-
-
 
 
 // https://www.youtube.com/watch?v=69pTm_GBpsE
@@ -752,9 +753,31 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.youtube.com/watch?v=kPFG5Dw63qI
 
 
-
 how I know if an or other event in jquery foi trigged
 How to Enable jQuery Each on Dynamically Added Content
+
+=================================
+SELECT'S PARA GERAÇÃO DE GRÁFICOS
+=================================
+SELECT categoria_nome FROM bigtable_data WHERE MONTH(data_ini) = '11';
+SELECT categoria_nome, quantidade, precototal FROM bigtable_data WHERE MONTH(data_ini) = 11;
+SELECT categoria_id, categoria_nome, quantidade, precototal FROM bigtable_data WHERE MONTH(data_ini) = 11 AND categoria_id = 1;
+SELECT categoria_id, categoria_nome, SUM(quantidade), SUM(precototal) FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id;
+SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY categoria_nome ASC;
+SELECT produto_nome, preco FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY preco ASC 
+SELECT produto_nome, af, preco, data_ini FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY data_ini ASC, preco ASC
+SELECT produto_nome, semana_nome, af, preco, data_ini FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY data_ini ASC, preco ASC
+
+SELECT produto_id, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
+SELECT identificacao, produto_id, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE restaurante_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
+SELECT municipio_nome, produto_id, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE municipio_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
+SELECT regional_nome, produto_id, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
+
+
+*PROVA OK*
+SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
+SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
+SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC 
 
 
 =================================================================================================
