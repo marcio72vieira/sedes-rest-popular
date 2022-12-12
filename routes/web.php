@@ -226,3 +226,4 @@ Route::get('admin/registroconsultacompra/{idreg}/{mes}/{ano}/pdf/relpdfmapamensa
 Route::get('admin/registroconsultacompra/{mes}/{ano}/pdf/relpdfmapamensalgeralcategoria', [RegistroconsultacompraController::class, 'relpdfmapamensalgeralcategoria'])->name('admin.registroconsultacompra.relpdfmapamensalgeralcategoria')->middleware(['auth']);
 
 Route::get('admin/registroconsultacompra/{idprod}/{idmedi}/{idmun}/{mes}/{ano}/pdf/relpdfcomparativomensalprodutomunicipio', [RegistroconsultacompraController::class, 'relpdfcomparativomensalprodutomunicipio'])->name('admin.registroconsultacompra.relpdfcomparativomensalprodutomunicipio')->middleware(['auth']);
+Route::get('admin/registroconsultacompra/{idprod}/{idmedi}/{idreg}/{mes}/{ano}/pdf/relpdfcomparativomensalprodutoregional', [RegistroconsultacompraController::class, 'relpdfcomparativomensalprodutoregional'])->name('admin.registroconsultacompra.relpdfcomparativomensalprodutoregional')->middleware(['auth']);

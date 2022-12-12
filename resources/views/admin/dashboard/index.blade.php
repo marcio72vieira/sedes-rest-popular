@@ -275,7 +275,7 @@
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    
+
                     {{-- <h6 class="m-0 font-weight-bold text-primary">GRÁFICOS</h6>
                     <input type="month" id="start" name="start"> --}}
 
@@ -287,8 +287,8 @@
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuTipografico">
                             <div class="dropdown-header">Tipo de Gráfico:</div>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-bar"></i> Bar</a>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-stream"></i></span> Coluna</a>
+                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-bar"></i></span> Coluna</a>
+                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-stream"></i> Barra</a>
                             <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-pie"></i> Pizza</a>
                             <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-line"></i> Linha</a>
                         </div>
@@ -310,8 +310,8 @@
                 <!-- Card Body -->
                 <div class="card-body"> {{-- <div class="chart-area"> <canvas id="myChart"></canvas></div> --}}
                     <div id="areaparagraficos">
-                        <canvas id="myChartBar" style="display: none"></canvas>
                         <canvas id="myChartColumn" style="display: none"></canvas>
+                        <canvas id="myChartBar" style="display: none"></canvas>
                         <canvas id="myChartPie" style="display: none"></canvas>
                         <canvas id="myChartLine" style="display: none"></canvas>
                     </div>
@@ -347,15 +347,15 @@
                         <canvas id="myPieChart"></canvas>
                     </div>
                     {{--
-                        @php 
-                            if(count($dataRecords)){ 
+                        @php
+                            if(count($dataRecords)){
                                 foreach($dataRecords as $key => $values){
                                     echo '<span class="mr-2">  <i class="fas fa-circle"></i>'.$key.' </span>';
                                 }
-                            }   
-                        @endphp 
+                            }
+                        @endphp
                     --}}
-                    
+
                     <div class="mt-4 text-center small">
                         <span class="mr-2">
                             <i class="fas fa-circle text-primary"></i> Direct
@@ -454,7 +454,7 @@
                 $arrtroca = [""];
                 $labelRecord = str_replace($arrbusca, $arrtroca, $labelRecord);
 
-                // Faz uma concatenação do tipo: 'labelX', 'labelY', 'labelZ', 'labelW', etc... 
+                // Faz uma concatenação do tipo: 'labelX', 'labelY', 'labelZ', 'labelW', etc...
                 // para gráficos do tipo BAR, PIZZA, COLUNA
                 $arrLabel[] = "'".$labelRecord."'";     //dd($arrLabel);
             }
@@ -465,12 +465,12 @@
         // Obtendo os valores de preço AF
         if(count($dataRecordsAf)){
             $dataAf =  array_values($dataRecordsAf);
-            
+
         }
         // Obtendo os valores de preço NORMAL
         if(count($dataRecordsNormal)){
             $dataNormal =  array_values($dataRecordsNormal);
-            
+
         }
 
         // Obtendo os valores das méidas de preços por seman AF e NORMAL
@@ -480,7 +480,7 @@
         if(count($dataRecordsMediaPrecoNorm)){
             $dataNormal =  array_values($dataRecordsMediaPrecoNorm);
         }
-        
+
     @endphp
 
 
@@ -501,13 +501,13 @@
                 //Lipa espaço em branco no texto do link
                 var tipo = $(this).text().trim();
 
-                //Define um novo tipo de gráfico a ser gerado
+                //Define um novo tipo de gráfico a ser gerado no canvas apropriado
                 var novotipo = "";
                 var novolocal = ";"
-                
+
                 //Testa o tipo de gráfico escolhido, define e exibte o novo tipo e oculta os demais
                 switch (tipo){
-                    case "Barra":
+                    case "Coluna":
                         novotipo = "bar";
                         novolocal = "myChartBar";
                         $("#myChartBar").show();
@@ -515,7 +515,7 @@
                         $("#myChartPie").hide();
                         $("#myChartLine").hide();
                     break;
-                    case "Coluna":
+                    case "Barra":
                         novotipo = "horizontalBar";
                         novolocal = "myChartColumn";
                         $("#myChartColumn").show();
@@ -569,14 +569,14 @@
 
             });
 
-            
+
         });
-        
+
 
         function renderGrafico(local, tipo){
-            var ctx = document.getElementById(local).getContext('2d');
+            const ctx = document.getElementById(local).getContext('2d');
 
-            var myChart = new Chart(ctx, {
+            const myChart = new Chart(ctx, {
                 type: tipo,
                 data: {
                     //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
@@ -585,18 +585,18 @@
                         label: 'Categoria',
                         data: [ {{ implode(',', $dataRecords) }} ],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(255, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(100, 159, 64, 0.2)',
-                            'rgba(100, 255, 192, 0.2)',
-                            'rgba(183, 90, 255, 0.2)',
-                            'rgba(255, 159, 100, 0.2)'
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)',
+                            'rgba(255, 159, 64, 0.5)',
+                            'rgba(255, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)',
+                            'rgba(100, 159, 64, 0.5)',
+                            'rgba(100, 255, 192, 0.5)',
+                            'rgba(183, 90, 255, 0.5)',
+                            'rgba(255, 159, 100, 0.5)'
                         ],
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
@@ -613,7 +613,9 @@
                             'rgba(255, 159, 100, 1)'
                         ],
                         borderWidth: 2,
-                        barPercentage: 0.5,
+                        barPercentage: 0.5, //Determina a largura da coluna ou barra
+                        fill: false,
+
                     }]
                 },
                 options: {
@@ -630,7 +632,16 @@
                     },
                 }
             });
-        }        
+
+            //Configurações personalizadas se grafico é do tipo linha
+            if(myChart.config.type == 'line'){
+                myChart.data.datasets[0].backgroundColor = 'rgb(255, 0, 0, 0.5)';
+                myChart.data.datasets[0].borderColor = 'rgb(0, 0, 0, 0.2)';
+                myChart.data.datasets[0].borderWidth = 3;
+                myChart.data.datasets[0].fill = true;
+                myChart.update();
+            }
+        }
 
 
 
@@ -745,7 +756,7 @@
             options: {
 
             }
-        });        
+        });
 
     </script>
 

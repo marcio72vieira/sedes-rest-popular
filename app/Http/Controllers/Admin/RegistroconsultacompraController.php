@@ -520,7 +520,7 @@ class RegistroconsultacompraController extends Controller
 
                 $request->session()->flash('error_mapamensalprodutorestaurante', 'Nenhum registro encontrado para esta pesquisa.');
                 //return redirect()->route('admin.registroconsultacompra.search');
-                
+
                 //Redirecionamento com âncora
                 return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-sete');
 
@@ -589,7 +589,7 @@ class RegistroconsultacompraController extends Controller
 
             return redirect()->route('admin.registroconsultacompra.search');
         }
-    }    
+    }
 
 
 
@@ -645,7 +645,7 @@ class RegistroconsultacompraController extends Controller
 
             return redirect()->route('admin.registroconsultacompra.search');
         }
-    }    
+    }
 
 
 
@@ -689,11 +689,11 @@ class RegistroconsultacompraController extends Controller
             //Junto os elementos da colection como uma string ligadas por uma vírgula, pelo método ->join();
             $regionais = $regionaisenvolvidas->join(', ');
 
-            
+
             if($records->count() <= 0){
 
                 $request->session()->flash('error_mapamensalgeralproduto', 'Nenhum registro encontrado para esta pesquisa.');
-                
+
                 //Redirecionamento com âncora
                 return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-onze');
 
@@ -748,7 +748,7 @@ class RegistroconsultacompraController extends Controller
             if($records->count() <= 0){
 
                 $request->session()->flash('error_mapamensalcategoriarestaurante', 'Nenhum registro encontrado para esta pesquisa.');
-                
+
                 //Redirecionamento com âncora
                 return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-onze');
 
@@ -782,7 +782,7 @@ class RegistroconsultacompraController extends Controller
                 '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
-            
+
 
             // Protege inserção de mês inexistente
             if($mes_id < 1 || $mes_id > 12) {
@@ -822,7 +822,7 @@ class RegistroconsultacompraController extends Controller
             return redirect()->route('admin.registroconsultacompra.search');
         }
     }
-    
+
 
 
 
@@ -877,7 +877,7 @@ class RegistroconsultacompraController extends Controller
 
             return redirect()->route('admin.registroconsultacompra.search');
         }
-    }    
+    }
 
 
 
@@ -920,11 +920,11 @@ class RegistroconsultacompraController extends Controller
             //Junto os elementos da colection como uma string ligadas por uma vírgula, pelo método ->join();
             $regionais = $regionaisenvolvidas->join(', ');
 
-            
+
             if($records->count() <= 0){
 
                 $request->session()->flash('error_mapamensalgeralcategoria', 'Nenhum registro encontrado para esta pesquisa.');
-                
+
                 //Redirecionamento com âncora
                 return redirect()->to(route('admin.registroconsultacompra.search').'#anchor-quatorze');
 
@@ -943,7 +943,7 @@ class RegistroconsultacompraController extends Controller
 
     //========================================
     // COMPARATIVO DE PRODUTOS MES/ANO
-    //========================================    
+    //========================================
 
     // Comparativo mensal de produto por município
     public function comparativomensalprodutomunicipio(Request $request)
@@ -1001,7 +1001,7 @@ class RegistroconsultacompraController extends Controller
 
             return redirect()->route('admin.registroconsultacompra.search');
         }
-    }    
+    }
 
 
 
@@ -1058,7 +1058,7 @@ class RegistroconsultacompraController extends Controller
 
             return redirect()->route('admin.registroconsultacompra.search');
         }
-    }    
+    }
 
 
 
@@ -1234,7 +1234,7 @@ class RegistroconsultacompraController extends Controller
 
         //Obs: Com o método 'DISTINCT', é necessário colocar os campos que se deseja retornar no método GET
         $data['medidas'] = Bigtabledata::distinct()->where($condicoes)->orderBy('medida_simbolo', 'ASC')->get(['medida_id', 'medida_simbolo']);
-        
+
         return response()->json($data);
     }
 
@@ -2281,7 +2281,7 @@ class RegistroconsultacompraController extends Controller
         $mpdf->WriteHTML($html);
         $mpdf->Output($fileName, 'I');
 
-    }    
+    }
 
 
 
@@ -2421,7 +2421,7 @@ class RegistroconsultacompraController extends Controller
         }
         //Recupero o nome das regionais de forma única em uma outra collection
         $regionaisenvolvidas = $regionaisnome->unique();
-        
+
         //Junto os elementos da colection como uma string ligadas por uma vírgula
         $regionais = $regionaisenvolvidas->join(', ');
 
@@ -2524,7 +2524,7 @@ class RegistroconsultacompraController extends Controller
         $mpdf->WriteHTML($html);
         $mpdf->Output($fileName, 'I');
 
-    }    
+    }
 
 
     // Relatório PDF Mapa mensal de categorias de produtos adquiridos por unidade no restaurante
@@ -2751,7 +2751,7 @@ class RegistroconsultacompraController extends Controller
         $mpdf->WriteHTML($html);
         $mpdf->Output($fileName, 'I');
 
-    }    
+    }
 
 
 
@@ -2866,7 +2866,7 @@ class RegistroconsultacompraController extends Controller
         $mpdf->WriteHTML($html);
         $mpdf->Output($fileName, 'I');
 
-    }    
+    }
 
 
 
@@ -2892,7 +2892,7 @@ class RegistroconsultacompraController extends Controller
         }
         //Recupero o nome das regionais de forma única em uma outra collection
         $regionaisenvolvidas = $regionaisnome->unique();
-        
+
         //Junto os elementos da colection como uma string ligadas por uma vírgula
         $regionais = $regionaisenvolvidas->join(', ');
 
@@ -2995,10 +2995,10 @@ class RegistroconsultacompraController extends Controller
         $mpdf->WriteHTML($html);
         $mpdf->Output($fileName, 'I');
 
-    }    
+    }
 
 
-    
+
 
 
 
@@ -3109,7 +3109,118 @@ class RegistroconsultacompraController extends Controller
         $mpdf->WriteHTML($html);
         $mpdf->Output($fileName, 'I');
 
-    }    
+    }
+
+
+
+    // Relatório PDF Comparativo mensal de produtos adquiridos na regional
+    public function relpdfcomparativomensalprodutoregional($prod, $medi, $regi, $mes, $ano)
+    {
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $regional = Regional::findOrFail($regi);
+
+        $regionalId = $regional->id;
+
+        // Obtendo os dados
+        $records = Bigtabledata::comparativomensalprodutoregional($prod, $medi, $regionalId, $mes, $ano);
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('comparativomensalprodutoregional'.'.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'orientation' => 'L',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 43,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 108px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 540px;" class="titulo-rel">
+                        COMPARATIVO MENSAL DE PRODUTOS ADQUIRIDOS NA REGIONAL <br>'.$records[0]->regional_nome.': '.$meses[$mes].'/'.$ano.' - '.Str::upper($records[0]->produto_nome).' ('.Str::upper($records[0]->medida_simbolo).')
+                    </td>
+                </tr>
+            </table>
+
+            <table style="width:1080px; border-collapse: collapse">
+                <tr>
+                    <td rowspan="3" width="40px" class="col-header-table" style="text-align: center">Id</td>
+                    <td rowspan="3" width="320px" class="col-header-table" style="text-align: center">Municípios</td>
+                    <td colspan="8" width="480px" class="col-header-table" style="text-align: center">COMPRAS</td>
+                    <td rowspan="2" colspan="2" width="120px" class="col-header-table" style="text-align: center">TOTAL</td>
+                    <td rowspan="2" colspan="2" width="120px" class="col-header-table" style="text-align: center"> &#177; (%) AF</td>
+                </tr>
+                <tr>
+                    <td colspan="4" width="240px" class="col-header-table" style="text-align: center">Normal</td>
+                    <td colspan="4" width="240px" class="col-header-table" style="text-align: center">AF</td>
+                </tr>
+                <tr>
+                    <td width="50px" class="col-header-table" style="text-align: center">nº vz</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">p.m (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">nº vz</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">p.m (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">Valor (R$)</td>
+                    <td width="50px" class="col-header-table" style="text-align: center">% Qtd.</td>
+                    <td width="70px" class="col-header-table" style="text-align: center">% Valor (R$)</td>
+                </tr>
+            </table>
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:1080px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="200px">São Luis(MA) {DATE d/m/Y H:i}</td>
+                    <td width="830px" align="left">
+                        <span style="margin-right: 50px"><strong>Und.</strong> = unidade de medida;</span>
+                        <span style="margin-right: 50px"><strong>nº vz</strong> = número de vezes comprado;</span>
+                        <span style="margin-right: 50px"><strong>Qtd.</strong> = quantidade comprada;</span>
+                        <span style="margin-right: 50px"><strong>p.m</strong> = preço médio;</span>
+                    </td>
+                    <td width="50px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.registrocompra.pdf.pdfcomparativomensalprodutoregional', compact('records'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.produto.pdf.pdfproduto')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
 
 
 

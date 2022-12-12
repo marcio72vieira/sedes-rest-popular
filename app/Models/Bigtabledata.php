@@ -173,8 +173,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
 
@@ -191,8 +191,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
 
@@ -209,8 +209,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
 
@@ -225,8 +225,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      } */
 
 
@@ -239,8 +239,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
 
@@ -256,8 +256,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
 
@@ -271,8 +271,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
 
@@ -286,8 +286,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
 
@@ -301,11 +301,11 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
-     /* 
+     /*
      //Query Original, faz a busca no banco independente da unidade de medida, ou seja, busca todas
      public static function comparativomensalprodutomunicipio ($idprod, $idmuni, $mes, $ano)
      {
@@ -319,8 +319,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
      */
 
@@ -338,8 +338,8 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
+
+            return $records;
      }
 
 
@@ -354,9 +354,9 @@ class Bigtabledata extends Model
             ->whereMonth('data_ini', '=', $mes)
             ->whereYear('data_ini', '=', $ano)
             ->get();
-            
-            return $records; 
-     }     
+
+            return $records;
+     }
 
 
 
@@ -365,7 +365,7 @@ class Bigtabledata extends Model
 
 
 
-     
+
 
 
 }

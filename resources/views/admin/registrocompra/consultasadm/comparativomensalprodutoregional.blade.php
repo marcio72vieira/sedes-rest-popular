@@ -27,11 +27,11 @@
                                 <th colspan="3">Região: {{ $records[0]->regional_nome }} </th>
                                 <th colspan="8">Produto: {{ Str::upper($records[0]->produto_nome) }} ({{ Str::upper($records[0]->medida_simbolo) }})</th>
                                 <th colspan="2">Mês:{{ $mesano }}</th>
-                                <th colspan="2" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcomparativomensalprodutomunicipio', [$prod_id, $medi_id, $regi_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
+                                <th colspan="2" style="text-align: right"><a class="btn btn-primary btn-danger btn-sm" href="{{ route('admin.registroconsultacompra.relpdfcomparativomensalprodutoregional', [$prod_id, $medi_id, $regi_id, $mes_id, $ano_id]) }}" role="button" target="_blank"><i class="far fa-file-pdf"  style="font-size: 15px;"></i> pdf</a></th>
                             </tr>
                             <tr>
                                 <th scope="col" rowspan="3" style="width: 40px; text-align: center; vertical-align:middle">Id</th>
-                                <th colspan="2" rowspan="3" scope="col"  style="width: 200px; text-align: center; vertical-align:middle">Municípios</th>                                
+                                <th colspan="2" rowspan="3" scope="col"  style="width: 200px; text-align: center; vertical-align:middle">Municípios</th>
                                 <th colspan="8" scope="col" style="width: 100px; text-align: center; vertical-align:middle">COMPRAS</th>
                                 <th colspan="2" rowspan="2" scope="col" style="width: 100px; text-align: center; vertical-align:middle">TOTAL</th>
                                 <th colspan="2" rowspan="2" scope="col" style="width: 100px; text-align: center; vertical-align:middle"> &#177; (%) AF</th>
