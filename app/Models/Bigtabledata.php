@@ -359,6 +359,25 @@ class Bigtabledata extends Model
      }
 
 
+     //Este método agrupa pela regional (diferentemente do método mapamensalgeralproduto), porque este método
+     //já possui o produto_id e a medida_id definidos previamente, ou seja, deve-se procurar por eles especificamente
+     //nas cláusulas where enquanto que no método mapamensalgeralproduto não, ou seja, deve-se agrupar os registros
+     //pelo produto_id e medida_id.
+     public static function comparativomensalgeralproduto ($idprod, $idmedi, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('regional_id')
+            ->selectRaw('regional_id, regional_nome, produto_id, produto_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->orderBy('regional_nome', 'ASC')
+            ->where('produto_id', '=', $idprod)
+            ->where('medida_id', '=', $idmedi)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+
+            return $records;
+     }
+
+
 
 
 
