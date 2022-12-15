@@ -99,7 +99,7 @@
                                     </tr>
                                 @endforeach
                                 <tr class="bg-gray-100">
-                                    <td colspan="3" style="text-align: right"><strong>Totais R$</strong>{{ $totalsomaprecounitarionormal }} </td>
+                                    <td colspan="3" style="text-align: right"><strong>Totais R$</strong></td>
                                     <td style="text-align: right"><strong>{{ $totalcompranumvezesnormal }}</strong></td>
                                     <td style="text-align: right"><strong>{{ mrc_turn_value($totalcompraquantidadenormal) }}</strong></td>
                                     <td style="text-align: right"><strong>{{ mrc_turn_value($totalcomprapreconormal) }}</strong> </td>

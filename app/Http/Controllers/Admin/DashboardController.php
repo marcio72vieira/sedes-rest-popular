@@ -46,7 +46,8 @@ class DashboardController extends Controller
         //}
         
         //Dados Produtos
-        $records = DB::select(DB::raw('SELECT produto_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_nome ORDER BY produto_nome ASC'));
+        //$records = DB::select(DB::raw('SELECT produto_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_nome ORDER BY produto_nome ASC'));
+        $records = DB::select(DB::raw('SELECT produto_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_nome ORDER BY totalcompra ASC'));
         $dataRecords = [];
         foreach($records as $value) {
             $dataRecords[$value->produto_nome] =  $value->totalcompra;

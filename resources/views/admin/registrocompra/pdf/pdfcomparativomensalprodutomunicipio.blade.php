@@ -11,8 +11,15 @@
 <body>
     <table style="width: 1080px; border-collapse: collapse;">
         @php
-            $somacomprapreconormal = 0;
-            $somacomprarecoaf = 0;
+            $totalcompranumvezesnormal = 0;
+            $totalcompraquantidadenormal = 0;
+            $totalcomprapreconormal = 0;
+            $totalsomaprecounitarionormal = 0;
+
+            $totalcompranumvezesaf = 0;
+            $totalcompraquantidadeaf = 0;
+            $totalcompraprecoaf = 0;
+            $totalsomaprecounitarioaf = 0;
         @endphp
         @foreach ($records as $item)
             <tr @if($loop->even) style="background-color: #e3e3e3;"; $par = 1;  @endif>
@@ -31,8 +38,15 @@
                 <td style="width: 50px; text-align: right" class="dados-lista">{{ intval(mrc_calc_percentaf(($item->somaquantidadenormal + $item->somaquantidadeaf), $item->somaquantidadeaf))}} %</td>
                 <td style="width: 70px; text-align: right" class="dados-lista">{{ intval(mrc_calc_percentaf(($item->somapreconormal + $item->somaprecoaf), $item->somaprecoaf))}} %</td>
                 @php
-                    $somacomprapreconormal = $somacomprapreconormal += $item->somapreconormal;
-                    $somacompraprecorecoaf = $somacomprarecoaf += $item->somaprecoaf;
+                    $totalcompranumvezesnormal = $totalcompranumvezesnormal += $item->numvezesnormal;
+                    $totalcompraquantidadenormal = $totalcompraquantidadenormal += $item->somaquantidadenormal;
+                    $totalcomprapreconormal = $totalcomprapreconormal += $item->somapreconormal;
+                    $totalsomaprecounitarionormal = $totalsomaprecounitarionormal += $item->somaprecounitarionormal;
+
+                    $totalcompranumvezesaf = $totalcompranumvezesaf += $item->numvezesaf;
+                    $totalcompraquantidadeaf = $totalcompraquantidadeaf += $item->somaquantidadeaf;
+                    $totalcompraprecoaf = $totalcompraprecoaf += $item->somaprecoaf;
+                    $totalsomaprecounitarioaf = $totalsomaprecounitarioaf += $item->somaprecounitarioaf;
                 @endphp
             </tr>
             {{-- Evita que as linhas de totais sejam quebradas em duas páginas quando próxima da margem inferior
@@ -42,22 +56,20 @@
         @endforeach
     </table>
     <table  style="width: 1080px; border-collapse: collapse; margin-top:3px;">
-        <tr>
-            <tr class="bg-gray-100">
-                <td colspan="3" style="width: 360px; text-align: right;  padding: 3px;" class="dados-box-top dados-box-bottom"><strong>Totais R$</strong> </td>
-                <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong></strong></td>
-                <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong></strong></td>
-                <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($somacomprapreconormal) }}</strong> </td>
-                <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong></strong></td>
-                <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong></strong></td>
-                <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong></strong> </td>
-                <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($somacompraprecorecoaf) }}</strong></td>
-                <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong></strong></td>
-                <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong></strong></td>
-                <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($somacomprapreconormal + $somacompraprecorecoaf) }}</strong></td>
-                <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong></strong></td>
-                <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ intval(mrc_calc_percentaf(($somacomprapreconormal + $somacompraprecorecoaf), $somacompraprecorecoaf))}} %</strong></td>
-            </tr>
+        <tr class="bg-gray-100">
+            <td colspan="3" style="width: 360px; text-align: right;  padding: 3px;" class="dados-box-top dados-box-bottom"><strong>Totais R$</strong> </td>
+            <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ $totalcompranumvezesnormal }}</strong></td>
+            <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcompraquantidadenormal) }}</strong></td>
+            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcomprapreconormal) }}</strong> </td>
+            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalsomaprecounitarionormal / $totalcompranumvezesnormal ) }}</strong></td>
+            <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ $totalcompranumvezesaf }}</strong></td>
+            <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcompraquantidadeaf) }}</strong></td>
+            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcompraprecoaf) }}</strong></td>
+            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalsomaprecounitarioaf / $totalcompranumvezesaf ) }}</strong></td>
+            <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcompraquantidadenormal + $totalcompraquantidadeaf) }}</strong></td>
+            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcomprapreconormal + $totalcompraprecoaf) }}</strong></td>
+            <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ intval(mrc_calc_percentaf(($totalcompraquantidadenormal + $totalcompraquantidadeaf), $totalcompraquantidadeaf))}} %</strong></td>
+            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ intval(mrc_calc_percentaf(($totalcomprapreconormal + $totalcompraprecoaf), $totalcompraprecoaf))}} %</strong></td>
         </tr>
     </table>
 </body>
