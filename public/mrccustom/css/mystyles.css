@@ -6,6 +6,11 @@
     /*background-color: #787878;
 }*/
 
+
+/**************
+PSEUDO TABELA
+***************/
+
 .psdtable{
     float: left;
     width: 100%;
@@ -110,4 +115,54 @@
 
 .destaque:hover{
     background-color: #f6f6fa;
+}
+
+
+
+/******************
+TABELA DE TRADUÇÃO
+******************/
+.tabelatraducao{
+    border: 1px solid #e5e5e5;
+    width: 100%;
+}
+
+.titulotraducao{
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 26px;
+}
+
+.subtitulolabeltraducao{
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.subtitulovalortraducao{
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.dadoslabel{
+    border: 1px solid #e5e5e5;
+    text-align: left;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.dadosvalor{
+    border: 1px solid #e5e5e5;
+    text-align: right;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px;
 }

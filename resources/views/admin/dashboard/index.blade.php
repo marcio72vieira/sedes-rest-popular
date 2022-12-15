@@ -280,7 +280,7 @@
                     <input type="month" id="start" name="start"> --}}
 
                     <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuTipografico"
+                        <a class="dropdown-toggle font-weight-bold text-primary" href="#" role="button" id="dropdownMenuTipografico"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                             Estilo
                         </a>
@@ -295,7 +295,7 @@
                         </div>
                     </div>
                     <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
+                        <a class="dropdown-toggle font-weight-bold text-primary" href="#" role="button" id="dropdownMenuDados"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                             Dados
                         </a>
@@ -327,7 +327,7 @@
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Tradução</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -344,31 +344,26 @@
                     </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body">{{-- <div class="chart-pie pt-4 pb-2"> <canvas id="myPieChart"></canvas> </div>  --}}
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                    {{--
+                <div class="card-body" style="max-height: 580px; overflow: auto;">{{-- <div class="chart-pie pt-4 pb-2"> <canvas id="myPieChart"></canvas> </div>  --}}
+                    <table class="tabelatraducao">
                         @php
-                            if(count($dataRecords)){
-                                foreach($dataRecords as $key => $values){
-                                    echo '<span class="mr-2">  <i class="fas fa-circle"></i>'.$key.' </span>';
+                            if(count($dataRecords))  {
+                                echo "<tr>";
+                                    echo "<td colspan='2' class='titulotraducao'>GASTOS COM COMPRA (R$)</td>";
+                                echo "</tr>";
+                                echo "<tr>";
+                                    echo "<td class='subtitulolabeltraducao'>Nome</td>";
+                                    echo "<td class='subtitulovalortraducao'>Valor</td>";
+                                echo "</tr>";
+                                foreach ($dataRecords as $key => $value) {
+                                    echo "<tr class='destaque'>";
+                                        echo "<td class='dadoslabel'>".$key."</td>";
+                                        echo "<td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td>";
+                                    echo "</tr>";
                                 }
-                            }
+                            }  
                         @endphp
-                    --}}
-
-                    <div class="mt-4 text-center small">
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> Direct
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> Social
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-info"></i> Referral
-                        </span>
-                    </div>
+                    </table>
                 </div>
             </div>
         </div>
@@ -676,41 +671,6 @@
                 myChart.update();
             }
         }
-
-
-        // Pie Chart Example
-        var ctx = document.getElementById("myPieChart");
-        var myPieChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                //labels: ["Direct", "Referral", "Social"],
-                labels: [ {!! implode(',', $arrLabel) !!} ],
-                datasets: [{
-                //data: [55, 30, 15],
-                data: [ {{ implode(',', $dataRecords) }} ],
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#36b9df', '#ff0000'],
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: true,
-                caretPadding: 10,
-                },
-                legend: {
-                display: false
-                },
-                cutoutPercentage: 80,
-            },
-        });
 
 
         var ctx = document.getElementById('myLineChart').getContext('2d');
