@@ -107,20 +107,4 @@ class DashboardController extends Controller
                                             'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
                                             'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'dataRecordsAf', 'dataRecordsNormal', 'dataRecordsMediaPrecoAf', 'dataRecordsMediaPrecoNorm'));
     }
-
-    public function ajaxgraficodadoscategoria(Request $request)
-    {
-        //Dados Categoria Para gráfico Principal com tradução
-        //$records = DB::select(DB::raw('SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY categoria_nome ASC'));
-        $records = DB::select(DB::raw('SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY totalcompra ASC'));
-        $dataRecords = [];
-        foreach($records as $value) {
-            //[$value->categoria_nome] será a chave e $value->totalcompra será o valor emm si 
-            $dataRecords[$value->categoria_nome] =  $value->totalcompra;
-        }
-
-        $dataRecords['titulo'] = "GASTOS COM CATEGORIAS (R$)";
-        return response()->json($dataRecords);
-
-    }
 }

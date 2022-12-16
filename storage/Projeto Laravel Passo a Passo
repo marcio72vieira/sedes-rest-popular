@@ -733,6 +733,7 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/57301625/input-date-field-should-display-month-year-only
 // https://stackoverflow.com/questions/31131275/create-a-multi-line-chart-using-chart-js
 // https://www.chartjs.org/docs/latest/samples/area/line-datasets.html
+// https://www.javatpoint.com/javascript-global-variable
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'

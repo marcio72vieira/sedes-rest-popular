@@ -158,6 +158,24 @@ Route::get('admin/registroconsultacompra/comparativomensalgeralproduto',[Registr
 
 
 
+/***********************************************/
+/*   ROTAS PARA DADOS DOS GRÁFICOS VIA AJAX    */
+/***********************************************/
+//Compras :Registros e Consultas
+Route::get('admin/dashboard/ajaxgraficodadoscategoria', [DashboardController::class, 'ajaxgraficodadoscategoria'])->name('admin.dashboard.ajaxgraficodadoscategoria')->middleware(['auth']);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /***********************************************/

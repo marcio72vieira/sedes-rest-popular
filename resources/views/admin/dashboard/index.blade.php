@@ -302,9 +302,9 @@
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuDados">
                             <div class="dropdown-header">Dados:</div>
-                            <a class="dropdown-item" href="#">Categorias</a>
-                            <a class="dropdown-item" href="#">Produtos</a>
-                            <a class="dropdown-item" href="#">Regionais</a>
+                            <a class="dropdown-item tipodadosgraficopadrao" href="#">Produtos</a>
+                            <a class="dropdown-item tipodadosgraficopadrao" href="#">Categorias</a>
+                            <a class="dropdown-item tipodadosgraficopadrao" href="#">Regionais</a>
                         </div>
                     </div>
                 </div>
@@ -367,38 +367,6 @@
                 </div>
             </div>
         </div>
-
-
-        <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body"> {{-- <div class="chart-area"> <canvas id="myChart"></canvas></div> --}}
-                    <div>
-                        <canvas id="myLineChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- FIM Content Row GRÁFICOS -->
 
@@ -415,8 +383,8 @@
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuDados">
                         <div class="dropdown-header">Dados:</div>
-                        <a class="dropdown-item" href="#">Categorias</a>
                         <a class="dropdown-item" href="#">Produtos</a>
+                        <a class="dropdown-item" href="#">Categorias</a>
                         <a class="dropdown-item" href="#">Regionais</a>
                     </div>
                 </div>
@@ -494,14 +462,16 @@
             $("#myChartBar").show();
             renderGrafico("myChartBar","bar");
 
+            //Define de forma "global" o tipo e local padrão do gráfico a ser gerado inicialmente
+            var novotipo = "bar";
+            var novolocal = "myChartBar";
+
+            
             $('.tipografico').on('click', function() {
 
                 //Lipa espaço em branco no texto do link
                 var tipo = $(this).text().trim();
 
-                //Define um novo tipo de gráfico a ser gerado no canvas apropriado
-                var novotipo = "";
-                var novolocal = ";"
 
                 //Testa o tipo de gráfico escolhido, define e exibte o novo tipo e oculta os demais
                 switch (tipo){
@@ -579,6 +549,43 @@
                 // });
 
             });
+
+
+            $(".tipodadosgraficopadrao").on("click", function(){
+                //Lipa espaço em branco no texto do link tipodados
+                var tipodados = $(this).text().trim();
+
+                // alert(novolocal + " - " + novotipo);
+
+                $.ajax({
+                    url:"{{route('admin.dashboard.ajaxgraficodadoscategoria')}}",
+                    type: "GET",
+                    data: {
+                        tipodados: tipodados
+                    },
+
+                    dataType : 'json',
+                    success: function(result){
+                        $(".tabelatraducao").html('');
+                        //$('#medida_id').html('<option value="" disabled>Medida...</option>');
+                        $(".tabelatraducao").append('<tr><td colspan="2" class="titulotraducao">'+ result['titulo'] +'</td></tr>');
+                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td></tr>');
+
+                        $.each(result,function(key,value){
+                            //console.log(value.medida_id);
+                            console.log(value);
+                            //$("#medida_id").append('<option value="'+value.medida_id+'">'+value.medida_simbolo+'</option>');
+                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + key + '</td><td class="dadosvalor">' + value + '</td></tr>');
+                        });
+                    },
+                    error: function(result){
+                        alert("Error ao retornar dados!");
+                    }
+                });
+            });
+
+
+
 
 
         });
@@ -671,44 +678,6 @@
                 myChart.update();
             }
         }
-
-
-        var ctx = document.getElementById('myLineChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
-
-            // The data for our dataset
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Ags', 'Sep', 'Out', 'Nov', 'Dec'],
-                datasets: [
-                    {
-                        label: 'Compra Normal',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        //data: [0, 10, 5, 2, 20, 30, 45],
-                        //Digamos: pegar o preço do arroz comprados em todos os restaurantes em cada mês e fazer uma média
-                        //Digamos: rest Liberdade, Coroadinho, São Jose de Ribamar, Bacuri (em imperatriz)
-                        data: [4.50, 4.80, 5, 5.50, 5.80, 5.80, 5.80, 6, 6.2, 5.80, 4.90, 6],
-                        fill: false
-                    },
-                    {
-                        label: 'Compra AF',
-                        backgroundColor: 'rgb(0, 0, 0)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        //data: [0, 20, 10, 12, 0, 60, 85],
-                        //Digamos o preço do arroz da AF
-                        data: [4.50, 4.50, 4, 4.25, 4.40, 4.80, 5.80, 5.80, 6.2, 5.80, 6, 6],
-                        fill: false
-                    }
-                ]
-            },
-
-            // Configuration options go here
-            options: {
-
-            }
-        });
 
 
         var ctx = document.getElementById('graficoLinha').getContext('2d');
