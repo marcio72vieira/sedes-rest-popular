@@ -76,7 +76,7 @@ Exemplo:
 ALTERAÇÃO NA EXIBIÇÃO DOS GRÁFICOS
 ==================================
 arquivo: /home/marcio/projetoslaravel/sedes-rest-popular/public/template/css/sb-admin-2.min.css
-classes: 
+classes:
 .chart-area {
   position: relative;
   height: 5rem;
@@ -116,13 +116,13 @@ classes:
 ===============================
 RESOLVENDO PROBLEMA DO GROUP BY
 ==============================
-Mensagem: 
-Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 
-'returntr_prod.tbl_customer_pod_uploads.id' which is not functionally dependent on columns in GROUP BY clause; 
+Mensagem:
+Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column
+'returntr_prod.tbl_customer_pod_uploads.id' which is not functionally dependent on columns in GROUP BY clause;
 this is incompatible with sql_mode=only_full_group_by
 Site de Referência:
 https://stackoverflow.com/questions/41887460/select-list-is-not-in-group-by-clause-and-contains-nonaggregated-column-inc
- 
+
  1 - No phpMyadmin, clicar no ícone "novo" para criar novo banco de dados
  2 - Na aba Variaveis (ou, Mais/Variáveis) rolar a tela para baixo até encontrar a variável "sql mode"
  3 - Clicque no ícone editar e retire do ínicio da caixa de texto que se abir a opção: ONLY_FULL_GROUP_BY,
@@ -734,6 +734,12 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/31131275/create-a-multi-line-chart-using-chart-js
 // https://www.chartjs.org/docs/latest/samples/area/line-datasets.html
 // https://www.javatpoint.com/javascript-global-variable
+// https://www.w3schools.com/js/js_arrays.asp
+// https://stackoverflow.com/questions/12491101/javascript-create-array-from-for-loop
+// https://stackoverflow.com/questions/24815851/how-to-clear-a-chart-from-a-canvas-so-that-hover-events-cannot-be-triggered
+// https://www.chartjs.org/docs/latest/developers/api.html
+
+
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
@@ -765,7 +771,7 @@ SELECT categoria_nome, quantidade, precototal FROM bigtable_data WHERE MONTH(dat
 SELECT categoria_id, categoria_nome, quantidade, precototal FROM bigtable_data WHERE MONTH(data_ini) = 11 AND categoria_id = 1;
 SELECT categoria_id, categoria_nome, SUM(quantidade), SUM(precototal) FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id;
 SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY categoria_nome ASC;
-SELECT produto_nome, preco FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY preco ASC 
+SELECT produto_nome, preco FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY preco ASC
 SELECT produto_nome, af, preco, data_ini FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY data_ini ASC, preco ASC
 SELECT produto_nome, semana_nome, af, preco, data_ini FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY data_ini ASC, preco ASC
 
@@ -778,7 +784,7 @@ SELECT regional_nome, produto_id, semana_nome, preco, af, AVG(IF(af = "sim", pre
 *PROVA OK*
 SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
 SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
-SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC 
+SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC
 
 
 =================================================================================================
