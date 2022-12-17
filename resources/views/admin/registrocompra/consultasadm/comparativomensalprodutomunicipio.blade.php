@@ -103,11 +103,11 @@
                                     <td style="text-align: right"><strong>{{ $totalcompranumvezesnormal }}</strong></td>
                                     <td style="text-align: right"><strong>{{ mrc_turn_value($totalcompraquantidadenormal) }}</strong></td>
                                     <td style="text-align: right"><strong>{{ mrc_turn_value($totalcomprapreconormal) }}</strong> </td>
-                                    <td style="text-align: right"><strong>{{ mrc_turn_value($totalsomaprecounitarionormal / $totalcompranumvezesnormal ) }}</strong></td>
+                                    <td style="text-align: right"><strong>{{ mrc_turn_value($totalsomaprecounitarionormal  / ($totalcompranumvezesnormal == 0 ? 1 : $totalcompranumvezesnormal)) }}</strong></td>
                                     <td style="text-align: right"><strong>{{ $totalcompranumvezesaf }}</strong></td>
                                     <td style="text-align: right"><strong>{{ mrc_turn_value($totalcompraquantidadeaf) }}</strong></td>
                                     <td style="text-align: right" ><strong>{{ mrc_turn_value($totalcompraprecoaf) }}</strong></td>
-                                    <td style="text-align: right" ><strong>{{ mrc_turn_value($totalsomaprecounitarioaf / $totalcompranumvezesaf ) }}</strong></td>
+                                    <td style="text-align: right" ><strong>{{ mrc_turn_value($totalsomaprecounitarioaf / ($totalcompranumvezesaf == 0 ? 1 : $totalcompranumvezesaf)) }}</strong></td>
                                     <td style="text-align: right"><strong>{{ mrc_turn_value($totalcompraquantidadenormal + $totalcompraquantidadeaf) }}</strong></td>
                                     <td style="text-align: right" ><strong>{{ mrc_turn_value($totalcomprapreconormal + $totalcompraprecoaf) }}</strong></td>
                                     <td style="text-align: right" ><strong>{{ intval(mrc_calc_percentaf(($totalcompraquantidadenormal + $totalcompraquantidadeaf), $totalcompraquantidadeaf))}} %</strong></td>

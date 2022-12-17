@@ -166,6 +166,7 @@ Route::get('admin/dashboard/ajaxgraficodadosproduto', [DashboardController::clas
 Route::get('admin/dashboard/ajaxgraficodadoscategoria', [DashboardController::class, 'ajaxgraficodadoscategoria'])->name('admin.dashboard.ajaxgraficodadoscategoria')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxgraficodadosregional', [DashboardController::class, 'ajaxgraficodadosregional'])->name('admin.dashboard.ajaxgraficodadosregional')->middleware(['auth']);
 
+Route::get('admin/dashboard/ajaxrecuperadadosgrafico', [DashboardController::class, 'ajaxrecuperadadosgrafico'])->name('admin.dashboard.ajaxrecuperadadosgrafico')->middleware(['auth']);
 
 
 

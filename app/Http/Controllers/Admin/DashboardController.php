@@ -19,8 +19,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        //$mesAtual =  date('m');
-        $mesAtual =  date('m') -  1;
+        //$mes =  date('m');
+        $mes =  date('m') -  1;
 
         $totEmpresas =  Empresa::all()->count();
         $totNutricionistas =  Nutricionista::all()->count();
@@ -28,44 +28,21 @@ class DashboardController extends Controller
         $totCompras = Compra::all()->count();
         $totRegionais = Regional::all()->count();
         $totMunicipios =  Municipio::all()->count();
-        $totComprasNormal =  DB::table('compras')->whereMonth('data_ini', $mesAtual)->sum('valor');
-        $totComprasAf =  DB::table('compras')->whereMonth('data_ini', $mesAtual)->sum('valoraf');
+        $totComprasNormal =  DB::table('compras')->whereMonth('data_ini', $mes)->sum('valor');
+        $totComprasAf =  DB::table('compras')->whereMonth('data_ini', $mes)->sum('valoraf');
         $totalValorCompras =  $totComprasNormal + $totComprasAf;
         $totCategorias = Categoria::all()->count();
         $totProdutos =  Produto::all()->count();
         $totUsuarios =  User::all()->count();
 
-        //$records = DB::select(DB::raw('SELECT categoria_id, categoria_nome, SUM(quantidade), SUM(precototal) FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id'));
-        //Obs:  O resultado de $records é um array, ou seja, uma collect, lido pela função dd(). Se eu quiser transformá-lo
-        //      em um Json que é lido pela função die(), eu coloco: json_encode($records). die(json_encode($records));
-
-        //Dados Categoria Para gráfico Principal com tradução
-        /*//$records = DB::select(DB::raw('SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY categoria_nome ASC'));
-        $records = DB::select(DB::raw('SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome ORDER BY totalcompra ASC'));
-        $dataRecords = [];
-        foreach($records as $value) {
-           $dataRecords[$value->categoria_nome] =  $value->totalcompra;
-        } */
-
         //Dados Produtos Para gráfico Principal com tradução
         //$records = DB::select(DB::raw('SELECT produto_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_nome ORDER BY produto_nome ASC'));
-        $records = DB::select(DB::raw('SELECT produto_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_nome ORDER BY totalcompra ASC'));
+        $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompra ASC"));
         $dataRecords = [];
         foreach($records as $value) {
-            $dataRecords[$value->produto_nome] =  $value->totalcompra;
+            $dataRecords[$value->nome] =  $value->totalcompra;
         }
 
-        //Dados Preço AF pára gráfico de linhas
-        $records = DB::select(DB::raw('SELECT produto_nome, semana_nome, af, preco, data_ini FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 ORDER BY data_ini ASC, preco ASC'));
-        $dataRecordsAf = [];
-        $dataRecordsNormal = [];
-        foreach($records as $value) {
-            if($value->af == "sim"){
-                $dataRecordsAf[] = $value->preco ;
-            }else{
-                $dataRecordsNormal[] = $value->preco;
-            }
-        }
 
         //Dados Méida de preco AF e NORMAL para grafico de linha prórpio
         $records = DB::select(DB::raw('SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
@@ -95,38 +72,15 @@ class DashboardController extends Controller
         }
 
 
-
-        //dd($records);
-        //dd($dataRecords);
-        //dd($dataRecordsNormal);
-        //dd($dataRecordsMediaPrecoAf);
-
-
-
         return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totCompras',
                                             'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
-                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'dataRecordsAf', 'dataRecordsNormal', 'dataRecordsMediaPrecoAf', 'dataRecordsMediaPrecoNorm'));
+                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'dataRecordsMediaPrecoAf', 'dataRecordsMediaPrecoNorm'));
     }
 
 
 
-    public function ajaxgraficodadosproduto(Request $request)
-    {
-        $mes = date('m') - 1;
-        $records = DB::select(DB::raw("SELECT produto_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompra ASC"));
-        $dataRecords = [];
-
-        foreach($records as $value) {
-            $dataRecords[$value->produto_nome] =  $value->totalcompra;
-        }
-
-        $data['titulo'] = "GASTOS EM PRODUTOS (R$)";
-        $data['dados'] =  $dataRecords;
-
-        return response()->json($data);
-    }
-
-
+    /*
+    //Uma requisição personalizada
     public function ajaxgraficodadoscategoria(Request $request)
     {
         $mes = date('m') - 1;
@@ -142,19 +96,40 @@ class DashboardController extends Controller
 
         return response()->json($data);
     }
+    */
 
 
-    public function ajaxgraficodadosregional(Request $request)
+
+    public function ajaxrecuperadadosgrafico(Request $request)
     {
-        $mes = date('m') - 1;
-        $records = DB::select(DB::raw("SELECT regional_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY regional_nome ORDER BY totalcompra ASC"));
-        $dataRecords = [];
+        $tipodados = $request->tipodados;
 
-        foreach($records as $value) {
-            $dataRecords[$value->regional_nome] =  $value->totalcompra;
+        $mes = date('m') - 1;
+
+        $data = [];
+        $dataRecords = [];
+        $records = "";
+
+        switch($tipodados){
+            case "Produtos":
+                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompra ASC"));
+                $data['titulo'] = "GASTOS GERAIS COM PRODUTOS (R$)";
+            break;
+            case "Categorias":
+                $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY categoria_nome ORDER BY totalcompra ASC"));
+                $data['titulo'] = "GASTOS GERAIS EM CATEGORIAS (R$)";
+            break;
+            case "Regionais":
+                $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY regional_nome ORDER BY totalcompra ASC"));
+                $data['titulo'] = "GASTOS GERAIS NAS REGIONAIS (R$)";
+            break;
         }
 
-        $data['titulo'] = "GASTOS NAS REGIONAIS (R$)";
+
+        foreach($records as $value) {
+            $dataRecords[$value->nome] =  $value->totalcompra;
+        }
+
         $data['dados'] =  $dataRecords;
 
         return response()->json($data);

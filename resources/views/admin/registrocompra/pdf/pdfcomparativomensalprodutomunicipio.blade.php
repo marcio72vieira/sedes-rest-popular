@@ -61,11 +61,11 @@
             <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ $totalcompranumvezesnormal }}</strong></td>
             <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcompraquantidadenormal) }}</strong></td>
             <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcomprapreconormal) }}</strong> </td>
-            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalsomaprecounitarionormal / $totalcompranumvezesnormal ) }}</strong></td>
+            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalsomaprecounitarionormal / ($totalcompranumvezesnormal == 0 ? 1 : $totalcompranumvezesnormal)) }}</strong></td>
             <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ $totalcompranumvezesaf }}</strong></td>
             <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcompraquantidadeaf) }}</strong></td>
             <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcompraprecoaf) }}</strong></td>
-            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalsomaprecounitarioaf / $totalcompranumvezesaf ) }}</strong></td>
+            <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalsomaprecounitarioaf / ($totalcompranumvezesaf == 0 ? 1 : $totalcompranumvezesaf)) }}</strong></td>
             <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcompraquantidadenormal + $totalcompraquantidadeaf) }}</strong></td>
             <td style="width: 70px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ mrc_turn_value($totalcomprapreconormal + $totalcompraprecoaf) }}</strong></td>
             <td style="width: 50px; text-align: right; padding: 3px;" class="dados-box-top dados-box-bottom"><strong>{{ intval(mrc_calc_percentaf(($totalcompraquantidadenormal + $totalcompraquantidadeaf), $totalcompraquantidadeaf))}} %</strong></td>

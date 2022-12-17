@@ -5,13 +5,13 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    {{--
+    
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        {{-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> --}}
     </div>
-    --}}
+   
 
     <!-- INICIO Content Row CARDS-->
     <div class="row">
@@ -287,11 +287,11 @@
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuTipografico">
                             <div class="dropdown-header">Estilo do Gráfico:</div>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-bar"></i></span> Coluna</a>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-stream"></i> Barra</a>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-pie"></i> Pizza</a>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-chart-line"></i> Linha</a>
-                            <a class="dropdown-item tipografico" href="#"><span><i class="fas fa-circle-notch"></i> Rosca</a>
+                            <a class="dropdown-item estilografico" data-estilo-grafico="bar" href="#"><span><i class="fas fa-chart-bar"></i></span> Coluna</a>
+                            <a class="dropdown-item estilografico" data-estilo-grafico="horizontalBar" href="#"><span><i class="fas fa-stream"></i> Barra</a>
+                            <a class="dropdown-item estilografico" data-estilo-grafico="pie" href="#"><span><i class="fas fa-chart-pie"></i> Pizza</a>
+                            <a class="dropdown-item estilografico" data-estilo-grafico="line" href="#"><span><i class="fas fa-chart-line"></i> Linha</a>
+                            <a class="dropdown-item estilografico" data-estilo-grafico="doughnut" href="#"><span><i class="fas fa-circle-notch"></i> Rosca</a>
                         </div>
                     </div>
                     <div class="dropdown">
@@ -309,57 +309,33 @@
                     </div>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body"> {{-- <div class="chart-area"> <canvas id="myChart"></canvas></div> --}}
+                <div class="card-body">
                     <div id="areaparagraficos">
-                        <canvas id="myChartColumn" style="display: none"></canvas>
-                        <canvas id="myChartBar" style="display: none"></canvas>
-                        <canvas id="myChartPie" style="display: none"></canvas>
-                        <canvas id="myChartLine" style="display: none"></canvas>
-                        <canvas id="myChartDoughnut" style="display: none"></canvas>
+                        <canvas id="myChartArea"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Pie Chart -->
+        <!-- Tabela Tradução -->
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Tradução</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body" style="max-height: 470px; overflow: auto;">{{-- <div class="chart-pie pt-4 pb-2"> <canvas id="myPieChart"></canvas> </div>  --}}
                     <table class="tabelatraducao">
                         @php
+                            //Dados vindo da view via método compact
                             if(count($dataRecords))  {
-                                echo "<tr>";
-                                    echo "<td colspan='2' class='titulotraducao'>GASTOS COM COMPRA (R$)</td>";
-                                echo "</tr>";
-                                echo "<tr>";
-                                    echo "<td class='subtitulolabeltraducao'>Nome</td>";
-                                    echo "<td class='subtitulovalortraducao'>Valor</td>";
+                                echo "<tr><td colspan='2' class='titulotraducao'>GASTOS GERAIS COM PRODUTOS (R$)</td></tr>";
+                                echo "<tr><td class='subtitulolabeltraducao'>Nome</td><td class='subtitulovalortraducao'>Valor</td>";
                                 echo "</tr>";
                                 foreach ($dataRecords as $key => $value) {
-                                    echo "<tr class='destaque'>";
-                                        echo "<td class='dadoslabel'>".$key."</td>";
-                                        echo "<td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td>";
-                                    echo "</tr>";
+                                    echo "<tr class='destaque'><td class='dadoslabel'>".$key."</td><td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td></tr>";
                                 }
                             }
                         @endphp
@@ -406,185 +382,107 @@
 
 @section('scripts')
     @php
-        // CONFIGURANDO OS LABELS PARA OS GRÁFICOS DO TIPO BAR, PIZZA E BARRA
+        //Configurando os labels para os gráficos
         if(count($dataRecords)){
             //Recuperando só as chaves do array, que será o label dos registros
             $labelRecords = array_keys($dataRecords);
 
             $arrLabel = [];
             foreach($labelRecords as $labelRecord){
-                // Substitui caracteres especiais no nome de um campo por espaço vazio, para evitar erro.
-                // Ex: farinha D'agua = faria Dagua
+                // Substitui caracteres especiais (' " / . ,) em uma string por espaço vazio. Evita erro. Ex: farinha D'agua = faria Dagua
                 $arrbusca = ["'","/","."];
                 $arrtroca = [""];
                 $labelRecord = str_replace($arrbusca, $arrtroca, $labelRecord);
 
                 // Faz uma concatenação do tipo: 'labelX', 'labelY', 'labelZ', 'labelW', etc...
-                // para gráficos do tipo BAR, PIZZA, COLUNA
                 $arrLabel[] = "'".$labelRecord."'";     //dd($arrLabel);
             }
-
-            //$labells = implode(',', $labelRecords);     //echo $labells;
         }
 
-        // Obtendo os valores de preço AF
-        if(count($dataRecordsAf)){
-            $dataAf =  array_values($dataRecordsAf);
-
-        }
-        // Obtendo os valores de preço NORMAL
-        if(count($dataRecordsNormal)){
-            $dataNormal =  array_values($dataRecordsNormal);
-
-        }
-
-        // Obtendo os valores das méidas de preços por seman AF e NORMAL
+    
+        // Obtendo os valores das médias de preços por semana AF e NORMAL
         if(count($dataRecordsMediaPrecoAf)){
             $dataAf =  array_values($dataRecordsMediaPrecoAf);
         }
         if(count($dataRecordsMediaPrecoNorm)){
             $dataNormal =  array_values($dataRecordsMediaPrecoNorm);
         }
-
     @endphp
 
 
     <script>
         $(document).ready(function() {
 
-            //Oculta todos os gráficos com execão do padrão (myChartBar)
-            $("#myChartColumn").hide();
-            $("#myChartPie").hide();
-            $("#myChartLine").hide();
-            $("#myChartDoughnut").hide();
+            //Renderiza o gráfico padrão com dados vindo do método compact da view, logo que a página é carregada.
+            renderGrafico("bar");
 
-            //Renderiza o gráfico padrão
-            $("#myChartBar").show();
-            renderGrafico("myChartBar","bar");
+            //Definindo as variáveis de forma Global (fora de qualquer função) para que possam ser acessadas livremente.
+            var estilo = "";
+            var tipodados = "";
+            var valorLabels = [];
+            var valorData = [];
 
-            //Define de forma "global" o tipo e local padrão do gráfico a ser gerado inicialmente
-            var novotipo = "bar";
-            var novolocal = "myChartBar";
-
-            //EXIBIÇÃO DE DADOS PADRÃO - PRODUTO
-            $('.tipografico').on('click', function() {
-
-                //Lipa espaço em branco no texto do link
-                var tipo = $(this).text().trim();
-
-
-                //Testa o tipo de gráfico escolhido, define e exibte o novo tipo e oculta os demais
-                switch (tipo){
-                    case "Coluna":
-                        novotipo = "bar";
-                        novolocal = "myChartBar";
-                        $("#myChartBar").show();
-                        $("#myChartColumn").hide();
-                        $("#myChartPie").hide();
-                        $("#myChartLine").hide();
-                        $("#myChartDoughnut").hide();
-                    break;
-                    case "Barra":
-                        novotipo = "horizontalBar";
-                        novolocal = "myChartColumn";
-                        $("#myChartColumn").show();
-                        $("#myChartBar").hide();
-                        $("#myChartPie").hide();
-                        $("#myChartLine").hide();
-                        $("#myChartDoughnut").hide();
-                    break;
-                    case "Pizza":
-                        novotipo = "pie";
-                        novolocal = "myChartPie";
-                        $("#myChartPie").show();
-                        $("#myChartBar").hide();
-                        $("#myChartColumn").hide();
-                        $("#myChartLine").hide();
-                        $("#myChartDoughnut").hide();
-                    break;
-                    case "Linha":
-                        novotipo = "line";
-                        novolocal = "myChartLine";
-                        $("#myChartLine").show();
-                        $("#myChartBar").hide();
-                        $("#myChartColumn").hide();
-                        $("#myChartPie").hide();
-                        $("#myChartDoughnut").hide();
-                    break;
-                    case "Rosca":
-                        novotipo = "doughnut";
-                        novolocal = "myChartDoughnut";
-                        $("#myChartDoughnut").show();
-                        $("#myChartBar").hide();
-                        $("#myChartColumn").hide();
-                        $("#myChartPie").hide();
-                        $("#myChartLine").hide();
-                    break;
+            //ALTERAÇÃO DO ESTILO DE GRÁFICO
+            $('.estilografico').on('click', function() {
+    
+                //Define o estilo do gráfico
+                estilo = $(this).data('estilo-grafico');
+               
+                //Logo que a página é carregada, tipodado não está definido, então renderiza-se o gráfico padrão (bar) com os dados padrão (produtos)
+                if(tipodados == ""){
+                    renderGrafico(estilo);
+                }else{
+                    renderGraficoDinamico(estilo, tipodados, valorLabels, valorData);
                 }
-
-                renderGrafico(novolocal, novotipo);
+                
             });
 
 
-            //ESCOLHA DE NOVOS DADOS A SEREM EXIBIDOS DINAMICAMENTE - PRODUTOS, CATEGORIAS, REGIONAIS
+            //Escolha de outro tipo de dados além do tipo padrão: "Produtos"
             $(".tipodadosgraficopadrao").on("click", function(){
 
-                // alert(novolocal + " - " + novotipo);
-
                 //Lipa espaço em branco no texto do link tipodados
-                var tipodados = $(this).text().trim();
+                tipodados = $(this).text().trim();
 
                 var urltipo = "";
 
-                switch(tipodados){
-                    case "Produtos":
-                        urltipo = "{{route('admin.dashboard.ajaxgraficodadosproduto')}}";
-                    break;
-                    case "Categorias":
-                        urltipo = "{{route('admin.dashboard.ajaxgraficodadoscategoria')}}";
-                    break;
-                    case "Regionais":
-                        urltipo = "{{route('admin.dashboard.ajaxgraficodadosregional')}}";
-                    break;
-                }
-
                 //Faz requisição para obter novos dados
                 $.ajax({
-                    //url:"{{route('admin.dashboard.ajaxgraficodadoscategoria')}}",
-                    url: urltipo,
+                    url:"{{route('admin.dashboard.ajaxrecuperadadosgrafico')}}",
                     type: "GET",
                     data: {
                         tipodados: tipodados
                     },
-
                     dataType : 'json',
 
+                    //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo como resultado, temos:
+                    //      result['titulo'] que é uma string e result['dados'] que é um array  
                     success: function(result){
 
-                        const valorLabels = [];
-                        const valorData = [];
+                        //Zerando o valor das variáveis globais do tipo array
+                        valorLabels = [];
+                        valorData = [];
 
+                        //Iterando sobre o array['dados']
                         $.each(result['dados'], function(key,value){
                             valorLabels.push(key);
                             valorData.push(value);
                         });
 
-                        //Atualiza Gráfico atual com os DADOS desejados
-                        renderGraficoDinamico(novolocal, novotipo, valorLabels, valorData);
+                        //Se tipo é igual a espaço em branco, é porque nenhum outro estilo de gráfico foi escolhido, permanecendo portanto o padrão "bar"
+                        if(estilo == ""){estilo = "bar";}
+                        
+                        //Renderiza gráfico passando as informações necessárias
+                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData);
 
-
-                        //Atualiza Tabela de tradução
+                        //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
-                        //$('#medida_id').html('<option value="" disabled>Medida...</option>');
                         $(".tabelatraducao").append('<tr><td colspan="2" class="titulotraducao">'+ result['titulo'] +'</td></tr>');
                         $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td></tr>');
 
-                        //result['dados'] é um array
+                        //Itera sobre os dados retornados pela requisição Ajax
                         $.each(result['dados'], function(key,value){
-                            //console.log(value.medida_id);
-                            console.log(value);
-                            //$("#medida_id").append('<option value="'+value.medida_id+'">'+value.medida_simbolo+'</option>');
-                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + key + '</td><td class="dadosvalor">' + value + '</td></tr>');
+                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + key + '</td><td class="dadosvalor">' + number_format(value,2,",",".") + '</td></tr>');
                         });
                     },
                     error: function(result){
@@ -594,20 +492,25 @@
             });
         });
 
-        //Renderiza Gráfico padrão - Produtos (Dados vindos via método compac, da view)
-        function renderGrafico(local, tipo){
-            const ctx = document.getElementById(local).getContext('2d');
 
+        //Renderiza Gráfico com dados padrão Produtos e o estilo igual a "bar" (Dados vindos via método compac, da view).
+        //Esta função é executada uma única vez, logo que a página é carregada
+        function renderGrafico(estilo){
+
+            //Limpa a área do grafico para evitar sobreposição de informações
+            $('#myChartArea').remove();
+            $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');            
+
+            const ctx = document.getElementById('myChartArea').getContext('2d');
             const myChart = new Chart(ctx, {
-                type: tipo,
+                type: estilo,
                 data: {
-                    //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
-                    labels: [ {!! implode(',', $arrLabel) !!} ],
+                    labels: [ {!! implode(',', $arrLabel) !!} ],    //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
                     datasets: [{
-                        label: 'Categoria',
-                        data: [ {{ implode(',', $dataRecords) }} ],
+                        label: 'Produtos',
+                        data: [ {{ implode(',', $dataRecords) }} ], //Dados vindo da view via método compact
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 99, 132, 0.5)', 
                             'rgba(54, 162, 235, 0.5)',
                             'rgba(255, 206, 86, 0.5)',
                             'rgba(75, 192, 192, 0.5)',
@@ -636,8 +539,6 @@
                         ],
                         borderWidth: 2,
                         barPercentage: 0.5, //Determina a largura da coluna ou barra
-                        fill: false,
-
                     }]
                 },
                 options: {
@@ -661,7 +562,6 @@
                 myChart.data.datasets[0].borderColor = 'rgb(0, 0, 0, 0.2)';
                 myChart.data.datasets[0].borderWidth = 3;
                 myChart.data.datasets[0].fill = true;
-
                 myChart.update();
             }
 
@@ -678,28 +578,25 @@
                 myChart.options.tooltips.caretPadding =  10;
                 myChart.options.legend.display = true;
                 myChart.options.cutoutPercentage =  80;
-
                 myChart.update();
             }
         }
 
 
 
-        function renderGraficoDinamico(local, tipo, valorLabels, valorData){
+        function renderGraficoDinamico(estilo, tipodados, valorLabels, valorData){
 
-            exibeocultatipografico(tipo);
+            //Limpa a área do grafico para evitar sobreposição de informações
+            $('#myChartArea').remove();
+            $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
 
-            const ctx = document.getElementById(local).getContext('2d');
-
+            const ctx = document.getElementById('myChartArea').getContext('2d');
             const myChart = new Chart(ctx, {
-                type: tipo,
+                type: estilo,
                 data: {
-                    //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
-                    // labels: [ {!! implode(',', $arrLabel) !!} ],
                     labels: valorLabels,
                     datasets: [{
-                        label: 'Categoria',
-                        //data: [ {{ implode(',', $dataRecords) }} ],
+                        label: tipodados,
                         data: valorData,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.5)',
@@ -756,7 +653,6 @@
                 myChart.data.datasets[0].borderColor = 'rgb(0, 0, 0, 0.2)';
                 myChart.data.datasets[0].borderWidth = 3;
                 myChart.data.datasets[0].fill = true;
-
                 myChart.update();
             }
 
@@ -773,79 +669,13 @@
                 myChart.options.tooltips.caretPadding =  10;
                 myChart.options.legend.display = true;
                 myChart.options.cutoutPercentage =  80;
-
                 myChart.update();
             }
         }
 
 
-        function exibeocultatipografico(tipo){
 
-            //alert(tipo);
-
-            //Testa o tipo de gráfico escolhido, define e exibte o novo tipo e oculta os demais
-            switch (tipo){
-                case "Coluna":
-                    novotipo = "bar";
-                    novolocal = "myChartBar";
-                    $("#myChartBar").show();
-                    $("#myChartColumn").hide();
-                    $("#myChartPie").hide();
-                    $("#myChartLine").hide();
-                    $("#myChartDoughnut").hide();
-                break;
-                case "Barra":
-                    novotipo = "horizontalBar";
-                    novolocal = "myChartColumn";
-                    $("#myChartColumn").show();
-                    $("#myChartBar").hide();
-                    $("#myChartPie").hide();
-                    $("#myChartLine").hide();
-                    $("#myChartDoughnut").hide();
-                break;
-                case "Pizza":
-                    novotipo = "pie";
-                    novolocal = "myChartPie";
-                    $("#myChartPie").show();
-                    $("#myChartBar").hide();
-                    $("#myChartColumn").hide();
-                    $("#myChartLine").hide();
-                    $("#myChartDoughnut").hide();
-                break;
-                case "Linha":
-                    novotipo = "line";
-                    novolocal = "myChartLine";
-                    $("#myChartLine").show();
-                    $("#myChartBar").hide();
-                    $("#myChartColumn").hide();
-                    $("#myChartPie").hide();
-                    $("#myChartDoughnut").hide();
-                break;
-                case "Rosca":
-                    novotipo = "doughnut";
-                    novolocal = "myChartDoughnut";
-                    $("#myChartDoughnut").show();
-                    $("#myChartBar").hide();
-                    $("#myChartColumn").hide();
-                    $("#myChartPie").hide();
-                    $("#myChartLine").hide();
-                break;
-            }
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // Meu gráfico
         var ctx = document.getElementById('graficoLinha').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
@@ -885,6 +715,33 @@
 
             }
         });
+
+
+        //Formatador de números
+        function number_format(number, decimals, dec_point, thousands_sep) {
+            // *     example: number_format(1234.56, 2, ',', ' ');
+            // *     return: '1 234,56'
+            number = (number + '').replace(',', '').replace(' ', '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function(n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.round(n * k) / k;
+                };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        }        
 
     </script>
 
