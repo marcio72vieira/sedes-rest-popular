@@ -287,11 +287,11 @@
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuTipografico">
                             <div class="dropdown-header">Estilo do Gráfico:</div>
-                            <a class="dropdown-item estilografico" data-estilo-grafico="bar" href="#"><span><i class="fas fa-chart-bar"></i></span> Coluna</a>
-                            <a class="dropdown-item estilografico" data-estilo-grafico="horizontalBar" href="#"><span><i class="fas fa-stream"></i> Barra</a>
-                            <a class="dropdown-item estilografico" data-estilo-grafico="pie" href="#"><span><i class="fas fa-chart-pie"></i> Pizza</a>
-                            <a class="dropdown-item estilografico" data-estilo-grafico="line" href="#"><span><i class="fas fa-chart-line"></i> Linha</a>
-                            <a class="dropdown-item estilografico" data-estilo-grafico="doughnut" href="#"><span><i class="fas fa-circle-notch"></i> Rosca</a>
+                            <a class="dropdown-item estilografico psdlink" data-estilo-grafico="bar"><span><i class="fas fa-chart-bar"></i></span> Coluna</a>
+                            <a class="dropdown-item estilografico psdlink" data-estilo-grafico="horizontalBar"><span><i class="fas fa-stream"></i> Barra</a>
+                            <a class="dropdown-item estilografico psdlink" data-estilo-grafico="pie"><span><i class="fas fa-chart-pie"></i> Pizza</a>
+                            <a class="dropdown-item estilografico psdlink" data-estilo-grafico="line"><span><i class="fas fa-chart-line"></i> Linha</a>
+                            <a class="dropdown-item estilografico psdlink" data-estilo-grafico="doughnut"><span><i class="fas fa-circle-notch"></i> Rosca</a>
                         </div>
                     </div>
                     <div class="dropdown">
@@ -302,9 +302,9 @@
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuDados">
                             <div class="dropdown-header">Dados:</div>
-                            <a class="dropdown-item tipodadosgraficopadrao" href="#">Produtos</a>
-                            <a class="dropdown-item tipodadosgraficopadrao" href="#">Categorias</a>
-                            <a class="dropdown-item tipodadosgraficopadrao" href="#">Regionais</a>
+                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Produtos</a>
+                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Categorias</a>
+                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Regionais</a>
                         </div>
                     </div>
                 </div>
@@ -347,34 +347,125 @@
     <!-- FIM Content Row GRÁFICOS -->
 
     <!-- INÍCIO MEUS GRÁFICOS -->
-    <div class="card">
-        <div>
-            <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Comparativo Compra Normal x Agricultara Familiar</h5>
-            <div class="card-header"  style="float: right; margin-top: -41px;">
-                <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-                        Dados
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                        aria-labelledby="dropdownMenuDados">
-                        <div class="dropdown-header">Dados:</div>
-                        <a class="dropdown-item" href="#">Produtos</a>
-                        <a class="dropdown-item" href="#">Categorias</a>
-                        <a class="dropdown-item" href="#">Regionais</a>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+                <div>
+                    <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Comparativo Compra Normal x Agricultara Familiar</h5>
+                    <div class="card-header"  style="float: right; margin-top: -41px;">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
+                                Dados
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuDados">
+                                <div class="dropdown-header">Dados:</div>
+                                <a class="dropdown-item" href="#">Produtos</a>
+                                <a class="dropdown-item" href="#">Categorias</a>
+                                <a class="dropdown-item" href="#">Regionais</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div style="width: 100%; height: 20%; background-color: white;">
-                <div>
-                    <canvas id="graficoLinha" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
+                <div class="card-body">
+                    <div style="width: 100%; height: 20%; background-color: white;">
+                        <div>
+                            <canvas id="graficoLinha" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- FIM MEUS GRÁFICOS -->
+
+
+    <!-- INÍCIO OUTROS DADOS -->
+    <div class="row">
+        {{-- Outros dados --}}
+        <div class="col-xl-5 col-lg-6">
+            <div class="card shadow mb-4">
+                <div>
+                    <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Visualização Rápida</h5>
+                    <div class="card-header"  style="float: right; margin-top: -41px;">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
+                                Dados
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuDados">
+                                <div class="dropdown-header">Dados:</div>
+                                <a class="dropdown-item">Usuários</a>
+                                <a class="dropdown-item">Categorias</a>
+                                <a class="dropdown-item">Regionais</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div style="width: 100%; height: 20%; background-color: white;">
+                        <div>
+                            <table class="tabelatraducao">
+                                @php
+                                    //Dados vindo da view via método compact
+                                    if(count($dataRecords))  {
+                                        echo "<tr><td colspan='4' class='titulotraducao'>USUÁRIOS</td></tr>";
+                                        echo "<tr>
+                                            <td class='subtitulolabeltraducao'>Nome</td><td class='subtitulovalortraducao'>Valor</td>
+                                            <td class='subtitulolabeltraducao'>Nome</td><td class='subtitulovalortraducao'>Valor</td>
+                                        </tr>";
+                                        foreach ($dataRecords as $key => $value) {
+                                            echo "<tr class='destaque'>
+                                                    <td class='dadoslabel'>".$key."</td>
+                                                    <td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td>
+                                                    <td class='dadoslabel'>".$key."</td>
+                                                    <td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td>
+                                            </tr>";
+                                        }
+                                    }
+                                @endphp
+                            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Informações --}} 
+        <div class="col-xl-7 col-lg-6">
+            <div class="card shadow mb-4">
+                <div>
+                    <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Informações</h5>
+                    <div class="card-header"  style="float: right; margin-top: -41px;">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
+                                Dados
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuDados">
+                                <div class="dropdown-header">Dados:</div>
+                                <a class="dropdown-item" href="#">Produtos</a>
+                                <a class="dropdown-item" href="#">Categorias</a>
+                                <a class="dropdown-item" href="#">Regionais</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div style="width: 100%; height: 20%; background-color: white;">
+                        <div>
+                            <canvas id="graficoLinha" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIM OUTROS DADOS -->
 
 </div>
 
@@ -562,6 +653,7 @@
                 myChart.data.datasets[0].borderColor = 'rgb(0, 0, 0, 0.2)';
                 myChart.data.datasets[0].borderWidth = 3;
                 myChart.data.datasets[0].fill = true;
+                myChart.options.elements.line.tension = 0;
                 myChart.update();
             }
 
@@ -653,6 +745,7 @@
                 myChart.data.datasets[0].borderColor = 'rgb(0, 0, 0, 0.2)';
                 myChart.data.datasets[0].borderWidth = 3;
                 myChart.data.datasets[0].fill = true;
+                myChart.options.elements.line.tension = 0;
                 myChart.update();
             }
 
@@ -683,8 +776,8 @@
 
             // The data for our dataset
             data: {
-                //labels: ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'],
-                labels: ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11','s12','s13','s14','s15','s16','s17','s18','s19','s20','s21','s22','s23','s24','s25','s26','s27','s28','s29','s30','s31','s32','s33','s34','s35','s36','s37','s38','s39','s40','s41','s42','s43','s44','s45','s46','s47','s48','s49','s50','s51','s52'],
+                labels: ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'],
+                //labels: ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11','s12','s13','s14','s15','s16','s17','s18','s19','s20','s21','s22','s23','s24','s25','s26','s27','s28','s29','s30','s31','s32','s33','s34','s35','s36','s37','s38','s39','s40','s41','s42','s43','s44','s45','s46','s47','s48','s49','s50','s51','s52'],
                 datasets: [
                     {
                         label: 'Compra Normal',

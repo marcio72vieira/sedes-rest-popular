@@ -166,3 +166,20 @@ TABELA DE TRADUÇÃO
     font-size: 15px;
     padding: 5px;
 }
+
+
+
+
+/***********
+PSEUDO LINK 
+************/
+/*A tag href="#" é retirada do link <a></a>,
+ sendo assim perde o curso padrão. Logo para
+ criar um pseudo link, criou-se a classe abaixo.
+ Com a tag href="#", havia refresh da página 
+ quando atualizava-se o tipo de Dados ou Estilo
+ dos gráficos, não permanecendo a visualização 
+ no ponto original da página*/
+.psdlink { 
+    cursor: pointer; 
+}

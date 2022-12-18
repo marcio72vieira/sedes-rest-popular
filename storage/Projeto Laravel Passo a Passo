@@ -739,7 +739,8 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/24815851/how-to-clear-a-chart-from-a-canvas-so-that-hover-events-cannot-be-triggered
 // https://www.chartjs.org/docs/latest/developers/api.html
 // https://www.tutorialrepublic.com/faq/how-to-get-the-data-id-attribute-of-an-element-using-jquery.php
-
+// https://stackoverflow.com/questions/3087975/how-to-change-the-cursor-into-a-hand-when-a-user-hovers-over-a-list-item
+// https://stackoverflow.com/questions/34403510/chart-js-straight-lines-instead-of-curves
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
