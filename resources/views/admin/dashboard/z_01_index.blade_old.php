@@ -285,7 +285,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                             aria-labelledby="dropdownMenuDados">
-                            <div class="dropdown-header">Gerais:</div>
+                            <div class="dropdown-header">Dados:</div>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Produtos</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Categorias</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Regionais</a>
@@ -309,8 +309,6 @@
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="pie"><span><i class="fas fa-chart-pie"></i> Pizza</a>
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="line"><span><i class="fas fa-chart-line"></i> Linha</a>
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="doughnut"><span><i class="fas fa-circle-notch"></i> Rosca</a>
-                            <div class="dropdown-divider"></div>    
-                            <a class="dropdown-item estilograficoempilhado psdlink"><span><i class="fas fa-cubes"></i> Empilhado</a>
                         </div>
                     </div>
                 </div>
@@ -519,7 +517,6 @@
             var valorLabels = [];
             var valorData = [];
 
-
             //ALTERAÇÃO DO ESTILO DE GRÁFICO
             $('.estilografico').on('click', function() {
     
@@ -534,87 +531,6 @@
                 }
                 
             });
-
-
-
-            //INÍCIO DO ESTILO DE GRÁFICO PILHADO
-            //INÍCIO DO ESTILO DE GRÁFICO PILHADO
-            $('.estilograficoempilhado').on('click', function() {
-
-                tipodados = "Produtos";
-
-                //if(tipodados == ""){
-                //    tipodados = "Produtos";
-                //}
-
-                $.ajax({
-                    url:"{{route('admin.dashboard.ajaxrecuperadadosgraficoempilhado')}}",
-                    type: "GET",
-                    data: {
-                        tipodados: tipodados
-                    },
-                    dataType : 'json',
-
-                    //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo como resultado, temos:
-                    //      result['titulo'] que é uma string e result['dados'] que é um array  
-                    success: function(result){
-
-                        // alert(result['labels']);
-                        // alert(result['af']);
-                        // alert(result['normal']);
-
-                        //Zerando o valor das variáveis globais do tipo array
-                        valorLabels = [];
-                        valorDataAf = [];
-                        valorDataNormal = [];
-
-                        //Atribuindo os respecitvos arrays
-                        valorLabels = result['labels'];
-                        valorDataAf = result['af'];
-                        valorDataNormal = result['normal'];
-
-                        //Iterando sobre o array['dados']
-                        // $.each(result['dados'], function(key,value){
-                        //     valorLabels.push(key);
-                        //     valorData.push(value);
-                        // });
-
-                        //Se tipo é igual a espaço em branco, é porque nenhum outro estilo de gráfico foi escolhido, permanecendo portanto o padrão "bar"
-                        //if(estilo == ""){estilo = "bar";}
-                        
-                        //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData);
-
-                        //Atualiza a tabela tradução
-                        $(".tabelatraducao").html('');
-                        $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ result['titulo'] +'</td></tr>');
-                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Normal</td><td class="subtitulovalortraducao">AF</td></tr>');
-
-                        //Itera sobre os dados retornados pela requisição Ajax
-                        $.each(result['af'], function(key,value){
-                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + key + '</td><td class="dadosvalor">' + number_format(value,2,",",".") + '</td></tr>');
-                        });
-                    },
-                    error: function(result){
-                        alert("Error ao retornar dados!");
-                    }
-                });
-
-                //Define o estilo do gráfico
-                //estilo = $(this).data('estilo-grafico');
-            
-                //Logo que a página é carregada, tipodado não está definido, então renderiza-se o gráfico padrão (bar) com os dados padrão (produtos)
-                // if(tipodados == ""){
-                //     renderGrafico(estilo);
-                // }else{
-                //     renderGraficoDinamico(estilo, tipodados, valorLabels, valorData);
-                // }
-
-                renderGrafico(estilo);
-                
-            });
-            //FIM DO ESTILO DE GRÁFICO PILHADO
-            //FIM DO ESTILO DE GRÁFICO PILHADO
 
 
             //Escolha de outro tipo de dados além do tipo padrão: "Produtos"
@@ -896,141 +812,6 @@
 
             }
         });
-
-
-
-        /* INÍCIO GRAFICOS TIPO STACKED */
-        function renderGraficoDinamicoEmpilhado(estilo, tipodados, valorLabels, valorData){
-
-            //Limpa a área do grafico para evitar sobreposição de informações
-            $('#myChartArea').remove();
-            $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
-
-            const ctx = document.getElementById('myChartArea').getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: estilo,
-                data: {
-                    labels: valorLabels,
-                    datasets: [{
-                        label: tipodados,
-                        data: valorData,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)',
-                            'rgba(54, 162, 235, 0.5)',
-                            'rgba(255, 206, 86, 0.5)',
-                            'rgba(75, 192, 192, 0.5)',
-                            'rgba(153, 102, 255, 0.5)',
-                            'rgba(255, 159, 64, 0.5)',
-                            'rgba(255, 192, 192, 0.5)',
-                            'rgba(153, 102, 255, 0.5)',
-                            'rgba(100, 159, 64, 0.5)',
-                            'rgba(100, 255, 192, 0.5)',
-                            'rgba(183, 90, 255, 0.5)',
-                            'rgba(255, 159, 100, 0.5)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(255, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(100, 159, 64, 1)',
-                            'rgba(100, 255, 192, 1)',
-                            'rgba(183, 90, 255, 1)',
-                            'rgba(255, 159, 100, 1)'
-                        ],
-                        borderWidth: 2,
-                        barPercentage: 0.5, //Determina a largura da coluna ou barra
-                        fill: false,
-
-                    },
-                    {
-                        label: tipodados,
-                        data: valorData,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)',
-                            'rgba(54, 162, 235, 0.5)',
-                            'rgba(255, 206, 86, 0.5)',
-                            'rgba(75, 192, 192, 0.5)',
-                            'rgba(153, 102, 255, 0.5)',
-                            'rgba(255, 159, 64, 0.5)',
-                            'rgba(255, 192, 192, 0.5)',
-                            'rgba(153, 102, 255, 0.5)',
-                            'rgba(100, 159, 64, 0.5)',
-                            'rgba(100, 255, 192, 0.5)',
-                            'rgba(183, 90, 255, 0.5)',
-                            'rgba(255, 159, 100, 0.5)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(255, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(100, 159, 64, 1)',
-                            'rgba(100, 255, 192, 1)',
-                            'rgba(183, 90, 255, 1)',
-                            'rgba(255, 159, 100, 1)'
-                        ],
-                        borderWidth: 2,
-                        barPercentage: 0.5, //Determina a largura da coluna ou barra
-                        fill: false,
-
-                    }]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            stacked: true
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            },
-                            stacked: true
-                        }]
-                    },
-                    title: {
-                        display: true,
-                        text: 'Gastos com compra (R$)'
-                    },
-                }
-            });
-
-            //Configurações personalizadas se grafico é do tipo linha
-            if(myChart.config.type == 'line'){
-                myChart.data.datasets[0].backgroundColor = 'rgb(255, 0, 0, 0.5)';
-                myChart.data.datasets[0].borderColor = 'rgb(0, 0, 0, 0.2)';
-                myChart.data.datasets[0].borderWidth = 3;
-                myChart.data.datasets[0].fill = true;
-                myChart.options.elements.line.tension = 0;
-                myChart.update();
-            }
-
-            //Configurações personalizadas se gráfico é do tipo rosca
-            if(myChart.config.type == 'doughnut'){
-                myChart.options.maintainAspectRatio = false;
-                myChart.options.tooltips.backgroundColor = 'rgb(255,255,255)';
-                myChart.options.tooltips.bodyFontColor = '#858796';
-                myChart.options.tooltips.borderColor = '#dddfeb';
-                myChart.options.tooltips.borderWidth = 1;
-                myChart.options.tooltips.xPadding = 15;
-                myChart.options.tooltips.yPadding = 15;
-                myChart.options.tooltips.displayColors = true;
-                myChart.options.tooltips.caretPadding =  10;
-                myChart.options.legend.display = true;
-                myChart.options.cutoutPercentage =  80;
-                myChart.update();
-            }
-        }
-        /* FIM GRÁFICOS STACKED */
-
 
 
         //Formatador de números
