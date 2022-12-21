@@ -741,6 +741,11 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.tutorialrepublic.com/faq/how-to-get-the-data-id-attribute-of-an-element-using-jquery.php
 // https://stackoverflow.com/questions/3087975/how-to-change-the-cursor-into-a-hand-when-a-user-hovers-over-a-list-item
 // https://stackoverflow.com/questions/34403510/chart-js-straight-lines-instead-of-curves
+// https://www.w3resource.com/javascript-exercises/javascript-math-exercise-17.php
+// https://www.programiz.com/javascript/examples/add-number
+// https://stackoverflow.com/questions/36749509/removing-legend-on-charts-with-chart-js-v2
+// https://www.phptutorial.net/php-tutorial/php-ternary-operator/
+
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
@@ -759,6 +764,8 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.youtube.com/watch?v=aPYEOVDTV6E
 // https://www.youtube.com/watch?v=ld5HwiENA8k
 // https://www.youtube.com/watch?v=kPFG5Dw63qI
+// https://www.youtube.com/watch?v=LF9NiVS6-Hc&t=601s
+// https://www.youtube.com/watch?v=2sr4abjGs-s
 
 
 how I know if an or other event in jquery foi trigged

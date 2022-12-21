@@ -36,12 +36,13 @@ class DashboardController extends Controller
         $totUsuarios =  User::all()->count();
 
         //Dados Produtos Para gráfico Principal com tradução
-        //$records = DB::select(DB::raw('SELECT produto_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_nome ORDER BY produto_nome ASC'));
-        $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompra ASC"));
+        $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
         
-        //Para teste de exibição de dados AJAX
-        //$records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompraaf ASC"));
+
+        //PARA TESTE DE EXIBIÇÃO DE DADOS EM REQUISIÇÕES AJAX
+        //$records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompra ASC"));
         //dd($records);
+
 
         $dataRecords = [];
         foreach($records as $value) {
@@ -76,33 +77,15 @@ class DashboardController extends Controller
             }
         }
 
+        //Dados USUÁRIOS
+        $usuarios = $records = DB::select(DB::raw('SELECT id, nomecompleto, perfil FROM users ORDER BY nomecompleto ASC'));
+
+
 
         return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totCompras',
                                             'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
-                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'dataRecordsMediaPrecoAf', 'dataRecordsMediaPrecoNorm'));
+                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'dataRecordsMediaPrecoAf', 'dataRecordsMediaPrecoNorm', 'usuarios'));
     }
-
-
-
-    /*
-    //Uma requisição personalizada
-    public function ajaxgraficodadoscategoria(Request $request)
-    {
-        $mes = date('m') - 1;
-        $records = DB::select(DB::raw("SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY categoria_nome ORDER BY totalcompra ASC"));
-        $dataRecords = [];
-
-        foreach($records as $value) {
-            $dataRecords[$value->categoria_nome] =  $value->totalcompra;
-        }
-
-        $data['titulo'] = "GASTOS EM CATEGORIAS (R$)";
-        $data['dados'] =  $dataRecords;
-
-        return response()->json($data);
-    }
-    */
-
 
 
     public function ajaxrecuperadadosgrafico(Request $request)
@@ -117,16 +100,16 @@ class DashboardController extends Controller
 
         switch($tipodados){
             case "Produtos":
-                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompra ASC"));
-                $data['titulo'] = "GASTOS GERAIS COM PRODUTOS (R$)";
+                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR PRODUTOS ";
             break;
             case "Categorias":
-                $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY categoria_nome ORDER BY totalcompra ASC"));
-                $data['titulo'] = "GASTOS GERAIS EM CATEGORIAS (R$)";
+                $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY categoria_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR CATEGORIAS";
             break;
             case "Regionais":
-                $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY regional_nome ORDER BY totalcompra ASC"));
-                $data['titulo'] = "GASTOS GERAIS NAS REGIONAIS (R$)";
+                $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY regional_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR REGIONAIS";
             break;
         }
 
@@ -150,42 +133,61 @@ class DashboardController extends Controller
         $mes = date('m') - 1;
 
         $data = [];
-        $dataLabelEmpilhado = [];
-        $dataRecordsAf = [];
-        $dataRecordsNormal = [];
-        $dataRecords = [];
+        $dataEmpilhadoLabels = [];
+        $dataEmpilhadoRecordsNormal = [];
+        $dataEmpilhadoRecordsAf = [];
         $records = "";
 
         switch($tipodados){
             case "Produtos":
-                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompraaf ASC"));
-                $data['titulo'] = "GASTOS AF x NORMAL COM PRODUTOS (R$)";
+                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR PRODUTOS (NORMAL x AF)";
             break;
             case "Categorias":
-                $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY categoria_nome ORDER BY totalcompra ASC"));
-                $data['titulo'] = "GASTOS GERAIS EM CATEGORIAS (R$)";
+                $records = $records = DB::select(DB::raw("SELECT categoria_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY categoria_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR CATEGORIAS (NORMAL x AF)";
             break;
             case "Regionais":
-                $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY regional_nome ORDER BY totalcompra ASC"));
-                $data['titulo'] = "GASTOS GERAIS NAS REGIONAIS (R$)";
+                $records = $records = DB::select(DB::raw("SELECT regional_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY regional_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR REGIONAIS (NORMAL x AF)";
             break;
         }
 
 
         foreach($records as $value) {
-            //$dataRecords[$value->nome] =  $value->totalcompra;
-            $dataLabelEmpilhado[] = $value->nome;
-            if($value->af == "nao"){
-                $dataRecordsAf[] = $value->totalcompraaf;
-            }else{
-                $dataRecordsNormal[] = $value->totalcompranormal;
-            }
+            $dataEmpilhadoLabels[] = $value->nome;
+            
+            $dataEmpilhadoRecordsNormal[] = $value->totalcompranormal;
+            $dataEmpilhadoRecordsAf[] = $value->totalcompraaf;
+            //if($value->af == "sim"){$dataEmpilhadoRecordsAf[] = $value->totalcompraaf;}else{$dataEmpilhadoRecordsNormal[] = $value->totalcompranormal;}
         }
 
-        $data['labels'] = $dataLabelEmpilhado;
-        $data['af'] =  $dataRecordsAf;
-        $data['normal'] = $dataRecordsNormal;
+        $data['labels'] = $dataEmpilhadoLabels;
+        $data['compranormal'] = $dataEmpilhadoRecordsNormal;
+        $data['compraaf'] =  $dataEmpilhadoRecordsAf;
+        $data['dados'] =  $records;
 
         return response()->json($data);
     }
+
+
+    /*****************************
+    //Uma requisição personalizada
+    public function ajaxgraficodadoscategoria(Request $request)
+    {
+        $mes = date('m') - 1;
+        $records = DB::select(DB::raw("SELECT categoria_nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY categoria_nome ORDER BY totalcompra ASC"));
+        $dataRecords = [];
+
+        foreach($records as $value) {
+            $dataRecords[$value->categoria_nome] =  $value->totalcompra;
+        }
+
+        $data['titulo'] = "GASTOS EM CATEGORIAS (R$)";
+        $data['dados'] =  $dataRecords;
+
+        return response()->json($data);
+    }
+    *******************************/
+
 }
