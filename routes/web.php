@@ -162,15 +162,17 @@ Route::get('admin/registroconsultacompra/comparativomensalgeralproduto',[Registr
 /*   ROTAS PARA DADOS DOS GRÁFICOS VIA AJAX    */
 /***********************************************/
 //Compras :Registros e Consultas
-Route::get('admin/dashboard/ajaxgraficodadosproduto', [DashboardController::class, 'ajaxgraficodadosproduto'])->name('admin.dashboard.ajaxgraficodadosproduto')->middleware(['auth']);
-Route::get('admin/dashboard/ajaxgraficodadoscategoria', [DashboardController::class, 'ajaxgraficodadoscategoria'])->name('admin.dashboard.ajaxgraficodadoscategoria')->middleware(['auth']);
-Route::get('admin/dashboard/ajaxgraficodadosregional', [DashboardController::class, 'ajaxgraficodadosregional'])->name('admin.dashboard.ajaxgraficodadosregional')->middleware(['auth']);
-
+//Route::get('admin/dashboard/ajaxgraficodadosproduto', [DashboardController::class, 'ajaxgraficodadosproduto'])->name('admin.dashboard.ajaxgraficodadosproduto')->middleware(['auth']);
+//Route::get('admin/dashboard/ajaxgraficodadoscategoria', [DashboardController::class, 'ajaxgraficodadoscategoria'])->name('admin.dashboard.ajaxgraficodadoscategoria')->middleware(['auth']);
+//Route::get('admin/dashboard/ajaxgraficodadosregional', [DashboardController::class, 'ajaxgraficodadosregional'])->name('admin.dashboard.ajaxgraficodadosregional')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgrafico', [DashboardController::class, 'ajaxrecuperadadosgrafico'])->name('admin.dashboard.ajaxrecuperadadosgrafico')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhado', [DashboardController::class, 'ajaxrecuperadadosgraficoempilhado'])->name('admin.dashboard.ajaxrecuperadadosgraficoempilhado')->middleware(['auth']);
 
 
-
+/**************************************************/
+/*   ROTAS PARA DADOS DAS ENTIDADES VISÃO RÁPIDA  */
+/**************************************************/
+Route::get('admin/dashboard/ajaxrecuperadadosentidades', [DashboardController::class, 'ajaxrecuperadadosentidades'])->name('admin.dashboard.ajaxrecuperadadosentidades')->middleware(['auth']);
 
 
 

@@ -175,6 +175,62 @@ TABELA DE TRADUÇÃO
 
 
 
+/******************
+TABELA ENTIDADE
+******************/
+.tabelaentidade{
+    border: 1px solid #e5e5e5;
+    width: 100%;
+}
+
+.tituloentidade{
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 26px;
+}
+
+.subtitulolabelentidade{
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.subtitulovalorentidade{
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.dadoslabel{
+    border: 1px solid #e5e5e5;
+    text-align: left;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.dadosvalor{
+    border: 1px solid #e5e5e5;
+    text-align: right;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.totaldadosvalor{
+    background-color: #d8d8db;
+    font-weight: bold;
+    color: #39393a;
+}
+
+
+
 
 /***********
 PSEUDO LINK 

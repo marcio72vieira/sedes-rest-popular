@@ -50,7 +50,7 @@ class DashboardController extends Controller
         }
 
 
-        //Dados Méida de preco AF e NORMAL para grafico de linha prórpio
+        //Dados Média de preco AF e NORMAL para grafico de linha prórpio
         $records = DB::select(DB::raw('SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
         $dataRecordsMediaPrecoAf = [];
         $dataRecordsMediaPrecoNorm = [];
@@ -171,6 +171,33 @@ class DashboardController extends Controller
     }
 
 
+    public function ajaxrecuperadadosentidades(Request $request)
+    {
+        $entidade = $request->entidade;
+
+        $data = [];
+        $dataRecords = [];
+        $records = "";
+
+        switch($entidade){
+            case "Usuários":
+                $records = DB::select(DB::raw('SELECT id, nomecompleto as nome, perfil as ativo FROM users ORDER BY nomecompleto ASC'));
+                $data['titulo'] = "USUÁRIOS";
+            break;
+            case "Empresas":
+                $records = $records = DB::select(DB::raw("SELECT id, nomefantasia as nome, ativo FROM empresas ORDER BY nomefantasia ASC"));
+                $data['titulo'] = "EMPRESAS ";
+            break;
+        }
+
+        $data['dados'] =  $records;
+
+        return response()->json($data);
+    }    
+
+
+
+    
     /*****************************
     //Uma requisição personalizada
     public function ajaxgraficodadoscategoria(Request $request)

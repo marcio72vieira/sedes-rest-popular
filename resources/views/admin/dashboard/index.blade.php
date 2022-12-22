@@ -407,10 +407,10 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                 aria-labelledby="dropdownMenuDados">
                                 <div class="dropdown-header">Dados:</div>
-                                <a class="dropdown-item">Usuários</a>
-                                <a class="dropdown-item">Empresas</a>
-                                <a class="dropdown-item">Categorias</a>
-                                <a class="dropdown-item">Regionais</a>
+                                <a class="dropdown-item tabentidade psdlink">Usuários</a>
+                                <a class="dropdown-item tabentidade psdlink">Empresas</a>
+                                <a class="dropdown-item tabentidade psdlink">Categorias</a>
+                                <a class="dropdown-item tabentidade psdlink">Regionais</a>
                             </div>
                         </div>
                     </div>
@@ -418,21 +418,21 @@
                 <div class="card-body">
                     <div style="width: 100%; height: 20%; background-color: white;">
                         <div>
-                            <table class="tabelatraducao">
+                            <table class="tabelaentidade">
                                 @php
                                     //Dados vindo da view via método compact
                                     if(count($usuarios))  {
-                                        echo "<tr><td colspan='3' class='titulotraducao'>USUÁRIOS</td></tr>";
+                                        echo "<tr><td colspan='3' class='tituloentidade'>USUÁRIOS</td></tr>";
                                         echo "<tr>
-                                            <td class='subtitulolabeltraducao' style='width: 2%'>Id</td>
-                                            <td class='subtitulovalortraducao' style='width: 95%'>Nome</td>
-                                            <td class='subtitulovalortraducao' style='width: 3%'>Ativo</td>
+                                            <td class='subtitulolabelentidade' style='width: 2%'>Id</td>
+                                            <td class='subtitulovalorentidade' style='width: 95%'>Nome</td>
+                                            <td class='subtitulovalorentidade' style='width: 3%'>Ativo</td>
                                         </tr>";
                                         foreach ($usuarios as $key => $value) {
                                             echo "<tr class='destaque'>";
                                                 echo "<td class='dadoslabel'>".$value->id."</td>";
-                                                echo "<td class='dadoslabel entidade' data-id='".$value->id."'>".$value->nomecompleto."</td>";
-                                                echo "<td class='dadoslabel'>".($value->perfil != "ina" ? 'ativo' : 'inativo')."</td>";
+                                                echo "<td class='dadoslabel regid psdlink' data-id='".$value->id."'>".$value->nomecompleto."</td>";
+                                                echo "<td class='dadoslabel' style='text-align:center'>".($value->perfil != "ina" ? '<b><i class="fas fa-check text-success mr-2"></i></b>' : '<b><i class="fas fa-times  text-danger mr-2"></i></b>')."</td>";
                                             echo "</tr>";
                                         }
                                     }
@@ -533,6 +533,12 @@
 
             var valorTituloGrafico =  "";
 
+            var entidade = "";
+            var identidade = 0;
+            var identificadorreg = 0;
+
+
+
             //ALTERAÇÃO DO ESTILO DE GRÁFICO
             $('.estilografico').on('click', function() {
     
@@ -552,7 +558,7 @@
 
 
 
-            //INÍCIO DO ESTILO DE GRÁFICO PILHADO
+            //Início do estilo do gráfico do tipo pilha
             $('.estilograficoempilhado').on('click', function() {
 
                 if(tipodados == ""){
@@ -612,7 +618,7 @@
                     }
                 });
             });
-            //FIM DO ESTILO DE GRÁFICO PILHADO
+            //Fim do estilo do gráfico do tipo pilha
 
 
             //Escolha de outro tipo de dados além do tipo padrão: "Produtos"
@@ -674,6 +680,99 @@
                     }
                 });
             });
+
+
+            //Inicio Entidades
+            //Escolha de outro tipo de entidade além do tipo padrão: "Usuários"
+            $(".tabentidade").on("click", function(){
+
+                
+                //entidade = $(this).text().trim();
+
+                if(entidade == ""){
+                    entidade = "Usuários";
+                }else{
+                    //Limpa espaço em branco no texto do link tipodados
+                    entidade = $(this).text().trim();
+                }
+
+                alert(entidade);
+
+                var urltipo = "";
+
+                //Faz requisição para obter novos dados
+                $.ajax({
+                    url:"{{route('admin.dashboard.ajaxrecuperadadosentidades')}}",    //urltipo
+                    type: "GET",
+                    data: {
+                        entidade: entidade
+                    },
+                    dataType : 'json',
+
+                    success: function(result){
+
+                        //Zerando o valor das variáveis globais do tipo array
+                        // valorLabels = [];
+                        // valorData = [];
+                        // somaCompra = 0;
+                        // valorTituloGrafico = "";
+
+                        //Iterando sobre o array['dados']
+                        // $.each(result['dados'], function(key,value){
+                        //     valorLabels.push(key);
+                        //     valorData.push(value);
+                        // });
+
+                        // valorTituloGrafico = result['titulo'];
+
+                        //Se tipo é igual a espaço em branco, é porque nenhum outro estilo de gráfico foi escolhido, permanecendo portanto o padrão "bar"
+                        // if(estilo == ""){estilo = "bar";}
+                        
+                        //Renderiza gráfico passando as informações necessárias
+                        // renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
+                        titulotabelaentidade =  result['titulo'];
+
+                        //Atualiza a tabela entidade
+                        $(".tabelaentidade").html('');
+                        $(".tabelaentidade").append('<tr><td colspan="3" class="tituloentidade">'+ titulotabelaentidade +'</td></tr>');
+                        $(".tabelaentidade").append('<tr><td class="subtitulolabelentidade" style="width: 2%">Id</td><td class="subtitulovalorentidade" style="width: 95%">Nome</td><td class="subtitulovalorentidade" style="width: 3%">Ativo</td></tr>');
+
+                        //Itera sobre os dados retornados pela requisição Ajax
+                        $.each(result['dados'], function(key,value){
+                            //Essa verificação é necessária, em função da tabela usuários não possuir o campo ativo e sim os perfis: (adm, nut e ina)
+                            if(value.ativo == 0 || value.ativo == "ina"){
+                                statusentidade = "0";
+                            } else {
+                                statusentidade = "1";
+                            }
+
+                            //$(".tabelaentidade").append('<tr class="destaque"><td class="dadoslabel">' + value.id + '</td><td class="dadoslabel regid psdlink" data-id="' + value.id + '">' + value.nome + '</td><td class="dadoslabel" style="text-align:center">' + (value.ativo != "ina" || value.ativo != "0" ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times text-danger mr-2'></i></b>") + '</td></tr>');
+                            $(".tabelaentidade").append('<tr class="destaque"><td class="dadoslabel">' + value.id + '</td><td class="dadoslabel regid psdlink" data-id="' + value.id + '">' + value.nome + '</td><td class="dadoslabel" style="text-align:center">' + (statusentidade == "1" ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times text-danger mr-2'></i></b>") + '</td></tr>');
+                        });
+                    },
+                    error: function(result){
+                        alert("Error ao retornar dados!");
+                    }
+                });
+            });
+            // Fim Entidade
+
+            //Aqui, houve a necessidade de se aplicar a delegação de eventos, visto que a classe ".regid" é
+            //criada dinamicamente na tabela "tabelaentidade".Não fosse assim, não teriamo como ler o id
+            //do registro da coluna clicada identificada pelo "data-id"
+            $(".tabelaentidade").on("click", ".regid", function(){
+                //estilo = $(this).data('estilo-grafico');
+                identificadorreg = $(this).data('id');
+                //alert(identificador);
+
+                if(entidade == ""){
+                    entidade = "Usuários";
+                }else {
+                    entidade = entidade;
+                }
+                alert(entidade + " - " + identificadorreg);
+            });
+
         });
 
 
