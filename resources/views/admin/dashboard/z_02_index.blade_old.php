@@ -128,10 +128,8 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            {{-- <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compras / Mês</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totComprasGeral }} / {{ $totComprasMes }}</div> --}}
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compras</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totComprasMes }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totCompras }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
@@ -234,8 +232,8 @@
 
 
 
-        {{-- 
-        <!-- Earnings (Monthly) Card Example -->
+
+        {{-- <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-2 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
@@ -254,9 +252,6 @@
                                             aria-valuemax="100"></div>
                                     </div>
                                 </div>
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0</div>
-                                </div>
                             </div>
                         </div>
                         <div class="col-auto">
@@ -265,8 +260,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        --}}
+        </div> --}}
 
     </div>
     <!-- FIM Content Row CARDS-->
@@ -315,13 +309,8 @@
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="pie"><span><i class="fas fa-chart-pie"></i> Pizza</a>
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="line"><span><i class="fas fa-chart-line"></i> Linha</a>
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="doughnut"><span><i class="fas fa-circle-notch"></i> Rosca</a>
-                            <div class="dropdown-divider"></div>
-                            <div class="dropdown-header"><i class="fas fa-cubes"></i> Pilha:</div> 
-                            {{-- <a class="dropdown-item estilograficoempilhado psdlink"><i class="fas fa-cubes"></i> Pilha</a> --}}
-                            <a class="dropdown-item estilograficoempilhado psdlink"> Normal x AF</a>
-                            {{-- <a class="dropdown-item estilograficoempilhadocategoriaproduto psdlink"> Categoria (produtos)</a> --}}
-                            {{--<a class="dropdown-item estilograficoempilhadoregionalcategoria psdlink"> Regionais (produtos)</a>--}}
-                            {{--<a class="dropdown-item estilograficoempilhadoregionalcategoria psdlink"> Regionais (categorias)</a>--}}
+                            <div class="dropdown-divider"></div>    
+                            <a class="dropdown-item estilograficoempilhado psdlink"><span><i class="fas fa-cubes"></i> Pilha</a>
                         </div>
                     </div>
                 </div>
@@ -402,7 +391,7 @@
     <!-- FIM MEUS GRÁFICOS -->
 
 
-    <!-- INÍCIO OUTROS DADOS - VISUALIZAÇÃO RÁPIDA E INFORMAÇÕES -->
+    <!-- INÍCIO OUTROS DADOS -->
     <div class="row">
         {{-- Outros dados --}}
         <div class="col-xl-5 col-lg-6">
@@ -449,6 +438,7 @@
                                     }
                                 @endphp
                             </table>
+                            
                         </div>
                     </div>
                 </div>
@@ -460,20 +450,33 @@
             <div class="card shadow mb-4">
                 <div>
                     <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Informações</h5>
+                    <div class="card-header"  style="float: right; margin-top: -41px;">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
+                                Dados
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                aria-labelledby="dropdownMenuDados">
+                                <div class="dropdown-header">Dados:</div>
+                                <a class="dropdown-item" href="#">Produtos</a>
+                                <a class="dropdown-item" href="#">Categorias</a>
+                                <a class="dropdown-item" href="#">Regionais</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div style="width: 100%; height: 20%; background-color: white;">
                         <div>
-                            <table id="informacoes">
-                                
-                            </table>
+                            <canvas id="graficoLinha" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- FIM OUTROS DADOS  - VISUALIZAÇÃO RÁPIDA E INFORMAÇÕES -->
+    <!-- FIM OUTROS DADOS -->
 
 </div>
 
@@ -530,7 +533,6 @@
 
             var valorTituloGrafico =  "";
 
-            //Informações rápidaas
             var entidade = "";
             var identidade = 0;
             var identificadorreg = 0;
@@ -619,81 +621,6 @@
             //Fim do estilo do gráfico do tipo pilha
 
 
-            //Inicio do estilo do gráfico tipo pilha categoria produto
-            /*
-            $('.estilograficoempilhadocategoriaproduto').on('click', function() {
-
-                var tipodadosEmpilhadoCategoria = "Categorias";   //alert("GRAFICO DADO foi escolhido " + tipodadosEmpilhadoCategoria);
-                
-                $.ajax({
-                    url:"{{route('admin.dashboard.ajaxrecuperadadosgraficoempilhadocategoriaproduto')}}",
-                    type: "GET",
-                    data: {
-                        tipodadoscategoria: tipodadosEmpilhadoCategoria
-                    },
-                    dataType : 'json',
-
-                    success: function(result){
-
-                        // alert(result['titulo']);
-                        // alert(result['labelsCat']); //new Set(chars);
-                        // var CategPro = [...new Set(result['labelsCat'])];
-                        // alert(CategPro);
-                        // alert(result['labelsProd']);
-                        // alert(result['valuesCompra']);
-
-
-                        //Zerando o valor das variáveis globais para este tipo de gráfico (empilhado)
-                        // valorLabels = [];
-                        // valorDataNormal = [];
-                        // valorDataAf = [];
-                        // somaCompra = 0;
-                        // somaCompraNormal = 0;
-                        // somaCompraAf = 0;
-                        // valorTituloGrafico = '';
-
-                        
-                        //Atribuindo os respecitvos arrays
-                        valorLabels = [...new Set(result['labelsCat'])];
-                        //valorDataNormal = result['compranormal'];
-                        //valorDataAf = result['compraaf'];
-                        valorDataNormal = [30, 40, 50, 50, 70];
-                        valorDataAf = [10, 15, 20, 25, 25];
-                        valorTituloGrafico = result['titulo'];
-                        
-                        //Renderiza gráfico passando as informações necessárias
-                        //renderGraficoPilhaCategoriaProduto(valorLabels, valorTituloGrafico, conjuntoDeDados);
-                        renderGraficoPilhaCategoriaProduto(valorLabels, valorTituloGrafico, cordeFundo, cordaBorda);
-
-                        //Atualiza a tabela tradução
-                        $(".tabelatraducao").html('');
-                        $(".tabelatraducao").append('<tr><td colspan="4" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
-                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">'+ 'tipodadosEmpilhado' +'</td><td class="subtitulovalortraducao">Normal</td><td class="subtitulovalortraducao">AF</td><td class="subtitulovalortraducao">Total</td></tr>');
-
-                        //Itera sobre os dados retornados pela requisição Ajax
-                        $.each(result['dados'], function(key,value){
-
-                            somaCompraNormal = somaCompraNormal += Number(value.totalcompranormal);
-                            somaCompraAf = somaCompraAf += Number(value.totalcompraaf);
-                            somaCompra = somaCompra += Number(value.totalcompra);
-
-                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + value.nome + '</td><td class="dadosvalor">' + number_format(value.totalcompranormal,2,",",".") + '</td><td class="dadosvalor">' + number_format(value.totalcompraaf,2,",",".") + '</td><td class="dadosvalor">' + number_format(value.totalcompra,2,",",".") + '</td></tr>');
-                        });
-
-                        $(".tabelatraducao").append('<tr class="totaldadosvalor"><td class="dadoslabel">Total GERAL</td><td class="dadosvalor">' + number_format(somaCompraNormal,2,",",".") + '</td><td class="dadosvalor">' + number_format(somaCompraAf,2,",",".") + '</td><td class="dadosvalor">' + number_format(somaCompra,2,",",".") + '</td></tr>');
-                    },
-                    error: function(result){
-                        alert("Error ao retornar dados!");
-                    }
-                });
-            });
-            */
-            //Fim do estilo do gráfico tipo pilha  categoria produto
-
-
-
-
-
             //Escolha de outro tipo de dados além do tipo padrão: "Produtos"
             $(".tipodadosgraficopadrao").on("click", function(){
 
@@ -755,9 +682,7 @@
             });
 
 
-            //************************
-            // VISUALIZAÇÃO RÁPIDA
-            //************************
+            //Inicio Entidades
             //Escolha de outro tipo de entidade além do tipo padrão: "Usuários"
             $(".tabentidade").on("click", function(){
 
@@ -771,6 +696,10 @@
                     entidade = $(this).text().trim();
                 }
 
+                alert(entidade);
+
+                var urltipo = "";
+
                 //Faz requisição para obter novos dados
                 $.ajax({
                     url:"{{route('admin.dashboard.ajaxrecuperadadosentidades')}}",    //urltipo
@@ -781,7 +710,26 @@
                     dataType : 'json',
 
                     success: function(result){
+
+                        //Zerando o valor das variáveis globais do tipo array
+                        // valorLabels = [];
+                        // valorData = [];
+                        // somaCompra = 0;
+                        // valorTituloGrafico = "";
+
+                        //Iterando sobre o array['dados']
+                        // $.each(result['dados'], function(key,value){
+                        //     valorLabels.push(key);
+                        //     valorData.push(value);
+                        // });
+
+                        // valorTituloGrafico = result['titulo'];
+
+                        //Se tipo é igual a espaço em branco, é porque nenhum outro estilo de gráfico foi escolhido, permanecendo portanto o padrão "bar"
+                        // if(estilo == ""){estilo = "bar";}
                         
+                        //Renderiza gráfico passando as informações necessárias
+                        // renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
                         titulotabelaentidade =  result['titulo'];
 
                         //Atualiza a tabela entidade
@@ -792,7 +740,6 @@
                         //Itera sobre os dados retornados pela requisição Ajax
                         $.each(result['dados'], function(key,value){
                             //Essa verificação é necessária, em função da tabela usuários não possuir o campo ativo e sim os perfis: (adm, nut e ina)
-                            //Na consulta ao banco, o campo pefil é epelidado de ativo, para se equiparar aos outros modelos.
                             if(value.ativo == 0 || value.ativo == "ina"){
                                 statusentidade = "0";
                             } else {
@@ -812,46 +759,26 @@
 
             //Aqui, houve a necessidade de se aplicar a delegação de eventos, visto que a classe ".regid" é
             //criada dinamicamente na tabela "tabelaentidade".Não fosse assim, não teriamo como ler o id
-            //do registro da coluna clicada identificada pelo "data-id", como comentado abaixo
-            //$(".regiid").on("click", function(){ 
+            //do registro da coluna clicada identificada pelo "data-id"
             $(".tabelaentidade").on("click", ".regid", function(){
+                //estilo = $(this).data('estilo-grafico');
+                identificadorreg = $(this).data('id');
+                //alert(identificador);
 
-                idreg = $(this).data('id');
-                
                 if(entidade == ""){
                     entidade = "Usuários";
                 }else {
                     entidade = entidade;
                 }
-                
-                //Faz requisição para obter novos dados
-                $.ajax({
-                    url:"{{route('admin.dashboard.ajaxrecuperainformacoesregistro')}}",    //urltipo
-                    type: "GET",
-                    data: {
-                        entidade: entidade,
-                        idregistro: idreg
-                    },
-                    dataType : 'json',
-
-                    success: function(result){
-                        //Função para preencher tabela com informações
-                        preenchetabelainformacao(result);
-                    },
-                    error: function(result){
-                        alert("Error ao retornar dados!");
-                    }
-                });
+                alert(entidade + " - " + identificadorreg);
             });
 
         });
 
 
-        //**************************************************************************
-        // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS BAR - HORIZONTALBAR - LINHA - ROSCA
-        //**************************************************************************
         //Renderiza Gráfico com dados padrão Produtos e o estilo igual a "bar" (Dados vindos via método compac, da view).
         function renderGrafico(estilo){
+
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
             $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');            
@@ -1069,6 +996,7 @@
         }
 
 
+
         // Meu gráfico
         var ctx = document.getElementById('graficoLinha').getContext('2d');
         var chart = new Chart(ctx, {
@@ -1112,9 +1040,7 @@
 
 
 
-        //*************************************************
-        // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS EMPILHADO 
-        //*************************************************
+        /* INÍCIO GRAFICOS EMPILHADO */
         function renderGraficoDinamicoEmpilhado(valorLabels, valorNormal, valorAf, titulo){
 
             //Limpa a área do grafico para evitar sobreposição de informações
@@ -1254,34 +1180,11 @@
                 }
             });
         }
+        /* FIM GRÁFICOS EMPILHADO */
 
 
 
-        //***********************************
-        // FUNÇÃO PRA TABELAS DE INFORMAÇÕES
-        //************************************
-        function preenchetabelainformacao(result) {
-            $("#informacoes").html('');
-            $("#informacoes").append('<tr><td class="infolabel">ID</td><td class="infodados">' + result['dados'].id + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">NOME</td><td class="infodados">' + result['dados'].nomecompleto + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">CPF</td><td class="infodados">' + result['dados'].cpf + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">CRN</td><td class="infodados">' + result['dados'].crn + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">MUNICÍPIO</td><td class="infodados">' + result['dados'].municipio.nome + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">RESTAURANTE</td><td class="infodados">' + (result['dados'].perfil == "nut" || result['dados'].perfil == "ina"  ? result['dados'].restaurante.identificacao : "") + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">TELEFONE</td><td class="infodados">' + result['dados'].telefone + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">E-MAIL</td><td class="infodados">' + result['dados'].email + '</td></tr>');
-        }
-
-
-
-
-
-
-
-
-        //******************************
-        // FUNÇÃO PARA FORMATAR NÚMEROS 
-        //******************************
+        //Formatador de números
         function number_format(number, decimals, dec_point, thousands_sep) {
             // *     example: number_format(1234.56, 2, ',', ' ');
             // *     return: '1 234,56'

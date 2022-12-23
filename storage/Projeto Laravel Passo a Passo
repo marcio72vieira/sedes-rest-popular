@@ -746,7 +746,15 @@ how to avoid with some characters become typed in text box with jquery
 // https://stackoverflow.com/questions/36749509/removing-legend-on-charts-with-chart-js-v2
 // https://www.phptutorial.net/php-tutorial/php-ternary-operator/
 // https://imasters.com.br/front-end/entendendo-o-event-delegation-da-funcao-on-no-jquery
-
+// https://stackoverflow.com/questions/25228823/how-to-get-distinct-values-for-non-key-column-fields-in-laravel
+// https://www.itsolutionstuff.com/post/laravel-collection-get-unique-values-exampleexample.html
+// https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+// https://dev.to/soyleninjs/3-ways-to-remove-duplicates-in-an-array-in-javascript-259o
+// https://stackoverflow.com/questions/31059399/how-to-push-datasets-dynamically-for-chart-js-bar-chart
+// https://stackoverflow.com/questions/41805180/add-dynamic-dataset-to-chart-js
+// https://jsfiddle.net/ts8rn7vs/
+// https://www.w3schools.com/js/js_loop_forof.asp
+// https://www.w3schools.com/jsref/jsref_foreach.asp
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
@@ -767,6 +775,7 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.youtube.com/watch?v=kPFG5Dw63qI
 // https://www.youtube.com/watch?v=LF9NiVS6-Hc&t=601s
 // https://www.youtube.com/watch?v=2sr4abjGs-s
+// https://www.youtube.com/watch?v=LF9NiVS6-Hc
 
 
 how I know if an or other event in jquery foi trigged
@@ -794,6 +803,15 @@ SELECT regional_nome, produto_id, semana_nome, preco, af, AVG(IF(af = "sim", pre
 SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
 SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome
 SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC
+
+Seleção de produtos por categoria em seus respectivos valores
+SELECT categoria_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id ORDER BY totalcompra ASC 
+SELECT categoria_nome, produto_nome, SUM(precototal) FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_id ORDER BY precototal ASC
+SELECT categoria_nome, produto_nome, SUM(precototal) FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome, produto_id ORDER BY categoria_nome ASC, precototal ASC
+
+SELECT  DISTINCT categoria_id, categoria_nome FROM bigtable_data WHERE MONTH(data_ini) = 11 ORDER BY categoria_nome ASC
+SELECT  DISTINCT categoria_id, categoria_nome as nomelabel FROM bigtable_data WHERE MONTH(data_ini) = 11 ORDER BY nomelabel ASC
+SELECT categoria_nome as nomeprincipal, produto_nome as nomesecundario, SUM(precototal) as valorcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id, produto_id ORDER BY categoria_nome ASC, valorcompra ASC
 
 
 =================================================================================================

@@ -19,15 +19,13 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
         //$mes =  date('m');
         $mes =  date('m') -  1;
 
         $totEmpresas =  Empresa::all()->count();
         $totNutricionistas =  Nutricionista::all()->count();
         $totRestaurantes = Restaurante::all()->count();
-        $totComprasGeral = Compra::all()->count();
-        $totComprasMes = DB::table('compras')->whereMonth('data_ini', $mes)->count();
+        $totCompras = Compra::all()->count();
         $totRegionais = Regional::all()->count();
         $totMunicipios =  Municipio::all()->count();
         $totComprasNormal =  DB::table('compras')->whereMonth('data_ini', $mes)->sum('valor');
@@ -40,22 +38,16 @@ class DashboardController extends Controller
         //Dados Produtos Para gráfico Principal com tradução
         $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
         
+
+        //PARA TESTE DE EXIBIÇÃO DE DADOS EM REQUISIÇÕES AJAX
+        //$records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_nome ORDER BY totalcompra ASC"));
+        //dd($records);
+
+
         $dataRecords = [];
         foreach($records as $value) {
             $dataRecords[$value->nome] =  $value->totalcompra;
         }
-
-
-        //////////////////////////////////////////////////////////////////////
-        //   INÍCIO     ESPAÇO RESERVADO PARA TESTE DE SOLICITAÇÕES AJAX    //
-        
-
-        //$records = User::with(['municipio', 'restaurante'])->findOrFail(1);
-        //dd($records);
-
-        
-        //   FIM  ESPAÇO RESERVADO PARA TESTE DE SOLICITAÇÕES AJAX    //
-        ////////////////////////////////////////////////////////////////        
 
 
         //Dados Média de preco AF e NORMAL para grafico de linha prórpio
@@ -90,7 +82,7 @@ class DashboardController extends Controller
 
 
 
-        return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral', 'totComprasMes',
+        return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totCompras',
                                             'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
                                             'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'dataRecordsMediaPrecoAf', 'dataRecordsMediaPrecoNorm', 'usuarios'));
     }
@@ -179,46 +171,6 @@ class DashboardController extends Controller
     }
 
 
-
-
-    public function ajaxrecuperadadosgraficoempilhadocategoriaproduto(Request $request)
-    {
-        $tipodados = $request->tipodadoscategoria;
-
-        $mes = date('m') - 1;
-
-        $data = [];
-        
-        switch($tipodados){
-            case "Categorias":
-                //$recordslabelsCat = DB::select(DB::raw("SELECT  DISTINCT categoria_id, categoria_nome as nomelabel FROM bigtable_data WHERE MONTH(data_ini) = $mes ORDER BY nomelabel ASC"));
-                $recordslabelsProd = DB::select(DB::raw("SELECT categoria_nome as nomeprincipal, produto_nome as nomesecundario, SUM(precototal) as valorcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY categoria_id, produto_id ORDER BY categoria_nome ASC, valorcompra ASC"));
-                $data['titulo'] = "CATEGORIAS (PRODUTOS)";
-            break;
-        }
-
-        foreach($recordslabelsProd as $prod){
-            //Obtendo as categorias (irão vir duplicdas em função do Group By)
-            $arrCat[] = $prod->nomeprincipal;
-            //Obtendo os produtos
-            $arrProd[] = $prod->nomesecundario;
-            //Obtendo os valores dos produtos
-            $arrValueProd[] = $prod->valorcompra;
-        }
-
-        //$data['labelsCat'] = collect($arrCat)->unique(); //$data['labelsCat'] = array_unique($arrCat);
-
-        $data['labelsCat'] = $arrCat;
-        $data['labelsProd'] = $arrProd;
-        $data['valuesCompra'] = $arrValueProd;
-        
-        
-        return response()->json($data);
-    }
-    
-
-
-
     public function ajaxrecuperadadosentidades(Request $request)
     {
         $entidade = $request->entidade;
@@ -244,37 +196,10 @@ class DashboardController extends Controller
     }    
 
 
-    public function ajaxrecuperainformacoesregistro(Request $request)
-    {
-        $model = $request->entidade;
-        $id = $request->idregistro;
-
-        $data = [];
-        $records = "";
-
-        switch($model){
-            case "Usuários":
-                $records = User::with(['municipio', 'restaurante'])->findOrFail($id);
-                $data['titulo'] = "USUÁRIOS";
-            break;
-            case "Empresas":
-                $records = $records = DB::select(DB::raw("SELECT id, nomefantasia as nome, ativo FROM empresas ORDER BY nomefantasia ASC"));
-                $data['titulo'] = "EMPRESAS ";
-            break;
-        }
-
-        $data['dados'] =  $records;
-
-        return response()->json($data);
-    }    
-
-
-
 
     
     /*****************************
     //Uma requisição personalizada
-    /*
     public function ajaxgraficodadoscategoria(Request $request)
     {
         $mes = date('m') - 1;

@@ -167,12 +167,14 @@ Route::get('admin/registroconsultacompra/comparativomensalgeralproduto',[Registr
 //Route::get('admin/dashboard/ajaxgraficodadosregional', [DashboardController::class, 'ajaxgraficodadosregional'])->name('admin.dashboard.ajaxgraficodadosregional')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgrafico', [DashboardController::class, 'ajaxrecuperadadosgrafico'])->name('admin.dashboard.ajaxrecuperadadosgrafico')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhado', [DashboardController::class, 'ajaxrecuperadadosgraficoempilhado'])->name('admin.dashboard.ajaxrecuperadadosgraficoempilhado')->middleware(['auth']);
+Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhadocategoriaproduto', [DashboardController::class, 'ajaxrecuperadadosgraficoempilhadocategoriaproduto'])->name('admin.dashboard.ajaxrecuperadadosgraficoempilhadocategoriaproduto')->middleware(['auth']);
 
 
 /**************************************************/
 /*   ROTAS PARA DADOS DAS ENTIDADES VISÃO RÁPIDA  */
 /**************************************************/
 Route::get('admin/dashboard/ajaxrecuperadadosentidades', [DashboardController::class, 'ajaxrecuperadadosentidades'])->name('admin.dashboard.ajaxrecuperadadosentidades')->middleware(['auth']);
+Route::get('admin/dashboard/ajaxrecuperainformacoesregistro', [DashboardController::class, 'ajaxrecuperainformacoesregistro'])->name('admin.dashboard.ajaxrecuperainformacoesregistro')->middleware(['auth']);
 
 
 
