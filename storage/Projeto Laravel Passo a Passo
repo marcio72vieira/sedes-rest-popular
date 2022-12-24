@@ -755,6 +755,13 @@ how to avoid with some characters become typed in text box with jquery
 // https://jsfiddle.net/ts8rn7vs/
 // https://www.w3schools.com/js/js_loop_forof.asp
 // https://www.w3schools.com/jsref/jsref_foreach.asp
+// https://pt.stackoverflow.com/questions/6526/como-formatar-data-no-javascript
+// https://www.alura.com.br/artigos/objeto-format-date-e-formato-datas-em-javascript?gclid=Cj0KCQiAwJWdBhCYARIsAJc4idCsZsJEmP9fE5UPyZxaGiLykDZ6QjQiZlGwnc1JhZmkUz5Jf2pu5twaAp8qEALw_wcB
+// https://www.w3schools.com/js/js_array_iteration.asp
+// https://horadecodar.com.br/2020/09/22/como-deletar-uma-variavel-em-javascript/
+// https://www.w3schools.com/react/react_es6_spread.asp
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+// https://pt.stackoverflow.com/questions/1667/como-detectar-se-um-elemento-html-est%C3%A1-vazio
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'

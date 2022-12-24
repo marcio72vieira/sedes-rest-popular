@@ -459,14 +459,12 @@
         <div class="col-xl-7 col-lg-6">
             <div class="card shadow mb-4">
                 <div>
-                    <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Informações</h5>
+                    <h5 class="card-header" id="headinformacaoes" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Informações</h5>
                 </div>
                 <div class="card-body">
                     <div style="width: 100%; height: 20%; background-color: white;">
                         <div>
-                            <table id="informacoes">
-                                
-                            </table>
+                            <table id="informacoes"> </table>
                         </div>
                     </div>
                 </div>
@@ -761,15 +759,19 @@
             //Escolha de outro tipo de entidade além do tipo padrão: "Usuários"
             $(".tabentidade").on("click", function(){
 
+                $("#informacoes").html('');
                 
                 //entidade = $(this).text().trim();
 
-                if(entidade == ""){
+                /* if(entidade == ""){
                     entidade = "Usuários";
                 }else{
                     //Limpa espaço em branco no texto do link tipodados
                     entidade = $(this).text().trim();
-                }
+                } */
+
+                //Limpa espaço em branco no texto do link tipodados
+                entidade = $(this).text().trim();
 
                 //Faz requisição para obter novos dados
                 $.ajax({
@@ -1261,22 +1263,81 @@
         // FUNÇÃO PRA TABELAS DE INFORMAÇÕES
         //************************************
         function preenchetabelainformacao(result) {
+
+            var entidadeinformada = result['titulo'];
+            
             $("#informacoes").html('');
-            $("#informacoes").append('<tr><td class="infolabel">ID</td><td class="infodados">' + result['dados'].id + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">NOME</td><td class="infodados">' + result['dados'].nomecompleto + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">CPF</td><td class="infodados">' + result['dados'].cpf + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">CRN</td><td class="infodados">' + result['dados'].crn + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">MUNICÍPIO</td><td class="infodados">' + result['dados'].municipio.nome + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">RESTAURANTE</td><td class="infodados">' + (result['dados'].perfil == "nut" || result['dados'].perfil == "ina"  ? result['dados'].restaurante.identificacao : "") + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">TELEFONE</td><td class="infodados">' + result['dados'].telefone + '</td></tr>');
-            $("#informacoes").append('<tr><td class="infolabel">E-MAIL</td><td class="infodados">' + result['dados'].email + '</td></tr>');
+
+            switch(entidadeinformada){
+                case 'USUÁRIOS':
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nomecompleto + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Pefil:</td><td class="infodados">' + (result['dados'].perfil == "adm" ? "ADMINISTRADOR" : result['dados'].perfil == "nut"  ? "NUTRICIONISTA" : "NUTRICIONISTA - INATIVO") + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">CPF:</td><td class="infodados">' + result['dados'].cpf + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">CRN:</td><td class="infodados">' + (result['dados'].crn != null ? result['dados'].crn : "") + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Município:</td><td class="infodados">' + result['dados'].municipio.nome + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Restaurante:</td><td class="infodados">' + (result['dados'].perfil == "nut" || result['dados'].perfil == "ina"  ? result['dados'].restaurante.identificacao : "") + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">E-mail:</td><td class="infodados">' + result['dados'].email + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Telefone:</td><td class="infodados">' + result['dados'].telefone + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                break;
+                case 'EMPRESAS':
+                    //Reune nutricionistas da empresa na mesma coluna
+                    var qtdnutri = result['dados'].nutricionistas.length;
+                    var dadosnutricionistas = "";
+                    for(var i=0; i < qtdnutri; i++){
+                        dadosnutricionistas += result['dados'].nutricionistas[i].nomecompleto + " - " + result['dados'].nutricionistas[i].telefone + " - " + result['dados'].nutricionistas[i].email + "<br>";
+                    }
+
+                    //Reune restaurantes da empresa na mesma coluna
+                    var qtdrest = result['dados'].restaurantes.length;
+                    var dadosrestaurantes = "";
+                    for(var i=0; i < qtdrest; i++){
+                        dadosrestaurantes += result['dados'].restaurantes[i].identificacao + "<br>";
+                    }
+
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Razão Social:</td><td class="infodados">' + result['dados'].razaosocial + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome de Fatasia:</td><td class="infodados">' + result['dados'].nomefantasia + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">CNPJ:</td><td class="infodados">' + result['dados'].cnpj + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Titular:</td><td class="infodados">' + result['dados'].titular + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cargo:</td><td class="infodados">' + result['dados'].cargotitular + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Logradouro:</td><td class="infodados">' + result['dados'].logradouro + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Número:</td><td class="infodados">' + result['dados'].numero + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Complemento:</td><td class="infodados">' + result['dados'].complemento + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Município:</td><td class="infodados">' + result['dados'].municipio + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Bairro:</td><td class="infodados">' + result['dados'].bairro + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">CEP:</td><td class="infodados">' + result['dados'].cep + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">E-mail:</td><td class="infodados">' + result['dados'].email + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Celular:</td><td class="infodados">' + result['dados'].celular + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Telefone:</td><td class="infodados">' + result['dados'].fone + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">'+ dadosnutricionistas +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Restaurantes:</td><td class="infodados">'+ dadosrestaurantes +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                break;
+
+            }
         }
 
 
 
+        
+        
 
 
 
+        //******************************
+        // FUNÇÃO PARA FORMATAR DATAS 
+        //******************************
+        function mrc_formata_data(adata){
+            dataano = adata.substr(0, 4);
+            datames = adata.substr(5, 2);
+            datadia = adata.substr(8, 2);
+
+            return(datadia + "/" + datames + "/" + dataano);
+        }
 
 
         //******************************
@@ -1305,7 +1366,23 @@
                 s[1] += new Array(prec - s[1].length + 1).join('0');
             }
             return s.join(dec);
-        }        
+        }  
+
+
+        /* 
+        //$("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">' + result['dados'].nutricionistas.forEach(mrc_formatardadosarray) + '</td></tr>');
+        //result['dados'].nutricionistas.forEach(mrc_formatardadosarray);
+        //$("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">'+ txtdadosarray +'</td></tr>');
+        
+        //************************************
+        // FUNÇÃO PARA FORMATAR DADOS DO ARRAY 
+        //************************************
+        var txtdadosarray = "";
+        function mrc_formatardadosarray(value){
+            txtdadosarray += value.nomecompleto + " "+ value.telefone + "<br>";
+            //$("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">'+ txtdadosarray +'</td></tr>');
+        }
+        */      
 
     </script>
 

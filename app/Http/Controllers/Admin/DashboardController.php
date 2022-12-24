@@ -50,7 +50,7 @@ class DashboardController extends Controller
         //   INÍCIO     ESPAÇO RESERVADO PARA TESTE DE SOLICITAÇÕES AJAX    //
         
 
-        //$records = User::with(['municipio', 'restaurante'])->findOrFail(1);
+        //$records = Empresa::with(['nutricionistas', 'restaurantes'])->findOrFail(1);
         //dd($records);
 
         
@@ -233,8 +233,8 @@ class DashboardController extends Controller
                 $data['titulo'] = "USUÁRIOS";
             break;
             case "Empresas":
-                $records = $records = DB::select(DB::raw("SELECT id, nomefantasia as nome, ativo FROM empresas ORDER BY nomefantasia ASC"));
-                $data['titulo'] = "EMPRESAS ";
+                $records = DB::select(DB::raw("SELECT id, nomefantasia as nome, ativo FROM empresas ORDER BY nomefantasia ASC"));
+                $data['titulo'] = "EMPRESAS";
             break;
         }
 
@@ -258,8 +258,8 @@ class DashboardController extends Controller
                 $data['titulo'] = "USUÁRIOS";
             break;
             case "Empresas":
-                $records = $records = DB::select(DB::raw("SELECT id, nomefantasia as nome, ativo FROM empresas ORDER BY nomefantasia ASC"));
-                $data['titulo'] = "EMPRESAS ";
+                $records = Empresa::with(['nutricionistas', 'restaurantes'])->findOrFail($id);
+                $data['titulo'] = "EMPRESAS";
             break;
         }
 
