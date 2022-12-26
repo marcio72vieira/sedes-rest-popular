@@ -410,16 +410,21 @@
                 <div>
                     <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Visualização Rápida</h5>
                     <div class="card-header"  style="float: right; margin-top: -41px;">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
+                        <div class="dropdown no-arrow">
+                            {{-- <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuEntidade"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                                 Entidade
+                            </a> --}}
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuEntidade"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                aria-labelledby="dropdownMenuDados">
-                                <div class="dropdown-header">Dados:</div>
+                                aria-labelledby="dropdownMenuEntidade">
+                                <div class="dropdown-header">Entidade:</div>
                                 <a class="dropdown-item tabentidade psdlink">Usuários</a>
                                 <a class="dropdown-item tabentidade psdlink">Empresas</a>
+                                <a class="dropdown-item tabentidade psdlink">Nutricionistas</a>
                                 <a class="dropdown-item tabentidade psdlink">Categorias</a>
                                 <a class="dropdown-item tabentidade psdlink">Regionais</a>
                             </div>
@@ -428,16 +433,16 @@
                 </div>
                 <div class="card-body">
                     <div style="width: 100%; height: 20%; background-color: white;">
-                        <div>
+                        <div style="height:400px; overflow: auto;">
                             <table class="tabelaentidade">
                                 @php
                                     //Dados vindo da view via método compact
                                     if(count($usuarios))  {
-                                        echo "<tr><td colspan='3' class='tituloentidade'>USUÁRIOS</td></tr>";
+                                        echo "<tr><td colspan='3' class='titulotabelavisualizacao'>USUÁRIOS</td></tr>";
                                         echo "<tr>
-                                            <td class='subtitulolabelentidade' style='width: 2%'>Id</td>
-                                            <td class='subtitulovalorentidade' style='width: 95%'>Nome</td>
-                                            <td class='subtitulovalorentidade' style='width: 3%'>Ativo</td>
+                                            <td class='cabecalhotabelavisualizacao' style='width: 2%'>Id</td>
+                                            <td class='cabecalhotabelavisualizacao' style='width: 95%'>Nome</td>
+                                            <td class='cabecalhotabelavisualizacao' style='width: 3%'>Ativo</td>
                                         </tr>";
                                         foreach ($usuarios as $key => $value) {
                                             echo "<tr class='destaque'>";
@@ -461,10 +466,10 @@
                 <div>
                     <h5 class="card-header" id="headinformacaoes" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Informações</h5>
                 </div>
-                <div class="card-body">
-                    <div style="width: 100%; height: 20%; background-color: white;">
+                <div class="card-body" style="height: 440px; overflow: auto;">
+                    <div style="width: 100%;">
                         <div>
-                            <table id="informacoes"> </table>
+                            <table id="informacoes" style="width: 100%"> </table>
                         </div>
                     </div>
                 </div>
@@ -788,13 +793,13 @@
 
                         //Atualiza a tabela entidade
                         $(".tabelaentidade").html('');
-                        $(".tabelaentidade").append('<tr><td colspan="3" class="tituloentidade">'+ titulotabelaentidade +'</td></tr>');
-                        $(".tabelaentidade").append('<tr><td class="subtitulolabelentidade" style="width: 2%">Id</td><td class="subtitulovalorentidade" style="width: 95%">Nome</td><td class="subtitulovalorentidade" style="width: 3%">Ativo</td></tr>');
+                        $(".tabelaentidade").append('<tr><td colspan="3" class="titulotabelavisualizacao">'+ titulotabelaentidade +'</td></tr>');
+                        $(".tabelaentidade").append('<tr><td class="cabecalhotabelavisualizacao" style="width: 2%">Id</td><td class="cabecalhotabelavisualizacao" style="width: 95%">Nome</td><td class="cabecalhotabelavisualizacao" style="width: 3%">Ativo</td></tr>');
 
                         //Itera sobre os dados retornados pela requisição Ajax
                         $.each(result['dados'], function(key,value){
                             //Essa verificação é necessária, em função da tabela usuários não possuir o campo ativo e sim os perfis: (adm, nut e ina)
-                            //Na consulta ao banco, o campo pefil é epelidado de ativo, para se equiparar aos outros modelos.
+                            //Na consulta ao banco, o campo pefil é epelidado de "ativo", para se equiparar aos outros modelos e fazer jus a esta verificação
                             if(value.ativo == 0 || value.ativo == "ina"){
                                 statusentidade = "0";
                             } else {
@@ -1314,6 +1319,38 @@
                     $("#informacoes").append('<tr><td class="infolabel">Telefone:</td><td class="infodados">' + result['dados'].fone + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">'+ dadosnutricionistas +'</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Restaurantes:</td><td class="infodados">'+ dadosrestaurantes +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                break;
+                case 'NUTRICIONISTAS':
+                    //Como o relacionamento entre Nutricionista e Restaurante e Empresa é do tipo hasOne (um para um), o resultado da consulta para esta pesquisa é um
+                    //objeto {...} ao contrário do relacionamento hasMany, que retorna um array de objetos [{...}, {...}]. Por isso não há a necessidade do loop como
+                    //na entidade EMPRESAS acima. Obs: quanto um nutricionista não está associado a nenhuma outra entidade, seja, restaurante ou empresa (que nesse caso
+                    //é impossível), primeiro testa-se o objeto do relacionamento exite (diferente de null) para depois exibir ou não a propriedade desejada, como abaixo:
+                    //(result['dados'].restaurante != null ? result['dados'].restaurante.identificacao : "")
+                    
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nomecompleto + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">CPF:</td><td class="infodados">' + result['dados'].cpf + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">CRN:</td><td class="infodados">' + result['dados'].crn + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">E-mail:</td><td class="infodados">' + result['dados'].email + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Telefone:</td><td class="infodados">' + result['dados'].telefone + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Empresa:</td><td class="infodados">'+ result['dados'].empresa.nomefantasia + " (Raz.Soc: " + result['dados'].empresa.razaosocial + ")" +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Restaurante:</td><td class="infodados">'+ (result['dados'].restaurante != null ? result['dados'].restaurante.identificacao : "") +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                break;
+                case 'CATEGORIAS':
+                    //Reune produtos da categoria na mesma coluna
+                    var qtdprod = result['dados'].produtos.length;
+                    var dadosprodutos = "";
+                    for(var i=0; i < qtdprod; i++){
+                        dadosprodutos += result['dados'].produtos[i].nome + "<br>";
+                    }
+
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nome + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Produtos:</td><td class="infodados">'+ dadosprodutos +'</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
                 break;

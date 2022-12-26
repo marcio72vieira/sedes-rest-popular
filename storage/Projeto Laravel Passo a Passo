@@ -762,6 +762,7 @@ how to avoid with some characters become typed in text box with jquery
 // https://www.w3schools.com/react/react_es6_spread.asp
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
 // https://pt.stackoverflow.com/questions/1667/como-detectar-se-um-elemento-html-est%C3%A1-vazio
+// https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'

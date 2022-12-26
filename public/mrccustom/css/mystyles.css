@@ -128,6 +128,7 @@ TABELA DE TRADUÇÃO
 }
 
 .titulotraducao{
+    background-color: #f8f9fc;
     border: 1px solid #e5e5e5;
     text-align: center;
     font-weight: bold;
@@ -136,6 +137,7 @@ TABELA DE TRADUÇÃO
 }
 
 .subtitulolabeltraducao{
+    background-color: #f8f9fc;
     border: 1px solid #e5e5e5;
     text-align: center;
     font-weight: bold;
@@ -144,6 +146,7 @@ TABELA DE TRADUÇÃO
 }
 
 .subtitulovalortraducao{
+    background-color: #f8f9fc;
     border: 1px solid #e5e5e5;
     text-align: center;
     font-weight: bold;
@@ -184,19 +187,23 @@ TABELA ENTIDADE
 }
 
 .tituloentidade{
+    background-color: #d8d8db;
     border: 1px solid #e5e5e5;
     text-align: center;
     font-weight: bold;
     font-size: 15px;
     padding: 26px;
+    color: #39393a;
 }
 
 .subtitulolabelentidade{
+    background-color: #d8d8db;
     border: 1px solid #e5e5e5;
     text-align: center;
     font-weight: bold;
     font-size: 15px;
     padding: 5px;
+    color: #39393a;
 }
 
 .subtitulovalorentidade{
@@ -234,44 +241,33 @@ TABELA ENTIDADE
 /******************
 TABELA INFORMAÇÃO
 ******************/
-.tabelaentidade{
-    border: 1px solid #e5e5e5;
-    width: 100%;
-}
-
-.tituloentidade{
-    border: 1px solid #e5e5e5;
+.titulotabelavisualizacao{
+    background-color: #f8f9fc;
+    font-weight: bold; 
+    font-size: 15px; 
+    padding: 25px; 
+    color: #4e73df; 
     text-align: center;
-    font-weight: bold;
-    font-size: 15px;
-    padding: 26px;
 }
 
-.subtitulolabelentidade{
-    border: 1px solid #e5e5e5;
-    text-align: center;
-    font-weight: bold;
-    font-size: 15px;
-    padding: 5px;
-}
-
-.subtitulovalorentidade{
+.cabecalhotabelavisualizacao{
+    background-color: #f8f9fc;
     border: 1px solid #e5e5e5;
     text-align: center;
     font-weight: bold;
     font-size: 15px;
     padding: 5px;
+    color: #4e73df;
 }
-
 
 
 .infolabel{
-    background-color: #d8d8db;
+    background-color: #f8f9fc;
     border: 1px solid #e5e5e5;
     text-align: right;
     font-weight: bold;
     font-size: 15px;
-    color: #39393a;
+    color: #4e73df;
     padding: 5px 10px;
     width: 20%;
 }
@@ -298,3 +294,5 @@ PSEUDO LINK
 .psdlink { 
     cursor: pointer; 
 }
+
+
