@@ -108,7 +108,23 @@ class RegistroconsultacompraController extends Controller
             '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
         ];
 
-        $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+        //$anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+        $anoimplantacao = 2022;
+        $anoatual = date("Y");
+        $anospesquisa = [];
+        $anos = [];
+
+        if($anoimplantacao >= $anoatual){
+            $anospesquisa[] = $anoatual;
+        }else{
+            $qtdanosexibicao = $anoatual - $anoimplantacao;
+            for($a = $qtdanosexibicao; $a >= 0; $a--){
+                $anos[] = $anoatual - $a;
+            }
+            $anospesquisa = array_reverse($anos);
+        }
+
 
         if(Auth::user()->perfil == 'adm') {
 
@@ -1063,7 +1079,7 @@ class RegistroconsultacompraController extends Controller
 
 
 
-    
+
 
 
 
@@ -1094,7 +1110,7 @@ class RegistroconsultacompraController extends Controller
 
             $records = Bigtabledata::comparativomensalgeralproduto($prod_id, $medi_id, $mes_id, $ano_id);
 
-            /* 
+            /*
             //Crio uma coleção
             $regionaisnome = collect();
 
@@ -1107,7 +1123,7 @@ class RegistroconsultacompraController extends Controller
             $regionaisenvolvidas = $regionaisnome->unique();
 
             //Junto os elementos da colection como uma string ligadas por uma vírgula, pelo método ->join();
-            $regionais = $regionaisenvolvidas->join(', '); 
+            $regionais = $regionaisenvolvidas->join(', ');
             */
 
 
@@ -1130,7 +1146,7 @@ class RegistroconsultacompraController extends Controller
         }
     }
 
-    
+
 
     //================================================================================
     // Método invocado pelo AJAX para Preecher modal detalhes da compra do restaurante
@@ -3401,7 +3417,7 @@ class RegistroconsultacompraController extends Controller
         $mpdf->Output($fileName, 'I');
 
     }
-    
+
 
 
 

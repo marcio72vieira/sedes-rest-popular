@@ -38,7 +38,7 @@ class Municipio extends Model
     }
 
     public function restaurantes(){
-        return $this->hasMany(Bairro::class);
+        return $this->hasMany(Restaurante::class);
     }
 
     public function qtdbairrosvinc($id)

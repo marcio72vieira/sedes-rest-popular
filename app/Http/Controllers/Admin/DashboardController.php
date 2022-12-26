@@ -39,7 +39,7 @@ class DashboardController extends Controller
 
         //Dados Produtos Para gráfico Principal com tradução
         $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
-        
+
         $dataRecords = [];
         foreach($records as $value) {
             $dataRecords[$value->nome] =  $value->totalcompra;
@@ -48,14 +48,15 @@ class DashboardController extends Controller
 
         //////////////////////////////////////////////////////////////////////
         //   INÍCIO     ESPAÇO RESERVADO PARA TESTE DE SOLICITAÇÕES AJAX    //
-        
-
-        //$records = Nutricionista::with(['empresa', 'restaurante'])->findOrFail(1);
+        //
+        //$records = Produto::with(['categoria', 'compras'])->findOrFail(1);
         //dd($records);
 
-        
+        //$records = Produto::with(['categoria', 'compras'])->whereMonth('data_ini', (date("m")))->findOrFail(1);
+        ////dd($records);
+        //
         //   FIM  ESPAÇO RESERVADO PARA TESTE DE SOLICITAÇÕES AJAX    //
-        ////////////////////////////////////////////////////////////////        
+        ////////////////////////////////////////////////////////////////
 
 
         //Dados Média de preco AF e NORMAL para grafico de linha prórpio
@@ -164,7 +165,7 @@ class DashboardController extends Controller
 
         foreach($records as $value) {
             $dataEmpilhadoLabels[] = $value->nome;
-            
+
             $dataEmpilhadoRecordsNormal[] = $value->totalcompranormal;
             $dataEmpilhadoRecordsAf[] = $value->totalcompraaf;
             //if($value->af == "sim"){$dataEmpilhadoRecordsAf[] = $value->totalcompraaf;}else{$dataEmpilhadoRecordsNormal[] = $value->totalcompranormal;}
@@ -188,7 +189,7 @@ class DashboardController extends Controller
         $mes = date('m') - 1;
 
         $data = [];
-        
+
         switch($tipodados){
             case "Categorias":
                 //$recordslabelsCat = DB::select(DB::raw("SELECT  DISTINCT categoria_id, categoria_nome as nomelabel FROM bigtable_data WHERE MONTH(data_ini) = $mes ORDER BY nomelabel ASC"));
@@ -211,11 +212,11 @@ class DashboardController extends Controller
         $data['labelsCat'] = $arrCat;
         $data['labelsProd'] = $arrProd;
         $data['valuesCompra'] = $arrValueProd;
-        
-        
+
+
         return response()->json($data);
     }
-    
+
 
 
 
@@ -240,16 +241,28 @@ class DashboardController extends Controller
                 $records = DB::select(DB::raw("SELECT id, nomecompleto as nome, ativo FROM nutricionistas ORDER BY nomecompleto ASC"));
                 $data['titulo'] = "NUTRICIONISTAS";
             break;
+            case "Regionais":
+                $records = DB::select(DB::raw("SELECT id, nome as nome, ativo FROM regionais ORDER BY nome ASC"));
+                $data['titulo'] = "REGIONAIS";
+            break;
+            case "Municípios":
+                $records = DB::select(DB::raw("SELECT id, nome as nome, ativo FROM municipios ORDER BY nome ASC"));
+                $data['titulo'] = "MUNICÍPIOS";
+            break;
             case "Categorias":
                 $records = DB::select(DB::raw("SELECT id, nome as nome, ativo FROM categorias ORDER BY nome ASC"));
                 $data['titulo'] = "CATEGORIAS";
+            break;
+            case "Produtos":
+                $records = DB::select(DB::raw("SELECT id, nome as nome, ativo FROM produtos ORDER BY nome ASC"));
+                $data['titulo'] = "PRODUTOS";
             break;
         }
 
         $data['dados'] =  $records;
 
         return response()->json($data);
-    }    
+    }
 
 
     public function ajaxrecuperainformacoesregistro(Request $request)
@@ -273,21 +286,33 @@ class DashboardController extends Controller
                 $records = Nutricionista::with(['empresa', 'restaurante'])->findOrFail($id);
                 $data['titulo'] = "NUTRICIONISTAS";
             break;
+            case "Regionais":
+                $records = Regional::with(['municipios', 'restaurantes'])->findOrFail($id);
+                $data['titulo'] = "REGIONAIS";
+            break;
+            case "Municípios":
+                $records = Municipio::with(['regional', 'bairros', 'restaurantes'])->findOrFail($id);
+                $data['titulo'] = "MUNICÍPIOS";
+            break;
             case "Categorias":
                 $records = Categoria::with(['produtos'])->findOrFail($id);
                 $data['titulo'] = "CATEGORIAS";
+            break;
+            case "Produtos":
+                $records = Produto::with(['categoria', 'compras'])->findOrFail($id);
+                $data['titulo'] = "PRODUTOS";
             break;
         }
 
         $data['dados'] =  $records;
 
         return response()->json($data);
-    }    
+    }
 
 
 
 
-    
+
     /*****************************
     //Uma requisição personalizada
     /*

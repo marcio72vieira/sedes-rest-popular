@@ -5,13 +5,13 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    
+
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
         {{-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> --}}
     </div>
-   
+
 
     <!-- INICIO Content Row CARDS-->
     <div class="row">
@@ -234,7 +234,7 @@
 
 
 
-        {{-- 
+        {{--
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-2 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
@@ -297,7 +297,7 @@
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Regionais</a>
                         </div>
                     </div>
-                    
+
                     <div class="dropdown no-arrow">
                         {{-- <a class="dropdown-toggle font-weight-bold text-primary" href="#" role="button" id="dropdownMenuTipografico"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
@@ -316,7 +316,7 @@
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="line"><span><i class="fas fa-chart-line"></i> Linha</a>
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="doughnut"><span><i class="fas fa-circle-notch"></i> Rosca</a>
                             <div class="dropdown-divider"></div>
-                            <div class="dropdown-header"><i class="fas fa-cubes"></i> Pilha:</div> 
+                            <div class="dropdown-header"><i class="fas fa-cubes"></i> Pilha:</div>
                             {{-- <a class="dropdown-item estilograficoempilhado psdlink"><i class="fas fa-cubes"></i> Pilha</a> --}}
                             <a class="dropdown-item estilograficoempilhado psdlink"> Normal x AF</a>
                             {{-- <a class="dropdown-item estilograficoempilhadocategoriaproduto psdlink"> Categoria (produtos)</a> --}}
@@ -425,8 +425,10 @@
                                 <a class="dropdown-item tabentidade psdlink">Usuários</a>
                                 <a class="dropdown-item tabentidade psdlink">Empresas</a>
                                 <a class="dropdown-item tabentidade psdlink">Nutricionistas</a>
-                                <a class="dropdown-item tabentidade psdlink">Categorias</a>
                                 <a class="dropdown-item tabentidade psdlink">Regionais</a>
+                                <a class="dropdown-item tabentidade psdlink">Municípios</a>
+                                <a class="dropdown-item tabentidade psdlink">Categorias</a>
+                                <a class="dropdown-item tabentidade psdlink">Produtos</a>
                             </div>
                         </div>
                     </div>
@@ -460,7 +462,7 @@
             </div>
         </div>
 
-        {{-- Informações --}} 
+        {{-- Informações --}}
         <div class="col-xl-7 col-lg-6">
             <div class="card shadow mb-4">
                 <div>
@@ -501,7 +503,7 @@
             }
         }
 
-    
+
         // Obtendo os valores das médias de preços por semana AF e NORMAL
         if(count($dataRecordsMediaPrecoAf)){
             $dataAf =  array_values($dataRecordsMediaPrecoAf);
@@ -542,10 +544,10 @@
 
             //ALTERAÇÃO DO ESTILO DE GRÁFICO
             $('.estilografico').on('click', function() {
-    
+
                 //Define o estilo do gráfico
                 estilo = $(this).data('estilo-grafico');
-               
+
                 //Logo que a página é carregada, tipodado não está definido, então renderiza-se o gráfico padrão (bar) com os dados padrão (produtos), vindos
                 //do método compact da view
                 if(tipodados == ""){
@@ -554,7 +556,7 @@
                     //Obs: Nesse momento valorTituloGrafico recebe o valor definido globalmente.
                     renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
                 }
-                
+
             });
 
 
@@ -568,7 +570,7 @@
                     tipodadosEmpilhado = tipodados;     //alert("DADO já escolhido" + tipodadosEmpilhado);
                 }
 
-                
+
                 $.ajax({
                     url:"{{route('admin.dashboard.ajaxrecuperadadosgraficoempilhado')}}",
                     type: "GET",
@@ -593,7 +595,7 @@
                         valorDataNormal = result['compranormal'];
                         valorDataAf = result['compraaf'];
                         valorTituloGrafico = result['titulo'];
-                        
+
                         //Renderiza gráfico passando as informações necessárias
                         renderGraficoDinamicoEmpilhado(valorLabels, valorDataNormal, valorDataAf, valorTituloGrafico);
 
@@ -627,7 +629,7 @@
             $('.estilograficoempilhadocategoriaproduto').on('click', function() {
 
                 var tipodadosEmpilhadoCategoria = "Categorias";   //alert("GRAFICO DADO foi escolhido " + tipodadosEmpilhadoCategoria);
-                
+
                 $.ajax({
                     url:"{{route('admin.dashboard.ajaxrecuperadadosgraficoempilhadocategoriaproduto')}}",
                     type: "GET",
@@ -655,7 +657,7 @@
                         // somaCompraAf = 0;
                         // valorTituloGrafico = '';
 
-                        
+
                         //Atribuindo os respecitvos arrays
                         valorLabels = [...new Set(result['labelsCat'])];
                         //valorDataNormal = result['compranormal'];
@@ -663,7 +665,7 @@
                         valorDataNormal = [30, 40, 50, 50, 70];
                         valorDataAf = [10, 15, 20, 25, 25];
                         valorTituloGrafico = result['titulo'];
-                        
+
                         //Renderiza gráfico passando as informações necessárias
                         //renderGraficoPilhaCategoriaProduto(valorLabels, valorTituloGrafico, conjuntoDeDados);
                         renderGraficoPilhaCategoriaProduto(valorLabels, valorTituloGrafico, cordeFundo, cordaBorda);
@@ -715,7 +717,7 @@
                     dataType : 'json',
 
                     //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo como resultado, temos:
-                    //      result['titulo'] que é uma string e result['dados'] que é um array  
+                    //      result['titulo'] que é uma string e result['dados'] que é um array
                     success: function(result){
 
                         //Zerando o valor das variáveis globais do tipo array
@@ -734,7 +736,7 @@
 
                         //Se tipo é igual a espaço em branco, é porque nenhum outro estilo de gráfico foi escolhido, permanecendo portanto o padrão "bar"
                         if(estilo == ""){estilo = "bar";}
-                        
+
                         //Renderiza gráfico passando as informações necessárias
                         renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
 
@@ -765,7 +767,7 @@
             $(".tabentidade").on("click", function(){
 
                 $("#informacoes").html('');
-                
+
                 //entidade = $(this).text().trim();
 
                 /* if(entidade == ""){
@@ -788,7 +790,7 @@
                     dataType : 'json',
 
                     success: function(result){
-                        
+
                         titulotabelaentidade =  result['titulo'];
 
                         //Atualiza a tabela entidade
@@ -820,17 +822,17 @@
             //Aqui, houve a necessidade de se aplicar a delegação de eventos, visto que a classe ".regid" é
             //criada dinamicamente na tabela "tabelaentidade".Não fosse assim, não teriamo como ler o id
             //do registro da coluna clicada identificada pelo "data-id", como comentado abaixo
-            //$(".regiid").on("click", function(){ 
+            //$(".regiid").on("click", function(){
             $(".tabelaentidade").on("click", ".regid", function(){
 
                 idreg = $(this).data('id');
-                
+
                 if(entidade == ""){
                     entidade = "Usuários";
                 }else {
                     entidade = entidade;
                 }
-                
+
                 //Faz requisição para obter novos dados
                 $.ajax({
                     url:"{{route('admin.dashboard.ajaxrecuperainformacoesregistro')}}",    //urltipo
@@ -861,7 +863,7 @@
         function renderGrafico(estilo){
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
-            $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');            
+            $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
 
             const ctx = document.getElementById('myChartArea').getContext('2d');
             const myChart = new Chart(ctx, {
@@ -872,7 +874,7 @@
                         label: 'Produtos',
                         data: [ {{ implode(',', $dataRecords) }} ], //Dados vindo da view via método compact
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)', 
+                            'rgba(255, 99, 132, 0.5)',
                             'rgba(54, 162, 235, 0.5)',
                             'rgba(255, 206, 86, 0.5)',
                             'rgba(75, 192, 192, 0.5)',
@@ -884,7 +886,7 @@
                             'rgba(100, 255, 192, 0.5)',
                             'rgba(183, 90, 255, 0.5)',
                             'rgba(255, 159, 100, 0.5)', //
-                            'rgba(200, 99, 132, 0.5)', 
+                            'rgba(200, 99, 132, 0.5)',
                             'rgba(50, 162, 235, 0.5)',
                             'rgba(210, 206, 86, 0.5)',
                             'rgba(175, 192, 192, 0.5)',
@@ -906,7 +908,7 @@
                             'rgba(100, 255, 192, 1)',
                             'rgba(183, 90, 255, 1)',
                             'rgba(255, 159, 100, 1)', //
-                            'rgba(200, 99, 132, 1)', 
+                            'rgba(200, 99, 132, 1)',
                             'rgba(50, 162, 235, 1)',
                             'rgba(210, 206, 86, 1)',
                             'rgba(175, 192, 192, 1)',
@@ -993,7 +995,7 @@
                             'rgba(100, 255, 192, 0.5)',
                             'rgba(183, 90, 255, 0.5)',
                             'rgba(255, 159, 100, 0.5)', //
-                            'rgba(200, 99, 132, 0.5)', 
+                            'rgba(200, 99, 132, 0.5)',
                             'rgba(50, 162, 235, 0.5)',
                             'rgba(210, 206, 86, 0.5)',
                             'rgba(175, 192, 192, 0.5)',
@@ -1015,7 +1017,7 @@
                             'rgba(100, 255, 192, 1)',
                             'rgba(183, 90, 255, 1)',
                             'rgba(255, 159, 100, 1)', //
-                            'rgba(200, 99, 132, 1)', 
+                            'rgba(200, 99, 132, 1)',
                             'rgba(50, 162, 235, 1)',
                             'rgba(210, 206, 86, 1)',
                             'rgba(175, 192, 192, 1)',
@@ -1120,7 +1122,7 @@
 
 
         //*************************************************
-        // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS EMPILHADO 
+        // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS EMPILHADO
         //*************************************************
         function renderGraficoDinamicoEmpilhado(valorLabels, valorNormal, valorAf, titulo){
 
@@ -1150,7 +1152,7 @@
                             'rgba(100, 255, 192, 0.3)',
                             'rgba(183, 90, 255, 0.3)',
                             'rgba(255, 159, 100, 0.3)', //
-                            'rgba(200, 99, 132, 0.3)', 
+                            'rgba(200, 99, 132, 0.3)',
                             'rgba(50, 162, 235, 0.3)',
                             'rgba(210, 206, 86, 0.3)',
                             'rgba(175, 192, 192, 0.3)',
@@ -1172,7 +1174,7 @@
                             'rgba(100, 255, 192, 0)',
                             'rgba(183, 90, 255, 0)',
                             'rgba(255, 159, 100, 0)', //
-                            'rgba(200, 99, 132, 0)', 
+                            'rgba(200, 99, 132, 0)',
                             'rgba(50, 162, 235, 0)',
                             'rgba(210, 206, 86, 0)',
                             'rgba(175, 192, 192, 0)',
@@ -1202,7 +1204,7 @@
                             'rgba(100, 255, 192, 1)',
                             'rgba(183, 90, 255, 1)',
                             'rgba(255, 159, 100, 1)', //
-                            'rgba(200, 99, 132, 1)', 
+                            'rgba(200, 99, 132, 1)',
                             'rgba(50, 162, 235, 1)',
                             'rgba(210, 206, 86, 1)',
                             'rgba(175, 192, 192, 1)',
@@ -1224,7 +1226,7 @@
                             'rgba(100, 255, 192, 1)',
                             'rgba(183, 90, 255, 1)',
                             'rgba(255, 159, 100, 1)', //
-                            'rgba(200, 99, 132, 1)', 
+                            'rgba(200, 99, 132, 1)',
                             'rgba(50, 162, 235, 1)',
                             'rgba(210, 206, 86, 1)',
                             'rgba(175, 192, 192, 1)',
@@ -1270,7 +1272,7 @@
         function preenchetabelainformacao(result) {
 
             var entidadeinformada = result['titulo'];
-            
+
             $("#informacoes").html('');
 
             switch(entidadeinformada){
@@ -1328,7 +1330,7 @@
                     //na entidade EMPRESAS acima. Obs: quanto um nutricionista não está associado a nenhuma outra entidade, seja, restaurante ou empresa (que nesse caso
                     //é impossível), primeiro testa-se o objeto do relacionamento exite (diferente de null) para depois exibir ou não a propriedade desejada, como abaixo:
                     //(result['dados'].restaurante != null ? result['dados'].restaurante.identificacao : "")
-                    
+
                     $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nomecompleto + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">CPF:</td><td class="infodados">' + result['dados'].cpf + '</td></tr>');
@@ -1337,6 +1339,51 @@
                     $("#informacoes").append('<tr><td class="infolabel">Telefone:</td><td class="infodados">' + result['dados'].telefone + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Empresa:</td><td class="infodados">'+ result['dados'].empresa.nomefantasia + " (Raz.Soc: " + result['dados'].empresa.razaosocial + ")" +'</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Restaurante:</td><td class="infodados">'+ (result['dados'].restaurante != null ? result['dados'].restaurante.identificacao : "") +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                break;
+                case 'REGIONAIS':
+                    //Reune municipios da regional na mesma coluna
+                    var qtdmuni = result['dados'].municipios.length;
+                    var dadosmunicipios = "";
+                    for(var i=0; i < qtdmuni; i++){
+                        dadosmunicipios += result['dados'].municipios[i].nome + "<br>";
+                    }
+
+                    //Reune restaurantes da regional na mesma coluna
+                    var qtdrest = result['dados'].restaurantes.length;
+                    var dadosrestaurantes = "";
+                    for(var i=0; i < qtdrest; i++){
+                        dadosrestaurantes += result['dados'].restaurantes[i].identificacao + "<br>";
+                    }
+
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nome + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Municípios:</td><td class="infodados">'+ dadosmunicipios +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Restaurantes:</td><td class="infodados">'+ dadosrestaurantes +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                break;
+                case 'MUNICÍPIOS':
+                    //Reune bairros do municipio na mesma coluna
+                    var qtdbairr = result['dados'].bairros.length;
+                    var dadosbairros = "";
+                    for(var i=0; i < qtdbairr; i++){
+                        dadosbairros += result['dados'].bairros[i].nome + "<br>";
+                    }
+
+                    //Reune restaurantes do municipio na mesma coluna
+                    var qtdrest = result['dados'].restaurantes.length;
+                    var dadosrestaurantes = "";
+                    for(var i=0; i < qtdrest; i++){
+                        dadosrestaurantes += result['dados'].restaurantes[i].identificacao + "<br>";
+                    }
+
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nome + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Regional:</td><td class="infodados">'+ result['dados'].regional.nome +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Bairros:</td><td class="infodados">'+ dadosbairros +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Restaurantes:</td><td class="infodados">'+ dadosrestaurantes +'</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
                 break;
@@ -1354,19 +1401,30 @@
                     $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
                 break;
+                case 'PRODUTOS':
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nome + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Categoria:</td><td class="infodados">'+ result['dados'].categoria.nome +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Quantidade:</td><td class="infodados">'+ "15 kg" +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Valor Normal:</td><td class="infodados">'+ " 1500,20" +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Valor AF:</td><td class="infodados">'+ " 800,00 " +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Valor:</td><td class="infodados">'+ "2.300,20" +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                break;
 
             }
         }
 
 
 
-        
-        
+
+
 
 
 
         //******************************
-        // FUNÇÃO PARA FORMATAR DATAS 
+        // FUNÇÃO PARA FORMATAR DATAS
         //******************************
         function mrc_formata_data(adata){
             dataano = adata.substr(0, 4);
@@ -1378,7 +1436,7 @@
 
 
         //******************************
-        // FUNÇÃO PARA FORMATAR NÚMEROS 
+        // FUNÇÃO PARA FORMATAR NÚMEROS
         //******************************
         function number_format(number, decimals, dec_point, thousands_sep) {
             // *     example: number_format(1234.56, 2, ',', ' ');
@@ -1403,23 +1461,23 @@
                 s[1] += new Array(prec - s[1].length + 1).join('0');
             }
             return s.join(dec);
-        }  
+        }
 
 
-        /* 
+        /*
         //$("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">' + result['dados'].nutricionistas.forEach(mrc_formatardadosarray) + '</td></tr>');
         //result['dados'].nutricionistas.forEach(mrc_formatardadosarray);
         //$("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">'+ txtdadosarray +'</td></tr>');
-        
+
         //************************************
-        // FUNÇÃO PARA FORMATAR DADOS DO ARRAY 
+        // FUNÇÃO PARA FORMATAR DADOS DO ARRAY
         //************************************
         var txtdadosarray = "";
         function mrc_formatardadosarray(value){
             txtdadosarray += value.nomecompleto + " "+ value.telefone + "<br>";
             //$("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">'+ txtdadosarray +'</td></tr>');
         }
-        */      
+        */
 
     </script>
 
