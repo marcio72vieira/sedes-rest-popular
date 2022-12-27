@@ -313,8 +313,16 @@ class DashboardController extends Controller
     public function ajaxrecuperacomprasdoproduto(Request $request)
     {
         $id = $request->idproduto;
-        //->selectRaw('regional_id, regional_nome, produto_id, produto_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
-        $records = DB::select(DB::raw("SELECT id, prcototal,  COUNT(IF(af = 'nao', 1, null)) as nvzcmpnorm, COUNT(IF(af = 'sim', 1, null)) as nvzcmpaaf, SUM(IF(af = 'nao', quantidade, null)) as qtdcmpnorm, SUM(IF(af = 'sim', quantidade, null)) as qtdcmpaf, SUM(IF(af = 'nao', precototal, null)) as prctotnorm, SUM(IF(af = 'sim', precototal, null)) as prctotaf FROM compra_produto WHERE produto_id = $id ORDER BY precototal ASC"));
+
+        $data = [];
+
+        //$records = DB::select(DB::raw("SELECT produto_id, precototal, COUNT(IF(af = 'nao', 1, null)) as nvzcmpnorm, COUNT(IF(af = 'sim', 1, null)) as nvzcmpaaf, SUM(IF(af = 'nao', quantidade, null)) as qtdcmpnorm, SUM(IF(af = 'sim', quantidade, null)) as qtdcmpaf, SUM(IF(af = 'nao', precototal, null)) as prctotnorm, SUM(IF(af = 'sim', precototal, null)) as prctotaf FROM compra_produto WHERE produto_id = $id ORDER BY precototal ASC"));
+        //return response()->json($records);
+
+        $fields = DB::select(DB::raw("SELECT produto_id, precototal, COUNT(IF(af = 'nao', 1, null)) as nvzcmpnorm, COUNT(IF(af = 'sim', 1, null)) as nvzcmpaaf, SUM(IF(af = 'nao', quantidade, null)) as qtdcmpnorm, SUM(IF(af = 'sim', quantidade, null)) as qtdcmpaf, SUM(IF(af = 'nao', precototal, null)) as prctotnorm, SUM(IF(af = 'sim', precototal, null)) as prctotaf FROM compra_produto WHERE produto_id = $id ORDER BY precototal ASC"));
+
+        $data['campos'] = $fields;
+        return response()->json($data);
     }
 
 

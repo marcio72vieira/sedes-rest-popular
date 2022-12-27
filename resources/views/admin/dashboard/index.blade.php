@@ -1402,10 +1402,10 @@
                     $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
                 break;
                 case 'PRODUTOS':
-                    ////
+
                     var produtoid = result['dados'].id;
 
-                    //Faz requisição para obter todas as compras realizadas com este produto, independente da unidade.
+                    //Faz requisição para obter dados de todas as compras realizadas com este produto, independente da unidade.
                     $.ajax({
                         url:"{{route('admin.dashboard.ajaxrecuperacomprasdoproduto')}}",
                             type: "GET",
@@ -1415,26 +1415,41 @@
                             dataType : 'json',
 
                             success: function(result){
-                                //Função para preencher tabela com informações
-                                preenchetabelainformacao(result);
+                                console.log(result);
+                                console.log(result['campos'][0].nvzcmpnorm);
+                                //alert(result[0].nvzcmpnorm);
+                                //numvezescompranormal = result[0].nvzcmpnorm;
+
+                                $('#inf_nvez_cmp_normal').text(result['campos'][0].nvzcmpnorm);
+                                $('#inf_qtd_cmp_normal').text(result['campos'][0].qtdcmpnorm);
+                                $('#inf_prctot_cmp_normal').text(result['campos'][0].prctotnorm);
+
+                                $('#inf_nvez_cmp_af').text(result['campos'][0].nvzcmpaaf);
+                                $('#inf_qtd_cmp_af').text(result['campos'][0].qtdcmpaf);
+                                $('#inf_prctot_cmp_af').text(result['campos'][0].prctotaf);
+
                             },
                             error: function(result){
                                 alert("Error ao retornar dados!");
                             }
                     });
-                    
+
 
 
                     ///
-                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nome + '</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Categoria:</td><td class="infodados">'+ result['dados'].categoria.nome +'</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Quantidade:</td><td class="infodados">'+ "15 kg" +'</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Valor Normal:</td><td class="infodados">'+ " 1500,20" +'</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Valor AF:</td><td class="infodados">'+ " 800,00 " +'</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Valor:</td><td class="infodados">'+ "2.300,20" +'</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados" colspan="3">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados" colspan="3">' + result['dados'].nome + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Categoria:</td><td class="infodados" colspan="3">'+ result['dados'].categoria.nome +'</td></tr>');
+
+                        $("#informacoes").append('<tr><td class="infolabel">Tipo</td><td class="infodados">nº vezes</td><td class="infodados">quantidade</td><td class="infodados">valor total</td></tr>');
+                        $("#informacoes").append('<tr><td class="infolabel">Normal:</td><td class="infodados"><span id="inf_nvez_cmp_normal"></span></td><td class="infodados"><span id="inf_qtd_cmp_normal"></span></td><td class="infodados"><span id="inf_prctot_cmp_normal"></span></td></tr>');
+                        $("#informacoes").append('<tr><td class="infolabel">AF:</td><td class="infodados"><span id="inf_nvez_cmp_af"></span></td><td class="infodados"><span id="inf_qtd_cmp_af"></span></td><td class="infodados"><span id="inf_prctot_cmp_af"></span></td></tr>');
+                        $("#informacoes").append('<tr><td class="infolabel">Totais:</td><td class="infodados"><span id="inf_prctot_cmp_normal"></span></td><td class="infodados"><span id="inf_prctot_cmp_normal"></span></td><td class="infodados"><span id="inf_prctot_cmp_normal"></span></td></tr>');
+
+                    $("#informacoes").append('<tr><td class="infolabel">Valor AF:</td><td class="infodados" colspan="3">'+ " 800,00 " +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Valor:</td><td class="infodados" colspan="3">'+ "2.300,20" +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados" colspan="3">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados" colspan="3">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
                 break;
 
             }
