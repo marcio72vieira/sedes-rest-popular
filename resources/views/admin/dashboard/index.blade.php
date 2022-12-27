@@ -1402,6 +1402,30 @@
                     $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
                 break;
                 case 'PRODUTOS':
+                    ////
+                    var produtoid = result['dados'].id;
+
+                    //Faz requisição para obter todas as compras realizadas com este produto, independente da unidade.
+                    $.ajax({
+                        url:"{{route('admin.dashboard.ajaxrecuperacomprasdoproduto')}}",
+                            type: "GET",
+                            data: {
+                                idproduto: produtoid
+                            },
+                            dataType : 'json',
+
+                            success: function(result){
+                                //Função para preencher tabela com informações
+                                preenchetabelainformacao(result);
+                            },
+                            error: function(result){
+                                alert("Error ao retornar dados!");
+                            }
+                    });
+                    
+
+
+                    ///
                     $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados">' + result['dados'].id + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados">' + result['dados'].nome + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Categoria:</td><td class="infodados">'+ result['dados'].categoria.nome +'</td></tr>');

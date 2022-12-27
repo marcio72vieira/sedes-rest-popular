@@ -175,6 +175,7 @@ Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhadocategoriaproduto', 
 /**************************************************/
 Route::get('admin/dashboard/ajaxrecuperadadosentidades', [DashboardController::class, 'ajaxrecuperadadosentidades'])->name('admin.dashboard.ajaxrecuperadadosentidades')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperainformacoesregistro', [DashboardController::class, 'ajaxrecuperainformacoesregistro'])->name('admin.dashboard.ajaxrecuperainformacoesregistro')->middleware(['auth']);
+Route::get('admin/dashboard/ajaxrecuperacomprasdoproduto', [DashboardController::class, 'ajaxrecuperacomprasdoproduto'])->name('admin.dashboard.ajaxrecuperacomprasdoproduto')->middleware(['auth']);
 
 
 
