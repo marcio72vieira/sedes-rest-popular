@@ -763,6 +763,14 @@ how to avoid with some characters become typed in text box with jquery
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
 // https://pt.stackoverflow.com/questions/1667/como-detectar-se-um-elemento-html-est%C3%A1-vazio
 // https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
+// https://stillat.com/blog/2016/11/16/laravel-string-helper-function-substr
+
+ParseError Invalid numeric literal
+// https://pt.stackoverflow.com/questions/213834/php-parse-error-invalid-numeric-literal
+// https://cursos.alura.com.br/forum/topico-php-parse-error-invalid-numeric-literal-135880
+
+
+
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
@@ -813,13 +821,24 @@ SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "s
 SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC
 
 Seleção de produtos por categoria em seus respectivos valores
-SELECT categoria_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id ORDER BY totalcompra ASC 
+SELECT categoria_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id ORDER BY totalcompra ASC
 SELECT categoria_nome, produto_nome, SUM(precototal) FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY produto_id ORDER BY precototal ASC
 SELECT categoria_nome, produto_nome, SUM(precototal) FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_nome, produto_id ORDER BY categoria_nome ASC, precototal ASC
 
 SELECT  DISTINCT categoria_id, categoria_nome FROM bigtable_data WHERE MONTH(data_ini) = 11 ORDER BY categoria_nome ASC
 SELECT  DISTINCT categoria_id, categoria_nome as nomelabel FROM bigtable_data WHERE MONTH(data_ini) = 11 ORDER BY nomelabel ASC
 SELECT categoria_nome as nomeprincipal, produto_nome as nomesecundario, SUM(precototal) as valorcompra FROM bigtable_data WHERE MONTH(data_ini) = 11 GROUP BY categoria_id, produto_id ORDER BY categoria_nome ASC, valorcompra ASC
+
+
+*** SELECT'S PARA GRÁFICO COMPARATIVO DE COMPRAS NORMAL E AF MÊS A MÊS
+SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022
+SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022
+SELECT produto_id, produto_nome, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 GROUP BY data_ini
+SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini)
+
+
+
+
 
 
 =================================================================================================

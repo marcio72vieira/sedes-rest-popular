@@ -1433,7 +1433,7 @@
                                 var numvezescompraaf = parseInt(result['campos'][0].nvzcmpaaf);
                                 var quantidadecompraaf = parseFloat((result['campos'][0].qtdcmpaf != null ? result['campos'][0].qtdcmpaf : 0));
                                 var precototalcompraaf = parseFloat((result['campos'][0].prctotaf != null ? result['campos'][0].prctotaf : 0));
-                                
+
                                 var somanumerovezescompra = numerovezescompranormal + numvezescompraaf;
                                 var somaquantidadecompra = quantidadecompranormal + quantidadecompraaf;
                                 var somatotalcompra = precototalcompranormal + precototalcompraaf;
@@ -1463,16 +1463,16 @@
                     $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados" colspan="4">' + result['dados'].nome + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Categoria:</td><td class="infodados" colspan="4">'+ result['dados'].categoria.nome +'</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel" rowspan="4">Compras</td><td class="infosublabel">Tipo</td><td class="infosublabel">Nº Vezes</td><td class="infosublabel">Quantidade</td><td class="infosublabel">Valor</td></tr>');
-                        
+
                         $("#informacoes").append('<tr><td class="infosubdados">Normal</td><td class="infosubdados"><span id="inf_nvez_cmp_normal"></span></td><td class="infosubdados"><span id="inf_qtd_cmp_normal"></span></td><td class="infosubdados"><span id="inf_prctot_cmp_normal"></span></td></tr>');
                         $("#informacoes").append('<tr><td class="infosubdados">AF</td><td class="infosubdados"><span id="inf_nvez_cmp_af"></span></td><td class="infosubdados"><span id="inf_qtd_cmp_af"></span></td><td class="infosubdados"><span id="inf_prctot_cmp_af"></span></td></tr>');
                         $("#informacoes").append('<tr><td class="infosubdados">Total:</td><td class="infosubdados"><span id="inf_soma_total_nvez_cmp"></span></td><td class="infosubdados"><span id="inf_soma_total_qtd_cmp"></span></td><td class="infosubdados"><span id="inf_soma_total_prc_cmp"></span></td></tr>');
 
-                    
+
                     $("#informacoes").append('<tr><td class="infolabel">Obs:</td><td class="infodados" colspan="4">* Valores Totais independente da Unidade de Medida</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados" colspan="4">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados" colspan="4">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
-                
+
                 break;
 
             }

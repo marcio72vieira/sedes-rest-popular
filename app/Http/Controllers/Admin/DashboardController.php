@@ -15,6 +15,8 @@ use App\Models\Categoria;
 use App\Models\Produto;
 use App\Models\User;
 
+use Illuminate\Support\Str;
+
 class DashboardController extends Controller
 {
     public function index()
@@ -52,7 +54,7 @@ class DashboardController extends Controller
         //$records = Produto::with(['categoria', 'compras'])->findOrFail(1);
         //dd($records);
 
-        //$records = DB::select(DB::raw("SELECT produto_id, precototal, COUNT(IF(af = 'nao', 1, null)) as nvzcmpnorm, COUNT(IF(af = 'sim', 1, null)) as nvzcmpaaf, SUM(IF(af = 'nao', quantidade, null)) as qtdcmpnorm, SUM(IF(af = 'sim', quantidade, null)) as qtdcmpaf, SUM(IF(af = 'nao', precototal, null)) as prctotnorm, SUM(IF(af = 'sim', precototal, null)) as prctotaf FROM compra_produto WHERE produto_id = 1 ORDER BY precototal ASC"));
+        //$records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini)'));
         //dd($records);
         //
         //   FIM  ESPAÇO RESERVADO PARA TESTE DE SOLICITAÇÕES AJAX    //
@@ -85,6 +87,75 @@ class DashboardController extends Controller
                 $dataRecordsMediaPrecoNorm[] = $value->mdprcnorm;
             }
         }
+
+
+
+        // Dados evolução de compras Normal x AF mês a mês
+        // especificando por uma regional
+        // $records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
+
+        // especificando o ano todo independente de qualquer coisa, ou seja, todas os restaurantes, municípios e regionais e independente de unidade de medida. produto arroz = 1
+        $jan_compraaf = []; $jan_compranormal = [];         $fev_compraaf = []; $fev_compranormal = [];
+        $mar_compraaf = []; $mar_compranormal = [];         $abr_compraaf = []; $abr_compranormal = [];
+        $mai_compraaf = []; $mai_compranormal = [];         $jun_compraaf = []; $jun_compranormal = [];
+        $jul_compraaf = []; $jul_compranormal = [];         $ags_compraaf = []; $ags_compranormal = [];
+        $set_compraaf = []; $set_compranormal = [];         $out_compraaf = []; $out_compranormal = [];
+        $nov_compraaf = []; $nov_compranormal = [];         $dez_compraaf = []; $dez_compranormal = [];
+
+
+        $records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini)'));
+        foreach($records as $value){
+            if(Str::substr($value->data_ini, 5, 2) == '01'){
+                $jan_compraaf[] = $value->totalcompraaf;
+                $jan_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '02'){
+                $fev_compraaf[] = $value->totalcompraaf;
+                $fev_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '03'){
+                $mar_compraaf[] = $value->totalcompraaf;
+                $mar_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '04'){
+                $abr_compraaf[] = $value->totalcompraaf;
+                $abr_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '05'){
+                $mai_compraaf[] = $value->totalcompraaf;
+                $mai_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '06'){
+                $jun_compraaf[] = $value->totalcompraaf;
+                $jun_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '07'){
+                $jul_compraaf[] = $value->totalcompraaf;
+                $jul_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '08'){
+                $ags_compraaf[] = $value->totalcompraaf;
+                $ags_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '09'){
+                $set_compraaf[] = $value->totalcompraaf;
+                $set_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '10'){
+                $out_compraaf[] = $value->totalcompraaf;
+                $out_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '11'){
+                $nov_compraaf[] = $value->totalcompraaf;
+                $nov_compranormal[] = $value->totalcompranormal;
+            }
+            if(Str::substr($value->data_ini, 5, 2) == '12'){
+                $dez_compraaf[] = $value->totalcompraaf;
+                $dez_compranormal[] = $value->totalcompranormal;
+            }
+        }
+
+
 
         //Dados USUÁRIOS
         $usuarios = $records = DB::select(DB::raw('SELECT id, nomecompleto, perfil FROM users ORDER BY nomecompleto ASC'));
@@ -182,44 +253,8 @@ class DashboardController extends Controller
 
 
 
-    public function ajaxrecuperadadosgraficoempilhadocategoriaproduto(Request $request)
-    {
-        $tipodados = $request->tipodadoscategoria;
 
-        $mes = date('m') - 1;
-
-        $data = [];
-
-        switch($tipodados){
-            case "Categorias":
-                //$recordslabelsCat = DB::select(DB::raw("SELECT  DISTINCT categoria_id, categoria_nome as nomelabel FROM bigtable_data WHERE MONTH(data_ini) = $mes ORDER BY nomelabel ASC"));
-                $recordslabelsProd = DB::select(DB::raw("SELECT categoria_nome as nomeprincipal, produto_nome as nomesecundario, SUM(precototal) as valorcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY categoria_id, produto_id ORDER BY categoria_nome ASC, valorcompra ASC"));
-                $data['titulo'] = "CATEGORIAS (PRODUTOS)";
-            break;
-        }
-
-        foreach($recordslabelsProd as $prod){
-            //Obtendo as categorias (irão vir duplicdas em função do Group By)
-            $arrCat[] = $prod->nomeprincipal;
-            //Obtendo os produtos
-            $arrProd[] = $prod->nomesecundario;
-            //Obtendo os valores dos produtos
-            $arrValueProd[] = $prod->valorcompra;
-        }
-
-        //$data['labelsCat'] = collect($arrCat)->unique(); //$data['labelsCat'] = array_unique($arrCat);
-
-        $data['labelsCat'] = $arrCat;
-        $data['labelsProd'] = $arrProd;
-        $data['valuesCompra'] = $arrValueProd;
-
-
-        return response()->json($data);
-    }
-
-
-
-
+    //Recupera informaçõs para tabela de visualização
     public function ajaxrecuperadadosentidades(Request $request)
     {
         $entidade = $request->entidade;
@@ -265,6 +300,8 @@ class DashboardController extends Controller
     }
 
 
+
+    //Recupera informaçoes de um registro específico
     public function ajaxrecuperainformacoesregistro(Request $request)
     {
         $model = $request->entidade;
@@ -310,6 +347,8 @@ class DashboardController extends Controller
     }
 
 
+
+    //Recupera dados para subtabela informações
     public function ajaxrecuperacomprasdoproduto(Request $request)
     {
         $id = $request->idproduto;
@@ -326,6 +365,47 @@ class DashboardController extends Controller
     }
 
 
+
+
+
+    /*******************************************************************
+    //Requisição para geração de gráfico com vários datasets em um array
+    /*
+    public function ajaxrecuperadadosgraficoempilhadocategoriaproduto(Request $request)
+    {
+        $tipodados = $request->tipodadoscategoria;
+
+        $mes = date('m') - 1;
+
+        $data = [];
+
+        switch($tipodados){
+            case "Categorias":
+                //$recordslabelsCat = DB::select(DB::raw("SELECT  DISTINCT categoria_id, categoria_nome as nomelabel FROM bigtable_data WHERE MONTH(data_ini) = $mes ORDER BY nomelabel ASC"));
+                $recordslabelsProd = DB::select(DB::raw("SELECT categoria_nome as nomeprincipal, produto_nome as nomesecundario, SUM(precototal) as valorcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY categoria_id, produto_id ORDER BY categoria_nome ASC, valorcompra ASC"));
+                $data['titulo'] = "CATEGORIAS (PRODUTOS)";
+            break;
+        }
+
+        foreach($recordslabelsProd as $prod){
+            //Obtendo as categorias (irão vir duplicdas em função do Group By)
+            $arrCat[] = $prod->nomeprincipal;
+            //Obtendo os produtos
+            $arrProd[] = $prod->nomesecundario;
+            //Obtendo os valores dos produtos
+            $arrValueProd[] = $prod->valorcompra;
+        }
+
+        //$data['labelsCat'] = collect($arrCat)->unique(); //$data['labelsCat'] = array_unique($arrCat);
+
+        $data['labelsCat'] = $arrCat;
+        $data['labelsProd'] = $arrProd;
+        $data['valuesCompra'] = $arrValueProd;
+
+
+        return response()->json($data);
+    }
+    ******************************************/
 
 
 
