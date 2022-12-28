@@ -12,6 +12,8 @@ use App\Http\Requests\BairroUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Support\Facades\DB;
+
 class BairroController extends Controller
 {
 
@@ -71,6 +73,11 @@ class BairroController extends Controller
 
 
         $bairro->update($request->all());
+
+        //Alterando o nome do bairro na bigtable_data
+        //$affected = DB::table('bigtable_data')->where('bairro_id', '=',  $id)->update(['bairro_nome' => $bairro->nome]);
+
+
 
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 

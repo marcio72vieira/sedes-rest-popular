@@ -1269,6 +1269,7 @@
         //***********************************
         // FUNÇÃO PRA TABELAS DE INFORMAÇÕES
         //************************************
+        // result irá receber tanto o índice 'titulo' como o índice 'dados'
         function preenchetabelainformacao(result) {
 
             var entidadeinformada = result['titulo'];
@@ -1403,6 +1404,7 @@
                 break;
                 case 'PRODUTOS':
 
+                    //Recebe o valor do id do produto escolhido.
                     var produtoid = result['dados'].id;
 
                     //Faz requisição para obter dados de todas as compras realizadas com este produto, independente da unidade.
@@ -1417,16 +1419,37 @@
                             success: function(result){
                                 console.log(result);
                                 console.log(result['campos'][0].nvzcmpnorm);
-                                //alert(result[0].nvzcmpnorm);
-                                //numvezescompranormal = result[0].nvzcmpnorm;
+                                //Obs:  A título de exemplo: numvezescompranormal = result[0].nvzcmpnorm, não tem como ser reconhecida fora do escopo desta
+                                //      função (success: funcion(result{}), fazendo com que a possibilidade fora deste escopo a torne "undefined", por isso
+                                //      houve a necessidade de inserir seu valor assim como as demais, diretamente em um elemento html(span) através do
+                                //      Jquery ($('#inf_nvez_cmp_normal').text(result['campos'][0].nvzcmpnorm);)
+                                //      Tente acessar esta variável:  numvezescompranormal = result['campos'][0].nvzcmpnorm; fora deste escopo e ela será
+                                //      considerada "undefined".
 
-                                $('#inf_nvez_cmp_normal').text(result['campos'][0].nvzcmpnorm);
-                                $('#inf_qtd_cmp_normal').text(result['campos'][0].qtdcmpnorm);
-                                $('#inf_prctot_cmp_normal').text(result['campos'][0].prctotnorm);
+                                var numerovezescompranormal = parseInt(result['campos'][0].nvzcmpnorm);
+                                var quantidadecompranormal = parseFloat((result['campos'][0].qtdcmpnorm != null ? result['campos'][0].qtdcmpnorm : 0));
+                                var precototalcompranormal = parseFloat((result['campos'][0].prctotnorm != null ? result['campos'][0].prctotnorm: 0));
 
-                                $('#inf_nvez_cmp_af').text(result['campos'][0].nvzcmpaaf);
-                                $('#inf_qtd_cmp_af').text(result['campos'][0].qtdcmpaf);
-                                $('#inf_prctot_cmp_af').text(result['campos'][0].prctotaf);
+                                var numvezescompraaf = parseInt(result['campos'][0].nvzcmpaaf);
+                                var quantidadecompraaf = parseFloat((result['campos'][0].qtdcmpaf != null ? result['campos'][0].qtdcmpaf : 0));
+                                var precototalcompraaf = parseFloat((result['campos'][0].prctotaf != null ? result['campos'][0].prctotaf : 0));
+                                
+                                var somanumerovezescompra = numerovezescompranormal + numvezescompraaf;
+                                var somaquantidadecompra = quantidadecompranormal + quantidadecompraaf;
+                                var somatotalcompra = precototalcompranormal + precototalcompraaf;
+
+
+                                $('#inf_nvez_cmp_normal').text(numerovezescompranormal);
+                                $('#inf_qtd_cmp_normal').text(number_format(quantidadecompranormal, "2", ",","."));
+                                $('#inf_prctot_cmp_normal').text(number_format(precototalcompranormal, "2", ",","."));
+
+                                $('#inf_nvez_cmp_af').text(numvezescompraaf);
+                                $('#inf_qtd_cmp_af').text(number_format(quantidadecompraaf, "2", ",",".")); //
+                                $('#inf_prctot_cmp_af').text(number_format(precototalcompraaf, "2", ",","."));
+
+                                $('#inf_soma_total_nvez_cmp').text(somanumerovezescompra);
+                                $('#inf_soma_total_qtd_cmp').text(number_format(somaquantidadecompra, "2", ",", "."));
+                                $('#inf_soma_total_prc_cmp').text(number_format(somatotalcompra, "2", ",", "."));
 
                             },
                             error: function(result){
@@ -1435,21 +1458,21 @@
                     });
 
 
-
                     ///
-                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados" colspan="3">' + result['dados'].id + '</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados" colspan="3">' + result['dados'].nome + '</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Categoria:</td><td class="infodados" colspan="3">'+ result['dados'].categoria.nome +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados" colspan="4">' + result['dados'].id + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados" colspan="4">' + result['dados'].nome + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Categoria:</td><td class="infodados" colspan="4">'+ result['dados'].categoria.nome +'</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel" rowspan="4">Compras</td><td class="infosublabel">Tipo</td><td class="infosublabel">Nº Vezes</td><td class="infosublabel">Quantidade</td><td class="infosublabel">Valor</td></tr>');
+                        
+                        $("#informacoes").append('<tr><td class="infosubdados">Normal</td><td class="infosubdados"><span id="inf_nvez_cmp_normal"></span></td><td class="infosubdados"><span id="inf_qtd_cmp_normal"></span></td><td class="infosubdados"><span id="inf_prctot_cmp_normal"></span></td></tr>');
+                        $("#informacoes").append('<tr><td class="infosubdados">AF</td><td class="infosubdados"><span id="inf_nvez_cmp_af"></span></td><td class="infosubdados"><span id="inf_qtd_cmp_af"></span></td><td class="infosubdados"><span id="inf_prctot_cmp_af"></span></td></tr>');
+                        $("#informacoes").append('<tr><td class="infosubdados">Total:</td><td class="infosubdados"><span id="inf_soma_total_nvez_cmp"></span></td><td class="infosubdados"><span id="inf_soma_total_qtd_cmp"></span></td><td class="infosubdados"><span id="inf_soma_total_prc_cmp"></span></td></tr>');
 
-                        $("#informacoes").append('<tr><td class="infolabel">Tipo</td><td class="infodados">nº vezes</td><td class="infodados">quantidade</td><td class="infodados">valor total</td></tr>');
-                        $("#informacoes").append('<tr><td class="infolabel">Normal:</td><td class="infodados"><span id="inf_nvez_cmp_normal"></span></td><td class="infodados"><span id="inf_qtd_cmp_normal"></span></td><td class="infodados"><span id="inf_prctot_cmp_normal"></span></td></tr>');
-                        $("#informacoes").append('<tr><td class="infolabel">AF:</td><td class="infodados"><span id="inf_nvez_cmp_af"></span></td><td class="infodados"><span id="inf_qtd_cmp_af"></span></td><td class="infodados"><span id="inf_prctot_cmp_af"></span></td></tr>');
-                        $("#informacoes").append('<tr><td class="infolabel">Totais:</td><td class="infodados"><span id="inf_prctot_cmp_normal"></span></td><td class="infodados"><span id="inf_prctot_cmp_normal"></span></td><td class="infodados"><span id="inf_prctot_cmp_normal"></span></td></tr>');
-
-                    $("#informacoes").append('<tr><td class="infolabel">Valor AF:</td><td class="infodados" colspan="3">'+ " 800,00 " +'</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Valor:</td><td class="infodados" colspan="3">'+ "2.300,20" +'</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados" colspan="3">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados" colspan="3">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                    
+                    $("#informacoes").append('<tr><td class="infolabel">Obs:</td><td class="infodados" colspan="4">* Valores Totais independente da Unidade de Medida</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados" colspan="4">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Atualizado:</td><td class="infodados" colspan="4">' + mrc_formata_data(result['dados'].updated_at) + '</td></tr>');
+                
                 break;
 
             }
