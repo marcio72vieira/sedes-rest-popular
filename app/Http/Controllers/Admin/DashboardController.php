@@ -95,143 +95,71 @@ class DashboardController extends Controller
         // $records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
 
         // especificando o ano todo independente de qualquer coisa, ou seja, todas os restaurantes, municípios e regionais e independente de unidade de medida. produto arroz = 1
-        $jan_compraaf = []; $jan_compranormal = [];         $fev_compraaf = []; $fev_compranormal = [];
-        $mar_compraaf = []; $mar_compranormal = [];         $abr_compraaf = []; $abr_compranormal = [];
-        $mai_compraaf = []; $mai_compranormal = [];         $jun_compraaf = []; $jun_compranormal = [];
-        $jul_compraaf = []; $jul_compranormal = [];         $ags_compraaf = []; $ags_compranormal = [];
-        $set_compraaf = []; $set_compranormal = [];         $out_compraaf = []; $out_compranormal = [];
-        $nov_compraaf = []; $nov_compranormal = [];         $dez_compraaf = []; $dez_compranormal = [];
+        $jan_compraaf = []; $jan_compranormal = [];
 
-        $compras_norm = [];
         $compras_af = [];
-
+        $compras_norm = [];
 
         $records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC'));
-        foreach($records as $value){
 
-            
-            /* if(Str::substr($value->data_ini, 5, 2) == '01'){
+        //$record = collect($records);
+        //echo $record->count();
+        //echo count($records);
+        //dd($records[0]->data_ini);
+        //$qtdvaloresretornados = count($records);
+        //echo $qtdvaloresretornados;
+        //$mesini = Str::substr($records[0]->data_ini, 5, 2);
+        //echo $mesini;
+        //echo (int)$mesatual;
+        //$mesa = "01";
+        //echo (int)$mesa;
+
+        $qtdvaloresretornados = count($records);
+
+
+
+        if($qtdvaloresretornados > 0){
+
+            for($x = 0; $x < 12; $x++){
+
+                for($z = 0; $z < $qtdvaloresretornados; $z++){
+
+                    $mesatual = Str::substr($records[$z]->data_ini, 5, 2);
+
+                    if($mesatual = "01"){
+                        //$compras_af[(int)$mesatual-1] = $records[$z]->totalcompraaf;
+                        $compras_af[$x] = $records[$z]->totalcompraaf;
+                        $compras_norm[$x] = $records[$z]->totalcompranormal;
+                    }else{
+                        $compras_af[$x] = 0;
+                        $compras_norm[$x] = 0;
+                    }
+                }
+            }
+        }else{
+            $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+
+
+
+        foreach($records as $value){
+            /*
+            if(Str::substr($value->data_ini, 5, 2) == '01'){
                 $jan_compraaf[] = $value->totalcompraaf;
                 $jan_compranormal[] = $value->totalcompranormal;
             }
-            if(Str::substr($value->data_ini, 5, 2) == '02'){
-                $fev_compraaf[] = $value->totalcompraaf;
-                $fev_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '03'){
-                $mar_compraaf[] = $value->totalcompraaf;
-                $mar_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '04'){
-                $abr_compraaf[] = $value->totalcompraaf;
-                $abr_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '05'){
-                $mai_compraaf[] = $value->totalcompraaf;
-                $mai_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '06'){
-                $jun_compraaf[] = $value->totalcompraaf;
-                $jun_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '07'){
-                $jul_compraaf[] = $value->totalcompraaf;
-                $jul_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '08'){
-                $ags_compraaf[] = $value->totalcompraaf;
-                $ags_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '09'){
-                $set_compraaf[] = $value->totalcompraaf;
-                $set_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '10'){
-                $out_compraaf[] = $value->totalcompraaf;
-                $out_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '11'){
-                $nov_compraaf[] = $value->totalcompraaf;
-                $nov_compranormal[] = $value->totalcompranormal;
-            }
-            if(Str::substr($value->data_ini, 5, 2) == '12'){
-                $dez_compraaf[] = $value->totalcompraaf;
-                $dez_compranormal[] = $value->totalcompranormal;
-            }*/
+            */
 
-            
-
-            /* if(Str::substr($value->data_ini, 5, 2) == '01'){
+            /*
+            if(Str::substr($value->data_ini, 5, 2) == '01'){
                 $compra_af[] = $value->totalcompraaf;
                 $compra_nomr[] = $value->totalcompranormal;
             }
-
-            if(Str::substr($value->data_ini, 5, 2) == '02'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '03'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '04'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '05'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '06'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '07'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '08'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '09'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '10'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '11'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-
-            if(Str::substr($value->data_ini, 5, 2) == '12'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            } */
-            
+            */
         }
-
         //$compra_af = [0,0,0,0,0,0,0,0,0,0,411.40,67.50];
         //$compra_nomr = [0,0,0,0,0,0,0,0,0,0,468.90,53.00];
-        //dd($records);
-
-
-
-
-
-
 
 
 
