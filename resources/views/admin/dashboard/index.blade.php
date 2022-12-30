@@ -383,53 +383,45 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                aria-labelledby="dropdownMenuDadosMesMes">
-                                <div class="dropdown-header">Compras:</div>
-                                <a class="dropdown-item psdlink">Geral</a>
-                                <a class="dropdown-item psdlink">Produtos</a>
-                                <a class="dropdown-item psdlink">Categorias</a>
+                            {{-- Div: psdmenu-mrc, sem função alguma, só para envolver a div: dropdown-menu e modificar seu estilo no arquivo mystyles.css
+                                 a fim de não afetar o estilo das demais divis que possui a mesma class (dropdown-menu --}}
+                            <div class="psdmenu-mrc">
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                    aria-labelledby="dropdownMenuDadosMesMes">
+                                    <a class="dropdown-item psdlink">Geral</a>
 
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-header"><i class="fas fa-cubes"></i> Regionais:</div>
-                                <a class="dropdown-item psdlink">GRANDE ILHA DE SÃO LUIS</a>
-                                <a class="dropdown-item psdlink">BAIXADA</a>
-                                <a class="dropdown-item psdlink">COCAIS</a>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
+                                    @foreach($regionais as $regional)
+                                        <div style="float: left">
+                                            <div style="width: 13rem;">
+                                                <a class="dropdown-item psdlink">{{$regional->nome}}</a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div style="clear: both"></div>
 
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
-                                <div style="float: left">
-                                    <a class="dropdown-item psdlink">Arroz</a>
-                                    <a class="dropdown-item psdlink">Feijão</a>
-                                    <a class="dropdown-item psdlink">Macarrão</a>
-                                </div>
-                                <div style="float: left">
-                                    <a class="dropdown-item psdlink">Farinha de mandioca</a>
-                                    <a class="dropdown-item psdlink">Farinha Dagua</a>
-                                    <a class="dropdown-item psdlink">Chuchu</a>
-                                </div>
-                                <div>
-                                    <a class="dropdown-item psdlink">Grãos</a>
-                                    <a class="dropdown-item psdlink">Raizes</a>
-                                    <a class="dropdown-item psdlink">Frutas</a>
-                                </div>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
+                                    @foreach($categorias as $categoria)
+                                        <div style="float: left">
+                                            <div style="width: 8rem">
+                                                <a class="dropdown-item psdlink">{{$categoria->nome}}</a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div style="clear: both"></div>
 
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
-                                <div style="float: left">
-                                    <a class="dropdown-item psdlink">Arroz</a>
-                                    <a class="dropdown-item psdlink">Feijão</a>
-                                    <a class="dropdown-item psdlink">Macarrão</a>
-                                </div>
-                                <div style="float: left">
-                                    <a class="dropdown-item psdlink">Farinha de mandioca</a>
-                                    <a class="dropdown-item psdlink">Farinha Dagua</a>
-                                    <a class="dropdown-item psdlink">Chuchu</a>
-                                </div>
-                                <div style="float: left">
-                                    <a class="dropdown-item psdlink">Grãos</a>
-                                    <a class="dropdown-item psdlink">Raizes</a>
-                                    <a class="dropdown-item psdlink">Frutas</a>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
+                                    @foreach($produtos as $produto)
+                                        <div style="float: left">
+                                            <div style="width: 7rem">
+                                                <a class="dropdown-item psdlink">{{$produto->nome}}</a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+
                                 </div>
                             </div>
                         </div>

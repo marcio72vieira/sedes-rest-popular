@@ -243,10 +243,10 @@ TABELA INFORMAÇÃO
 ******************/
 .titulotabelavisualizacao{
     background-color: #f8f9fc;
-    font-weight: bold; 
-    font-size: 15px; 
-    padding: 25px; 
-    color: #4e73df; 
+    font-weight: bold;
+    font-size: 15px;
+    padding: 25px;
+    color: #4e73df;
     text-align: center;
 }
 
@@ -303,17 +303,17 @@ TABELA INFORMAÇÃO
 }
 
 /***********
-PSEUDO LINK 
+PSEUDO LINK
 ************/
 /*A tag href="#" é retirada do link <a></a>,
  sendo assim perde o curso padrão. Logo para
  criar um pseudo link, criou-se a classe abaixo.
- Com a tag href="#", havia refresh da página 
+ Com a tag href="#", havia refresh da página
  quando atualizava-se o tipo de Dados ou Estilo
- dos gráficos, não permanecendo a visualização 
+ dos gráficos, não permanecendo a visualização
  no ponto original da página*/
-.psdlink { 
-    cursor: pointer; 
+.psdlink {
+    cursor: pointer;
 }
 
 
@@ -323,14 +323,43 @@ PSEUDO LINK
 
 /******************************
 MODIFICANDO CLASSE DO BOOTSTRAP
-******************************
-.dropdown-menu {
-    width: 300px !important;
-    /*height: 400px !important;
+******************************/
+.psdmenu-mrc .dropdown-menu {
+    width: 600px !important;
+    /*height: 400px !important;*/
 }
+
 
 /*
 .dropdown-menu {
+    width: 600px !important;
+    height: 400px !important;
+}
+
+.dropdown-menu {
     white-space: nowrap;
-} 
+}
+*/
+
+
+/*
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 0.85rem;
+    color: #858796;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+  }
 */

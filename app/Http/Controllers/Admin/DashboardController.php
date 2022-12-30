@@ -39,6 +39,10 @@ class DashboardController extends Controller
         $totProdutos =  Produto::all()->count();
         $totUsuarios =  User::all()->count();
 
+        $regionais = Regional::all();
+        $categorias = Categoria::all();
+        $produtos = Produto::all();
+
         //Dados Produtos Para gráfico Principal com tradução
         $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
 
@@ -62,7 +66,7 @@ class DashboardController extends Controller
 
 
         //Dados Média de preco AF e NORMAL para grafico de linha prórpio
-        /* 
+        /*
         $records = DB::select(DB::raw('SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
         $dataRecordsMediaPrecoAf = [];
         $dataRecordsMediaPrecoNorm = [];
@@ -123,9 +127,9 @@ class DashboardController extends Controller
 
 
 
-        return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral', 
+        return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral',
                         'totComprasMes', 'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
-                        'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'usuarios', 
+                        'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'regionais', 'categorias', 'produtos', 'dataRecords', 'usuarios',
                         'compras_af', 'compras_norm'));
     }
 
