@@ -317,3 +317,20 @@ PSEUDO LINK
 }
 
 
+
+
+
+
+/******************************
+MODIFICANDO CLASSE DO BOOTSTRAP
+******************************
+.dropdown-menu {
+    width: 300px !important;
+    /*height: 400px !important;
+}
+
+/*
+.dropdown-menu {
+    white-space: nowrap;
+} 
+*/

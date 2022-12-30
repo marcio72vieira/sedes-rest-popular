@@ -62,6 +62,7 @@ class DashboardController extends Controller
 
 
         //Dados Média de preco AF e NORMAL para grafico de linha prórpio
+        /* 
         $records = DB::select(DB::raw('SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
         $dataRecordsMediaPrecoAf = [];
         $dataRecordsMediaPrecoNorm = [];
@@ -86,55 +87,30 @@ class DashboardController extends Controller
                 $dataRecordsMediaPrecoAf[] = $value->mdprcaf;
                 $dataRecordsMediaPrecoNorm[] = $value->mdprcnorm;
             }
-        }
+        } */
 
 
 
-        // Dados evolução de compras Normal x AF mês a mês
-        // especificando por uma regional
-        // $records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
-
-        // especificando o ano todo independente de qualquer coisa, ou seja, todas os restaurantes, municípios e regionais e independente de unidade de medida. produto arroz = 1
-        $jan_compraaf = []; $jan_compranormal = [];
-
-        $compras_af = [];
-        $compras_norm = [];
-
-        $records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC'));
-
-        //$record = collect($records);
-        //echo $record->count();
-        //echo count($records);
-        //dd($records[0]->data_ini);
-        //$qtdvaloresretornados = count($records);
-        //echo $qtdvaloresretornados;
-        //$mesini = Str::substr($records[0]->data_ini, 5, 2);
-        //echo $mesini;
-        //echo (int)$mesatual;
-        //$mesa = "01";
-        //echo (int)$mesa;
-
-        $qtdvaloresretornados = count($records);
+        //Obtendo totais das compras AF e Normal Mês a Mês (Independente de qualquer cirtério de pesquisa, apenas ANO)
+        $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $ano_corrente   = date("Y");
 
 
+        //Recuperando um produto(arroz) específico
+        //$records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
 
-        if($qtdvaloresretornados > 0){
+        //Recuperando todas as compras Normal e AF independente de produto, regional, município etc...
+        $records = DB::select(DB::raw("SELECT data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
 
-            for($x = 0; $x < 12; $x++){
+        $numregretorno = count($records);
 
-                for($z = 0; $z < $qtdvaloresretornados; $z++){
-
-                    $mesatual = Str::substr($records[$z]->data_ini, 5, 2);
-
-                    if($mesatual = "01"){
-                        //$compras_af[(int)$mesatual-1] = $records[$z]->totalcompraaf;
-                        $compras_af[$x] = $records[$z]->totalcompraaf;
-                        $compras_norm[$x] = $records[$z]->totalcompranormal;
-                    }else{
-                        $compras_af[$x] = 0;
-                        $compras_norm[$x] = 0;
-                    }
-                }
+        if($numregretorno > 0){
+            foreach($records as $value){
+                $mesatual = Str::substr($value->data_ini, 5, 2);
+                $posicao = (int)$mesatual;
+                $compras_af[$posicao-1] =  $value->totalcompraaf;
+                $compras_norm[$posicao-1] =  $value->totalcompranormal;
             }
         }else{
             $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -142,35 +118,15 @@ class DashboardController extends Controller
         }
 
 
-
-        foreach($records as $value){
-            /*
-            if(Str::substr($value->data_ini, 5, 2) == '01'){
-                $jan_compraaf[] = $value->totalcompraaf;
-                $jan_compranormal[] = $value->totalcompranormal;
-            }
-            */
-
-            /*
-            if(Str::substr($value->data_ini, 5, 2) == '01'){
-                $compra_af[] = $value->totalcompraaf;
-                $compra_nomr[] = $value->totalcompranormal;
-            }
-            */
-        }
-        //$compra_af = [0,0,0,0,0,0,0,0,0,0,411.40,67.50];
-        //$compra_nomr = [0,0,0,0,0,0,0,0,0,0,468.90,53.00];
-
-
-
-        //Dados USUÁRIOS
+        //Dados USUÁRIOS para preencher tabela Visualização Rápida na view
         $usuarios = $records = DB::select(DB::raw('SELECT id, nomecompleto, perfil FROM users ORDER BY nomecompleto ASC'));
 
 
 
-        return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral', 'totComprasMes',
-                                            'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
-                                            'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'dataRecordsMediaPrecoAf', 'dataRecordsMediaPrecoNorm', 'usuarios'));
+        return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral', 
+                        'totComprasMes', 'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
+                        'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'dataRecords', 'usuarios', 
+                        'compras_af', 'compras_norm'));
     }
 
 

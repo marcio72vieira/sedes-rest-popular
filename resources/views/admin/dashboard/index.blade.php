@@ -367,24 +367,70 @@
     </div>
     <!-- FIM Content Row GRÁFICOS -->
 
-    <!-- INÍCIO MEUS GRÁFICOS -->
+    <!-- INÍCIO MEUS GRÁFICOS MÊS a MÊS -->
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
                 <div>
-                    <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Comparativo Compra Normal x Agricultara Familiar</h5>
+                    <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Comparativo de Compra Mensal (Normal x Agricultara Familiar)</h5>
                     <div class="card-header"  style="float: right; margin-top: -41px;">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDados"
+                        <div class="dropdown no-arrow">
+                            {{-- <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMes"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                                 Dados
+                            </a> --}}
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMes"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                aria-labelledby="dropdownMenuDados">
-                                <div class="dropdown-header">Dados:</div>
-                                <a class="dropdown-item" href="#">Produtos</a>
-                                <a class="dropdown-item" href="#">Categorias</a>
-                                <a class="dropdown-item" href="#">Regionais</a>
+                                aria-labelledby="dropdownMenuDadosMesMes">
+                                <div class="dropdown-header">Compras:</div>
+                                <a class="dropdown-item psdlink">Geral</a>
+                                <a class="dropdown-item psdlink">Produtos</a>
+                                <a class="dropdown-item psdlink">Categorias</a>
+
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-header"><i class="fas fa-cubes"></i> Regionais:</div>
+                                <a class="dropdown-item psdlink">GRANDE ILHA DE SÃO LUIS</a>
+                                <a class="dropdown-item psdlink">BAIXADA</a>
+                                <a class="dropdown-item psdlink">COCAIS</a>
+
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
+                                <div style="float: left">
+                                    <a class="dropdown-item psdlink">Arroz</a>
+                                    <a class="dropdown-item psdlink">Feijão</a>
+                                    <a class="dropdown-item psdlink">Macarrão</a>
+                                </div>
+                                <div style="float: left">
+                                    <a class="dropdown-item psdlink">Farinha de mandioca</a>
+                                    <a class="dropdown-item psdlink">Farinha Dagua</a>
+                                    <a class="dropdown-item psdlink">Chuchu</a>
+                                </div>
+                                <div>
+                                    <a class="dropdown-item psdlink">Grãos</a>
+                                    <a class="dropdown-item psdlink">Raizes</a>
+                                    <a class="dropdown-item psdlink">Frutas</a>
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
+                                <div style="float: left">
+                                    <a class="dropdown-item psdlink">Arroz</a>
+                                    <a class="dropdown-item psdlink">Feijão</a>
+                                    <a class="dropdown-item psdlink">Macarrão</a>
+                                </div>
+                                <div style="float: left">
+                                    <a class="dropdown-item psdlink">Farinha de mandioca</a>
+                                    <a class="dropdown-item psdlink">Farinha Dagua</a>
+                                    <a class="dropdown-item psdlink">Chuchu</a>
+                                </div>
+                                <div style="float: left">
+                                    <a class="dropdown-item psdlink">Grãos</a>
+                                    <a class="dropdown-item psdlink">Raizes</a>
+                                    <a class="dropdown-item psdlink">Frutas</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -399,7 +445,7 @@
             </div>
         </div>
     </div>
-    <!-- FIM MEUS GRÁFICOS -->
+    <!-- FIM MEUS GRÁFICOS MÊS a MÊS -->
 
 
     <!-- INÍCIO OUTROS DADOS - VISUALIZAÇÃO RÁPIDA E INFORMAÇÕES -->
@@ -504,12 +550,20 @@
         }
 
 
-        // Obtendo os valores das médias de preços por semana AF e NORMAL
-        if(count($dataRecordsMediaPrecoAf)){
-            $dataAf =  array_values($dataRecordsMediaPrecoAf);
+        // Obtendo os valores das médias de preços por semana AF e NORMAL (antigo meu gráfico de linha)
+        // if(count($dataRecordsMediaPrecoAf)){
+        //     $dataAf =  array_values($dataRecordsMediaPrecoAf);
+        // }
+        // if(count($dataRecordsMediaPrecoNorm)){
+        //     $dataNormal =  array_values($dataRecordsMediaPrecoNorm);
+        // }
+
+        // Obtendo os valores das compras Normal e AF mês a mês
+        if(count($compras_af)){
+            $dataAf =  array_values($compras_af);
         }
-        if(count($dataRecordsMediaPrecoNorm)){
-            $dataNormal =  array_values($dataRecordsMediaPrecoNorm);
+        if(count($compras_norm)){
+            $dataNormal =  array_values($compras_norm);
         }
     @endphp
 
@@ -917,7 +971,7 @@
                             'rgba(220, 192, 192, 1)',
                             'rgba(100, 102, 255, 1)'
                         ],
-                        borderWidth: 2,
+                        borderWidth: 1,
                         barPercentage: 0.5, //Determina a largura da coluna ou barra
                     }]
                 },
@@ -1079,11 +1133,11 @@
 
 
 
-        // Meu gráfico de LINHA Média de Preço
+        // Meu gráfico de LINHA Média de Preço Mês a Mês
         var ctx = document.getElementById('graficoLinha').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
-            type: 'bar',
+            type: 'bar',    //type: 'line',
 
             // The data for our dataset
             data: {
@@ -1092,8 +1146,8 @@
                 datasets: [
                     {
                         label: 'Compra Normal',
-                        backgroundColor: 'rgb(255, 0, 0, 0.2)',
-                        borderColor: 'rgb(255, 0, 0, 0.2)',
+                        backgroundColor: 'rgb(255, 0, 0, 0.5)',
+                        borderColor: 'rgb(255, 0, 0, 0.1)',
                         //data: [0, 10, 5, 2, 20, 30, 45],
                         //Digamos: pegar o preço do arroz comprados em todos os restaurantes em cada mês e fazer uma média
                         //Digamos: rest Liberdade, Coroadinho, São Jose de Ribamar, Bacuri (em imperatriz)
@@ -1103,8 +1157,8 @@
                     },
                     {
                         label: 'Compra AF',
-                        backgroundColor: 'rgb(0, 0, 255, 0.2)',
-                        borderColor: 'rgb(0, 0, 255, 0.2)',
+                        backgroundColor: 'rgb(0, 0, 255, 0.5)',
+                        borderColor: 'rgb(0, 0, 255, 0.1)',
                         //data: [0, 20, 10, 12, 0, 60, 85],
                         //Digamos o preço do arroz da AF
                         //data: [3.50, 4.50, 4, 4.25, 4.40, 4.80, 5.80, 5.80, 6.2, 5.80, 6, 6],
@@ -1116,7 +1170,10 @@
 
             // Configuration options go here
             options: {
-
+                title: {
+                    display: true,
+                    text: 'GERAL'
+                }
             }
         });
 

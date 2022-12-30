@@ -769,7 +769,8 @@ ParseError Invalid numeric literal
 // https://pt.stackoverflow.com/questions/213834/php-parse-error-invalid-numeric-literal
 // https://cursos.alura.com.br/forum/topico-php-parse-error-invalid-numeric-literal-135880
 
-https://stackoverflow.com/questions/8529656/how-do-i-convert-a-string-to-a-number-in-php
+// https://stackoverflow.com/questions/8529656/how-do-i-convert-a-string-to-a-number-in-php
+// https://stackoverflow.com/questions/23042182/increase-bootstrap-dropdown-menu-width
 
 
 
@@ -792,6 +793,7 @@ https://stackoverflow.com/questions/8529656/how-do-i-convert-a-string-to-a-numbe
 // https://www.youtube.com/watch?v=LF9NiVS6-Hc&t=601s
 // https://www.youtube.com/watch?v=2sr4abjGs-s
 // https://www.youtube.com/watch?v=LF9NiVS6-Hc
+// https://www.youtube.com/watch?v=RyERAzUuZv8
 
 
 how I know if an or other event in jquery foi trigged
@@ -1344,6 +1346,23 @@ $comprovanteURL = $request->comprovante->store("documentos/$restaurante/$compra-
 
 //$records = Bigtabledata::comprasDoMes(1, 10);
 //Recupera as compras realizadas pelo nutricionista (user_id) logado, do restaurante que este é responsável (restaurante_id) no mês determinado (mes)
+
+
+//$record = collect($records);
+//echo $record->count();
+//echo count($records);
+//dd($records[0]->data_ini);
+//$qtdvaloresretornados = count($records);
+//echo $qtdvaloresretornados;
+//$mesini = Str::substr($records[0]->data_ini, 5, 2);
+//echo $mesini;
+//echo (int)$mesatual;
+//$mesa = "01";
+//echo (int)$mesa;
+
+// Dados evolução de compras Normal x AF mês a mês
+// especificando por uma regional
+// $records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
 
 
 
