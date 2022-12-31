@@ -771,6 +771,7 @@ ParseError Invalid numeric literal
 
 // https://stackoverflow.com/questions/8529656/how-do-i-convert-a-string-to-a-number-in-php
 // https://stackoverflow.com/questions/23042182/increase-bootstrap-dropdown-menu-width
+// https://www.edureka.co/community/65213/how-to-check-request-is-ajax-or-not-in-laravel
 
 
 

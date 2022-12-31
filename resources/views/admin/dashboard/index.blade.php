@@ -77,7 +77,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Regionais</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totRegionais }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $regionais->count() }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-globe-americas fa-2x text-gray-300"></i>
@@ -204,7 +204,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Categorias</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totCategorias }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $categorias->count() }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-stream fa-2x text-gray-300"></i>
@@ -222,7 +222,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Produtos</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totProdutos }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $produtos->count() }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-leaf fa-2x text-gray-300"></i>
@@ -388,36 +388,36 @@
                             <div class="psdmenu-mrc">
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                     aria-labelledby="dropdownMenuDadosMesMes">
-                                    <a class="dropdown-item psdlink">Geral</a>
+                                    <a class="dropdown-item psdlink entidademesames" data-entidademesames="Geral"  data-id="0">Geral</a>
 
                                     <div class="dropdown-divider"></div>
-                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
-                                    @foreach($regionais as $regional)
+                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Regionais: {{$regionais->count()}}</div>
+                                    @foreach($regionais as $registroentidade)
                                         <div style="float: left">
                                             <div style="width: 13rem;">
-                                                <a class="dropdown-item psdlink">{{$regional->nome}}</a>
+                                            <a class="dropdown-item psdlink entidademesames" data-entidademesames="Regionais" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
                                             </div>
                                         </div>
                                     @endforeach
                                     <div style="clear: both"></div>
 
                                     <div class="dropdown-divider"></div>
-                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
-                                    @foreach($categorias as $categoria)
+                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Categorias: {{$categorias->count()}}</div>
+                                    @foreach($categorias as $registroentidade)
                                         <div style="float: left">
-                                            <div style="width: 8rem">
-                                                <a class="dropdown-item psdlink">{{$categoria->nome}}</a>
+                                            <div style="width: 9rem">
+                                                <a class="dropdown-item psdlink entidademesames" data-entidademesames="Categorias" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
                                             </div>
                                         </div>
                                     @endforeach
                                     <div style="clear: both"></div>
 
                                     <div class="dropdown-divider"></div>
-                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:</div>
-                                    @foreach($produtos as $produto)
+                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:  {{$produtos->count()}}</div>
+                                    @foreach($produtos as $registroentidade)
                                         <div style="float: left">
                                             <div style="width: 7rem">
-                                                <a class="dropdown-item psdlink">{{$produto->nome}}</a>
+                                                <a class="dropdown-item psdlink entidademesames" data-entidademesames="Produtos" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
                                             </div>
                                         </div>
                                     @endforeach
@@ -429,7 +429,7 @@
                 </div>
                 <div class="card-body">
                     <div style="width: 100%; height: 20%; background-color: white;">
-                        <div>
+                        <div id="areaparagraficosmesames">
                             <canvas id="graficoLinha" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
                         </div>
                     </div>
@@ -581,7 +581,17 @@
 
             var valorTituloGrafico =  "";
 
+            //Gráfico mês a mês
+            var tipoentidademesames = "";
+            var nomeregistomesames = "";
+            var idregsentidademesames = "";
+
+            var valorTituloMesaMes = "";
+            var valornormalMesaMes = [];
+            var valorafMesaMes = [];
+
             //Informações rápidaas
+            
             var entidade = "";
             var identidade = 0;
             var identificadorreg = 0;
@@ -670,6 +680,51 @@
             //Fim do estilo do gráfico do tipo pilha
 
 
+            //Início gráfico mês a mês
+            $(".entidademesames").on("click", function(){
+
+                //alert("Entidade escolhida é: " + $(this).data('entidademesames') + ": " + $(this).text().trim() + ", id: " + $(this).data('id'));
+                //Recupera o tipo de entidade (Regionais, Categorias ou Produto) e o respectivo id do registro escolhido
+                tipoentidademesames = $(this).data('entidademesames');
+                nomeregistomesames = $(this).text().trim();
+                idregsentidademesames = $(this).data('id');
+
+
+                //Faz requisição para obter datos do registro da entidade
+                $.ajax({
+                    url:"{{route('admin.dashboard.ajaxrecuperadadosgraficomesames')}}",
+                    type: "GET",
+                    data: {
+                        tipoentidade: tipoentidademesames,
+                        nomeregistroentidade: nomeregistomesames,
+                        idregistroentidade: idregsentidademesames
+                    },
+                    dataType : 'json',
+
+                    //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo como resultado, temos:
+                    //      result['titulo'], result['comprasAF'] e result['comprasNORM'] que são arrays.
+                    success: function(result){
+
+                        //Zerando o valor das variáveis globais do tipo array
+                        valornormalMesaMes = [];
+                        valorafMesaMes = [];
+                        valorTituloMesaMes = "";
+                        
+                        valornormalMesaMes = result['comprasNORM'];
+                        valorafMesaMes = result['comprasAF'];
+                        valorTituloMesaMes = result['titulo'];
+
+                        //Renderiza gráfico passando as informações necessárias
+                        renderGraficoDinamicoMesaMes(valornormalMesaMes, valorafMesaMes, valorTituloMesaMes);
+
+                    },
+                    error: function(result){
+                        alert("Error ao retornar dados!");
+                    }
+                });
+            });
+
+
             //Inicio do estilo do gráfico tipo pilha categoria produto
             /*
             $('.estilograficoempilhadocategoriaproduto').on('click', function() {
@@ -740,8 +795,6 @@
             });
             */
             //Fim do estilo do gráfico tipo pilha  categoria produto
-
-
 
 
 
@@ -1125,7 +1178,11 @@
 
 
 
-        // Meu gráfico de LINHA Média de Preço Mês a Mês
+        // Meu gráfico de LINHA Média de Preço Mês a Mês ESTÁTICO COM DADOS VINDO DA VIEW (MÉTODO COMPACT)
+        //Limpa a área do grafico para evitar sobreposição de informações
+        $('#graficoLinha').remove();
+        $('#areaparagraficosmesames').append('<canvas id="graficoLinha"  width="200" height="40" style="padding: 10px 5px 5px 5px;"><canvas>');
+
         var ctx = document.getElementById('graficoLinha').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
@@ -1168,6 +1225,59 @@
                 }
             }
         });
+
+
+        //*****************************
+        // GRÁFICO DINAMICO MES A MÊS
+        //*****************************
+        function renderGraficoDinamicoMesaMes(comprasNORM, comprasAF, titulo){
+            
+            //Limpa a área do grafico para evitar sobreposição de informações
+            $('#graficoLinha').remove();
+            $('#areaparagraficosmesames').append('<canvas id="graficoLinha"  width="200" height="40" style="padding: 10px 5px 5px 5px;"><canvas>');
+
+            var ctx = document.getElementById('graficoLinha').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'],
+                    datasets: [
+                        {
+                            label: 'Compra Normal',
+                            backgroundColor: 'rgb(255, 0, 0, 0.5)',
+                            borderColor: 'rgb(255, 0, 0, 0.1)',
+                            data: comprasNORM,
+                            fill: true
+                        },
+                        {
+                            label: 'Compra AF',
+                            backgroundColor: 'rgb(0, 0, 255, 0.5)',
+                            borderColor: 'rgb(0, 0, 255, 0.1)',
+                            data: comprasAF,
+                            fill: true
+                        }
+                    ]
+                },
+
+                // Configuration options go here
+                options: {
+                    title: {
+                        display: true,
+                        text: titulo
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
+
 
 
 

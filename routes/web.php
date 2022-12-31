@@ -169,6 +169,9 @@ Route::get('admin/dashboard/ajaxrecuperadadosgrafico', [DashboardController::cla
 Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhado', [DashboardController::class, 'ajaxrecuperadadosgraficoempilhado'])->name('admin.dashboard.ajaxrecuperadadosgraficoempilhado')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhadocategoriaproduto', [DashboardController::class, 'ajaxrecuperadadosgraficoempilhadocategoriaproduto'])->name('admin.dashboard.ajaxrecuperadadosgraficoempilhadocategoriaproduto')->middleware(['auth']);
 
+Route::get('admin/dashboard/ajaxrecuperadadosgraficomesames', [DashboardController::class, 'ajaxrecuperadadosgraficomesames'])->name('admin.dashboard.ajaxrecuperadadosgraficomesames')->middleware(['auth']);
+
+
 
 /**************************************************/
 /*   ROTAS PARA DADOS DAS ENTIDADES VISÃO RÁPIDA  */

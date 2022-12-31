@@ -22,50 +22,38 @@ class DashboardController extends Controller
     public function index()
     {
 
+        // Definindo mês para computo dos dados
         //$mes =  date('m');
         $mes =  date('m') -  1;
 
+        //Recuperando registros e seus totais para cards e menu de contexto do gráfico comparativo mês a mês
         $totEmpresas =  Empresa::all()->count();
         $totNutricionistas =  Nutricionista::all()->count();
         $totRestaurantes = Restaurante::all()->count();
         $totComprasGeral = Compra::all()->count();
         $totComprasMes = DB::table('compras')->whereMonth('data_ini', $mes)->count();
-        $totRegionais = Regional::all()->count();
+        $regionais = Regional::select('id', 'nome')->get();     // $regionais = Regional::all();
         $totMunicipios =  Municipio::all()->count();
         $totComprasNormal =  DB::table('compras')->whereMonth('data_ini', $mes)->sum('valor');
         $totComprasAf =  DB::table('compras')->whereMonth('data_ini', $mes)->sum('valoraf');
         $totalValorCompras =  $totComprasNormal + $totComprasAf;
-        $totCategorias = Categoria::all()->count();
-        $totProdutos =  Produto::all()->count();
+        $categorias = Categoria::select('id', 'nome')->get();
+        $produtos = Produto::select('id', 'nome')->get();    
         $totUsuarios =  User::all()->count();
-
-        $regionais = Regional::all();
-        $categorias = Categoria::all();
-        $produtos = Produto::all();
 
         //Dados Produtos Para gráfico Principal com tradução
         $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
-
         $dataRecords = [];
         foreach($records as $value) {
             $dataRecords[$value->nome] =  $value->totalcompra;
         }
 
 
-        //////////////////////////////////////////////////////////////////////
-        //   INÍCIO     ESPAÇO RESERVADO PARA TESTE DE SOLICITAÇÕES AJAX    //
-        //
-        //$records = Produto::with(['categoria', 'compras'])->findOrFail(1);
-        //dd($records);
-
+        // TESTA AS REQUISIÇÕES AJAX
         //$records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini)'));
         //dd($records);
-        //
-        //   FIM  ESPAÇO RESERVADO PARA TESTE DE SOLICITAÇÕES AJAX    //
-        ////////////////////////////////////////////////////////////////
 
-
-        //Dados Média de preco AF e NORMAL para grafico de linha prórpio
+        //Dados Média de preco AF e NORMAL para grafico de linha prórpio (atual gráfico mês a mês de coluna)
         /*
         $records = DB::select(DB::raw('SELECT regional_nome, produto_id, semana, semana_nome, preco, af, AVG(IF(af = "sim", preco, NULL)) AS mdprcaf, AVG(IF(af = "nao", preco, NULL)) AS mdprcnorm FROM bigtable_data WHERE regional_id = 1 AND MONTH(data_ini) = 11 AND produto_id = 1 AND YEAR(data_ini) = 2022 GROUP by produto_id, semana_nome ORDER BY semana ASC, mdprcnorm ASC, mdprcaf ASC'));
         $dataRecordsMediaPrecoAf = [];
@@ -107,16 +95,17 @@ class DashboardController extends Controller
         //Recuperando todas as compras Normal e AF independente de produto, regional, município etc...
         $records = DB::select(DB::raw("SELECT data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
 
-        $numregretorno = count($records);
+        $numregsretorno = count($records);
 
-        if($numregretorno > 0){
+        if($numregsretorno > 0){
             foreach($records as $value){
-                $mesatual = Str::substr($value->data_ini, 5, 2);
-                $posicao = (int)$mesatual;
-                $compras_af[$posicao-1] =  $value->totalcompraaf;
-                $compras_norm[$posicao-1] =  $value->totalcompranormal;
+                $mesdoano = Str::substr($value->data_ini, 5, 2);        //recupera só a string correspondente ao mês
+                $posicao = (int)$mesdoano;                              //transforma a string recuperada em um inteiro
+                $compras_af[$posicao-1] =  $value->totalcompraaf;       //substitui o valor da posição atual 0 pelo devido valor
+                $compras_norm[$posicao-1] =  $value->totalcompranormal; //idem 
             }
         }else{
+            // Se nada for retornado, todos os valores (correspondnte aos meses) serão 0 (zero)
             $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
             $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
         }
@@ -125,11 +114,9 @@ class DashboardController extends Controller
         //Dados USUÁRIOS para preencher tabela Visualização Rápida na view
         $usuarios = $records = DB::select(DB::raw('SELECT id, nomecompleto, perfil FROM users ORDER BY nomecompleto ASC'));
 
-
-
         return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral',
-                        'totComprasMes', 'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totRegionais',
-                        'totMunicipios', 'totCategorias', 'totProdutos', 'totUsuarios', 'regionais', 'categorias', 'produtos', 'dataRecords', 'usuarios',
+                        'totComprasMes', 'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totMunicipios', 
+                        'totUsuarios', 'regionais', 'categorias', 'produtos', 'dataRecords', 'usuarios',
                         'compras_af', 'compras_norm'));
     }
 
@@ -218,6 +205,63 @@ class DashboardController extends Controller
 
 
 
+    public function ajaxrecuperadadosgraficomesames(Request $request)
+    {
+        //Verifica se a requisição foi feita com sucesso via AJAX
+        //if($request->ajax()){return $request->tipoentidade."-".$request->nomeregistroentidade."-".$request->idregistroentidade;}else{return "Não chegou nenhuma informação";}
+
+        $tipoentidade = $request->tipoentidade;
+        $nomeregistro = $request->nomeregistroentidade;
+        $idregistro = $request->idregistroentidade;
+
+        $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+        $ano_corrente   = date("Y");
+
+        $data = [];
+        $records = "";
+
+        switch($tipoentidade){
+            case "Geral":
+                $records = DB::select(DB::raw("SELECT data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                $data['titulo'] = "GERAL";
+            break;
+            case "Regionais":
+                $records = DB::select(DB::raw("SELECT regional_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE regional_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                $data['titulo'] = "REGIONAL: ".$nomeregistro;
+            break;
+            case "Categorias":
+                $records = DB::select(DB::raw("SELECT categoria_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE categoria_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                $data['titulo'] = "CATEGORIA: ".$nomeregistro;
+            break;
+            case "Produtos":
+                $records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                $data['titulo'] = "PRODUTO: ".$nomeregistro;
+            break;
+        }
+
+        $numregsretorno = count($records);
+
+        if($numregsretorno > 0){
+            foreach($records as $value){
+                $mesdoano = Str::substr($value->data_ini, 5, 2);        //recupera só a string correspondente ao mês
+                $posicao = (int)$mesdoano;                              //transforma a string recuperada em um inteiro
+                $compras_af[$posicao-1] =  $value->totalcompraaf;       //substitui o valor da posição atual 0 pelo devido valor
+                $compras_norm[$posicao-1] =  $value->totalcompranormal; //idem 
+            }
+        }else{
+            // Se nada for retornado, todos os valores (correspondnte aos meses) serão 0 (zero)
+            $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+        }
+
+        $data['comprasAF'] = $compras_af;
+        $data['comprasNORM'] = $compras_norm;
+
+        return response()->json($data); 
+
+    }
 
 
     //Recupera informaçõs para tabela de visualização
