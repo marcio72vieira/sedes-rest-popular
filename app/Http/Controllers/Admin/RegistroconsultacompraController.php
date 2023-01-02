@@ -110,7 +110,7 @@ class RegistroconsultacompraController extends Controller
 
         //$anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
 
-        $anoimplantacao = 2022;
+        $anoimplantacao = 2023;
         $anoatual = date("Y");
         $anospesquisa = [];
         $anos = [];

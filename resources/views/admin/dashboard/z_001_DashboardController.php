@@ -22,38 +22,31 @@ class DashboardController extends Controller
     public function index()
     {
 
-        // Definindo mês para computo dos dados OK!
-        $mes_corrente = date('m');
-        $ano_corrente = date('Y');
+        // Definindo mês para computo dos dados
+        //$mes =  date('m');
+        $mes =  date('m') -  1;
 
         //Recuperando registros e seus totais para cards e menu de contexto do gráfico comparativo mês a mês
         $totEmpresas =  Empresa::all()->count();
         $totNutricionistas =  Nutricionista::all()->count();
         $totRestaurantes = Restaurante::all()->count();
         $totComprasGeral = Compra::all()->count();
-        $totComprasMes = DB::table('compras')->whereMonth('data_ini', $mes_corrente)->whereYear('data_ini', $ano_corrente)->count();
+        $totComprasMes = DB::table('compras')->whereMonth('data_ini', $mes)->count();
         $regionais = Regional::select('id', 'nome')->get();     // $regionais = Regional::all();
         $totMunicipios =  Municipio::all()->count();
-        $totComprasNormal =  DB::table('compras')->whereMonth('data_ini', $mes_corrente)->whereYear('data_ini', $ano_corrente)->sum('valor');
-        $totComprasAf =  DB::table('compras')->whereMonth('data_ini', $mes_corrente)->whereYear('data_ini', $ano_corrente)->sum('valoraf');
+        $totComprasNormal =  DB::table('compras')->whereMonth('data_ini', $mes)->sum('valor');
+        $totComprasAf =  DB::table('compras')->whereMonth('data_ini', $mes)->sum('valoraf');
         $totalValorCompras =  $totComprasNormal + $totComprasAf;
         $categorias = Categoria::select('id', 'nome')->get();
         $produtos = Produto::select('id', 'nome')->get();
         $totUsuarios =  User::all()->count();
 
         //Dados Produtos Para gráfico Principal com tradução
-        $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
+        $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
         $dataRecords = [];
-
-        //Ignite
-        if(count($records) > 0){
-            foreach($records as $value) {
-                $dataRecords[$value->nome] =  $value->totalcompra;
-            }
-        }else{
-            $dataRecords[''] =  0;
+        foreach($records as $value) {
+            $dataRecords[$value->nome] =  $value->totalcompra;
         }
-
 
 
         // TESTA AS REQUISIÇÕES AJAX
@@ -93,14 +86,14 @@ class DashboardController extends Controller
         //Obtendo totais das compras AF e Normal Mês a Mês (Independente de qualquer cirtério de pesquisa, apenas ANO)
         $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
         $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $ano_corrente   = date('Y');
+        $ano_corrente   = date("Y");
 
 
         //Recuperando um produto(arroz) específico
         //$records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
 
         //Recuperando todas as compras Normal e AF independente de produto, regional, município etc...
-        $records = DB::select(DB::raw("SELECT data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+        $records = DB::select(DB::raw("SELECT data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
 
         $numregsretorno = count($records);
 
@@ -132,8 +125,7 @@ class DashboardController extends Controller
     {
         $tipodados = $request->tipodados;
 
-        $mes_corrente = date('m');
-        $ano_corrente = date('Y');
+        $mes = date('m') - 1;
 
         $data = [];
         $dataRecords = [];
@@ -141,32 +133,23 @@ class DashboardController extends Controller
 
         switch($tipodados){
             case "Produtos":
-                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
+                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
                 $data['titulo'] = "COMPRAS POR PRODUTOS ";
             break;
             case "Categorias":
-                $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY categoria_id ORDER BY totalcompra ASC"));
+                $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY categoria_id ORDER BY totalcompra ASC"));
                 $data['titulo'] = "COMPRAS POR CATEGORIAS";
             break;
             case "Regionais":
-                $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes  GROUP BY regional_id ORDER BY totalcompra ASC"));
                 $data['titulo'] = "COMPRAS POR REGIONAIS";
             break;
         }
 
 
-        // foreach($records as $value) {
-        //     $dataRecords[$value->nome] =  $value->totalcompra;
-        // }
-
-        if(count($records) > 0){
-            foreach($records as $value) {
-                $dataRecords[$value->nome] =  $value->totalcompra;
-            }
-        }else{
-            $dataRecords[''] =  0;
+        foreach($records as $value) {
+            $dataRecords[$value->nome] =  $value->totalcompra;
         }
-
 
         $data['dados'] =  $dataRecords;
 
@@ -180,9 +163,7 @@ class DashboardController extends Controller
     {
         $tipodados = $request->tipodados;
 
-        $mes_corrente = date('m');
-        $ano_corrente = date('Y');
-
+        $mes = date('m') - 1;
 
         $data = [];
         $dataEmpilhadoLabels = [];
@@ -192,21 +173,21 @@ class DashboardController extends Controller
 
         switch($tipodados){
             case "Produtos":
-                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
+                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY produto_id ORDER BY totalcompra ASC"));
                 $data['titulo'] = "COMPRAS POR PRODUTOS (NORMAL x AF)";
             break;
             case "Categorias":
-                $records = $records = DB::select(DB::raw("SELECT categoria_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY categoria_id ORDER BY totalcompra ASC"));
+                $records = $records = DB::select(DB::raw("SELECT categoria_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY categoria_id ORDER BY totalcompra ASC"));
                 $data['titulo'] = "COMPRAS POR CATEGORIAS (NORMAL x AF)";
             break;
             case "Regionais":
-                $records = $records = DB::select(DB::raw("SELECT regional_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                $records = $records = DB::select(DB::raw("SELECT regional_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes GROUP BY regional_id ORDER BY totalcompra ASC"));
                 $data['titulo'] = "COMPRAS POR REGIONAIS (NORMAL x AF)";
             break;
         }
 
 
-        /* foreach($records as $value) {
+        foreach($records as $value) {
             $dataEmpilhadoLabels[] = $value->nome;
 
             $dataEmpilhadoRecordsNormal[] = $value->totalcompranormal;
@@ -217,27 +198,7 @@ class DashboardController extends Controller
         $data['labels'] = $dataEmpilhadoLabels;
         $data['compranormal'] = $dataEmpilhadoRecordsNormal;
         $data['compraaf'] =  $dataEmpilhadoRecordsAf;
-        $data['dados'] =  $records; */
-
-
-
-        if(count($records) > 0){
-            foreach($records as $value) {
-                $dataEmpilhadoLabels[] = $value->nome;
-                $dataEmpilhadoRecordsNormal[] = $value->totalcompranormal;
-                $dataEmpilhadoRecordsAf[] = $value->totalcompraaf;
-            }
-        }else{
-            $dataEmpilhadoLabels[] = "";
-            $dataEmpilhadoRecordsNormal[] = 0;
-            $dataEmpilhadoRecordsAf[] = 0;
-        }
-
-        $data['labels'] = $dataEmpilhadoLabels;
-        $data['compranormal'] = $dataEmpilhadoRecordsNormal;
-        $data['compraaf'] =  $dataEmpilhadoRecordsAf;
         $data['dados'] =  $records;
-
 
         return response()->json($data);
     }
@@ -256,7 +217,7 @@ class DashboardController extends Controller
         $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
         $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
 
-        $ano_corrente   = date('Y');
+        $ano_corrente   = date("Y");
 
         $data = [];
         $records = "";
@@ -400,27 +361,16 @@ class DashboardController extends Controller
     //Recupera dados para subtabela informações
     public function ajaxrecuperacomprasdoproduto(Request $request)
     {
-
-
         $id = $request->idproduto;
-        $ano_corrente = date('Y');
+
         $data = [];
 
+        //$records = DB::select(DB::raw("SELECT produto_id, precototal, COUNT(IF(af = 'nao', 1, null)) as nvzcmpnorm, COUNT(IF(af = 'sim', 1, null)) as nvzcmpaaf, SUM(IF(af = 'nao', quantidade, null)) as qtdcmpnorm, SUM(IF(af = 'sim', quantidade, null)) as qtdcmpaf, SUM(IF(af = 'nao', precototal, null)) as prctotnorm, SUM(IF(af = 'sim', precototal, null)) as prctotaf FROM compra_produto WHERE produto_id = $id ORDER BY precototal ASC"));
+        //return response()->json($records);
 
-        //Obs: Fazer uma query do tipo JOIN, que envolva as tabelas "compra" e "compra_produto", a fim de substituir o campo "created_at" por "data_ini", uma vez que na tabela "compa_produto", não existe o campo "data_ini".
+        $fields = DB::select(DB::raw("SELECT produto_id, precototal, COUNT(IF(af = 'nao', 1, null)) as nvzcmpnorm, COUNT(IF(af = 'sim', 1, null)) as nvzcmpaaf, SUM(IF(af = 'nao', quantidade, null)) as qtdcmpnorm, SUM(IF(af = 'sim', quantidade, null)) as qtdcmpaf, SUM(IF(af = 'nao', precototal, null)) as prctotnorm, SUM(IF(af = 'sim', precototal, null)) as prctotaf FROM compra_produto WHERE produto_id = $id ORDER BY precototal ASC"));
 
-        //$fields = DB::select(DB::raw("SELECT produto_id, precototal, COUNT(IF(af = 'nao', 1, null)) as nvzcmpnorm, COUNT(IF(af = 'sim', 1, null)) as nvzcmpaaf, SUM(IF(af = 'nao', quantidade, null)) as qtdcmpnorm, SUM(IF(af = 'sim', quantidade, null)) as qtdcmpaf, SUM(IF(af = 'nao', precototal, null)) as prctotnorm, SUM(IF(af = 'sim', precototal, null)) as prctotaf FROM compra_produto WHERE produto_id = $id ORDER BY precototal ASC"));
-        $fields = DB::select(DB::raw("SELECT produto_id, precototal, created_at, COUNT(IF(af = 'nao', 1, 0)) as nvzcmpnorm, COUNT(IF(af = 'sim', 1, 0)) as nvzcmpaaf, SUM(IF(af = 'nao', quantidade, 0)) as qtdcmpnorm, SUM(IF(af = 'sim', quantidade, 0)) as qtdcmpaf, SUM(IF(af = 'nao', precototal, 0)) as prctotnorm, SUM(IF(af = 'sim', precototal, 0)) as prctotaf FROM compra_produto WHERE produto_id = $id AND YEAR(created_at) = $ano_corrente  ORDER BY precototal ASC"));
-
-
-        //$data['campos'] = $fields;
-        if(count($fields) > 0){
-            $data['campos'] = $fields;
-        }else{
-            $data['campos'] = "";
-        }
-
-
+        $data['campos'] = $fields;
         return response()->json($data);
     }
 

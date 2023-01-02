@@ -903,7 +903,7 @@ COMANDOS artisan
 1 - Para gerar o link simbólico para a pasta app/public
 php artisan storage:link
 php artisan clear-cache
-php artisan dump-autoload
+composer dump-autoload
 php artisan migrate:rollback --step=5
 Sempre que alterar o arquivo .env  executar o comando: php artisan config:clear
 
