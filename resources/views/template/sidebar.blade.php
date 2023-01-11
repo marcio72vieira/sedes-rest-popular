@@ -13,129 +13,57 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        {{-- Dashboard sendo a rota como do tipo resource  
-        <a class="nav-link" href="{{ route('admin.dashboard.index') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-        --}}
 
-        <a class="nav-link" href="{{ route('admin.dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Gerenciar
-    </div>
-
-    <!-- Nav Item - Empresas -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.empresa.index') }}">
-            <i class="fas fa-city"></i>
-            <span>Empresas</span>
-        </a>
-    </li>
-
-    {{--
-    <!-- Nav Item - Companhias -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.companhia.index') }}">
-            <i class="fas fa-city"></i>
-            <span>Companhias</span>
-        </a>
-    </li>
-    --}}
-
-    <!-- Nav Item - Restaurantes -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.restaurante.index') }}">
-            <i class="fas fa-utensils"></i>
-            <span>Restaurantes</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - Usuários COM PERFIL DE ADMINISTRADOR, NUTRICIONISTA, INATIVO -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.user.index') }}">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            <span>Usuários</span>
-        </a>
-    </li>
-
-
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-
-    <!-- Heading
-        <div class="sidebar-heading">
-            Outros...
-        </div>
-    -->
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompra"
-            aria-expanded="true" aria-controls="collapseThree">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Compras</span>
-        </a>
-        <div id="collapseCompra" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Operação de Compras:</h6>
-                <a class="collapse-item" href="{{route('admin.registroconsultacompra.index')}}"><i class="fas fa-shopping-cart"></i>
-                    Registros</a>
-                <a class="collapse-item" href="{{route('admin.registroconsultacompra.search') }}"><i class="fas fa-search-dollar"></i>
-                    Consultas</a>
-            </div>
-        </div>
-    </li>
-
-    <hr class="sidebar-divider d-none d-md-block">
-
-
-
-
-
-
-     <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-                aria-expanded="true" aria-controls="collapseThree">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Suporte</span>
+    @can("adm")
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            {{-- Dashboard sendo a rota como do tipo resource  
+            <a class="nav-link" href="{{ route('admin.dashboard.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span>
             </a>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Tabelas de Suporte:</h6>
-                    <a class="collapse-item" href="{{ route('admin.regional.index') }}"><i class="fas fa-globe-americas"></i>
-                        Regionais</a>
-                    <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-map-marked-alt"></i>
-                        Municípios</a>
-                    <a class="collapse-item" href="{{ route('admin.bairro.index') }}"><i class="fas fa-location-arrow"></i>
-                        Bairros</a>
-                    <a class="collapse-item" href="{{ route('admin.categoria.index') }}"><i class="fas fa-stream"></i></i>
-                        Categorias</a>
-                    <a class="collapse-item" href="{{ route('admin.produto.index') }}"><i class="fas fa-leaf"></i>
-                        Produtos</a>
-                    <a class="collapse-item" href="{{ route('admin.medida.index') }}"><i class="fas fa-weight"></i>
-                        Medidas</a>
-                </div>
-            </div>
-        </li>
+            --}}
 
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Gerenciar
+        </div>
+
+        <!-- Nav Item - Empresas -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.empresa.index') }}">
+                <i class="fas fa-city"></i>
+                <span>Empresas</span>
+            </a>
+        </li>
+
         {{--
+        <!-- Nav Item - Companhias -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.companhia.index') }}">
+                <i class="fas fa-city"></i>
+                <span>Companhias</span>
+            </a>
+        </li>
+        --}}
+
+        <!-- Nav Item - Restaurantes -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.restaurante.index') }}">
+                <i class="fas fa-utensils"></i>
+                <span>Restaurantes</span>
+            </a>
+        </li>
+
         <!-- Nav Item - Usuários COM PERFIL DE ADMINISTRADOR, NUTRICIONISTA, INATIVO -->
         <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.user.index') }}">
@@ -143,27 +71,106 @@
                 <span>Usuários</span>
             </a>
         </li>
-        --}}
 
 
-        <!-- Nav Item - Pages Collapse Menu
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+
+        <!-- Heading
+            <div class="sidebar-heading">
+                Outros...
+            </div>
+        -->
+
+
+
+
+
+
+        <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                    aria-expanded="true" aria-controls="collapseThree">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Suporte</span>
+                </a>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Tabelas de Suporte:</h6>
+                        <a class="collapse-item" href="{{ route('admin.regional.index') }}"><i class="fas fa-globe-americas"></i>
+                            Regionais</a>
+                        <a class="collapse-item" href="{{ route('admin.municipio.index') }}"><i class="fas fa-map-marked-alt"></i>
+                            Municípios</a>
+                        <a class="collapse-item" href="{{ route('admin.bairro.index') }}"><i class="fas fa-location-arrow"></i>
+                            Bairros</a>
+                        <a class="collapse-item" href="{{ route('admin.categoria.index') }}"><i class="fas fa-stream"></i></i>
+                            Categorias</a>
+                        <a class="collapse-item" href="{{ route('admin.produto.index') }}"><i class="fas fa-leaf"></i>
+                            Produtos</a>
+                        <a class="collapse-item" href="{{ route('admin.medida.index') }}"><i class="fas fa-weight"></i>
+                            Medidas</a>
+                    </div>
+                </div>
+            </li>
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            {{--
+            <!-- Nav Item - Usuários COM PERFIL DE ADMINISTRADOR, NUTRICIONISTA, INATIVO -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.user.index') }}">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span>Usuários</span>
+                </a>
+            </li>
+            --}}
+
+
+            <!-- Nav Item - Pages Collapse Menu
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                    aria-expanded="true" aria-controls="collapseThree">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Recursos</h6>
+                        <a class="collapse-item" href="#">Paises</a>
+                        <a class="collapse-item" href="buttons.html">Estados</a>
+                        <a class="collapse-item" href="buttons.html">Municípios</a>
+                        <a class="collapse-item" href="cards.html">Bairros</a>
+                    </div>
+                </div>
+            </li>
+            -->
+        @endcan
+
+        
+
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompra"
                 aria-expanded="true" aria-controls="collapseThree">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>Configurações</span>
+                <span>Compras</span>
             </a>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseCompra" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Recursos</h6>
-                    <a class="collapse-item" href="#">Paises</a>
-                    <a class="collapse-item" href="buttons.html">Estados</a>
-                    <a class="collapse-item" href="buttons.html">Municípios</a>
-                    <a class="collapse-item" href="cards.html">Bairros</a>
+                    <h6 class="collapse-header">Operação de Compras:</h6>
+                    <a class="collapse-item" href="{{route('admin.registroconsultacompra.index')}}"><i class="fas fa-shopping-cart"></i>
+                        Registros</a>
+                    <a class="collapse-item" href="{{route('admin.registroconsultacompra.search') }}"><i class="fas fa-search-dollar"></i>
+                        Consultas</a>
                 </div>
             </div>
         </li>
-        -->
+    
+        <hr class="sidebar-divider d-none d-md-block">
+    
+            
 
 
     <!-- Sidebar Toggler (Sidebar) -->

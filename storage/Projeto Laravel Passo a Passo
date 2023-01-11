@@ -773,6 +773,13 @@ ParseError Invalid numeric literal
 // https://stackoverflow.com/questions/23042182/increase-bootstrap-dropdown-menu-width
 // https://www.edureka.co/community/65213/how-to-check-request-is-ajax-or-not-in-laravel
 
+// https://www.google.com/search?channel=fs&client=ubuntu&q=how+I+to+use+polices+in+method+construct+in+laravel
+// https://itnext.io/laravel-you-can-declare-your-gates-and-policies-in-your-controller-2b596f3dd373
+// https://stackoverflow.com/questions/47973084/laravel-policies-in-controller-constructor
+// https://laracasts.com/discuss/channels/general-discussion/authorization-policies-and-reducing-the-repitition
+// https://laravel-news.com/laravel-gates-policies-guards-explained
+
+
 
 
 '<div class="psdth" style="float: left; width: 10%; height: 40px; border: 1px solid #c9bdbd"> {{mrc_turn_value('+ parsefloat("100.50") +')}}</div>'
@@ -1546,3 +1553,88 @@ $records = Bigtabledata::where('restaurante_id', '=', $restaurante_id)
                                     ->groupBy('produto_nome');
 
 
+======================================
+POLICES E GATES - PERMISSÃO DE ACESSO
+=====================================
+1 - No arquivo /home/marcio/projetoslaravel/sedes-rest-popular/app/Providers/AuthServiceProvider.php importar a classe abaixo
+    use Illuminate\Auth\Access\Response;
+
+2 - Alterar o método boot(), como descrito abaixo:
+    public function boot()
+    {
+        $this->registerPolicies();
+
+
+        /*
+        // Utilizadas com allows (ou seja, não define mensagem de lancamento de exceção)
+        Gate::define('adm', function($user){
+            return $user->perfil == 'adm';
+        });
+
+        Gate::define('ope', function($user){
+            return $user->perfil == 'ope';
+        });
+        */
+
+
+        // Utilizadas com authorize. (ou seja, define mensagem de lançamento de exceção)
+        // É necesspario importar a classe: use Illuminate\Auth\Access\Response;
+        Gate::define('adm', function($user){
+            return $user->perfil == 'adm'
+                    ? Response::allow()
+                    : Response::deny('Ação não autorizada!');
+        });
+
+        Gate::define('nut', function($user){
+            return $user->perfil == 'nut';
+
+        });
+    }
+
+3 - Para executar ou não algum método que o usuário tenha permissão dependendo de seu perfil (adm ou nut), envolva todo o
+    código dentro de uma condição IF, como descrito abaixo. Por exemplo, supondo que o usuário com
+    com o perfil "nut" não tenha permissão de listar (método index) EMPRESAS.
+    a) No controller EmpresaController importe a classe abaixo:
+        a.1)    use Illuminate\Support\Facades\Gate;
+    b) Envolver todo o corpo do método index da classe EmpresaController, com a verificação do perfil do usuário 
+       
+
+4 - Alternativamente, você pode acrescentar em seu middleware no final de cada rota no arquivo de rotas o diretiva can:adm, como
+    demonstrado abaixo:
+    4.1 Antes - Permissão apenas para quem estava autenticado
+    //=============================================
+    //ROTA DO DASHBOARD (SEM SER DO TIPO RESOURCE)
+    //=============================================
+    // Dashboard
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth']);
+
+    4.2 Depois - Permissão para quem está autenticado e possui perfil de "adm"
+    //=============================================
+    //ROTA DO DASHBOARD (SEM SER DO TIPO RESOURCE)
+    //=============================================
+    // Dashboard
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth', 'can:adm']);
+
+
+5 -  Alternativamente, inclua o método construtor como segue abaixo no inçio de cada Controller dependendo do perfil do usuário
+    Este método parece ser o mais viável, visto que ao inves se colocar o parâmetro em cada rota, como descrito abaixo, coloca-se
+    uma única vez no inicio de cada controller, reduzindo a digitação e posterior manutenção do código
+    public function __construct()
+    {
+        //$this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware(['auth', 'can:adm']);
+    }
+
+
+
+
+
+4 - Para Exibir/Ocultar determinadas partes de uma view no blade, utilize a DIRETIVA @can() @endcan, como descrito abaixo:
+    No caso abaixo, o usuário que não é administrador, só "enxergará o Item de menu x
+    @can("adm")
+        <a href="route(rota_a)>Item de menu A</a>
+        <a href="route(rota_b)>Item de menu B</a>
+        <a href="route(rota_c)>Item de menu C</a>
+        <a href="route(rota_d)>Item de menu D</a>
+    @endcan
+        <a href="route(rota_x)>Item de menu X</a>

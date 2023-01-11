@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\Response;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,30 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+
+        /*
+        // Utilizadas com allows (ou seja, não define mensagem de lancamento de exceção)
+        Gate::define('adm', function($user){
+            return $user->perfil == 'adm';
+        });
+
+        Gate::define('ope', function($user){
+            return $user->perfil == 'ope';
+        });
+        */
+
+
+        // Utilizadas com authorize. (ou seja, define mensagem de lançamento de exceção)
+        // É necesspario importar a classe: use Illuminate\Auth\Access\Response;
+        Gate::define('adm', function($user){
+            return $user->perfil == 'adm'
+                    ? Response::allow()
+                    : Response::deny('Ação não autorizada!');
+        });
+
+        Gate::define('nut', function($user){
+            return $user->perfil == 'nut';
+
+        });
     }
 }

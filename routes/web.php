@@ -56,7 +56,7 @@ Route::get('/acesso/logout', [AcessoController::class, 'logout'])->name('acesso.
 //ROTA DO DASHBOARD (SEM SER DO TIPO RESOURCE)
 //=============================================
 // Dashboard
-Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth']);
+Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth', 'can:adm']);
 
 
 
