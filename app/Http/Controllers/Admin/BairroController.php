@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\DB;
 
 class BairroController extends Controller
 {
+    public function __construct()
+    {
+        //$this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware(['auth', 'can:adm']);
+    }
+    
 
     public function index()
     {

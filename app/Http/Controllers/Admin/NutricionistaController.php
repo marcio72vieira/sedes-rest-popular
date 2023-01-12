@@ -14,6 +14,12 @@ use Illuminate\Validation\Rule;
 
 class NutricionistaController extends Controller
 {
+    public function __construct()
+    {
+        //$this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware(['auth', 'can:adm']);
+    }
+    
     
     public function index($idempresa)
     {

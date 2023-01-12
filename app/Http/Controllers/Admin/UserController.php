@@ -11,23 +11,28 @@ use App\Models\Municipio;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
-
+    
     public function index()
     {
-        $users = User::all();
+        if(Gate::authorize('adm')){
+            $users = User::all();
 
-        return view('admin.user.index', compact('users'));
+            return view('admin.user.index', compact('users'));
+        }
     }
 
 
     public function create()
     {
-        $municipios = Municipio::orderBy('nome', 'ASC')->get();
+        if(Gate::authorize('adm')){
+            $municipios = Municipio::orderBy('nome', 'ASC')->get();
 
-        return view('admin.user.create', compact('municipios'));
+            return view('admin.user.create', compact('municipios'));
+        }
     }
 
 
@@ -55,20 +60,24 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+        if(Gate::authorize('adm')){
+            $user = User::find($id);
 
-        return view('admin.user.show', compact('user'));
+            return view('admin.user.show', compact('user'));
+        }
     }
 
 
     public function edit($id)
     {
-        $municipios = Municipio::orderBy('nome', 'ASC')->get();
-        $user = User::find($id);
+        if(Gate::authorize('adm')){
+            $municipios = Municipio::orderBy('nome', 'ASC')->get();
+            $user = User::find($id);
 
-        $usuario = User::find($id);
+            $usuario = User::find($id);
 
-        return view('admin.user.edit', compact('municipios', 'user'));
+            return view('admin.user.edit', compact('municipios', 'user'));
+        }
     }
 
 

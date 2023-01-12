@@ -139,7 +139,7 @@
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col text-center">
-                                    <a class="btn btn-primary" href="{{route('admin.user.index')}}" role="button">Cancelar</a>
+                                    <a class="btn btn-primary" href="{{route('admin.registroconsultacompra.index')}}" role="button">Cancelar</a>
                                     <button type="submit" class="btn btn-primary" style="width: 95px;"> Salvar </button>
                                 </div>
                             </div>
