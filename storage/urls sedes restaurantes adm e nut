@@ -1,4 +1,5 @@
-mariajoaquina@email.com
+mariajoaquina@email.com	    HOME
+joaquimjose@email.com.br	SEATI
 
 
 http://127.0.0.1:8000/dashboard
@@ -45,6 +46,27 @@ http://127.0.0.1:8000/admin/bairro/create
 http://127.0.0.1:8000/admin/bairro/pdf/relpdfbairro
 http://127.0.0.1:8000/admin/bairro/8
 http://127.0.0.1:8000/admin/bairro/8/edit
+
+http://127.0.0.1:8000/admin/categoria
+http://127.0.0.1:8000/admin/categoria/create
+http://127.0.0.1:8000/admin/categoria/pdf/relpdfcategoria
+http://127.0.0.1:8000/admin/categoria/5/listarprodutos
+http://127.0.0.1:8000/admin/categoria/5/pdf/relpdfcategoriaprodutos
+http://127.0.0.1:8000/admin/categoria/5
+http://127.0.0.1:8000/admin/categoria/5/edit
+
+http://127.0.0.1:8000/admin/produto
+http://127.0.0.1:8000/admin/produto/create
+http://127.0.0.1:8000/admin/produto/pdf/relpdfproduto
+http://127.0.0.1:8000/admin/produto/21
+http://127.0.0.1:8000/admin/produto/21/edit
+
+http://127.0.0.1:8000/admin/medida
+http://127.0.0.1:8000/admin/medida/create
+http://127.0.0.1:8000/admin/medida/pdf/relpdfmedida
+http://127.0.0.1:8000/admin/medida/7
+http://127.0.0.1:8000/admin/medida/7/edit
+
 
 
 

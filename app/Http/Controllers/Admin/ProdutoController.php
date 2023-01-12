@@ -16,7 +16,13 @@ use File;
 
 class ProdutoController extends Controller
 {
-    
+    public function __construct()
+    {
+        //$this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware(['auth', 'can:adm']);
+    }
+
+
     public function index()
     {
         /*
@@ -28,19 +34,19 @@ class ProdutoController extends Controller
         File::put($destinationPath.$file,$data);
         //return response()->download($destinationPath.$file);
         */
-        
+
         $produtos = Produto::all();
         return view('admin.produto.index', compact('produtos'));
     }
 
-    
+
     public function create()
     {
         $categorias = Categoria::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
         return view('admin.produto.create', compact('categorias'));
     }
 
-    
+
     public function store(ProdutoCreateRequest $request)
     {
         Produto::create($request->all());
@@ -50,7 +56,7 @@ class ProdutoController extends Controller
         return redirect()->route('admin.produto.index');
     }
 
-    
+
     public function show($id)
     {
         $categorias = Categoria::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
@@ -59,7 +65,7 @@ class ProdutoController extends Controller
         return view('admin.produto.show', compact('categorias', 'produto'));
     }
 
-   
+
     public function edit($id)
     {
         $produto = Produto::findOrFail($id);
@@ -68,7 +74,7 @@ class ProdutoController extends Controller
         return view('admin.produto.edit', compact('categorias', 'produto'));
     }
 
-    
+
     public function update($id, ProdutoUpdateRequest $request)
     {
         $produto = Produto::findOrFail($id);
@@ -89,7 +95,7 @@ class ProdutoController extends Controller
         return redirect()->route('admin.produto.index');
     }
 
-    
+
     public function destroy($id, Request $request)
     {
         Produto::destroy($id);
@@ -100,8 +106,8 @@ class ProdutoController extends Controller
 
     }
 
-    
-    
+
+
     /***************************************/
     /*    RELATÓRIOS PDF's, Excel e CSV    */
     /***************************************/

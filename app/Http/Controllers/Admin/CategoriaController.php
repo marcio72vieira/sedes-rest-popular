@@ -14,6 +14,12 @@ use Illuminate\Validation\Rule;
 
 class CategoriaController extends Controller
 {
+    public function __construct()
+    {
+        //$this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware(['auth', 'can:adm']);
+    }
+
 
     public function index()
     {
@@ -91,7 +97,7 @@ class CategoriaController extends Controller
     {
         $categoria = Categoria::findOrFail($id);
         $produtos = Produto::where('categoria_id', '=', $id)->orderBy('nome', 'ASC')->get();
-        
+
         return view('admin.categoria.list', compact('categoria','produtos'));
     }
 

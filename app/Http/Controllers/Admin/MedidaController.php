@@ -14,6 +14,13 @@ use Illuminate\Validation\Rule;
 
 class MedidaController extends Controller
 {
+    public function __construct()
+    {
+        //$this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware(['auth', 'can:adm']);
+    }
+
+
     public function index()
     {
         $medidas = Medida::all();
