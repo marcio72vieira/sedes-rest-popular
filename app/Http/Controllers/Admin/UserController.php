@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
-    
+
     public function index()
     {
         if(Gate::authorize('adm')){
@@ -175,4 +175,93 @@ class UserController extends Controller
 
         return redirect()->route('admin.user.index');
     }
+
+
+    /***************************************/
+    /*    RELATÓRIOS PDF's, Excel e CSV    */
+    /***************************************/
+
+    public function relpdfuser()
+    {
+        // Obtendo os dados
+        $users =  User::with('municipio')->orderBy('nomecompleto', 'ASC')->get();
+
+        // Definindo o nome do arquivo a ser baixado
+        $fileName = ('Usuarios_lista.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'orientation' => 'L',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 30,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 108px">
+                        <img src="images/logo-ma.png" width="80"/>
+                    </td>
+                    <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 540px;" class="titulo-rel">
+                        USUÁRIOS
+                    </td>
+                </tr>
+            </table>
+            <table style="width:1080px; border-collapse: collapse">
+                <tr>
+                    <td width="40px" class="col-header-table">ID</td>
+                    <td width="160px" class="col-header-table">NOME</td>
+                    <td width="100px" class="col-header-table">PERFIL</td>
+                    <td width="200px" class="col-header-table">CIDADE</td>
+                    <td width="200px" class="col-header-table">E-mal / Telefone</td>
+                    <td width="100px" class="col-header-table">CPF / CRN</td>
+                    <td width="230px" class="col-header-table">RESTAURANTE</td>
+                    <td width="50px" class="col-header-table">ATIVO</td>
+                </tr>
+            </table>
+        ');
+
+        // Configurando o rodapé da página
+        $mpdf->SetHTMLFooter('
+            <table style="width:1080px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="200px">São Luis(MA) {DATE d/m/Y}</td>
+                    <td width="830px" align="center"></td>
+                    <td width="50px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        // Definindo a view que deverá ser renderizada como arquivo .pdf e passando os dados da pesquisa
+        $html = \View::make('admin.user.pdf.pdfuser', compact('users'));
+        $html = $html->render();
+
+        // Definindo o arquivo .css que estilizará o arquivo blade na view ('admin.empresa.pdf.pdfempresa')
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        // Transformando a view blade em arquivo .pdf e enviando a saida para o browse (I); 'D' exibe e baixa para o pc
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
+
+
+
+
+
+
+
 }

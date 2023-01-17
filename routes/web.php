@@ -186,6 +186,10 @@ Route::get('admin/dashboard/ajaxrecuperacomprasdoproduto', [DashboardController:
 /***********************************************/
 /*   ROTAS PARA RELATÓRIOS PDF's, Excel e CSV  */
 /***********************************************/
+// RELATÓRIOS USUÁRIOS
+Route::get('admin/user/pdf/relpdfuser', [UserController::class, 'relpdfuser'])->name('admin.user.relpdfuser')->middleware(['auth']);
+
+
 // RELATÓRIOS EMPRESAS
 Route::get('admin/empresa/pdf/relpdfempresa', [EmpresaController::class, 'relpdfempresa'])->name('admin.empresa.relpdfempresa')->middleware(['auth']);
 Route::get('admin/empresa/{id}/pdf/relpdfempresanutricionistas', [EmpresaController::class, 'relpdfempresanutricionistas'])->name('admin.empresa.relpdfempresanutricionistas')->middleware(['auth']);
