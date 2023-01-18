@@ -40,25 +40,32 @@
                 <th>Nome</th>
                 <th>Perfil</th>
                 <th>Cidade</th>
-                <th>Contato</th>
+                <th>E-mail / Telefone</th>
+                <th>CPF / CRN</th>
                 <th>Restaurante</th>
-                <th>CPF</th>
-                <th>CRN</th>
-                <th style="width: 165px;">Ação</th>
+                <th>Ativo</th>
+                <th style="width: 80px;">Ação</th>
             </tr>
           </thead>
 
           <tbody>
           @foreach($users as $user)
-             <tr>
+             <tr class="destaque">
                 <td scope="row">{{$user->id}}</th>
                 <td>{{$user->name}}</td>
-                <td>@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @elseif($user->perfil == 'nut') Nutricionista @else Inativo @endif </td>
+                {{-- <td>@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @elseif($user->perfil == 'nut') Nutricionista @else Nutricionista (inativo) @endif </td> --}}
+                <td>@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @else Nutricionista @endif </td>
                 <td>{{$user->municipio->nome}}</td>
-                <td>{{$user->email}} / {{$user->telefone}}</td>
+                <td>{{$user->email}} <br> {{$user->telefone}}</td>
+                <td>{{$user->cpf}} <br> {{$user->crn}} </td>
                 <td>@isset($user->restaurante->identificacao) {{$user->restaurante->identificacao}} @endisset</td>
-                <td>{{$user->cpf}}</td>
-                <th>{{$user->crn}}</th>
+                <td style="text-align: center">
+                    @if($user->perfil == "adm"  || $user->perfil == "nut") 
+                        <b><i class="fas fa-check text-success mr-2"></i></b> 
+                    @else 
+                        <b><i class="fas fa-times  text-danger mr-2"></i></b> 
+                    @endif
+                </td>
                 <td>
                     <a href="{{route('admin.user.show', $user->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.user.edit', $user->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>

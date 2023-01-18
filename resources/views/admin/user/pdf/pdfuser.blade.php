@@ -15,7 +15,8 @@
             <tr @if($loop->even) style="background-color: #e3e3e3;" @endif>
                 <td style="width: 40px;" class="dados-lista">{{$user->id}}</td>
                 <td style="width: 160px;" class="dados-lista">{{$user->nomecompleto}}</td>
-                <td style="width: 100px;" class="dados-lista">@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @elseif($user->perfil == 'nut') Nutricionista @else Inativo @endif </td>
+                {{-- <td style="width: 100px;" class="dados-lista">@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @elseif($user->perfil == 'nut') Nutricionista @else Inativo @endif </td> --}}
+                <td style="width: 100px;" class="dados-lista">@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @else Nutricionista @endif </td>
                 <td style="width: 200px;" class="dados-lista">{{$user->municipio->nome}}</td>
                 <td style="width: 200px;" class="dados-lista">{{$user->email}} <br> {{$user->telefone}} </td>
                 <td style="width: 100px;" class="dados-lista">{{$user->cpf}} <br> {{$user->crn}} </td>
