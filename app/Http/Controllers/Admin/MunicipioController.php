@@ -98,6 +98,9 @@ class MunicipioController extends Controller
 
         $municipio->update($request->all());
 
+        //Alterando o nome do municipio e sua regional na bigtable_data
+        $affected = DB::table('bigtable_data')->where('municipio_id', '=',  $id)->update(['municipio_nome' => $municipio->nome]);
+
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 
         return redirect()->route('admin.municipio.index');
@@ -117,10 +120,10 @@ class MunicipioController extends Controller
     public function listarbairros($id)
     {
         $municipio = Municipio::findOrFail($id);
-        
+
         $bairros = Bairro::where('municipio_id', '=', $id)->get();
         $restaurantes = Restaurante::where('municipio_id', '=', $id)->get();
-        
+
         return view('admin.municipio.list', compact('municipio','bairros', 'restaurantes'));
     }
 

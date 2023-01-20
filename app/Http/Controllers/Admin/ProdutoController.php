@@ -12,6 +12,8 @@ use App\Http\Requests\ProdutoUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Support\Facades\DB;
+
 use File;
 
 class ProdutoController extends Controller
@@ -89,6 +91,9 @@ class ProdutoController extends Controller
 
 
         $produto->update($request->all());
+
+        // Alterando o nome do produto na bigtable_data
+        $affected = DB::table('bigtable_data')->where('produto_id', '=',  $id)->update(['produto_nome' => $produto->nome]);
 
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 

@@ -21,7 +21,7 @@ class BairroController extends Controller
         //$this->middleware('auth', ['except' => ['index', 'show']]);
         $this->middleware(['auth', 'can:adm']);
     }
-    
+
 
     public function index()
     {
@@ -81,7 +81,7 @@ class BairroController extends Controller
         $bairro->update($request->all());
 
         //Alterando o nome do bairro na bigtable_data
-        //$affected = DB::table('bigtable_data')->where('bairro_id', '=',  $id)->update(['bairro_nome' => $bairro->nome]);
+        $affected = DB::table('bigtable_data')->where('bairro_id', '=',  $id)->update(['bairro_nome' => $bairro->nome]);
 
 
 

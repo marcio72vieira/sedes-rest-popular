@@ -11,6 +11,8 @@ use App\Http\Requests\MedidaUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Support\Facades\DB;
+
 
 class MedidaController extends Controller
 {
@@ -75,6 +77,9 @@ class MedidaController extends Controller
 
 
         $medida->update($request->all());
+
+        // Alterando o nome da medida e seu simbolo na bigtable_data
+        $affected = DB::table('bigtable_data')->where('medida_id', '=',  $id)->update(['medida_nome' => $medida->nome, 'medida_simbolo' => $medida->simbolo]);
 
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 

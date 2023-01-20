@@ -12,6 +12,8 @@ use App\Http\Requests\CategoriaUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Support\Facades\DB;
+
 class CategoriaController extends Controller
 {
     public function __construct()
@@ -75,6 +77,9 @@ class CategoriaController extends Controller
 
 
         $categoria->update($request->all());
+
+        //Alterando o nome da categoria na bigtable_data
+        $affected = DB::table('bigtable_data')->where('categoria_id', '=',  $id)->update(['categoria_nome' => $categoria->nome]);
 
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 

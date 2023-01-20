@@ -12,6 +12,8 @@ use App\Http\Requests\RegionalUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Arr;
 
 class RegionalController extends Controller
@@ -21,7 +23,7 @@ class RegionalController extends Controller
         //$this->middleware('auth', ['except' => ['index', 'show']]);
         $this->middleware(['auth', 'can:adm']);
     }
-    
+
     public function index()
     {
         $regionais = Regional::all();
@@ -30,26 +32,26 @@ class RegionalController extends Controller
         $bairros =  Regional::with('bairros')->get();
         //$restaurantes = Regional::with('restaurantes')->get(); OU
         $restaurantes = Regional::withCount('restaurantes')->get();
-        
+
         /*
         //Verificando se há registros vinculados para evitar deleção acidental na view
         $havinculo = Municipio::withCount('regional')->get();
         $turnarray = $havinculo->toArray();
         $regsvinculados = Arr::pluck($turnarray, 'regional_id');
-        
+
         return view('admin.regional.index', compact('regionais', 'regsvinculados'));
         */
 
         return view('admin.regional.index', compact('regionais', 'bairros', 'restaurantes'));
     }
 
-    
+
     public function create()
     {
         return view('admin.regional.create');
     }
 
-    
+
     public function store(RegionalCreateRequest $request)
     {
         Regional::create($request->all());
@@ -59,7 +61,7 @@ class RegionalController extends Controller
         return redirect()->route('admin.regional.index');
     }
 
-    
+
     public function show($id)
     {
         $regional = Regional::findOrFail($id);
@@ -67,7 +69,7 @@ class RegionalController extends Controller
         return view('admin.regional.show', compact('regional'));
     }
 
-    
+
     public function edit($id)
     {
         $regional = Regional::findOrFail($id);
@@ -75,7 +77,7 @@ class RegionalController extends Controller
         return view('admin.regional.edit', compact('regional'));
     }
 
-    
+
     public function update(RegionalUpdateRequest $request, $id)
     {
         $regional = Regional::findOrFail($id);
@@ -91,12 +93,15 @@ class RegionalController extends Controller
 
         $regional->update($request->all());
 
+        //Alterando o nome do regional na bigtable_data
+        $affected = DB::table('bigtable_data')->where('regional_id', '=',  $id)->update(['regional_nome' => $regional->nome]);
+
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 
         return redirect()->route('admin.regional.index');
     }
 
-   
+
     public function destroy($id, Request $request)
     {
         Regional::destroy($id);
@@ -112,7 +117,7 @@ class RegionalController extends Controller
         $regional = Regional::findOrFail($id);
         $municipios = Municipio::where('regional_id', '=', $id)->get();
         $restaurantes =  $regional->restaurantes;
-        
+
         return view('admin.regional.list', compact('regional','municipios', 'restaurantes'));
     }
 
