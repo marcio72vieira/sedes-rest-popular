@@ -279,7 +279,8 @@
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
                     {{-- <h6 class="m-0 font-weight-bold text-primary">GRÁFICOS</h6>
                     <input type="month" id="start" name="start"> --}}
@@ -326,8 +327,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    {{-- chartJS 3.9.1 --}}
-                    <div id="areaparagraficos" style="width: 100%; height: 500px;">
+                    <div id="areaparagraficos">
                         <canvas id="myChartArea"></canvas>
                     </div>
                 </div>
@@ -438,128 +438,6 @@
         </div>
     </div>
     <!-- FIM MEUS GRÁFICOS MÊS a MÊS -->
-
-    
-
-
-    <!-- INÍCIO GRÁFICOS MÊS a MÊS REGIONAL - MUNICIPIO - RESTAURANTE  -->
-    <div class="row">
-        <div class="col-xl-12 col-lg-12">
-            <div class="card shadow mb-4">
-                <div>
-                   {{--  <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">
-                        Comparativo de Compra Mensal (Normal x Agricultara Familiar) por Município ou Restaurante
-                    </h5> --}}
-                    <div class="card-header ">
-                        <div class="form-row">
-                            <div class="col-md-3">
-                                <label for="selectRegional"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Regional:</label>
-                                <select id="selectRegional" class="form-control col-form-label-sm">
-                                    <option selected>Escolha...</option>
-                                    @foreach($regionais as $regional)
-                                        <option value="{{$regional->id}}">{{$regional->nome}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="selectMuniciopio"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Município:</label>
-                                <select id="selectMuniciopio" class="form-control col-form-label-sm">
-                                    <option selected>Escolha...</option>
-                                    @foreach($produtos as $registroentidade)
-                                        <option value="{{$registroentidade->id}}">{{$registroentidade->nome}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="selectRestaurante"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Restaurante:</label>
-                                <select id="selectRestaurante" class="form-control col-form-label-sm">
-                                    <option selected>Escolha...</option>
-                                    @foreach($produtos as $registroentidade)
-                                        <option value="{{$registroentidade->id}}">{{$registroentidade->nome}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-1">
-                                <label for="selectMes"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Mês:</label>
-                                <select id="selectMes" class="form-control col-form-label-sm">
-                                    <option value="0" selected>Escolha...</option>
-                                    <option value="1">janeiro</option>
-                                    <option value="2">fevereiro</option>
-                                    <option value="3">março</option>
-                                    <option value="4">abril</option>
-                                    <option value="5">maio</option>
-                                    <option value="6">junho</option>
-                                    <option value="7">julho</option>
-                                    <option value="8">agosto</option>
-                                    <option value="9">setembro</option>
-                                    <option value="10">outubro</option>
-                                    <option value="11">novembro</option>
-                                    <option value="12">dezembro</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card-header"  style="float: right; margin-top: -81px; border-bottom: 1px solid #f8f9fc;">
-                        <div class="dropdown no-arrow">
-                            {{-- <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMes"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-                                Dados
-                            </a> --}}
-                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMesRestaurante"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                            </a>
-                            {{-- Div: psdmenu-mrc, sem função alguma, só para envolver a div: dropdown-menu e modificar seu estilo no arquivo mystyles.css
-                                 a fim de não afetar o estilo das demais divis que possui a mesma class (dropdown-menu --}}
-                            <div class="psdmenu-mrc">
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                    aria-labelledby="dropdownMenuDadosMesMes">
-                                    <a class="dropdown-item psdlink entidademesames" data-entidademesames="Geral"  data-id="0">Geral</a>
-
-                                    <div class="dropdown-divider"></div>
-                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Categorias: {{$categorias->count()}}</div>
-                                    @foreach($categorias as $registroentidade)
-                                        <div style="float: left">
-                                            <div style="width: 9rem">
-                                                <a class="dropdown-item psdlink entidademesames" data-entidademesames="Categorias" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                    <div style="clear: both"></div>
-
-                                    <div class="dropdown-divider"></div>
-                                    <div class="dropdown-header"><i class="fas fa-cubes"></i> Produtos:  {{$produtos->count()}}</div>
-                                    @foreach($produtos as $registroentidade)
-                                        <div style="float: left">
-                                            <div style="width: 7rem">
-                                                <a class="dropdown-item psdlink entidademesames" data-entidademesames="Produtos" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
-                                            </div>
-                                        </div>
-                                    @endforeach
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div style="width: 100%; height: 20%; background-color: white;">
-                        <div id="areaparagraficosmesames">
-                            <canvas id="graficoLinha" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- FIM MEUS GRÁFICOS MÊS a MÊS REGIONAL - MUNICIPIO - RESTAURANTE -->    
-
-
-
 
 
     <!-- INÍCIO OUTROS DADOS - VISUALIZAÇÃO RÁPIDA E INFORMAÇÕES -->
@@ -1088,12 +966,7 @@
 
             const ctx = document.getElementById('myChartArea').getContext('2d');
             const myChart = new Chart(ctx, {
-                //ATENÇÃO:  A versão 3.9.1 do ChartJS não suporta o estilo: 'horizontalBar', para alcancar este efeito
-                //          deve-se apenas definir a propriedade indexAxis: 'y' no objeto 'options'
-                //
-                
-                //type: estilo, // versão 2.9.4
-                type: (estilo == 'horizontalBar' ? 'bar' : estilo), // versao 3.9.1
+                type: estilo,
                 data: {
                     labels: [ {!! implode(',', $arrLabel) !!} ],    //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
                     datasets: [{
@@ -1149,18 +1022,11 @@
                 },
                 options: {
                     scales: {
-                        // versão 2.9.4
-                        /* yAxes: [{
+                        yAxes: [{
                             ticks: {
                                 beginAtZero: true
                             }
-                        }] */
-                        // versão 3.9.1
-                        x: {
-                            grid: {
-                            offset: true
-                            }
-                        }
+                        }]
                     },
                     title: {
                         display: true,
@@ -1169,9 +1035,6 @@
                     legend: {
                         display: false,
                     },
-                    indexAxis: (estilo == 'horizontalBar' ? 'y' : 'x'),  // versão 3.9.1
-                    // Adequa o tamanho dos gráficos conforme o tamanho da div: "#areaparagraficos"
-                    maintainAspectRatio: false, // versão 3.9.1
                 }
             });
 
@@ -1185,8 +1048,6 @@
                 myChart.update();
             }
 
-            /*
-            chartjs 2.9.4
             //Configurações personalizadas se gráfico é do tipo rosca
             if(myChart.config.type == 'doughnut'){
                 myChart.options.maintainAspectRatio = false;
@@ -1202,7 +1063,6 @@
                 myChart.options.cutoutPercentage =  80;
                 myChart.update();
             }
-            */
         }
 
 
@@ -1273,19 +1133,11 @@
                 },
                 options: {
                     scales: {
-                        /*
-                        versao 2.9.4
-                         yAxes: [{
+                        yAxes: [{
                             ticks: {
                                 beginAtZero: true
                             }
-                        }] */
-                        // versão 3.9.1
-                        x: {
-                            grid: {
-                            offset: true
-                            }
-                        }
+                        }]
                     },
                     title: {
                         display: true,
@@ -1294,8 +1146,6 @@
                     legend: {
                         display: false,
                     },
-                    // Adequa o tamanho dos gráficos conforme o tamanho da div: "#areaparagraficos"
-                    maintainAspectRatio: false, // versão 3.9.1
                 }
             });
 
@@ -1309,8 +1159,6 @@
                 myChart.update();
             }
 
-            /*
-            versão 2.9.4
             //Configurações personalizadas se gráfico é do tipo rosca
             if(myChart.config.type == 'doughnut'){
                 myChart.options.maintainAspectRatio = false;
@@ -1326,7 +1174,6 @@
                 myChart.options.cutoutPercentage =  80;
                 myChart.update();
             }
-            */
         }
 
 
@@ -1446,9 +1293,7 @@
             const ctx = document.getElementById('myChartArea').getContext('2d');
             const myChart = new Chart(ctx, {
                 //Adapta o gráfico de acordo com a quantidade de dados.
-                //type: valorLabels.length <= 13 ? "bar" : "horizontalBar", // versão 2.9.1
-
-                type: 'bar',   // versão 3.9.1
+                type: valorLabels.length <= 13 ? "bar" : "horizontalBar",
                 data: {
                     labels: valorLabels,
                     datasets: [{
@@ -1558,8 +1403,6 @@
                 },
                 options: {
                     scales: {
-                        /* 
-                        // versão 2.9.4
                         xAxes: [{
                             stacked: true
                         }],
@@ -1568,14 +1411,7 @@
                                 beginAtZero: true
                             },
                             stacked: true
-                        }] */
-                        // versao 3.9.1
-                        x: {
-                            stacked: true
-                        },
-                        y: {
-                            stacked: true
-                        }
+                        }]
                     },
                     title: {
                         display: true,
@@ -1584,12 +1420,6 @@
                     legend: {
                         display: false,
                     },
-                    // Adequa o tamanho dos gráficos conforme o tamanho da div: "#areaparagraficos"
-                    maintainAspectRatio: false, // versão 3.9.1
-                    // Se a quantidade de registro for muito grande, melhor visualizar os dados, verticalmente, ou seja,
-                    // em linha(na forma de barras), Uma vez que o tipo horizontalBar não pe mais suportado pela 
-                    // versão 3.9.1 do chartJs, deve-se apenas definir a opção: indexAxis para 'y'
-                    indexAxis: valorLabels.length >= 13 ? 'y' : 'x', // versão 3.9.1
                 }
             });
         }
