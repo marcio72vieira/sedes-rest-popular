@@ -347,26 +347,17 @@
                     <table class="tabelatraducao">
                         @php
                             $somacompra = 0;
-                            $porcentagemcompra = 0;
-                            
+
                             //Dados vindo da view via método compact
                             if(count($dataRecords))  {
-                                // Obtém o valor da soma de todas as compras realizadas, para cálculo da %
-                                foreach ($dataRecords as $value) {
-                                    $somacompra = $somacompra + $value;
-                                }
-
-                                echo "<tr><td colspan='3' class='titulotraducao'>COMPRAS POR PRODUTOS</td></tr>";
-                                echo "<tr><td class='subtitulolabeltraducao'>Nome</td><td class='subtitulovalortraducao'>Valor</td><td class='subtitulovalortraducao'>%</td>";
+                                echo "<tr><td colspan='2' class='titulotraducao'>COMPRAS POR PRODUTOS</td></tr>";
+                                echo "<tr><td class='subtitulolabeltraducao'>Produtos</td><td class='subtitulovalortraducao'>Valor</td>";
                                 echo "</tr>";
                                 foreach ($dataRecords as $key => $value) {
-                                    // Calcula a porcentagem da compra do produto atual
-                                    $porcentagemcompra = (($value * 100) / $somacompra);
-
-                                    echo "<tr class='destaque'><td class='dadoslabel'>".$key."</td><td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td><td class='dadosvalor'>".number_format($porcentagemcompra, 2, ',', '.')."</td></tr>";
-                                    //$somacompra = $somacompra += $value;
+                                    echo "<tr class='destaque'><td class='dadoslabel'>".$key."</td><td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td></tr>";
+                                    $somacompra = $somacompra += $value;
                                 }
-                                echo "<tr class='totaldadosvalor'><td class='dadoslabel'> Total GERAL</td><td class='dadosvalor'>".number_format($somacompra, 2, ',', '.')."</td><td class='dadosvalor'>".number_format(100, 2, ',', '.')."</td></tr>";
+                                echo "<tr class='totaldadosvalor'><td class='dadoslabel'> Total GERAL</td><td class='dadosvalor'>".number_format($somacompra, 2, ',', '.')."</td></tr>";
                             }
                         @endphp
                     </table>
@@ -708,7 +699,6 @@
             var valorDataNormal = [];
             var valorDataAf = [];
             var somaCompra = 0;
-            var porcentagemCompra = 0;
             var somaCompraNormal = 0;
             var somaCompraAf = 0;
 
@@ -775,7 +765,6 @@
                         valorDataNormal = [];
                         valorDataAf = [];
                         somaCompra = 0;
-                        porcentagemCompra = 0;
                         somaCompraNormal = 0;
                         somaCompraAf = 0;
                         valorTituloGrafico = '';
@@ -957,14 +946,12 @@
                         valorLabels = [];
                         valorData = [];
                         somaCompra = 0;
-                        porcentagemCompra = 0;
                         valorTituloGrafico = "";
 
-                        //Iterando sobre o array['dados'] e // Obtém o valor da soma de todas as compras realizadas, para cálculo da %
+                        //Iterando sobre o array['dados']
                         $.each(result['dados'], function(key,value){
                             valorLabels.push(key);
                             valorData.push(value);
-                            somaCompra = somaCompra += Number(value);
                         });
 
                         valorTituloGrafico = result['titulo'];
@@ -977,19 +964,16 @@
 
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
-                        $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
-                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td><td class="subtitulovalortraducao">%</td></tr>');
+                        $(".tabelatraducao").append('<tr><td colspan="2" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
+                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td></tr>');
 
                         //Itera sobre os dados retornados pela requisição Ajax
                         $.each(result['dados'], function(key,value){
-                            // Calcula a porcentagem da compra do produto atual
-                            porcentagemCompra = ((value * 100) / somaCompra);
-
-                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + key + '</td><td class="dadosvalor">' + number_format(value,2,",",".") + '</td><td class="dadosvalor">' + number_format(porcentagemCompra,2,",",".") + '</td></tr>');
-                            //somaCompra = somaCompra += Number(value);
+                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + key + '</td><td class="dadosvalor">' + number_format(value,2,",",".") + '</td></tr>');
+                            somaCompra = somaCompra += Number(value);
                         });
 
-                        $(".tabelatraducao").append('<tr class="totaldadosvalor"><td class="dadoslabel">Total GERAL</td><td class="dadosvalor">' + number_format(somaCompra,2,",",".") + '</td><td class="dadosvalor">' + number_format(100,2,",",".") + '</td></tr>');
+                        $(".tabelatraducao").append('<tr class="totaldadosvalor"><td class="dadoslabel">Total GERAL</td><td class="dadosvalor">' + number_format(somaCompra,2,",",".") + '</td></tr>');
                     },
                     error: function(result){
                         alert("Error ao retornar dados!");

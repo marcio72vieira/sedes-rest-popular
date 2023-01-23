@@ -81,6 +81,7 @@
     <!-- Page level plugins -->
     {{-- <script src="{{asset('template/vendor/chart.js/Chart.min.js')}}"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
     <!-- Page level custom scripts -->
     {{-- <script src="{{asset('template/js/demo/chart-area-demo.js')}}"></script>
