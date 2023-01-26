@@ -67,6 +67,7 @@ class BairroController extends Controller
 
     public function update($id, BairroUpdateRequest $request)
     {
+
         $bairro = Bairro::findOrFail($id);
 
         // Validação unique
@@ -77,15 +78,25 @@ class BairroController extends Controller
             ],
         ]);
 
-
         $bairro->update($request->all());
 
-        //Alterando o nome do bairro na bigtable_data
-        $affected = DB::table('bigtable_data')->where('bairro_id', '=',  $id)->update(['bairro_nome' => $bairro->nome]);
+
+        // Alterando dados na bigtable_data. Se além do nome do bairro, foi alterado seu município de origem
+        if($request->municipio_id != $request->municipio_id_old_hidden){
+            $novo_municipio = Municipio::findOrFail($request->municipio_id);
+
+            $novo_nome_municipio = $novo_municipio->nome;
+            $novo_id_regional = $novo_municipio->regional_id;
+            $novo_nome_regional = $novo_municipio->regional->nome;
+
+            $affected = DB::table('bigtable_data')->where('bairro_id', '=',  $id)->update(['bairro_nome' => $bairro->nome, 'municipio_id' => $bairro->municipio_id, 'municipio_nome' => $novo_nome_municipio, 'regional_id' => $novo_id_regional, 'regional_nome' => $novo_nome_regional]);
+        } else {
+            $affected = DB::table('bigtable_data')->where('bairro_id', '=',  $id)->update(['bairro_nome' => $bairro->nome]);
+        }
 
 
 
-        $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
+        $request->session()->flash('sucesso', "$affected Registro atualizado com sucesso!");
 
         return redirect()->route('admin.bairro.index');
     }

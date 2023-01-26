@@ -41,6 +41,8 @@
                                 </div>
 
                                 {{-- municipio_id --}}
+                                {{-- Guarda o antigo Municipio do Bairro atual para pesquisa e futura alteração do mesmo --}}
+                                <input type="hidden" name="municipio_id_old_hidden" value="{{ $bairro->municipio_id }}">
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="municipio_id">Município<span class="small text-danger">*</span></label>
