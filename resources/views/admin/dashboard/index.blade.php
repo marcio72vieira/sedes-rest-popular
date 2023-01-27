@@ -348,7 +348,7 @@
                         @php
                             $somacompra = 0;
                             $porcentagemcompra = 0;
-                            
+
                             //Dados vindo da view via método compact
                             if(count($dataRecords))  {
                                 // Obtém o valor da soma de todas as compras realizadas, para cálculo da %
@@ -448,7 +448,7 @@
     </div>
     <!-- FIM MEUS GRÁFICOS MÊS a MÊS -->
 
-    
+
 
 
     <!-- INÍCIO GRÁFICOS MÊS a MÊS REGIONAL - MUNICIPIO - RESTAURANTE  -->
@@ -463,7 +463,7 @@
                         <div class="form-row">
                             <div class="col-md-3">
                                 {{-- <label for="selectRegional"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Regional:</label> --}}
-                                <select id="selectRegional" class="form-control col-form-label-sm">
+                                <select id="selectRegional_id" class="form-control col-form-label-sm">
                                     <option selected>Regional...</option>
                                     @foreach($regionais as $regional)
                                         <option value="{{$regional->id}}">{{$regional->nome}}</option>
@@ -473,21 +473,15 @@
 
                             <div class="col-md-3">
                                 {{-- <label for="selectMuniciopio"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Município:</label> --}}
-                                <select id="selectMuniciopio" class="form-control col-form-label-sm">
+                                <select id="selectMunicipio_id" class="form-control col-form-label-sm">
                                     <option selected>Município...</option>
-                                    @foreach($produtos as $registroentidade)
-                                        <option value="{{$registroentidade->id}}">{{$registroentidade->nome}}</option>
-                                    @endforeach
                                 </select>
                             </div>
 
                             <div class="col-md-3">
                                 {{-- <label for="selectRestaurante"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Restaurante:</label> --}}
-                                <select id="selectRestaurante" class="form-control col-form-label-sm">
+                                <select id="selectRestaurante_id" class="form-control col-form-label-sm">
                                     <option selected>Restaurante...</option>
-                                    @foreach($produtos as $registroentidade)
-                                        <option value="{{$registroentidade->id}}">{{$registroentidade->nome}}</option>
-                                    @endforeach
                                 </select>
                             </div>
 
@@ -511,7 +505,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     {{-- <div class="card-header"  style="float: right; margin-top: -81px; border-bottom: 1px solid #f8f9fc;"> Utilizado com a exibição da tag's: <label for="selectMes"> acima --}}
                     <div class="card-header"  style="float: right; margin-top: -51px; border-bottom: 1px solid #f8f9fc;">
                         <div class="dropdown no-arrow">
@@ -566,7 +560,7 @@
             </div>
         </div>
     </div>
-    <!-- FIM MEUS GRÁFICOS MÊS a MÊS REGIONAL - MUNICIPIO - RESTAURANTE -->    
+    <!-- FIM MEUS GRÁFICOS MÊS a MÊS REGIONAL - MUNICIPIO - RESTAURANTE -->
 
 
 
@@ -1094,6 +1088,57 @@
         });
 
 
+        //******************************************************
+        //SELECT's REGIONAL - MUNCÍPIO - RESTAURANTE - MÊS - ANO
+        //******************************************************
+        //Recuperação dinâmica dos municípios de uma regional
+        $('#selectRegional_id').on('change', function() {
+            var regional_id = this.value;
+            $("#selectMunicipio_id").html('');
+            $.ajax({
+                url:"{{route('admin.dashboard.ajaxrecuperamunicipiosregionais')}}",
+                type: "GET",
+                data: {
+                    idRegional: regional_id
+                },
+                dataType : 'json',
+                success: function(result){
+                    $('#selectMunicipio_id').html('<option value="">Município...</option>');
+                    $.each(result.municipios,function(key,value){
+                        $("#selectMunicipio_id").append('<option value="'+value.id+'">'+value.nome+'</option>');
+                    });
+                },
+                error: function(result){
+                    alert("Error ao retornar dados!");
+                }
+            });
+        });
+
+        //Recuperação dinâmica dos restaurantes de um município
+        $('#selectMunicipio_id').on('change', function() {
+            var municipio_id = this.value;
+            $("#selectRestaurante_id").html('');
+            $.ajax({
+                url:"{{route('admin.dashboard.ajaxrecuperarestaurantesmunicipios')}}",
+                type: "GET",
+                data: {
+                    idMunicipio: municipio_id
+                },
+                dataType : 'json',
+                success: function(result){
+                    $('#selectRestaurante_id').html('<option value="">Restaurante...</option>');
+                    $.each(result.restaurantes,function(key,value){
+                        $("#selectRestaurante_id").append('<option value="'+value.id+'">'+value.identificacao+'</option>');
+                    });
+                },
+                error: function(result){
+                    alert("Error ao retornar dados!");
+                }
+            });
+        });
+
+
+
         //**************************************************************************
         // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS BAR - HORIZONTALBAR - LINHA - ROSCA
         //**************************************************************************
@@ -1108,7 +1153,7 @@
                 //ATENÇÃO:  A versão 3.9.1 do ChartJS não suporta o estilo: 'horizontalBar', para alcancar este efeito
                 //          deve-se apenas definir a propriedade indexAxis: 'y' no objeto 'options'
                 //
-                
+
                 //type: estilo, // versão 2.9.4
                 type: (estilo == 'horizontalBar' ? 'bar' : estilo), // versao 3.9.1
                 data: {
@@ -1595,7 +1640,7 @@
                 plugins: [ChartDataLabels], // Exibe rótulo dos valores dentro dos gráficos
                 options: {
                     scales: {
-                        /* 
+                        /*
                         // versão 2.9.4
                         xAxes: [{
                             stacked: true
@@ -1624,7 +1669,7 @@
                     // Adequa o tamanho dos gráficos conforme o tamanho da div: "#areaparagraficos"
                     maintainAspectRatio: false, // versão 3.9.1
                     // Se a quantidade de registro for muito grande, melhor visualizar os dados, verticalmente, ou seja,
-                    // em linha(na forma de barras), Uma vez que o tipo horizontalBar não pe mais suportado pela 
+                    // em linha(na forma de barras), Uma vez que o tipo horizontalBar não pe mais suportado pela
                     // versão 3.9.1 do chartJs, deve-se apenas definir a opção: indexAxis para 'y'
                     indexAxis: valorLabels.length >= 13 ? 'y' : 'x', // versão 3.9.1
                 }

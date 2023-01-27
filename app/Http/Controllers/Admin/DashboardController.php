@@ -24,7 +24,7 @@ class DashboardController extends Controller
         //$this->middleware('auth', ['except' => ['index', 'show']]);
         $this->middleware(['auth', 'can:adm']);
     }
-    
+
     public function index()
     {
 
@@ -97,8 +97,8 @@ class DashboardController extends Controller
 
 
         //Obtendo totais das compras AF e Normal Mês a Mês (Independente de qualquer cirtério de pesquisa, apenas ANO)
-        $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_af     = ['','','','','','','','','','','',''];    //  [0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_norm   = ['','','','','','','','','','','',''];    //  [0,0,0,0,0,0,0,0,0,0,0,0];
         $ano_corrente   = date('Y');
 
 
@@ -119,8 +119,8 @@ class DashboardController extends Controller
             }
         }else{
             // Se nada for retornado, todos os valores (correspondnte aos meses) serão 0 (zero)
-            $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-            $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_af     = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_norm   = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
         }
 
 
@@ -259,8 +259,8 @@ class DashboardController extends Controller
         $nomeregistro = $request->nomeregistroentidade;
         $idregistro = $request->idregistroentidade;
 
-        $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_af     = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_norm   = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
 
         $ano_corrente   = date('Y');
 
@@ -297,8 +297,8 @@ class DashboardController extends Controller
             }
         }else{
             // Se nada for retornado, todos os valores (correspondnte aos meses) serão 0 (zero)
-            $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-            $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_af     = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_norm   = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
         }
 
         $data['comprasAF'] = $compras_af;
@@ -429,6 +429,33 @@ class DashboardController extends Controller
 
         return response()->json($data);
     }
+
+
+
+    public function ajaxrecuperamunicipiosregionais(Request $request)
+    {
+        $condicoes = [
+            ['regional_id', '=', $request->idRegional],
+        ];
+
+        $data['municipios'] = Municipio::where($condicoes)->orderBy('nome', 'ASC')->get();
+        return response()->json($data);
+    }
+
+
+
+
+
+    public function ajaxrecuperarestaurantesmunicipios(Request $request)
+    {
+        $condicoes = [
+            ['municipio_id', '=', $request->idMunicipio],
+        ];
+
+        $data['restaurantes'] = Restaurante::where($condicoes)->orderBy('identificacao', 'ASC')->get();
+        return response()->json($data);
+    }
+
 
 
 
