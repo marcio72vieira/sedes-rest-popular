@@ -89,12 +89,19 @@ class ProdutoController extends Controller
             ],
         ]);
 
-
         $produto->update($request->all());
 
-        // Alterando o nome do produto na bigtable_data
-        $affected = DB::table('bigtable_data')->where('produto_id', '=',  $id)->update(['produto_nome' => $produto->nome]);
+        // Alterando dados na bigtable_data, se além do nome do produto for alterado sua categoria de origem.
+        if($request->categoria_id != $request->categoria_id_old_hidden){
+            $nova_categoria = Categoria::findOrFail($request->categoria_id);
+            $novo_nome_categoria = $nova_categoria->nome;                     // Recupera o nome da categoria
+            
+            $affected = DB::table('bigtable_data')->where('produto_id', '=',  $id)->update(['produto_nome' => $produto->nome, 'categoria_id' => $produto->categoria_id, 'categoria_nome' => $novo_nome_categoria]);
+        } else {
+            $affected = DB::table('bigtable_data')->where('produto_id', '=',  $id)->update(['produto_nome' => $produto->nome]);
+        }
 
+        // $request->session()->flash('sucesso', "$affected Registro atualizado com sucesso!");
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 
         return redirect()->route('admin.produto.index');

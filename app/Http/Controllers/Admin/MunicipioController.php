@@ -95,12 +95,19 @@ class MunicipioController extends Controller
             ],
         ]);
 
-
         $municipio->update($request->all());
 
-        //Alterando o nome do municipio e sua regional na bigtable_data
-        $affected = DB::table('bigtable_data')->where('municipio_id', '=',  $id)->update(['municipio_nome' => $municipio->nome]);
+        // Alterando dados na bigtable_data, se além do nome do município for alterado sua regional de origem.
+        if($request->regional_id != $request->regional_id_old_hidden){
+            $nova_regional = Regional::findOrFail($request->regional_id);
+            $novo_nome_regional = $nova_regional->nome;                     // Recupera o nome da regional
+            
+            $affected = DB::table('bigtable_data')->where('municipio_id', '=',  $id)->update(['municipio_nome' => $municipio->nome, 'regional_id' => $municipio->regional_id, 'regional_nome' => $novo_nome_regional]);
+        } else {
+            $affected = DB::table('bigtable_data')->where('municipio_id', '=',  $id)->update(['municipio_nome' => $municipio->nome]);
+        }
 
+        // $request->session()->flash('sucesso', "$affected Registro atualizado com sucesso!");
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 
         return redirect()->route('admin.municipio.index');

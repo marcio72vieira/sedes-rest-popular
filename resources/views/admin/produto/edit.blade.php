@@ -41,6 +41,8 @@
                                 </div>
 
                                 {{-- categoria_id --}}
+                                {{-- Guarda a antiga Categoria do Produto atual para pesquisa e futura alteração do mesmo --}}
+                                <input type="hidden" name="categoria_id_old_hidden" value="{{ $produto->categoria_id }}">
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="categoria_id">Município<span class="small text-danger">*</span></label>

@@ -41,6 +41,8 @@
                                 </div>
 
                                 {{-- regional_id --}}
+                                {{-- Guarda a antiga Regional do Município atual para pesquisa e futura alteração do mesmo --}}
+                                <input type="hidden" name="regional_id_old_hidden" value="{{ $municipio->regional_id }}">
                                 <div class="col-lg-2">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="regional_id">Município<span class="small text-danger">*</span></label>

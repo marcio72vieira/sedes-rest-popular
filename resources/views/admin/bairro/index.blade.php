@@ -48,6 +48,16 @@
             </div>
         @endif
 
+        {{-- Caso o município original do bairro tenha sido atualizado, há a necessidade de atualizar os dados do Restaurante referente a este bairro (o Muncípio e o bairro) --}}
+        @if(session('aviso'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong> {{session('aviso')}} </strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">

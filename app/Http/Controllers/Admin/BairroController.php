@@ -70,6 +70,7 @@ class BairroController extends Controller
 
         $bairro = Bairro::findOrFail($id);
 
+
         // Validação unique
         Validator::make($request->all(), [
             'nome' => [
@@ -81,22 +82,22 @@ class BairroController extends Controller
         $bairro->update($request->all());
 
 
-        // Alterando dados na bigtable_data. Se além do nome do bairro, foi alterado seu município de origem
+        // Alterando dados na bigtable_data, se além do nome do bairro for alterado seu município de origem.
         if($request->municipio_id != $request->municipio_id_old_hidden){
             $novo_municipio = Municipio::findOrFail($request->municipio_id);
-
-            $novo_nome_municipio = $novo_municipio->nome;
-            $novo_id_regional = $novo_municipio->regional_id;
-            $novo_nome_regional = $novo_municipio->regional->nome;
-
+            $novo_nome_municipio = $novo_municipio->nome;                   // Recupera o nome do município
+            $novo_id_regional = $novo_municipio->regional_id;               // O model município possui o campo regional_id
+            $novo_nome_regional = $novo_municipio->regional->nome;          // O model município possui um relacionamento com regional
+            
             $affected = DB::table('bigtable_data')->where('bairro_id', '=',  $id)->update(['bairro_nome' => $bairro->nome, 'municipio_id' => $bairro->municipio_id, 'municipio_nome' => $novo_nome_municipio, 'regional_id' => $novo_id_regional, 'regional_nome' => $novo_nome_regional]);
+            $request->session()->flash('aviso', "É necessário atualizar o Muncípio do Restaurante pertencente a este bairro!");
         } else {
+            // Obs: update(['bairro_nome' => $bairro->nome]), significa que o campo bairro_nome recebe o valor da propriedade ->nome do objeto $bairro depois de atualizado no banco ($bairro->update($request->all())), ou seja, com os dados já alterados.
             $affected = DB::table('bigtable_data')->where('bairro_id', '=',  $id)->update(['bairro_nome' => $bairro->nome]);
         }
 
-
-
-        $request->session()->flash('sucesso', "$affected Registro atualizado com sucesso!");
+        // $request->session()->flash('sucesso', "$affected Registro atualizado com sucesso!");
+        $request->session()->flash('sucesso', "Registro atualizado com sucesso!");
 
         return redirect()->route('admin.bairro.index');
     }
