@@ -171,9 +171,11 @@ Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhadocategoriaproduto', 
 
 Route::get('admin/dashboard/ajaxrecuperadadosgraficomesames', [DashboardController::class, 'ajaxrecuperadadosgraficomesames'])->name('admin.dashboard.ajaxrecuperadadosgraficomesames')->middleware(['auth']);
 
-// Rotas para recuperação dinâmica dos Selects para Municípios e Restaurantes a partir das Regionais
+// Rotas para recuperação dinâmica dos Selects para Municípios e Restaurantes a partir das Regionais mês a mês MONITOR
 Route::get('admin/dashboard/ajaxrecuperamunicipiosregionais',[DashboardController::class, 'ajaxrecuperamunicipiosregionais'])->name('admin.dashboard.ajaxrecuperamunicipiosregionais')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperarestaurantesmunicipios',[DashboardController::class, 'ajaxrecuperarestaurantesmunicipios'])->name('admin.dashboard.ajaxrecuperarestaurantesmunicipios')->middleware(['auth']);
+Route::get('admin/dashboard/ajaxrecuperadadosgraficomesamesmonitor', [DashboardController::class, 'ajaxrecuperadadosgraficomesamesmonitor'])->name('admin.dashboard.ajaxrecuperadadosgraficomesamesmonitor')->middleware(['auth']);
+
 
 
 /**************************************************/

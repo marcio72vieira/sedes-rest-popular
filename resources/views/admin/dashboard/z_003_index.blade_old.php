@@ -451,7 +451,7 @@
 
 
 
-    <!-- INÍCIO GRÁFICOS MONITOR MÊS A MÊS REGIONAL - MUNICIPIO - RESTAURANTE  -->
+    <!-- INÍCIO GRÁFICOS MÊS a MÊS REGIONAL - MUNICIPIO - RESTAURANTE  -->
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
@@ -522,14 +522,14 @@
                             <div class="psdmenu-mrc">
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                     aria-labelledby="dropdownMenuDadosMesMes">
-                                    <a class="dropdown-item psdlink entidademesamesmonitor" data-entidademesamesmonitor="Geral"  data-id="0">Geral</a>
+                                    <a class="dropdown-item psdlink entidademesames" data-entidademesames="Geral"  data-id="0">Geral</a>
 
                                     <div class="dropdown-divider"></div>
                                     <div class="dropdown-header"><i class="fas fa-cubes"></i> Categorias: {{$categorias->count()}}</div>
                                     @foreach($categorias as $registroentidade)
                                         <div style="float: left">
                                             <div style="width: 9rem">
-                                                <a class="dropdown-item psdlink entidademesamesmonitor" data-entidademesamesmonitor="Categorias" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
+                                                <a class="dropdown-item psdlink entidademesames" data-entidademesames="Categorias" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
                                             </div>
                                         </div>
                                     @endforeach
@@ -540,7 +540,7 @@
                                     @foreach($produtos as $registroentidade)
                                         <div style="float: left">
                                             <div style="width: 7rem">
-                                                <a class="dropdown-item psdlink entidademesamesmonitor" data-entidademesamesmonitor="Produtos" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
+                                                <a class="dropdown-item psdlink entidademesames" data-entidademesames="Produtos" data-id="{{$registroentidade->id}}">{{$registroentidade->nome}}</a>
                                             </div>
                                         </div>
                                     @endforeach
@@ -553,14 +553,14 @@
                 <div class="card-body">
                     <div style="width: 100%; height: 20%; background-color: white;">
                         <div id="areaparagraficosmesamesmonitor">
-                            <canvas id="graficomesamesMonitor" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
+                            <canvas id="graficoLinha" width="200" height="40" style="padding: 10px 5px 5px 5px;"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- FIM GRÁFICOS MONITOR MÊS A MÊS REGIONAL - MUNICIPIO - RESTAURANTE -->
+    <!-- FIM MEUS GRÁFICOS MÊS a MÊS REGIONAL - MUNICIPIO - RESTAURANTE -->
 
 
 
@@ -676,7 +676,6 @@
         //     $dataNormal =  array_values($dataRecordsMediaPrecoNorm);
         // }
 
-        /*
         // Obtendo os valores das compras Normal e AF mês a mês
         if(count($compras_af)){
             $dataAf =  array_values($compras_af);
@@ -684,33 +683,6 @@
         if(count($compras_norm)){
             $dataNormal =  array_values($compras_norm);
         }
-        */
-        
-
-        
-        // Obtendo os valores das compras Normal e AF mês a mês para gráfico monitor, para cálculo de porcentagem
-        $valorTotalCompraNoMesAfNorm =  [];
-        $percentAFmesatual = [];
-        $percentNORMmesatual = [];
-
-        for($c = 0; $c < 12; $c++){
-
-            $valorTotalCompraNoMesAfNorm[$c] = $compras_af[$c] + $compras_norm[$c];
-
-            // Evitando divisão por 0 (zero)
-            $valorTotalCompraNoMesAfNorm[$c] = ($valorTotalCompraNoMesAfNorm[$c] != 0 ? $valorTotalCompraNoMesAfNorm[$c] : 1); 
-
-            $percentAFmesatual[$c] = number_format((($compras_af[$c] * 100) / $valorTotalCompraNoMesAfNorm[$c]), '1', '.', '');
-            $percentNORMmesatual[$c] = number_format((($compras_norm[$c] * 100) / $valorTotalCompraNoMesAfNorm[$c]), '1', '.', '');
-
-            // Escondendo o 0 (zeros) na exibição dos valores no gráfico
-            $percentAFmesatual[$c] = $percentAFmesatual[$c] > 0 ? $percentAFmesatual[$c] : '';
-            $percentNORMmesatual[$c] = $percentNORMmesatual[$c] > 0 ? $percentNORMmesatual[$c] : '';
-
-        }
-        
-        $dataAf =  array_values($percentAFmesatual);
-        $dataNormal =  array_values($percentNORMmesatual);
     @endphp
 
 
@@ -744,15 +716,6 @@
             var valorTituloMesaMes = "";
             var valornormalMesaMes = [];
             var valorafMesaMes = [];
-
-            //Gráfico mês a mês monitor
-            var tipoentidademesamesmonitor = "";
-            var nomeregistomesamesmonitor = "";
-            var idregsentidademesamesmonitor = "";
-
-            var valorTituloMesaMesmonitor = "";
-            var valornormalMesaMesmonitor = [];
-            var valorafMesaMesmonitor = [];
 
             //Informações rápidaas
 
@@ -888,57 +851,6 @@
                     }
                 });
             });
-
-
-            //####### MONITOR ##################
-            //Início gráfico mês a mês monitor
-            //##################################
-            $(".entidademesamesmonitor").on("click", function(){
-
-                //alert("Entidade escolhida é: " + $(this).data('entidademesamesmonitor') + ": " + $(this).text().trim() + ", id: " + $(this).data('id'));
-                //Recupera o tipo de entidade (Geral, Categorias ou Produto) e o respectivo id do registro escolhido
-                tipoentidademesamesmonitor = $(this).data('entidademesamesmonitor');
-                nomeregistomesamesmonitor = $(this).text().trim();
-                idregsentidademesamesmonitor = $(this).data('id');
-
-
-                //Faz requisição para obter datos do registro da entidade
-                $.ajax({
-                    url:"{{route('admin.dashboard.ajaxrecuperadadosgraficomesamesmonitor')}}",
-                    type: "GET",
-                    data: {
-                        tipoentidade: tipoentidademesamesmonitor,
-                        nomeregistroentidade: nomeregistomesamesmonitor,
-                        idregistroentidade: idregsentidademesamesmonitor
-                    },
-                    dataType : 'json',
-
-                    //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo, como resultado, temos:
-                    //      result['titulo'], result['comprasAF'] e result['comprasNORM'] que são arrays.
-                    success: function(result){
-
-                        //Zerando o valor das variáveis globais do tipo array
-                        valornormalMesaMesmonitor = [];
-                        valorafMesaMesmonitor = [];
-                        valorTituloMesaMesmonitor = "";
-
-                        valornormalMesaMesmonitor = result['comprasNORM'];
-                        valorafMesaMesmonitor = result['comprasAF'];
-                        valorTituloMesaMesmonitor = result['titulo'];
-
-                        //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamicoMesaMesMonitor(valornormalMesaMesmonitor, valorafMesaMesmonitor, valorTituloMesaMesmonitor);
-
-                    },
-                    error: function(result){
-                        alert("Error ao retornar dados!");
-                    }
-                });
-            });
-            //####### MONITOR ##################
-            // Fim  gráfico mês a mês monitor
-            //##################################
-
 
 
             //Inicio do estilo do gráfico tipo pilha categoria produto
@@ -1176,14 +1088,13 @@
         });
 
 
-        //****************************************************
-        //SELECT's DINÂMICOS REGIONAL - MUNCÍPIO - RESTAURANTE
-        //****************************************************
+        //******************************************************
+        //SELECT's REGIONAL - MUNCÍPIO - RESTAURANTE - MÊS - ANO
+        //******************************************************
         //Recuperação dinâmica dos municípios de uma regional
         $('#selectRegional_id').on('change', function() {
             var regional_id = this.value;
             $("#selectMunicipio_id").html('');
-            $('#selectRestaurante_id').html('<option value="">Restaurante...</option>');
             $.ajax({
                 url:"{{route('admin.dashboard.ajaxrecuperamunicipiosregionais')}}",
                 type: "GET",
@@ -1764,126 +1675,6 @@
                 }
             });
         }
-
-
-        //**************************************************************
-        // GRÁFICOS MÊS A MÊS MONITOR REGIONAL - MUNICÍPIO - RESTAURANTE
-        //**************************************************************
-        //Limpa a área do grafico para evitar sobreposição de informações
-        $('#graficomesamesMonitor').remove();
-        $('#areaparagraficosmesamesmonitor').append('<canvas id="graficomesamesMonitor"  width="200" height="40" style="padding: 10px 5px 5px 5px;"><canvas>');
-
-        var ctx = document.getElementById('graficomesamesMonitor').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'bar',    //type: 'line',
-
-            // The data for our dataset
-            data: {
-                labels: ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'],
-                datasets: [
-                    {
-                        label: 'Compra Normal',
-                        backgroundColor: 'rgb(255, 0, 0, 0.5)',
-                        borderColor: 'rgb(255, 0, 0, 0.1)',
-                        data: [ {{ implode(',', $dataNormal) }} ],
-                    },
-                    {
-                        label: 'Compra AF',
-                        backgroundColor: 'rgb(0, 0, 255, 0.5)',
-                        borderColor: 'rgb(0, 0, 255, 0.1)',
-                        data: [ {{ implode(',', $dataAf) }} ],
-                    
-                    }
-                ]
-            },
-            // Exibe rótulo dos valores dentro dos gráficos versão 3.9.1
-            plugins: [ChartDataLabels],
-            // Configuration options go here
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'GERAL',
-                        padding: {
-                            top: 3,
-                            bottom: 3
-                        }
-                    },
-                    subtitle: {
-                        display: true,
-                        text: 'compras mensais em valores (R$)'
-                    }
-                }
-            }
-        });
-
-
-        
-        function renderGraficoDinamicoMesaMesMonitor(comprasNORM, comprasAF, titulo){
-            
-            //Limpa a área do grafico para evitar sobreposição de informações
-            $('#graficomesamesMonitor').remove();
-            $('#areaparagraficosmesamesmonitor').append('<canvas id="graficomesamesMonitor"  width="200" height="40" style="padding: 10px 5px 5px 5px;"><canvas>');
-
-            var ctx = document.getElementById('graficomesamesMonitor').getContext('2d');
-            var chart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'],
-                    datasets: [
-                        {
-                            label: 'Compra Normal',
-                            backgroundColor: 'rgb(255, 0, 0, 0.5)',
-                            borderColor: 'rgb(255, 0, 0, 0.1)',
-                            data: comprasNORM,
-                            fill: true
-                        },
-                        {
-                            label: 'Compra AF',
-                            backgroundColor: 'rgb(0, 0, 255, 0.5)',
-                            borderColor: 'rgb(0, 0, 255, 0.1)',
-                            data: comprasAF,
-                            fill: true
-                        }
-                    ]
-                },
-                plugins: [ChartDataLabels], // Exibe rótulo dos valores dentro dos gráficos
-
-                // Configuration options go here
-                options: {
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: titulo,
-                            padding: {
-                                top: 3,
-                                bottom: 3
-                            }
-                        },
-                        subtitle: {
-                            display: true,
-                            text: 'valores (%)'
-                        }
-                    }
-                }
-            });
-        }  
-
-        //**************************************************************
-        // FIM GRÁFICOS MÊS A MÊS MONITOR REGIONAL - MUNICÍPIO - RESTAURANTE
-        //**************************************************************      
-
-
-
-
-
-
-
-
-
-
-
 
 
 

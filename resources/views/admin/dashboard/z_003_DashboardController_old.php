@@ -32,7 +32,7 @@ class DashboardController extends Controller
         $mes_corrente = date('m');
         $ano_corrente = date('Y');
 
-        //Recuperando registros e seus totais para cards e menu de contexto do gráfico comparativo mês a mês e monitor
+        //Recuperando registros e seus totais para cards e menu de contexto do gráfico comparativo mês a mês
         $totEmpresas =  Empresa::all()->count();
         $totNutricionistas =  Nutricionista::all()->count();
         $totRestaurantes = Restaurante::all()->count();
@@ -97,8 +97,8 @@ class DashboardController extends Controller
 
 
         //Obtendo totais das compras AF e Normal Mês a Mês (Independente de qualquer cirtério de pesquisa, apenas ANO)
-        $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_af     = ['','','','','','','','','','','',''];    //  [0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_norm   = ['','','','','','','','','','','',''];    //  [0,0,0,0,0,0,0,0,0,0,0,0];
         $ano_corrente   = date('Y');
 
 
@@ -119,8 +119,8 @@ class DashboardController extends Controller
             }
         }else{
             // Se nada for retornado, todos os valores (correspondnte aos meses) serão 0 (zero)
-            $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-            $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_af     = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_norm   = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
         }
 
 
@@ -259,8 +259,8 @@ class DashboardController extends Controller
         $nomeregistro = $request->nomeregistroentidade;
         $idregistro = $request->idregistroentidade;
 
-        $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_af     = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
+        $compras_norm   = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
 
         $ano_corrente   = date('Y');
 
@@ -297,8 +297,8 @@ class DashboardController extends Controller
             }
         }else{
             // Se nada for retornado, todos os valores (correspondnte aos meses) serão 0 (zero)
-            $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-            $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_af     = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
+            $compras_norm   = ['','','','','','','','','','','',''];   //[0,0,0,0,0,0,0,0,0,0,0,0];
         }
 
         $data['comprasAF'] = $compras_af;
@@ -431,68 +431,6 @@ class DashboardController extends Controller
     }
 
 
-    /*******************
-    //     MONITOR
-    *******************/
-
-    public function ajaxrecuperadadosgraficomesamesmonitor(Request $request)
-    {
-        //Verifica se a requisição foi feita com sucesso via AJAX
-        //if($request->ajax()){return $request->tipoentidade."-".$request->nomeregistroentidade."-".$request->idregistroentidade;}else{return "Não chegou nenhuma informação";}
-
-        $tipoentidade = $request->tipoentidade;
-        $nomeregistro = $request->nomeregistroentidade;
-        $idregistro = $request->idregistroentidade;
-
-        $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
-
-        $ano_corrente   = date('Y');
-
-        $data = [];
-        $records = "";
-
-        switch($tipoentidade){
-            case "Geral":
-                $records = DB::select(DB::raw("SELECT data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
-                $data['titulo'] = "GERAL";
-            break;
-            case "Regionais":
-                $records = DB::select(DB::raw("SELECT regional_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE regional_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
-                $data['titulo'] = "REGIONAL: ".$nomeregistro;
-            break;
-            case "Categorias":
-                $records = DB::select(DB::raw("SELECT categoria_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE categoria_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
-                $data['titulo'] = "CATEGORIA: ".$nomeregistro;
-            break;
-            case "Produtos":
-                $records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
-                $data['titulo'] = "PRODUTO: ".$nomeregistro;
-            break;
-        }
-
-        $numregsretorno = count($records);
-
-        if($numregsretorno > 0){
-            foreach($records as $value){
-                $mesdoano = Str::substr($value->data_ini, 5, 2);        //recupera só a string correspondente ao mês
-                $posicao = (int)$mesdoano;                              //transforma a string recuperada em um inteiro
-                $compras_af[$posicao-1] =  $value->totalcompraaf;       //substitui o valor da posição atual 0 pelo devido valor
-                $compras_norm[$posicao-1] =  $value->totalcompranormal; //idem
-            }
-        }else{
-            // Se nada for retornado, todos os valores (correspondnte aos meses) serão 0 (zero)
-            $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
-            $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
-        }
-
-        $data['comprasAF'] = $compras_af;
-        $data['comprasNORM'] = $compras_norm;
-
-        return response()->json($data);
-
-    }
-
 
     public function ajaxrecuperamunicipiosregionais(Request $request)
     {
@@ -505,6 +443,9 @@ class DashboardController extends Controller
     }
 
 
+
+
+
     public function ajaxrecuperarestaurantesmunicipios(Request $request)
     {
         $condicoes = [
@@ -514,11 +455,6 @@ class DashboardController extends Controller
         $data['restaurantes'] = Restaurante::where($condicoes)->orderBy('identificacao', 'ASC')->get();
         return response()->json($data);
     }
-
-
-    /*******************
-    //   FIM - MONITOR
-    *******************/    
 
 
 
