@@ -38,13 +38,13 @@ class DashboardController extends Controller
         $totRestaurantes = Restaurante::all()->count();
         $totComprasGeral = Compra::all()->count();
         $totComprasMes = DB::table('compras')->whereMonth('data_ini', $mes_corrente)->whereYear('data_ini', $ano_corrente)->count();
-        $regionais = Regional::select('id', 'nome')->get();     // $regionais = Regional::all();
+        $regionais = Regional::select('id', 'nome')->OrderBy('nome', 'ASC')->get();     // $regionais = Regional::all();
         $totMunicipios =  Municipio::all()->count();
         $totComprasNormal =  DB::table('compras')->whereMonth('data_ini', $mes_corrente)->whereYear('data_ini', $ano_corrente)->sum('valor');
         $totComprasAf =  DB::table('compras')->whereMonth('data_ini', $mes_corrente)->whereYear('data_ini', $ano_corrente)->sum('valoraf');
         $totalValorCompras =  $totComprasNormal + $totComprasAf;
-        $categorias = Categoria::select('id', 'nome')->get();
-        $produtos = Produto::select('id', 'nome')->get();
+        $categorias = Categoria::select('id', 'nome')->OrderBy('nome', 'ASC')->get();
+        $produtos = Produto::select('id', 'nome')->OrderBy('nome', 'ASC')->get();
         $totUsuarios =  User::all()->count();
 
         //Dados Produtos Para gráfico Principal com tradução
@@ -434,7 +434,6 @@ class DashboardController extends Controller
     /*******************
     //     MONITOR
     *******************/
-
     public function ajaxrecuperadadosgraficomesamesmonitor(Request $request)
     {
         //Verifica se a requisição foi feita com sucesso via AJAX

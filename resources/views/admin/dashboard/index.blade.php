@@ -485,8 +485,8 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-1">
-                                {{-- <label for="selectMes"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Mês:</label> --}}
+                            {{-- <div class="col-md-1">
+                                {{-- <label for="selectMes"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Mês:</label> 
                                 <select id="selectMes" class="form-control col-form-label-sm">
                                     <option value="0" selected>Mês...</option>
                                     <option value="1">janeiro</option>
@@ -502,6 +502,10 @@
                                     <option value="11">novembro</option>
                                     <option value="12">dezembro</option>
                                 </select>
+                            </div> --}}
+
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-outline-info btn-sm" id="exibirdadosmonitor" style="margin-left: 30px; margin-top: 4px; padding-top: 2px; padding-bottom: 0px">Exibir</button>
                             </div>
                         </div>
                     </div>
@@ -918,13 +922,40 @@
                     success: function(result){
 
                         //Zerando o valor das variáveis globais do tipo array
-                        valornormalMesaMesmonitor = [];
                         valorafMesaMesmonitor = [];
+                        valornormalMesaMesmonitor = [];
                         valorTituloMesaMesmonitor = "";
 
-                        valornormalMesaMesmonitor = result['comprasNORM'];
                         valorafMesaMesmonitor = result['comprasAF'];
+                        valornormalMesaMesmonitor = result['comprasNORM'];
                         valorTituloMesaMesmonitor = result['titulo'];
+
+
+                        //  Início - TRANSFORMANDO VALORES EM PORCENTAGEM. 
+                        //  Para exibir valores, comente este trecho  de código
+                            var valorTotalCompraNoMesAfNorm = [];
+                            var percentAFmesatual = [];
+                            var percentNORMmesatual = [];
+                            //Itera sobre os dados retornados
+                            for(c = 0; c < 12; c++){
+                                valorTotalCompraNoMesAfNorm.push(Number(valorafMesaMesmonitor[c]) + Number(valornormalMesaMesmonitor[c]));
+                                
+                                //Evitando divisão por zero
+                                valorTotalCompraNoMesAfNorm[c] = (valorTotalCompraNoMesAfNorm[c] != 0 ? valorTotalCompraNoMesAfNorm[c] : 1);
+                                
+                                percentAFmesatual[c] = number_format(((Number(valorafMesaMesmonitor[c]) * 100) / valorTotalCompraNoMesAfNorm[c]), '1', '.', '');
+                                percentNORMmesatual[c] = number_format(((Number(valornormalMesaMesmonitor[c]) * 100) / valorTotalCompraNoMesAfNorm[c]), '1', '.', '');
+
+                                // Escondendo o 0 (zeros) na exibição dos valores no gráfico
+                                percentAFmesatual[c] = percentAFmesatual[c] > 0 ? percentAFmesatual[c] : '';
+                                percentNORMmesatual[c] = percentNORMmesatual[c] > 0 ? percentNORMmesatual[c] : '';
+                            }
+
+                            valornormalMesaMesmonitor = percentNORMmesatual;
+                            valorafMesaMesmonitor = percentAFmesatual;
+                        //  Para exibir valores, comente este trecho  de código
+                        //  Fim - TRANSFORMANDO VALORES EM PORCENTAGEM.
+
 
                         //Renderiza gráfico passando as informações necessárias
                         renderGraficoDinamicoMesaMesMonitor(valornormalMesaMesmonitor, valorafMesaMesmonitor, valorTituloMesaMesmonitor);
@@ -934,6 +965,16 @@
                         alert("Error ao retornar dados!");
                     }
                 });
+            });
+
+
+            $("#exibirdadosmonitor").on("click", function() {
+                alert("Buscar informações!");
+
+                var valorselectRegional_id = 0;
+                var valorselectMunicipio_id = 0;
+                var valorselectRestaurante_id = 0;
+                
             });
             //####### MONITOR ##################
             // Fim  gráfico mês a mês monitor
@@ -1080,9 +1121,9 @@
             });
 
 
-            //************************
-            // VISUALIZAÇÃO RÁPIDA
-            //************************
+            //*****************************
+            // Iníco - VISUALIZAÇÃO RÁPIDA
+            //*****************************
             //Escolha de outro tipo de entidade além do tipo padrão: "Usuários"
             $(".tabentidade").on("click", function(){
 
@@ -1172,59 +1213,65 @@
                     }
                 });
             });
+            //*****************************
+            // Fim - VISUALIZAÇÃO RÁPIDA
+            //*****************************
 
-        });
 
-
-        //****************************************************
-        //SELECT's DINÂMICOS REGIONAL - MUNCÍPIO - RESTAURANTE
-        //****************************************************
-        //Recuperação dinâmica dos municípios de uma regional
-        $('#selectRegional_id').on('change', function() {
-            var regional_id = this.value;
-            $("#selectMunicipio_id").html('');
-            $('#selectRestaurante_id').html('<option value="">Restaurante...</option>');
-            $.ajax({
-                url:"{{route('admin.dashboard.ajaxrecuperamunicipiosregionais')}}",
-                type: "GET",
-                data: {
-                    idRegional: regional_id
-                },
-                dataType : 'json',
-                success: function(result){
-                    $('#selectMunicipio_id').html('<option value="">Município...</option>');
-                    $.each(result.municipios,function(key,value){
-                        $("#selectMunicipio_id").append('<option value="'+value.id+'">'+value.nome+'</option>');
-                    });
-                },
-                error: function(result){
-                    alert("Error ao retornar dados!");
-                }
+            //************************************************************
+            // Início SELECT's DINÂMICOS REGIONAL - MUNCÍPIO - RESTAURANTE
+            //************************************************************
+            //Recuperação dinâmica dos municípios de uma regional
+            $('#selectRegional_id').on('change', function() {
+                var regional_id = this.value;
+                $("#selectMunicipio_id").html('');
+                $('#selectRestaurante_id').html('<option value="">Restaurante...</option>');
+                $.ajax({
+                    url:"{{route('admin.dashboard.ajaxrecuperamunicipiosregionais')}}",
+                    type: "GET",
+                    data: {
+                        idRegional: regional_id
+                    },
+                    dataType : 'json',
+                    success: function(result){
+                        $('#selectMunicipio_id').html('<option value="">Município...</option>');
+                        $.each(result.municipios,function(key,value){
+                            $("#selectMunicipio_id").append('<option value="'+value.id+'">'+value.nome+'</option>');
+                        });
+                    },
+                    error: function(result){
+                        alert("Error ao retornar dados!");
+                    }
+                });
             });
-        });
 
-        //Recuperação dinâmica dos restaurantes de um município
-        $('#selectMunicipio_id').on('change', function() {
-            var municipio_id = this.value;
-            $("#selectRestaurante_id").html('');
-            $.ajax({
-                url:"{{route('admin.dashboard.ajaxrecuperarestaurantesmunicipios')}}",
-                type: "GET",
-                data: {
-                    idMunicipio: municipio_id
-                },
-                dataType : 'json',
-                success: function(result){
-                    $('#selectRestaurante_id').html('<option value="">Restaurante...</option>');
-                    $.each(result.restaurantes,function(key,value){
-                        $("#selectRestaurante_id").append('<option value="'+value.id+'">'+value.identificacao+'</option>');
-                    });
-                },
-                error: function(result){
-                    alert("Error ao retornar dados!");
-                }
+            //Recuperação dinâmica dos restaurantes de um município
+            $('#selectMunicipio_id').on('change', function() {
+                var municipio_id = this.value;
+                $("#selectRestaurante_id").html('');
+                $.ajax({
+                    url:"{{route('admin.dashboard.ajaxrecuperarestaurantesmunicipios')}}",
+                    type: "GET",
+                    data: {
+                        idMunicipio: municipio_id
+                    },
+                    dataType : 'json',
+                    success: function(result){
+                        $('#selectRestaurante_id').html('<option value="">Restaurante...</option>');
+                        $.each(result.restaurantes,function(key,value){
+                            $("#selectRestaurante_id").append('<option value="'+value.id+'">'+value.identificacao+'</option>');
+                        });
+                    },
+                    error: function(result){
+                        alert("Error ao retornar dados!");
+                    }
+                });
             });
-        });
+            //************************************************************
+            // Fim SELECT's DINÂMICOS REGIONAL - MUNCÍPIO - RESTAURANTE
+            //************************************************************
+
+        }); // fim $(document).ready(function()
 
 
 
@@ -1787,13 +1834,14 @@
                         backgroundColor: 'rgb(255, 0, 0, 0.5)',
                         borderColor: 'rgb(255, 0, 0, 0.1)',
                         data: [ {{ implode(',', $dataNormal) }} ],
+                        fill: true  // para gráfico do tipo linha
                     },
                     {
                         label: 'Compra AF',
                         backgroundColor: 'rgb(0, 0, 255, 0.5)',
                         borderColor: 'rgb(0, 0, 255, 0.1)',
                         data: [ {{ implode(',', $dataAf) }} ],
-                    
+                        fill: true  // para gráfico do tipo linha
                     }
                 ]
             },
@@ -1837,14 +1885,14 @@
                             backgroundColor: 'rgb(255, 0, 0, 0.5)',
                             borderColor: 'rgb(255, 0, 0, 0.1)',
                             data: comprasNORM,
-                            fill: true
+                            fill: true  // para gráfico do tipo linha
                         },
                         {
                             label: 'Compra AF',
                             backgroundColor: 'rgb(0, 0, 255, 0.5)',
                             borderColor: 'rgb(0, 0, 255, 0.1)',
                             data: comprasAF,
-                            fill: true
+                            fill: true  // para gráfico do tipo linha
                         }
                     ]
                 },
@@ -1870,9 +1918,9 @@
             });
         }  
 
-        //**************************************************************
+        //******************************************************************
         // FIM GRÁFICOS MÊS A MÊS MONITOR REGIONAL - MUNICÍPIO - RESTAURANTE
-        //**************************************************************      
+        //******************************************************************  
 
 
 
