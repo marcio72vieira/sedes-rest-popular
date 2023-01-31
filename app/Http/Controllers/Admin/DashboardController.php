@@ -64,7 +64,8 @@ class DashboardController extends Controller
 
         // TESTA AS REQUISIÇÕES AJAX
         //$records = DB::select(DB::raw('SELECT produto_id, data_ini, SUM(IF(af = "sim", precototal, 0)) AS totalcompraaf, SUM(IF(af = "nao", precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = 1 AND YEAR(data_ini) = 2022 GROUP BY MONTH(data_ini)'));
-        //dd($records);
+        //$records = DB::select(DB::raw("SELECT regional_id, regional_nome, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE regional_id = 2 AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+        //dd(count($records));
 
         //Dados Média de preco AF e NORMAL para grafico de linha prórpio (atual gráfico mês a mês de coluna)
         /*
@@ -447,6 +448,11 @@ class DashboardController extends Controller
         $idMunicipio = $request->idMuni;
         $idRestaurante = $request->idRest;
 
+        //Utilizado para monatar o título do gráfico
+        $txtRegional = $request->txtReg;
+        $txtMunicipio = $request->txtMuni;
+        $txtRestaurante = $request->txtRest;
+
         $compras_af     = [0,0,0,0,0,0,0,0,0,0,0,0];
         $compras_norm   = [0,0,0,0,0,0,0,0,0,0,0,0];
 
@@ -456,6 +462,8 @@ class DashboardController extends Controller
         $records = "";
 
         switch($tipoentidade){
+            //Obs: Se $records retornar um array vazio, não há como montar uma variável do tipo: $data['titulo'] = "Regional: ".$records[0]->regional_nome." - "."GERAL";
+            //     dentro da condição if(), por isso houve a necessidade de trazermos o nomes das REGIOES, MUNICÍPIOS E RESTAURANTES via $request.
             case "Geral":
                 // Nenhuma regional, município ou restaurante foi selecionado, portanto, recupera a informação de todo o banco no ano corrente
                 if($idRegional == 0 && $idMunicipio == 0 && $idRestaurante == 0){
@@ -464,35 +472,69 @@ class DashboardController extends Controller
                 }
                 // Uma REGIONAL foi selecionada, portanto, recupera a informação de todo o banco no ano corrente referente só a regional
                 if($idRegional != 0 && $idMunicipio == 0 && $idRestaurante == 0){
-                    $records = DB::select(DB::raw("SELECT regional_id, regional_nome, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE regional_id = $idRegional AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
-                    $data['titulo'] = "GERAL ".$records[0]->regional_nome;
+                    $records = DB::select(DB::raw("SELECT regional_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE regional_id = $idRegional AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Regional: ".$txtRegional." - "."GERAL";
                 }
                 // Um MUNICÍPIO foi selecionada, portanto, recupera a informação de todo o banco no ano corrente referente ao município
                 if($idRegional != 0 && $idMunicipio != 0 && $idRestaurante == 0) {
-                    $records = DB::select(DB::raw("SELECT municipio_id, municipio_nome, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE municipio_id = $idMunicipio AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $records = DB::select(DB::raw("SELECT municipio_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE municipio_id = $idMunicipio AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Município: ".$txtMunicipio." - "."GERAL";
                 }
                 // Um RESTAURANTE foi selecionado, portanto, recupera a informação de todo o banco no ano corrente referente ao restaurante.
                 if($idRegional != 0 && $idMunicipio != 0 && $idRestaurante != 0) {
-                    $records = DB::select(DB::raw("SELECT restaurante_id, identificacao, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE restaurante_id = $idRestaurante AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $records = DB::select(DB::raw("SELECT restaurante_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE restaurante_id = $idRestaurante AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Restaurante: ".$txtRestaurante." - "."GERAL";
                 }
-                
+                //$data['titulo'] = " -- GERAL --";
             break;
 
-            case "Regionais":
-                $records = DB::select(DB::raw("SELECT regional_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE regional_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
-                $data['titulo'] = "REGIONAL: ".$nomeregistro;
-            break;
+            // case "Regionais":
+            //     $records = DB::select(DB::raw("SELECT regional_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE regional_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+            //     $data['titulo'] = "REGIONAL: ".$nomeregistro;
+            // break;
 
             case "Categorias":
-                $records = DB::select(DB::raw("SELECT categoria_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE categoria_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
-                $data['titulo'] = "Categoria - ".$nomeregistro;
+                if($idRegional == 0 && $idMunicipio == 0 && $idRestaurante == 0){
+                    $records = DB::select(DB::raw("SELECT categoria_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE categoria_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Categoria - ".$nomeregistro. " - "."GERAL";
+                }
+                if($idRegional != 0 && $idMunicipio == 0 && $idRestaurante == 0){
+                    $records = DB::select(DB::raw("SELECT categoria_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE categoria_id = $idregistro AND regional_id = $idRegional AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Regional: ".$txtRegional." - Categoria - ".$nomeregistro;
+                }
+                if($idRegional != 0 && $idMunicipio != 0 && $idRestaurante == 0){
+                    $records = DB::select(DB::raw("SELECT categoria_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE categoria_id = $idregistro AND municipio_id = $idMunicipio AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Município: ".$txtMunicipio." - Categoria - ".$nomeregistro;
+                }
+                if($idRegional != 0 && $idMunicipio != 0 && $idRestaurante != 0){
+                    $records = DB::select(DB::raw("SELECT categoria_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE categoria_id = $idregistro AND restaurante_id = $idRestaurante AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Restaurante: ".$txtRestaurante." - Categoria - ".$nomeregistro;
+                }
+                //$data['titulo'] = "Categoria - ".$nomeregistro;
             break;
 
+
             case "Produtos":
-                $records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
-                $data['titulo'] = "Produto - ".$nomeregistro;
+                if($idRegional == 0 && $idMunicipio == 0 && $idRestaurante == 0){
+                    $records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = $idregistro AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Produto - ".$nomeregistro. " - "."GERAL";
+                }
+                if($idRegional != 0 && $idMunicipio == 0 && $idRestaurante == 0){
+                    $records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = $idregistro AND regional_id = $idRegional AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Regional: ".$txtRegional." - Produto - ".$nomeregistro;
+                }
+                if($idRegional != 0 && $idMunicipio != 0 && $idRestaurante == 0){
+                    $records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = $idregistro AND municipio_id = $idMunicipio AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Município: ".$txtMunicipio." - Produto - ".$nomeregistro;
+                }
+                if($idRegional != 0 && $idMunicipio != 0 && $idRestaurante != 0){
+                    $records = DB::select(DB::raw("SELECT produto_id, data_ini, SUM(IF(af = 'sim', precototal, 0)) AS totalcompraaf, SUM(IF(af = 'nao', precototal, 0)) AS totalcompranormal FROM bigtable_data WHERE produto_id = $idregistro AND restaurante_id = $idRestaurante AND YEAR(data_ini) = $ano_corrente GROUP BY MONTH(data_ini) ORDER BY MONTH(data_ini) ASC"));
+                    $data['titulo'] = "Restaurante: ".$txtRestaurante." - Produto - ".$nomeregistro;
+                }
+                //$data['titulo'] = "Produto - ".$nomeregistro;
             break;
         }
+
 
         $numregsretorno = count($records);
 
@@ -541,7 +583,7 @@ class DashboardController extends Controller
 
     /*******************
     //   FIM - MONITOR
-    *******************/    
+    *******************/
 
 
 

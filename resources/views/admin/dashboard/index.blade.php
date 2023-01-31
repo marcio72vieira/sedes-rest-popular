@@ -486,7 +486,7 @@
                             </div>
 
                             {{-- <div class="col-md-1">
-                                {{-- <label for="selectMes"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Mês:</label> 
+                                {{-- <label for="selectMes"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Mês:</label>
                                 <select id="selectMes" class="form-control col-form-label-sm">
                                     <option value="0" selected>Mês...</option>
                                     <option value="1">janeiro</option>
@@ -689,9 +689,9 @@
             $dataNormal =  array_values($compras_norm);
         }
         */
-        
 
-        
+
+
         // Obtendo os valores das compras Normal e AF mês a mês para gráfico monitor, para cálculo de porcentagem
         $valorTotalCompraNoMesAfNorm =  [];
         $percentAFmesatual = [];
@@ -702,7 +702,7 @@
             $valorTotalCompraNoMesAfNorm[$c] = $compras_af[$c] + $compras_norm[$c];
 
             // Evitando divisão por 0 (zero)
-            $valorTotalCompraNoMesAfNorm[$c] = ($valorTotalCompraNoMesAfNorm[$c] != 0 ? $valorTotalCompraNoMesAfNorm[$c] : 1); 
+            $valorTotalCompraNoMesAfNorm[$c] = ($valorTotalCompraNoMesAfNorm[$c] != 0 ? $valorTotalCompraNoMesAfNorm[$c] : 1);
 
             $percentAFmesatual[$c] = number_format((($compras_af[$c] * 100) / $valorTotalCompraNoMesAfNorm[$c]), '1', '.', '');
             $percentNORMmesatual[$c] = number_format((($compras_norm[$c] * 100) / $valorTotalCompraNoMesAfNorm[$c]), '1', '.', '');
@@ -712,7 +712,7 @@
             $percentNORMmesatual[$c] = $percentNORMmesatual[$c] > 0 ? $percentNORMmesatual[$c] : '';
 
         }
-        
+
         $dataAf =  array_values($percentAFmesatual);
         $dataNormal =  array_values($percentNORMmesatual);
     @endphp
@@ -905,10 +905,18 @@
                 nomeregistomesamesmonitor = $(this).text().trim();
                 idregsentidademesamesmonitor = $(this).data('id');
 
+                //Capturando os valores dos select
                 var selecaoRegional = $(this).parents(".pesquisaMonitor").find("#selectRegional_id").val();
                 var selecaoMunicipio = $(this).parents(".pesquisaMonitor").find("#selectMunicipio_id").val();
                 var selecaoRestaurante = $(this).parents(".pesquisaMonitor").find("#selectRestaurante_id").val();
-                alert("Regional: " + selecaoRegional + "; Muncípio: " + selecaoMunicipio + "; Restaurante: " + selecaoRestaurante);
+                alert("Regional: " + selecaoRegional + "; Município: " + selecaoMunicipio + "; Restaurante: " + selecaoRestaurante);
+
+                //Capturando os textos dos selects
+                var textSelecaoRegional = $("#selectRegional_id option:selected").text();
+                var textSelecaoMunicipio = $("#selectMunicipio_id option:selected").text();
+                var textSelecaoRestaurante = $("#selectRestaurante_id option:selected").text();
+                alert("Regional: " + textSelecaoRegional + "; Município: " + textSelecaoMunicipio + "; Restaurante: " + textSelecaoRestaurante);
+
 
                 //Faz requisição para obter datos do registro da entidade
                 $.ajax({
@@ -920,7 +928,10 @@
                         idregistroentidade: idregsentidademesamesmonitor,
                         idReg: selecaoRegional,
                         idMuni: selecaoMunicipio,
-                        idRest: selecaoRestaurante
+                        idRest: selecaoRestaurante,
+                        txtReg: textSelecaoRegional,        //Utilizado para montar o título do gráfico
+                        txtMuni: textSelecaoMunicipio,      //Utilizado para montar o título do gráfico
+                        txtRest: textSelecaoRestaurante     //Utilizado para montar o título do gráfico
                     },
                     dataType : 'json',
 
@@ -938,7 +949,7 @@
                         valorTituloMesaMesmonitor = result['titulo'];
 
 
-                        //  Início - TRANSFORMANDO VALORES EM PORCENTAGEM. 
+                        //  Início - TRANSFORMANDO VALORES EM PORCENTAGEM.
                         //  Para exibir valores, comente este trecho  de código
                             var valorTotalCompraNoMesAfNorm = [];
                             var percentAFmesatual = [];
@@ -946,10 +957,10 @@
                             //Itera sobre os dados retornados
                             for(c = 0; c < 12; c++){
                                 valorTotalCompraNoMesAfNorm.push(Number(valorafMesaMesmonitor[c]) + Number(valornormalMesaMesmonitor[c]));
-                                
+
                                 //Evitando divisão por zero
                                 valorTotalCompraNoMesAfNorm[c] = (valorTotalCompraNoMesAfNorm[c] != 0 ? valorTotalCompraNoMesAfNorm[c] : 1);
-                                
+
                                 percentAFmesatual[c] = number_format(((Number(valorafMesaMesmonitor[c]) * 100) / valorTotalCompraNoMesAfNorm[c]), '1', '.', '');
                                 percentNORMmesatual[c] = number_format(((Number(valornormalMesaMesmonitor[c]) * 100) / valorTotalCompraNoMesAfNorm[c]), '1', '.', '');
 
@@ -981,7 +992,7 @@
                 var valorselectRegional_id = 0;
                 var valorselectMunicipio_id = 0;
                 var valorselectRestaurante_id = 0;
-                
+
             });
             //####### MONITOR ##################
             // Fim  gráfico mês a mês monitor
@@ -1874,9 +1885,9 @@
         });
 
 
-        
+
         function renderGraficoDinamicoMesaMesMonitor(comprasNORM, comprasAF, titulo){
-            
+
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#graficomesamesMonitor').remove();
             $('#areaparagraficosmesamesmonitor').append('<canvas id="graficomesamesMonitor"  width="200" height="40" style="padding: 10px 5px 5px 5px;"><canvas>');
@@ -1923,11 +1934,11 @@
                     }
                 }
             });
-        }  
+        }
 
         //******************************************************************
         // FIM GRÁFICOS MÊS A MÊS MONITOR REGIONAL - MUNICÍPIO - RESTAURANTE
-        //******************************************************************  
+        //******************************************************************
 
 
 
