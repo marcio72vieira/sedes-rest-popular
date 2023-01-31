@@ -455,7 +455,7 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
-                <div>
+                <div class="pesquisaMonitor">
                    {{--  <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">
                         Comparativo de Compra Mensal (Normal x Agricultara Familiar) por Município ou Restaurante
                     </h5> --}}
@@ -464,7 +464,7 @@
                             <div class="col-md-3">
                                 {{-- <label for="selectRegional"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Regional:</label> --}}
                                 <select id="selectRegional_id" class="form-control col-form-label-sm">
-                                    <option selected>Regional...</option>
+                                    <option value="0" selected>Regional...</option>
                                     @foreach($regionais as $regional)
                                         <option value="{{$regional->id}}">{{$regional->nome}}</option>
                                     @endforeach
@@ -474,14 +474,14 @@
                             <div class="col-md-3">
                                 {{-- <label for="selectMuniciopio"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Município:</label> --}}
                                 <select id="selectMunicipio_id" class="form-control col-form-label-sm">
-                                    <option selected>Município...</option>
+                                    <option value="0" selected>Município...</option>
                                 </select>
                             </div>
 
                             <div class="col-md-3">
                                 {{-- <label for="selectRestaurante"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Restaurante:</label> --}}
                                 <select id="selectRestaurante_id" class="form-control col-form-label-sm">
-                                    <option selected>Restaurante...</option>
+                                    <option  value="0" selected>Restaurante...</option>
                                 </select>
                             </div>
 
@@ -895,7 +895,7 @@
 
 
             //####### MONITOR ##################
-            //Início gráfico mês a mês monitor
+            //Início gráfico mês a mês monitor $(this).parents(".linhaDados").find(".produto_id").val();
             //##################################
             $(".entidademesamesmonitor").on("click", function(){
 
@@ -905,6 +905,10 @@
                 nomeregistomesamesmonitor = $(this).text().trim();
                 idregsentidademesamesmonitor = $(this).data('id');
 
+                var selecaoRegional = $(this).parents(".pesquisaMonitor").find("#selectRegional_id").val();
+                var selecaoMunicipio = $(this).parents(".pesquisaMonitor").find("#selectMunicipio_id").val();
+                var selecaoRestaurante = $(this).parents(".pesquisaMonitor").find("#selectRestaurante_id").val();
+                alert("Regional: " + selecaoRegional + "; Muncípio: " + selecaoMunicipio + "; Restaurante: " + selecaoRestaurante);
 
                 //Faz requisição para obter datos do registro da entidade
                 $.ajax({
@@ -913,7 +917,10 @@
                     data: {
                         tipoentidade: tipoentidademesamesmonitor,
                         nomeregistroentidade: nomeregistomesamesmonitor,
-                        idregistroentidade: idregsentidademesamesmonitor
+                        idregistroentidade: idregsentidademesamesmonitor,
+                        idReg: selecaoRegional,
+                        idMuni: selecaoMunicipio,
+                        idRest: selecaoRestaurante
                     },
                     dataType : 'json',
 
@@ -1225,7 +1232,7 @@
             $('#selectRegional_id').on('change', function() {
                 var regional_id = this.value;
                 $("#selectMunicipio_id").html('');
-                $('#selectRestaurante_id').html('<option value="">Restaurante...</option>');
+                $('#selectRestaurante_id').html('<option value="0">Restaurante...</option>');
                 $.ajax({
                     url:"{{route('admin.dashboard.ajaxrecuperamunicipiosregionais')}}",
                     type: "GET",
@@ -1234,7 +1241,7 @@
                     },
                     dataType : 'json',
                     success: function(result){
-                        $('#selectMunicipio_id').html('<option value="">Município...</option>');
+                        $('#selectMunicipio_id').html('<option value="0">Município...</option>');
                         $.each(result.municipios,function(key,value){
                             $("#selectMunicipio_id").append('<option value="'+value.id+'">'+value.nome+'</option>');
                         });
@@ -1257,7 +1264,7 @@
                     },
                     dataType : 'json',
                     success: function(result){
-                        $('#selectRestaurante_id').html('<option value="">Restaurante...</option>');
+                        $('#selectRestaurante_id').html('<option value="0">Restaurante...</option>');
                         $.each(result.restaurantes,function(key,value){
                             $("#selectRestaurante_id").append('<option value="'+value.id+'">'+value.identificacao+'</option>');
                         });
@@ -1860,7 +1867,7 @@
                     },
                     subtitle: {
                         display: true,
-                        text: 'compras mensais em valores (R$)'
+                        text: 'Compras Gerais'
                     }
                 }
             }
@@ -1903,7 +1910,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: titulo,
+                            text: 'GERAL',
                             padding: {
                                 top: 3,
                                 bottom: 3
@@ -1911,7 +1918,7 @@
                         },
                         subtitle: {
                             display: true,
-                            text: 'valores (%)'
+                            text: titulo != 'GERAL' ? titulo : 'Compras Gerais'
                         }
                     }
                 }
