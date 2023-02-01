@@ -376,7 +376,8 @@
     </div>
     <!-- FIM Content Row GRÁFICOS -->
 
-    <!-- INÍCIO MEUS GRÁFICOS MÊS a MÊS -->
+    {{-- 
+    <!-- INÍCIO MEUS GRÁFICOS LINHA MÊS a MÊS -->
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
@@ -384,16 +385,16 @@
                     <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Comparativo de Compra Mensal (Normal x Agricultara Familiar)</h5>
                     <div class="card-header"  style="float: right; margin-top: -41px;">
                         <div class="dropdown no-arrow">
-                            {{-- <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMes"
+                            <!-- <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMes"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                                 Dados
-                            </a> --}}
+                            </a> -->
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMes"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                             </a>
-                            {{-- Div: psdmenu-mrc, sem função alguma, só para envolver a div: dropdown-menu e modificar seu estilo no arquivo mystyles.css
-                                 a fim de não afetar o estilo das demais divis que possui a mesma class (dropdown-menu --}}
+                            <!-- Div: psdmenu-mrc, sem função alguma, só para envolver a div: dropdown-menu e modificar seu estilo no arquivo mystyles.css
+                                 a fim de não afetar o estilo das demais divis que possui a mesma class (dropdown-menu -->
                             <div class="psdmenu-mrc">
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                     aria-labelledby="dropdownMenuDadosMesMes">
@@ -446,8 +447,9 @@
             </div>
         </div>
     </div>
-    <!-- FIM MEUS GRÁFICOS MÊS a MÊS -->
-
+    <!-- FIM MEUS GRÁFICOS LINHA MÊS a MÊS -->
+    --}}
+    
 
 
 
@@ -504,9 +506,9 @@
                                 </select>
                             </div> --}}
 
-                            <div class="col-md-1">
+                            {{-- <div class="col-md-1">
                                 <button type="button" class="btn btn-outline-info btn-sm" id="exibirdadosmonitor" style="margin-left: 30px; margin-top: 4px; padding-top: 2px; padding-bottom: 0px">Exibir</button>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -755,6 +757,7 @@
             var idregsentidademesamesmonitor = "";
 
             var valorTituloMesaMesmonitor = "";
+            var valorSubTituloMesaMesmonitor = "";
             var valornormalMesaMesmonitor = [];
             var valorafMesaMesmonitor = [];
 
@@ -909,13 +912,13 @@
                 var selecaoRegional = $(this).parents(".pesquisaMonitor").find("#selectRegional_id").val();
                 var selecaoMunicipio = $(this).parents(".pesquisaMonitor").find("#selectMunicipio_id").val();
                 var selecaoRestaurante = $(this).parents(".pesquisaMonitor").find("#selectRestaurante_id").val();
-                alert("Regional: " + selecaoRegional + "; Município: " + selecaoMunicipio + "; Restaurante: " + selecaoRestaurante);
+                // alert("Regional: " + selecaoRegional + "; Município: " + selecaoMunicipio + "; Restaurante: " + selecaoRestaurante);
 
                 //Capturando os textos dos selects
                 var textSelecaoRegional = $("#selectRegional_id option:selected").text();
                 var textSelecaoMunicipio = $("#selectMunicipio_id option:selected").text();
                 var textSelecaoRestaurante = $("#selectRestaurante_id option:selected").text();
-                alert("Regional: " + textSelecaoRegional + "; Município: " + textSelecaoMunicipio + "; Restaurante: " + textSelecaoRestaurante);
+                // alert("Regional: " + textSelecaoRegional + "; Município: " + textSelecaoMunicipio + "; Restaurante: " + textSelecaoRestaurante);
 
 
                 //Faz requisição para obter datos do registro da entidade
@@ -943,10 +946,12 @@
                         valorafMesaMesmonitor = [];
                         valornormalMesaMesmonitor = [];
                         valorTituloMesaMesmonitor = "";
+                        valorSubTituloMesaMesmonitor = "";
 
                         valorafMesaMesmonitor = result['comprasAF'];
                         valornormalMesaMesmonitor = result['comprasNORM'];
                         valorTituloMesaMesmonitor = result['titulo'];
+                        valorSubTituloMesaMesmonitor = result['subtitulo'];
 
 
                         //  Início - TRANSFORMANDO VALORES EM PORCENTAGEM.
@@ -976,7 +981,7 @@
 
 
                         //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamicoMesaMesMonitor(valornormalMesaMesmonitor, valorafMesaMesmonitor, valorTituloMesaMesmonitor);
+                        renderGraficoDinamicoMesaMesMonitor(valornormalMesaMesmonitor, valorafMesaMesmonitor, valorTituloMesaMesmonitor, valorSubTituloMesaMesmonitor);
 
                     },
                     error: function(result){
@@ -1564,7 +1569,9 @@
         }
 
 
-
+        /*
+        INÍCIO - MEUS GRÁFICOS LINHA MÊS a MÊS - Com o HTML ref. a este gráfico comentado, é lançado um erro!
+                 visto que o código abaixo, não encontra o canvas: id="graficoLinha" abaixo.
         // Meu gráfico de LINHA Média de Preço Mês a Mês ESTÁTICO COM DADOS VINDO DA VIEW (MÉTODO COMPACT)
         //Limpa a área do grafico para evitar sobreposição de informações
         $('#graficoLinha').remove();
@@ -1612,11 +1619,13 @@
                 }
             }
         });
+        FIM - MEUS GRÁFICOS LINHA MÊS a MÊS
+        */
 
 
-        //*****************************
-        // GRÁFICO DINAMICO MES A MÊS
-        //*****************************
+        //*********************************
+        // GRÁFICO DINAMICO LINHA MES A MÊS
+        //*********************************
         function renderGraficoDinamicoMesaMes(comprasNORM, comprasAF, titulo){
 
             //Limpa a área do grafico para evitar sobreposição de informações
@@ -1886,7 +1895,7 @@
 
 
 
-        function renderGraficoDinamicoMesaMesMonitor(comprasNORM, comprasAF, titulo){
+        function renderGraficoDinamicoMesaMesMonitor(comprasNORM, comprasAF, titulo, subtitulo){
 
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#graficomesamesMonitor').remove();
@@ -1921,7 +1930,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: 'GERAL',
+                            text: titulo,
                             padding: {
                                 top: 3,
                                 bottom: 3
@@ -1929,7 +1938,8 @@
                         },
                         subtitle: {
                             display: true,
-                            text: titulo != 'GERAL' ? titulo : 'Compras Gerais'
+                            //text: titulo != 'GERAL' ? titulo : 'Compras Gerais'
+                            text: subtitulo
                         }
                     }
                 }
