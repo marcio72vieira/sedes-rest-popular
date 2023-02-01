@@ -343,7 +343,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Tradução</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body" style="max-height: 470px; overflow: auto;">{{-- <div class="chart-pie pt-4 pb-2"> <canvas id="myPieChart"></canvas> </div>  --}}
+                <div class="card-body" style="max-height: 540px; overflow: auto;">{{-- <div class="chart-pie pt-4 pb-2"> <canvas id="myPieChart"></canvas> </div>  --}}
                     <table class="tabelatraducao">
                         @php
                             $somacompra = 0;
@@ -356,15 +356,21 @@
                                     $somacompra = $somacompra + $value;
                                 }
 
+                                // Evitando erro de divisão por zero
+                                // $somacompra = ($somacompra > 0 ? $somacompra : 1);
+
                                 echo "<tr><td colspan='3' class='titulotraducao'>COMPRAS POR PRODUTOS</td></tr>";
                                 echo "<tr><td class='subtitulolabeltraducao'>Nome</td><td class='subtitulovalortraducao'>Valor</td><td class='subtitulovalortraducao'>%</td>";
                                 echo "</tr>";
-                                foreach ($dataRecords as $key => $value) {
-                                    // Calcula a porcentagem da compra do produto atual
-                                    $porcentagemcompra = (($value * 100) / $somacompra);
 
-                                    echo "<tr class='destaque'><td class='dadoslabel'>".$key."</td><td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td><td class='dadosvalor'>".number_format($porcentagemcompra, 2, ',', '.')."</td></tr>";
-                                    //$somacompra = $somacompra += $value;
+                                if($somacompra > 0){
+                                    foreach ($dataRecords as $key => $value) {
+                                        // Calcula a porcentagem da compra do produto atual
+                                        $porcentagemcompra = (($value * 100) / $somacompra);
+
+                                        echo "<tr class='destaque'><td class='dadoslabel'>".$key."</td><td class='dadosvalor'>".number_format($value, 2, ',', '.')."</td><td class='dadosvalor'>".number_format($porcentagemcompra, 2, ',', '.')."</td></tr>";
+                                        //$somacompra = $somacompra += $value;
+                                    }
                                 }
                                 echo "<tr class='totaldadosvalor'><td class='dadoslabel'> Total GERAL</td><td class='dadosvalor'>".number_format($somacompra, 2, ',', '.')."</td><td class='dadosvalor'>".number_format(100, 2, ',', '.')."</td></tr>";
                             }
@@ -376,7 +382,7 @@
     </div>
     <!-- FIM Content Row GRÁFICOS -->
 
-    {{-- 
+    {{--
     <!-- INÍCIO MEUS GRÁFICOS LINHA MÊS a MÊS -->
     <div class="row">
         <div class="col-xl-12 col-lg-12">
@@ -449,7 +455,7 @@
     </div>
     <!-- FIM MEUS GRÁFICOS LINHA MÊS a MÊS -->
     --}}
-    
+
 
 
 
@@ -739,6 +745,10 @@
             var porcentagemCompra = 0;
             var somaCompraNormal = 0;
             var somaCompraAf = 0;
+            var porcentagemCompraNormal = 0;
+            var porcentagemCompraAf = 0;
+            var porcentagemSomaCompraNormal = 0;
+            var porcentagemSomaCompraAf = 0;
 
             var valorTituloGrafico =  "";
 
@@ -817,6 +827,10 @@
                         somaCompraNormal = 0;
                         somaCompraAf = 0;
                         valorTituloGrafico = '';
+                        porcentagemCompraNormal = 0;
+                        porcentagemCompraAf = 0;
+                        porcentagemSomaCompraNormal = 0;
+                        porcentagemSomaCompraAf = 0;
 
                         //Atribuindo os respecitvos arrays
                         valorLabels = result['labels'];
@@ -829,8 +843,8 @@
 
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
-                        $(".tabelatraducao").append('<tr><td colspan="4" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
-                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">'+ tipodadosEmpilhado +'</td><td class="subtitulovalortraducao">Normal</td><td class="subtitulovalortraducao">AF</td><td class="subtitulovalortraducao">Total</td></tr>');
+                        $(".tabelatraducao").append('<tr><td colspan="6" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
+                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">'+ tipodadosEmpilhado +'</td><td class="subtitulovalortraducao">Normal</td><td class="subtitulovalortraducao">AF</td><td class="subtitulovalortraducao">Total</td><td class="subtitulovalortraducao">% Normal</td><td class="subtitulovalortraducao">% AF</td></tr>');
 
                         //Itera sobre os dados retornados pela requisição Ajax
                         $.each(result['dados'], function(key,value){
@@ -839,10 +853,20 @@
                             somaCompraAf = somaCompraAf += Number(value.totalcompraaf);
                             somaCompra = somaCompra += Number(value.totalcompra);
 
-                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + value.nome + '</td><td class="dadosvalor">' + number_format(value.totalcompranormal,2,",",".") + '</td><td class="dadosvalor">' + number_format(value.totalcompraaf,2,",",".") + '</td><td class="dadosvalor">' + number_format(value.totalcompra,2,",",".") + '</td></tr>');
+                            // Cálculo das porcentagem de cada produto normal e af em relação ao seu total
+                            porcentagemCompraNormal = ((Number(value.totalcompranormal) * 100) / Number(value.totalcompra));
+                            porcentagemCompraAf = ((Number(value.totalcompraaf) * 100) / Number(value.totalcompra));
+
+                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + value.nome + '</td><td class="dadosvalor">' + number_format(value.totalcompranormal,2,",",".") + '</td><td class="dadosvalor">' + number_format(value.totalcompraaf,2,",",".") + '</td><td class="dadosvalor">' + number_format(value.totalcompra,2,",",".") + '</td><td class="dadosvalor">' + number_format(porcentagemCompraNormal,2,",",".") + '</td><td class="dadosvalor">' + number_format(porcentagemCompraAf,2,",",".") + '</td></tr>');
                         });
 
-                        $(".tabelatraducao").append('<tr class="totaldadosvalor"><td class="dadoslabel">Total GERAL</td><td class="dadosvalor">' + number_format(somaCompraNormal,2,",",".") + '</td><td class="dadosvalor">' + number_format(somaCompraAf,2,",",".") + '</td><td class="dadosvalor">' + number_format(somaCompra,2,",",".") + '</td></tr>');
+
+                        // Cálculo das porcentagens gerais dos produtos normal e af em relação ao total geral
+                        porcentagemSomaCompraNormal = ((somaCompraNormal * 100) / somaCompra);
+                        porcentagemSomaCompraAf = ((somaCompraAf * 100) / somaCompra);
+
+
+                        $(".tabelatraducao").append('<tr class="totaldadosvalor"><td class="dadoslabel">Total GERAL</td><td class="dadosvalor">' + number_format(somaCompraNormal,2,",",".") + '</td><td class="dadosvalor">' + number_format(somaCompraAf,2,",",".") + '</td><td class="dadosvalor">' + number_format(somaCompra,2,",",".") + '</td><td class="dadosvalor">' + number_format(porcentagemSomaCompraNormal,2,",",".") + '</td><td class="dadosvalor">' + number_format(porcentagemSomaCompraAf,2,",",".") + '</td></tr>');
                     },
                     error: function(result){
                         alert("Error ao retornar dados!");
