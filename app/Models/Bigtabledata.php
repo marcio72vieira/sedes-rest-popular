@@ -382,6 +382,69 @@ class Bigtabledata extends Model
 
 
 
+     //#######################
+     // COMPARATIVO CATEGORIA
+     //######################
+     public static function comparativomensalcategoriamunicipio ($idcateg, $idmedi, $idmuni, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('restaurante_id','categoria_id')
+            //->selectRaw('regional_nome, municipio_nome, restaurante_id, identificacao, categoria_id, categoria_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->selectRaw('regional_nome, municipio_nome, restaurante_id, identificacao, categoria_id, categoria_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal, sum(IF(af = "nao", preco, 0)) as somaprecounitarionormal, sum(IF(af = "sim", preco, 0)) as somaprecounitarioaf')
+            ->orderBy('categoria_nome', 'ASC')
+            ->orderBy('medida_simbolo', 'ASC')
+            ->orderBy('identificacao', 'ASC')
+            ->where('categoria_id', '=', $idcateg)
+            ->where('medida_id', '=', $idmedi)
+            ->where('municipio_id', '=', $idmuni)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+
+            return $records;
+     }
+
+
+     public static function comparativomensalcategoriaregional ($idcateg, $idmedi, $idregi, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('municipio_id','categoria_id')
+            //->selectRaw('regional_nome, municipio_id, municipio_nome, categoria_id, categoria_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->selectRaw('regional_nome, municipio_id, municipio_nome, categoria_id, categoria_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal, sum(IF(af = "nao", preco, 0)) as somaprecounitarionormal, sum(IF(af = "sim", preco, 0)) as somaprecounitarioaf')
+            ->orderBy('municipio_nome', 'ASC')
+            ->where('categoria_id', '=', $idcateg)
+            ->where('medida_id', '=', $idmedi)
+            ->where('regional_id', '=', $idregi)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+
+            return $records;
+     }
+
+
+     //Este método agrupa pela regional (diferentemente do método mapamensalgeralcategoria), porque este método
+     //já possui o categoria_id e a medida_id definidos previamente, ou seja, deve-se procurar por eles especificamente
+     //nas cláusulas where enquanto que no método mapamensalgeralcategoria não, ou seja, deve-se agrupar os registros
+     //pelo categoria_id e medida_id.
+     public static function comparativomensalgeralcategoria ($idcateg, $idmedi, $mes, $ano)
+     {
+         $records = Bigtabledata::groupBy('regional_id')
+            //->selectRaw('regional_id, regional_nome, categoria_id, categoria_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal')
+            ->selectRaw('regional_id, regional_nome, categoria_id, categoria_nome, medida_simbolo, count(IF(af = "sim", 1, null)) numvezesaf, count(IF(af = "nao", 1, null)) numvezesnormal, avg(IF(af = "sim", preco, NULL)) as mediaprecoaf, avg(IF(af = "nao", preco, NULL)) as mediapreconormal, sum(IF(af = "sim", quantidade, 0)) as somaquantidadeaf, sum(IF(af = "sim", precototal, 0)) as somaprecoaf, sum(IF(af = "nao", quantidade, 0)) as somaquantidadenormal,  sum(IF(af = "nao", precototal, 0)) as somapreconormal, sum(IF(af = "nao", preco, 0)) as somaprecounitarionormal, sum(IF(af = "sim", preco, 0)) as somaprecounitarioaf')
+            ->orderBy('regional_nome', 'ASC')
+            ->where('categoria_id', '=', $idcateg)
+            ->where('medida_id', '=', $idmedi)
+            ->whereMonth('data_ini', '=', $mes)
+            ->whereYear('data_ini', '=', $ano)
+            ->get();
+
+            return $records;
+     }
+
+
+
+
+
+
 
 
 
