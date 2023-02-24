@@ -788,6 +788,9 @@ ParseError Invalid numeric literal
 
 // https://stackoverflow.com/questions/44070980/make-pie-chart-smaller-chart-js
 
+// https://www.techiedelight.com/pt/check-array-contains-duplicates-javascript/
+// https://www.w3schools.com/js/js_object_sets.asp
+
 
 
 
@@ -1608,8 +1611,8 @@ POLICES E GATES - PERMISSÃO DE ACESSO
     com o perfil "nut" não tenha permissão de listar (método index) EMPRESAS.
     a) No controller EmpresaController importe a classe abaixo:
         a.1)    use Illuminate\Support\Facades\Gate;
-    b) Envolver todo o corpo do método index da classe EmpresaController, com a verificação do perfil do usuário 
-       
+    b) Envolver todo o corpo do método index da classe EmpresaController, com a verificação do perfil do usuário
+
 
 4 - Alternativamente, você pode acrescentar em seu middleware no final de cada rota no arquivo de rotas o diretiva can:adm, como
     demonstrado abaixo:

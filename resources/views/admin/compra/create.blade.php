@@ -363,6 +363,8 @@
 
         $(document).ready(function(){
 
+            var produtosSelecionados = [];
+
             /*****************************/
             /* INICIO Adiciona linhaDados*/
             /*****************************/
@@ -389,16 +391,19 @@
 
                var campo_precototal = $(this).parents(".linhaDados").find(".precototal");
 
+               // Adicionado o produto selecionado ao array produtosSelecionados
+                produtosSelecionados.push(campo_produto);
+
 
                // Se todos os campos obrigatórios foram preechidos, realiza os cálculos e acrescenta uma nova linha.
-               if  (campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') {
+               // if  (campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') {
+                if  ((campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') && (temProdutoDuplicado(produtosSelecionados))) {
                     // Acrescenta uma nova linha
                     $("#corpoDados").append(linhaDados);
                 } else {
                     // Caso possua algum campo obrigatório não preenchido
-                    alert("Preencha todos os campos!");
+                    alert("Preencha todos os campos! ou Produtos Duplicados");
                 }
-
 
 
                 /// Remove opção do select escolhido
@@ -657,11 +662,11 @@
             /*******************************************/
             $(".quantidade").focusout(function() {
 
-                
+
                 // Substitui vírgula por ponto e reetira qualquer caracter que não seja digito ou ponto
                 $(this).val(this.value.replace(',','.'));
                 $(this).val(this.value.replace(/[^0-9.]+/g, ""));
-                
+
 
                 //Obtém o conteúdo da caixa quantidade
                 quantidade =  $(this).val();
@@ -876,6 +881,15 @@
                 $("#valor").val(valCompraNormal.toFixed(2));
                 $("#valoraf").val(valCompraAF.toFixed(2));
                 $("#valortotal").val(valGeral.toFixed(2));
+            }
+
+
+            function temProdutoDuplicado(arr) {
+                alert(arr.length);
+                const produtos =  new Set(arr);
+                return produtos.size === arr.length;
+                //var conjunto  = new Set(arr).size !== arr.length;
+                //alert(conjunto);
             }
 
 
