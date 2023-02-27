@@ -396,13 +396,12 @@
 
 
                // Se todos os campos obrigatórios foram preechidos, realiza os cálculos e acrescenta uma nova linha.
-               // if  (campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') {
-                if  ((campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') && (temProdutoDuplicado(produtosSelecionados))) {
+                if  (campo_produto != null && campo_quantidade != '' && campo_medida != null  && campo_preco != '') {
                     // Acrescenta uma nova linha
                     $("#corpoDados").append(linhaDados);
                 } else {
                     // Caso possua algum campo obrigatório não preenchido
-                    alert("Preencha todos os campos! ou Produtos Duplicados");
+                    alert("Preencha todos os campos!");
                 }
 
 
@@ -608,7 +607,8 @@
                         if($(this).is(':checked')){
 
                             var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                            var val = parseFloat(preco);
+                            // var val = parseFloat(preco);
+                            var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                             valCompraAF += val;
 
                             var af_hidden = $(this).siblings("#af_hidden").val('sim');
@@ -616,7 +616,8 @@
                         }   else {
 
                             var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                            val = parseFloat(preco);
+                            // val = parseFloat(preco);
+                            var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                             valCompraNormal += val;
 
                             var af_hidden = $(this).siblings("#af_hidden").val('nao');
@@ -748,7 +749,8 @@
                     if($(this).is(':checked')){
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                        var val = parseFloat(preco);
+                        // var val = parseFloat(preco);
+                        var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                         valCompraAF += val;
 
                         var af_hidden = $(this).siblings("#af_hidden").val('sim');
@@ -756,7 +758,8 @@
                     }   else {
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                        val = parseFloat(preco);
+                        // val = parseFloat(preco);
+                        var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                         valCompraNormal += val;
 
                         var af_hidden = $(this).siblings("#af_hidden").val('nao');
@@ -859,7 +862,8 @@
                     if($(this).is(':checked')){
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                        var val = parseFloat(preco);
+                        // var val = parseFloat(preco);
+                        var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                         valCompraAF += val;
 
                         var af_hidden = $(this).siblings("#af_hidden").val('sim');
@@ -867,7 +871,8 @@
                     }   else {
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                        val = parseFloat(preco);
+                        // val = parseFloat(preco);
+                        var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                         valCompraNormal += val;
 
                         var af_hidden = $(this).siblings("#af_hidden").val('nao');
@@ -884,10 +889,18 @@
             }
 
 
+
+            $("#sent").click(function(event) {
+                alert("Clicou no botão salvar!");
+                if(temProdutoDuplicado(produtosSelecionados)){
+                    event.preventDefault();
+                }
+            });
+
             function temProdutoDuplicado(arr) {
                 alert(arr.length);
                 const produtos =  new Set(arr);
-                return produtos.size === arr.length;
+                return produtos.size !== arr.length;
                 //var conjunto  = new Set(arr).size !== arr.length;
                 //alert(conjunto);
             }

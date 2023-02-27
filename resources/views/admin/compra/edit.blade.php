@@ -647,7 +647,8 @@
                         if($(this).is(':checked')){
 
                             var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                            var val = parseFloat(preco);
+                            // var val = parseFloat(preco);
+                            var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                             valCompraAF += val;
 
                             var af_hidden = $(this).siblings("#af_hidden").val('sim');
@@ -655,7 +656,8 @@
                         }   else {
 
                             var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                            val = parseFloat(preco);
+                            // val = parseFloat(preco);
+                            var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                             valCompraNormal += val;
 
                             var af_hidden = $(this).siblings("#af_hidden").val('nao');
@@ -784,7 +786,8 @@
                     if($(this).is(':checked')){
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                        var val = parseFloat(preco);
+                        // var val = parseFloat(preco);
+                        var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                         valCompraAF += val;
 
                         var af_hidden = $(this).siblings("#af_hidden").val('sim');
@@ -792,7 +795,8 @@
                     }   else {
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                        val = parseFloat(preco);
+                        // val = parseFloat(preco);
+                        var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                         valCompraNormal += val;
 
                         var af_hidden = $(this).siblings("#af_hidden").val('nao');
@@ -879,7 +883,8 @@
                     if($(this).is(':checked')){
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                        var val = parseFloat(preco);
+                        // var val = parseFloat(preco);
+                        var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                         valCompraAF += val;
 
                         var af_hidden = $(this).siblings("#af_hidden").val('sim');
@@ -887,7 +892,8 @@
                     }   else {
 
                         var preco = $(this).parents(".linhaDados").find(".precototal").val();
-                        val = parseFloat(preco);
+                        // val = parseFloat(preco);
+                        var val = (isNaN(preco) || (preco == '')) ? parseFloat(0.00) : parseFloat(preco);
                         valCompraNormal += val;
 
                         var af_hidden = $(this).siblings("#af_hidden").val('nao');
@@ -902,6 +908,18 @@
                 $("#valoraf").val(valCompraAF.toFixed(2));
                 $("#valortotal").val(valGeral.toFixed(2));
             }
+
+
+            function temProdutoDuplicado(arr) {
+                alert(arr.length);
+                const produtos =  new Set(arr);
+                return produtos.size === arr.length;
+                //var conjunto  = new Set(arr).size !== arr.length;
+                //alert(conjunto);
+            }
+
+
+
 
 
             //Comentários diversos
