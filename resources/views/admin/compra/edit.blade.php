@@ -359,6 +359,52 @@
 
 
 </div>
+
+{{-- início modal's --}}
+<!-- Modal campos vazios-->
+<div class="modal fade modalCamposVazios" id="exampleModalCamposVazios" tabindex="-1" aria-labelledby="exampleModalLabelCamposVazios" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelCamposVazios" style="color: red">CAMPOS VAZIOS!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Para adicionar um novo item, considere preencher todos os campos que sejam obrigatórios.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+          {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal itens duplicados-->
+<div class="modal fade modalItensDuplicados" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel" style="color: red">ITENS DE PRODUTOS DUPLICADOS!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Cadastre os itens duplicados em outro registro, considerando o mesmo Nº Semana, Data Inicial e Data Final.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+          {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+        </div>
+      </div>
+    </div>
+  </div>
+{{-- fim modal--}}
+
+
 @endsection
 
 @section('scripts')
@@ -497,7 +543,8 @@
 
                 } else {
                     // Caso possua algum campo obrigatório não preenchido
-                    alert("Preencha todos os campos!");
+                    // alert("Preencha todos os campos!");
+                    $(".modalCamposVazios").modal("show");
                 }
 
 
@@ -929,7 +976,7 @@
                 var existeItensDuplicados = conjuntoProdutos.size !== produtosSelecionados.length;
 
                 if(existeItensDuplicados){
-                    alert("Existe itens duplicados!");
+                    $(".modalItensDuplicados").modal("show");
                     event.preventDefault();
                 }
             });
