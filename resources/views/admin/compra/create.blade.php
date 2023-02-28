@@ -363,7 +363,6 @@
 
         $(document).ready(function(){
 
-            var produtosSelecionados = [];
 
             /*****************************/
             /* INICIO Adiciona linhaDados*/
@@ -390,9 +389,6 @@
                var campo_af         = $(this).parents(".linhaDados").find(".af").is(':checked');
 
                var campo_precototal = $(this).parents(".linhaDados").find(".precototal");
-
-               // Adicionado o produto selecionado ao array produtosSelecionados
-                produtosSelecionados.push(campo_produto);
 
 
                // Se todos os campos obrigatórios foram preechidos, realiza os cálculos e acrescenta uma nova linha.
@@ -889,21 +885,39 @@
             }
 
 
-
+            // Verifica se há produtos duplicados ao tentar salvar os dados
             $("#sent").click(function(event) {
-                alert("Clicou no botão salvar!");
-                if(temProdutoDuplicado(produtosSelecionados)){
+                // Cria um array inicialmente vazio, de produtos selecionados
+                var produtosSelecionados = [];
+
+                // Recupera todos os valores dos produtos selecionaod e adiciona ao array criado
+                $(".produto_id").each(function(){
+                    var produtoCorrente = $(this).parents(".linhaDados").find(".produto_id").val();
+                    produtosSelecionados.push(produtoCorrente);
+                });
+
+                // Cria um objeto conjunto (Set)[Obs: um conjunto não permite elementos duplicados] a partir do array "produtosSelecionados"
+                var conjuntoProdutos =  new Set(produtosSelecionados);
+
+                // Compara se a quantidade de elementos do objeto (através do size) é diferente da quantidade de elementos do array (através do lenght)
+                // e atribui o valor(booleano) à variável existeItensDuplicados. Se o valor for 'false' é porque os tamanhos são diferentes, logo há itens duplicados.
+                var existeItensDuplicados = conjuntoProdutos.size !== produtosSelecionados.length;
+
+                if(existeItensDuplicados){
+                    alert("Existe itens duplicados!");
                     event.preventDefault();
                 }
             });
 
-            function temProdutoDuplicado(arr) {
-                alert(arr.length);
-                const produtos =  new Set(arr);
-                return produtos.size !== arr.length;
-                //var conjunto  = new Set(arr).size !== arr.length;
-                //alert(conjunto);
-            }
+
+            // function temProdutoDuplicado(arr) {
+            //     alert(arr.length);
+            //     // Cria um conjunto (Um conjunto não possui elementos repetidos) a partir de um array
+            //     const produtos =  new Set(arr);
+            //     return produtos.size !== arr.length;
+            //     //var conjunto  = new Set(arr).size !== arr.length;
+            //     //alert(conjunto);
+            // }
 
 
 
