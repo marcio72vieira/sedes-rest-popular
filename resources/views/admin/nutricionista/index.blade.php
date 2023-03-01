@@ -39,8 +39,8 @@
                 <th>Nome</th>
                 <th>Email</th>
                 <th>Fone</th>
-                <th>CPF</th>
-                <th>CRN</th>
+                <th>CPF / CRN</th>
+                <th>Restaurante</th>
                 <th>Ativo</th>
                 <th style="width: 165px;">Ação</th>
             </tr>
@@ -53,13 +53,17 @@
                 <td>{{$nutricionista->nomecompleto}}</td>
                 <td>{{$nutricionista->email}}</td>
                 <td>{{$nutricionista->telefone}}</td>
-                <td>{{$nutricionista->cpf}}</td>
-                <td>{{$nutricionista->crn}}</td>
+                <td>{{$nutricionista->cpf}} <br> {{$nutricionista->crn}}</td>
+                <td>@isset($nutricionista->restaurante->identificacao) {{$nutricionista->restaurante->identificacao}} @endisset</td>
                 <td>@if($nutricionista->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
                 <td>
                     <a href="{{route('admin.empresa.nutricionista.show', [$empresa->id, $nutricionista->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.empresa.nutricionista.edit', [$empresa->id, $nutricionista->id])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                    <a href="" data-toggle="modal" data-target="#formDelete{{$nutricionista->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                    @if($nutricionista->qtdrestaurantevinc($nutricionista->id) == 0 && $nutricionista->qtdcomprasvinc($nutricionista->id) == 0)
+                        <a href="" data-toggle="modal" data-target="#formDelete{{$nutricionista->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                    @else
+                        <a href="" title="Vinculado a um restaurante ou compra(s)"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                    @endif
 
                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                     <div class="modal fade" id="formDelete{{$nutricionista->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">

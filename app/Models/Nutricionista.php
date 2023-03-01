@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Nutricionista extends Model
 {
@@ -25,5 +26,19 @@ class Nutricionista extends Model
 
     public function restaurante(){
         return $this->hasOne(Restaurante::class);
+    }
+
+    public function qtdrestaurantevinc($id)
+    {
+        $qtd = DB::table('restaurantes')->where('nutricionista_id', '=', $id)->count();
+
+        return $qtd;
+    }
+
+    public function qtdcomprasvinc($id)
+    {
+        $qtd = DB::table('bigtable_data')->where('nutricionista_id', '=', $id)->count();
+
+        return $qtd;
     }
 }

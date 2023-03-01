@@ -60,16 +60,20 @@
                 <td>{{$user->cpf}} <br> {{$user->crn}} </td>
                 <td>@isset($user->restaurante->identificacao) {{$user->restaurante->identificacao}} @endisset</td>
                 <td style="text-align: center">
-                    @if($user->perfil == "adm"  || $user->perfil == "nut") 
-                        <b><i class="fas fa-check text-success mr-2"></i></b> 
-                    @else 
-                        <b><i class="fas fa-times  text-danger mr-2"></i></b> 
+                    @if($user->perfil == "adm"  || $user->perfil == "nut")
+                        <b><i class="fas fa-check text-success mr-2"></i></b>
+                    @else
+                        <b><i class="fas fa-times  text-danger mr-2"></i></b>
                     @endif
                 </td>
                 <td>
                     <a href="{{route('admin.user.show', $user->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.user.edit', $user->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                    <a href="" data-toggle="modal" data-target="#formDelete{{$user->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                    @if($user->qtdrestaurantevinc($user->id) == 0 && $user->qtdcomprasvinc($user->id) == 0)
+                        <a href="" data-toggle="modal" data-target="#formDelete{{$user->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
+                    @else
+                        <a href="" title="Vinculado a um restaurante ou compra(s)"><i class="fas fa-trash text-secondary mr-2"></i></a>
+                    @endif
 
                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                     <div class="modal fade" id="formDelete{{$user->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">

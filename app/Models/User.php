@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -53,5 +54,19 @@ class User extends Authenticatable
 
     public function restaurante(){
         return $this->hasOne(Restaurante::class);
+    }
+
+    public function qtdrestaurantevinc($id)
+    {
+        $qtd = DB::table('restaurantes')->where('user_id', '=', $id)->count();
+
+        return $qtd;
+    }
+
+    public function qtdcomprasvinc($id)
+    {
+        $qtd = DB::table('bigtable_data')->where('user_id', '=', $id)->count();
+
+        return $qtd;
     }
 }
