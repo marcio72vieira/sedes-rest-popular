@@ -39,12 +39,22 @@ class CompraController extends Controller
 
 
         $restaurante = Restaurante::findOrFail($idrestaurante);
-        $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        $compras = Compra::with('comprovantes')->where('restaurante_id', '=', $idrestaurante)->orderBy('data_ini', 'DESC')->get();
+        //$produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
+        
+        // Recupera todas as compras do restaurante (query anterior á query com limitação dos 3 últimos meses)
+        //$compras = Compra::with('comprovantes')->where('restaurante_id', '=', $idrestaurante)->orderBy('data_ini', 'DESC')->get();
+
+        // Recupera só as compras realizadas nos últimos 3 mêses (3 months) ou 90 dias (90 days) ou 1 ano (1 year) atrás, conforme a necessidade
+        $dataAtual = date("Y-m-d");             // obtém a data atual
+        $dataAtual =  date_create($dataAtual);  // cria uma data a partir da data atual
+        $dataRetroativa = date_sub($dataAtual, date_interval_create_from_date_string("3 months"));  // subtrai da dataATual do tempo necessário
+        $compras = Compra::with('comprovantes')->where('restaurante_id', '=', $restaurante->id)->where('data_ini', '>=', $dataRetroativa)->orderBy('data_ini', 'DESC')->get();
+
 
         //$compras = Compra::whereMonth('data_ini', date('11'))->first();
 
-        return view('admin.compra.index', compact('restaurante', 'compras', 'produtos'));
+        //return view('admin.compra.index', compact('restaurante', 'compras', 'produtos'));
+        return view('admin.compra.index', compact('restaurante', 'compras'));
     }
 
 

@@ -28,7 +28,8 @@ class Regional extends Model
     }
 
     //Obtendo os restaurantes pertencentes à regional, através de um relacionamento indireto hasManyThrough, já que
-    //restaurante não se relaciona com regional, mas sim com município.
+    //restaurante não se relaciona com regional, mas sim com município. Ou seja, é recuperado todos os restaurantes
+    //que pertençam aos municípios que pertençam a uma determinada regional.
     public function restaurantes ()
     {
         return $this->hasManyThrough(Restaurante::class, Municipio::class);

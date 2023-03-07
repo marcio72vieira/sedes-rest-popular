@@ -87,7 +87,18 @@ class RegistroconsultacompraController extends Controller
                 return redirect()->route('acesso.logout');
             }
 
-            $compras = Compra::where('restaurante_id', '=', $restaurante->id)->orderBy('data_ini', 'DESC')->get();
+            // Recupera todas as compras do restaurante
+            //$compras = Compra::where('restaurante_id', '=', $restaurante->id)->orderBy('data_ini', 'DESC')->get();
+
+            // Recupera as compras do restaurante limitando a 30 o número de registros
+            //$compras = Compra::where('restaurante_id', '=', $restaurante->id)->limit(30)->orderBy('data_ini', 'DESC')->get();
+
+            // Recupera só as compras realizadas nos últimos 3 mêses (3 months) ou 90 dias (90 days) ou 1 ano (1 year) atrás, conforme a necessidade
+            $dataAtual = date("Y-m-d");             // obtém a data atual
+            $dataAtual =  date_create($dataAtual);  // cria uma data a partir da data atual
+            $dataRetroativa = date_sub($dataAtual, date_interval_create_from_date_string("3 months"));  // subtrai da dataATual do tempo necessário
+
+            $compras = Compra::with('comprovantes')->where('restaurante_id', '=', $restaurante->id)->where('data_ini', '>=', $dataRetroativa)->orderBy('data_ini', 'DESC')->get();
 
 
             return view('admin.compra.index', compact('restaurante', 'compras'));
