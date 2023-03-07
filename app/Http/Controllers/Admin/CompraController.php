@@ -26,6 +26,26 @@ class CompraController extends Controller
 
     public function index($idrestaurante)
     {
+        // Meses e anos para popular campos selects
+        $mesespesquisa = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $anoimplantacao = 2023;
+        $anoatual = date("Y");
+        $anospesquisa = [];
+        $anos = [];
+
+        if($anoimplantacao >= $anoatual){
+            $anospesquisa[] = $anoatual;
+        }else{
+            $qtdanosexibicao = $anoatual - $anoimplantacao;
+            for($a = $qtdanosexibicao; $a >= 0; $a--){
+                $anos[] = $anoatual - $a;
+            }
+            $anospesquisa = array_reverse($anos);
+        }
 
         /* //Recupera em uma collection o número de registros relacionados, para impedir deleção acidental.
         //Todos os registros relacionados entre comprovante e compra, independente de seus IDs serão recuperados
@@ -40,7 +60,7 @@ class CompraController extends Controller
 
         $restaurante = Restaurante::findOrFail($idrestaurante);
         //$produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
-        
+
         // Recupera todas as compras do restaurante (query anterior á query com limitação dos 3 últimos meses)
         //$compras = Compra::with('comprovantes')->where('restaurante_id', '=', $idrestaurante)->orderBy('data_ini', 'DESC')->get();
 
@@ -54,7 +74,7 @@ class CompraController extends Controller
         //$compras = Compra::whereMonth('data_ini', date('11'))->first();
 
         //return view('admin.compra.index', compact('restaurante', 'compras', 'produtos'));
-        return view('admin.compra.index', compact('restaurante', 'compras'));
+        return view('admin.compra.index', compact('restaurante', 'compras', 'mesespesquisa', 'anospesquisa'));
     }
 
 
@@ -218,7 +238,7 @@ class CompraController extends Controller
 
     public function update(CompraUpdateRequest $request, $idrestaurante, $idcompra)
     {
-        
+
         //dd($request);
 
         $compra = Compra::findOrFail($idcompra);
@@ -235,14 +255,14 @@ class CompraController extends Controller
             $arrProdutos[] = $request->produto_id[$x];
 
             $arrMesclado[$arrProdIds[$x]] = [
-                'quantidade' => $request->quantidade[$x], 
-                'medida_id' => $request->medida_id[$x], 
-                'detalhe' => $request->detalhe[$x], 
-                'preco' => $request->preco[$x], 
-                'af' => $request->af_hidden[$x], 
+                'quantidade' => $request->quantidade[$x],
+                'medida_id' => $request->medida_id[$x],
+                'detalhe' => $request->detalhe[$x],
+                'preco' => $request->preco[$x],
+                'af' => $request->af_hidden[$x],
                 'precototal' => $request->precototal[$x]
             ];
-            
+
 
             // Campos a serem gravados na tabela bigtable_data para consultas rápidas
             $arrComposto[$arrProdutos[$x]] = [

@@ -21,6 +21,27 @@ class RegistroconsultacompraController extends Controller
 {
     public function index(Request $request)
     {
+        // Meses e anos para popular campos selects
+        $mesespesquisa = [
+            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
+            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+        ];
+
+        $anoimplantacao = 2023;
+        $anoatual = date("Y");
+        $anospesquisa = [];
+        $anos = [];
+
+        if($anoimplantacao >= $anoatual){
+            $anospesquisa[] = $anoatual;
+        }else{
+            $qtdanosexibicao = $anoatual - $anoimplantacao;
+            for($a = $qtdanosexibicao; $a >= 0; $a--){
+                $anos[] = $anoatual - $a;
+            }
+            $anospesquisa = array_reverse($anos);
+        }
+
         // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, e a partir destes, vai para o processo de COMPRA, caso contrário irá presquisar apenas
         // o(s) restaurante(s) da NUTRICIONISTA responsável(logada) no momento.
         // if(Auth::user()->perfil == 'adm' && Auth::user()->ativo == 1 ){
@@ -101,7 +122,7 @@ class RegistroconsultacompraController extends Controller
             $compras = Compra::with('comprovantes')->where('restaurante_id', '=', $restaurante->id)->where('data_ini', '>=', $dataRetroativa)->orderBy('data_ini', 'DESC')->get();
 
 
-            return view('admin.compra.index', compact('restaurante', 'compras'));
+            return view('admin.compra.index', compact('restaurante', 'compras', 'mesespesquisa', 'anospesquisa'));
 
         //else
         // return view('uma view informando que o usuário não está ativo embora esteja cadastrado no sitema')
@@ -1158,7 +1179,7 @@ class RegistroconsultacompraController extends Controller
     }
 
 
-    
+
     //========================================
     // COMPARATIVO DE CATEGORIAS MES/ANO
     //========================================
@@ -3965,5 +3986,5 @@ class RegistroconsultacompraController extends Controller
     }
 
 
-    
+
 }

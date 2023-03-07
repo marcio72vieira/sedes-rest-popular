@@ -7,18 +7,79 @@
 
         <h5><strong>COMPRAS: Restaurante {{ $restaurante->identificacao }} em {{$restaurante->municipio->nome}}</strong></h5>
 
-        <a class="btn btn-primary" href="{{route('admin.restaurante.compra.create', $restaurante->id)}}" role="button" style="margin-bottom: 10px">
-            <i class="fas fa-plus-circle"></i>
-            Adicionar
-        </a>
+        <div class="row">
+            <div class="col-4">
+                <a class="btn btn-primary" href="{{route('admin.restaurante.compra.create', $restaurante->id)}}" role="button" style="margin-bottom: 10px">
+                    <i class="fas fa-plus-circle"></i>
+                    Adicionarr
+                </a>
+                {{-- <a class="btn btn-primary" id="btnpesquisar" role="button" style="margin-bottom: 10px">
+                    <i class="fas fa-search-plus"></i>
+                    pesquisar
+                </a> --}}
+            </div>
 
-        {{-- Se o usuário autenticado é ADM retorna para a lista de restaurantes, se NUT não exibe o botão --}}
-        @if(Auth::user()->perfil == 'adm')
-            <a class="btn btn-primary float-right" href="{{route('admin.registroconsultacompra.index')}}" role="button" style="margin-bottom: 10px">
-                <i class="fas fa-undo-alt"></i>
-                Listar Restaurantes
-            </a>
-        @endif
+            @if(Auth::user()->perfil == 'adm')
+
+                <div class="col-4"  style="text-align: center">
+                    <div style="width: 100%; margin-left: 125px">
+                        <form action="{{route('admin.registroconsultacompra.index')}}"  method="GET" class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <select name="mes_id" id="mes_id" class="form-control" style="margin-right: 20px">
+                                        <option value="" selected disabled>Mês...</option>
+                                        @foreach($mesespesquisa as $key => $value)
+                                            <option value="{{ $key }}"> {{ $value }} </option>
+                                         @endforeach
+                                    </select>
+
+                                    <select name="ano_id" id="ano_id" class="form-control">
+                                        <option value="" selected disabled>Ano...</option>
+                                        @foreach($anospesquisa as $value)
+                                            <option value="{{ $value}}"> {{ $value }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2 btn-sm"><i class="fas fa-search-plus"></i> pesquisar</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-4">
+                    {{-- Se o usuário autenticado é ADM retorna para a lista de restaurantes, se NUT não exibe o botão --}}
+                    @if(Auth::user()->perfil == 'adm')
+                        <a class="btn btn-primary float-right" href="{{route('admin.registroconsultacompra.index')}}" role="button" style="margin-bottom: 10px">
+                            <i class="fas fa-undo-alt"></i>
+                            Listar Restaurantes
+                        </a>
+                    @endif
+                </div>
+
+            @else
+
+                <div class="col-8">
+                    <div style="width: 26%; float: right">
+                        <form action="{{route('admin.registroconsultacompra.index')}}"  method="GET" class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <select name="mes_id" id="mes_id" class="form-control" style="margin-right: 20px">
+                                        <option value="" selected disabled>Mês...</option>
+                                        @foreach($mesespesquisa as $key => $value)
+                                            <option value="{{ $key }}"> {{ $value }} </option>
+                                         @endforeach
+                                    </select>
+
+                                    <select name="ano_id" id="ano_id" class="form-control">
+                                        <option value="" selected disabled>Ano...</option>
+                                        @foreach($anospesquisa as $value)
+                                            <option value="{{ $value}}"> {{ $value }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2 btn-sm"><i class="fas fa-search-plus"></i> pesquisar</button>
+                        </form>
+                    </div>
+                </div>
+
+            @endif
+        </div>
 
 
         @if(session('sucesso'))
@@ -84,7 +145,7 @@
                                     @else
                                         <a href="" title="há comprovantes vinculados!"><i class="fas fa-trash text-secondary mr-2"></i></a>
                                     @endif
-                                    
+
 
                                     {{-- Utilizado com a antiga lógica de desconstrução de array vindo do CompraController
                                         Se o id da compra atual estiver dentro do array de regsvinculados, impede a deleção acidental.
@@ -129,3 +190,14 @@
    </div>
 </div>
 @endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $("#btnpesquisar").click(function(){
+                $("#formpesquisar").toggle();
+            });
+        });
+    </script>
+@endsection
+
