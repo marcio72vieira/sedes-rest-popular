@@ -24,8 +24,11 @@ use Illuminate\Support\Carbon;
 class CompraController extends Controller
 {
 
-    public function index($idrestaurante)
+    public function index(Request $request, $idrestaurante)
     {
+
+        //echo "Mês: " . $request->mes_id. " Ano:" . $request->ano_id;
+
         // Meses e anos para popular campos selects
         $mesespesquisa = [
             '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
@@ -68,7 +71,15 @@ class CompraController extends Controller
         $dataAtual = date("Y-m-d");             // obtém a data atual
         $dataAtual =  date_create($dataAtual);  // cria uma data a partir da data atual
         $dataRetroativa = date_sub($dataAtual, date_interval_create_from_date_string("3 months"));  // subtrai da dataATual do tempo necessário
-        $compras = Compra::with('comprovantes')->where('restaurante_id', '=', $restaurante->id)->where('data_ini', '>=', $dataRetroativa)->orderBy('data_ini', 'DESC')->get();
+
+        if(isset($request->mes_id) && isset($request->ano_id) ){
+            $compras = Compra::with('comprovantes')->where('restaurante_id', '=', $restaurante->id)->whereMonth('data_ini', $request->mes_id)->whereYear('data_ini', $request->ano_id)->orderBy('data_ini', 'DESC')->get();
+        } else {
+            $compras = Compra::with('comprovantes')->where('restaurante_id', '=', $restaurante->id)->where('data_ini', '>=', $dataRetroativa)->orderBy('data_ini', 'DESC')->get();
+        }
+
+
+        //$compras = Compra::with('comprovantes')->where('restaurante_id', '=', $restaurante->id)->where('data_ini', '>=', $dataRetroativa)->orderBy('data_ini', 'DESC')->get();
 
 
         //$compras = Compra::whereMonth('data_ini', date('11'))->first();

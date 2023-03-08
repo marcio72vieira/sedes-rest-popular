@@ -18,7 +18,7 @@
           <option value="100" {{($idRegional == 100 ? 'selected' : '')}}>TODAS</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary mb-2 btn-sm">pesquisar</button>
+      <button type="submit" class="btn btn-primary mb-2 btn-sm"><i class="fas fa-search-plus"></i> pesquisar</button>
     </form>
 
 

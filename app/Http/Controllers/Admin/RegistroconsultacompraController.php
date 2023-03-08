@@ -21,6 +21,8 @@ class RegistroconsultacompraController extends Controller
 {
     public function index(Request $request)
     {
+        //echo "Mês: " . $request->mes_id. " Ano:" . $request->ano_id;
+
         // Meses e anos para popular campos selects
         $mesespesquisa = [
             '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
@@ -51,6 +53,8 @@ class RegistroconsultacompraController extends Controller
             $regionais = Regional::orderBy('nome', 'ASC')->get();
 
             //$restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
+            //Obs: aqui era para recuperar apenas os restaurantes da regional cujo id seja igual a 1 (Metropolitana / Grande Ilha de São Luis), mas restaurantes, não possui um vínculo direto com
+            //     regionais e sim com municípios.
             $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
 
             // Verifica se uma regional foi escolhida para fazer a pesquisa através do relacionamento cruzado hasManyThrough

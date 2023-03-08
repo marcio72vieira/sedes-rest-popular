@@ -22,8 +22,9 @@
             @if(Auth::user()->perfil == 'adm')
 
                 <div class="col-4"  style="text-align: center">
-                    <div style="width: 100%; margin-left: 125px">
-                        <form action="{{route('admin.registroconsultacompra.index')}}"  method="GET" class="form-inline">
+                    <div style="width: 100%; margin: auto">
+                        {{-- (Rota aninhada) Tipo: admin/restaurante/{idrestaurante}/compra/index --}}
+                        <form action="{{route('admin.restaurante.compra.index', $restaurante->id)}}"  method="GET" class="form-inline">
                                 <div class="form-group mx-sm-3 mb-2">
                                     <select name="mes_id" id="mes_id" class="form-control" style="margin-right: 20px">
                                         <option value="" selected disabled>Mês...</option>
@@ -56,8 +57,9 @@
             @else
 
                 <div class="col-8">
-                    <div style="width: 26%; float: right">
-                        <form action="{{route('admin.registroconsultacompra.index')}}"  method="GET" class="form-inline">
+                    <div style="width: 40%; float: right;">
+                        {{-- (Rota aninhada) Tipo: admin/restaurante/{idrestaurante}/compra/index --}}
+                        <form action="{{route('admin.restaurante.compra.index', $restaurante->id)}}"  method="GET" class="form-inline">
                                 <div class="form-group mx-sm-3 mb-2">
                                     <select name="mes_id" id="mes_id" class="form-control" style="margin-right: 20px">
                                         <option value="" selected disabled>Mês...</option>
