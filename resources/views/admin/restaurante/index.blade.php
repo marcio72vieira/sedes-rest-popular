@@ -96,9 +96,17 @@
 
             // DataTable
             $('#dataTableRestaurante').DataTable({
+
+                order: [[ 0, 'desc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
+                columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
+                    { orderable: false, targets: [3, 4, 5, 6] }
+                ],
+                //lengthMenu: [5, 10, 20, 50, 100, 200, 500], //Configura o número de entra de registro a serem exibido por pagina
+
                 processing: true,
                 serverSide: true,
                 ajax: "{{route('admin.ajaxgetRestaurantes')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
+                // Obs: Para fazer a ordenação, o nome das colunas abaixo, devem conicidir com o nome dos campos retornados pela query na recuperação dos registros desejados
                 columns: [
                     { data: 'id' },
                     { data: 'municipio' },
@@ -112,6 +120,7 @@
                     "lengthMenu": "Mostrar _MENU_ registos",
                     "search": "Procurar:",
                     "info": "Mostrando os registros _START_ a _END_ num total de _TOTAL_",
+                    "infoFiltered":   "(Filtrados _TOTAL_ de um total de _MAX_ registros)",
                     "paginate": {
                         "first": "Primeiro",
                         "previous": "Anterior",
@@ -120,7 +129,7 @@
                     },
                     "zeroRecords": "Não foram encontrados resultados",
                 },
-                pagingType: "full_numbers", // Todos os links de paginação
+                pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
 
             });
 

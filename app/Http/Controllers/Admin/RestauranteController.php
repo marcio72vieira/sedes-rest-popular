@@ -25,6 +25,7 @@ class RestauranteController extends Controller
 {
     public function __construct()
     {
+        // O usuário logado deve está autenticado e possui autorização para executar os métodos deste controle
         //$this->middleware('auth', ['except' => ['index', 'show']]);
         $this->middleware(['auth', 'can:adm']);
     }
@@ -35,6 +36,9 @@ class RestauranteController extends Controller
         //$restaurantes = Restaurante::all();
 
         // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, caso contrário, NUTRICIONISTA, só ao qual pertence
+        // Obs: Esta condição abaixo, só era faria sentido, se o USUÁRIO NUTRICIONISTA DA SEDES tivesse acesso 
+        //      ao cadastro do restaurante ao qual o mesmo era responsável. Esta condição pode ser suprimida ficando
+        //      apnenas a seguinte linha: $restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
         if(Auth::user()->perfil == 'adm'){
             $restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
         } else {
@@ -67,12 +71,14 @@ class RestauranteController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        /***********************************************************************************************************
+        // RECUPERAÇÃO DE REGISTROS FEITO ATRAVÉS DO ELOQUENTE E SEUS RELACIONAMENTOS DIRETOS (TOTALMENTE FUNCIONAL)
         // Total records
         $totalRecords = Restaurante::select('count(*) as allcount')->count();
         $totalRecordswithFilter = Restaurante::select('count(*) as allcount')->where('identificacao', 'like', '%' .$searchValue . '%')->count();
 
         // Fetch records
-        $records = Restaurante::orderBy($columnName,$columnSortOrder)
+        $restaurantes = Restaurante::orderBy($columnName,$columnSortOrder)
         ->where('restaurantes.identificacao', 'like', '%' .$searchValue . '%')
         ->select('restaurantes.*')
         ->skip($start)
@@ -81,19 +87,103 @@ class RestauranteController extends Controller
 
         $data_arr = array();
 
-        foreach($records as $record){
+        foreach($restaurantes as $restaurante){
             // campos a serem exibidos
-            $id = $record->id;
-            $municipio = $record->municipio->nome;
-            $identificacao = $record->identificacao;
-            $compras = 10;
-            $ativo = true;
-            $responsaveis = $record->user->nomecompleto;
+            $id = $restaurante->id;
+            $municipio = $restaurante->municipio->nome;
+            $identificacao = $restaurante->identificacao;
+            $responsaveis = "<span style='font-size: 10px; color: blue'>SEDES: </span>".$restaurante->user->nomecompleto." / ". $restaurante->user->telefone." / ".$restaurante->user->email."<br> <span style='font-size: 10px; color: blue'>EMPRESA: </span>".$restaurante->nutricionista->nomecompleto." / ". $restaurante->nutricionista->telefone." / ".$restaurante->nutricionista->email;
+            $compras = $restaurante->qtdcomprasvinc($restaurante->id);
+            $ativo = ($restaurante->ativo == 1) ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times  text-danger mr-2'></i></b>";
+            
 
             // ações
             $actionShow = "<a href='".route('admin.restaurante.show', $id)."' title='exibir'><i class='fas fa-eye text-warning mr-2'></i></a>";
             $actionEdit = "<a href='".route('admin.restaurante.edit', $id)."' title='editar'><i class='fas fa-edit text-info mr-2'></i></a>";
-            $actionDelete = "<a href='' class='deleterestaurante' data-idrestaurante='".$id."' data-identificacaorestaurante='".$identificacao."'  data-toggle='modal' data-target='#formDelete' title='excluir'><i class='fas fa-trash text-danger mr-2'></i></a>";
+            // verifica se o restaurante possui compras vinculadas para não possibilitar sua exclusão acidental
+            if($restaurante->qtdcomprasvinc($restaurante->id) == 0){
+                $actionDelete = "<a href='' class='deleterestaurante' data-idrestaurante='".$id."' data-identificacaorestaurante='".$identificacao."'  data-toggle='modal' data-target='#formDelete' title='excluir'><i class='fas fa-trash text-danger mr-2'></i></a>";
+            }else{
+                $actionDelete = "<a title='há compras vinculadas!'><i class='fas fa-trash text-secondary mr-2'></i></a>";
+            }
+            
+
+            $actions = $actionShow. " ".$actionEdit. " ".$actionDelete;
+
+            $data_arr[] = array(
+                "id" => $id,
+                "municipio" => $municipio,
+                "identificacao" => $identificacao,
+                "responsaveis" => $responsaveis,
+                "compras" => $compras,
+                "ativo" => $ativo,
+                "actions" => $actions,
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr
+        );
+
+        echo json_encode($response);
+        exit;
+        ***********************************************************************************************************/
+
+
+        // Total records
+        $totalRecords = Restaurante::select('count(*) as allcount')->count();
+        $totalRecordswithFilter = DB::table('restaurantes')
+            ->join('municipios', 'municipios.id', '=', 'restaurantes.municipio_id')
+            ->join('users', 'users.id', '=', 'restaurantes.user_id')
+            ->join('nutricionistas', 'nutricionistas.id', '=', 'restaurantes.nutricionista_id')
+            ->select('count(*) as allcount')
+            ->where('restaurantes.identificacao', 'like', '%' .$searchValue . '%')
+            ->orWhere('municipios.nome', 'like', '%' . $searchValue . '%' )
+            ->count();
+
+        // Fetch records (restaurantes)
+        $restaurantes = DB::table('restaurantes')
+        ->join('municipios', 'municipios.id', '=', 'restaurantes.municipio_id')
+        ->join('users', 'users.id', '=', 'restaurantes.user_id')
+        ->join('nutricionistas', 'nutricionistas.id', '=', 'restaurantes.nutricionista_id')
+        ->select('restaurantes.id', 'restaurantes.identificacao', 'restaurantes.ativo', 
+                 'municipios.nome AS municipio',
+                 'users.nomecompleto AS nomeusersedes', 'users.email AS emailusersedes', 'users.telefone AS telefoneusersedes',
+                 'nutricionistas.nomecompleto AS nomenutricionista', 'nutricionistas.email AS emailnutricionista', 'nutricionistas.telefone AS telefonenutricionista')
+        ->where('restaurantes.identificacao', 'like', '%' .$searchValue . '%')
+        ->orWhere('municipios.nome', 'like', '%' .$searchValue . '%')
+        ->orderBy($columnName,$columnSortOrder)
+        ->skip($start)
+        ->take($rowperpage)
+        ->get();
+
+
+        $data_arr = array();
+
+        foreach($restaurantes as $restaurante){
+            // campos a serem exibidos
+            $id = $restaurante->id;
+            $municipio = $restaurante->municipio;
+            $identificacao = $restaurante->identificacao;
+            $responsaveis = "<span style='font-size: 10px; color: blue'>SEDES: </span>".$restaurante->nomeusersedes." / ". $restaurante->telefoneusersedes." / ".$restaurante->emailusersedes."<br> <span style='font-size: 10px; color: blue'>EMPRESA: </span>".$restaurante->nomenutricionista." / ". $restaurante->telefonenutricionista." / ".$restaurante->emailnutricionista;
+            $compras = DB::table('compras')->where('restaurante_id', '=', $id)->count();
+            $ativo = ($restaurante->ativo == 1) ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times  text-danger mr-2'></i></b>";
+            
+
+            // ações
+            $actionShow = "<a href='".route('admin.restaurante.show', $id)."' title='exibir'><i class='fas fa-eye text-warning mr-2'></i></a>";
+            $actionEdit = "<a href='".route('admin.restaurante.edit', $id)."' title='editar'><i class='fas fa-edit text-info mr-2'></i></a>";
+            // verifica se o restaurante possui compras vinculadas para não possibilitar sua exclusão acidental
+            if($compras == 0){
+                $actionDelete = "<a href='' class='deleterestaurante' data-idrestaurante='".$id."' data-identificacaorestaurante='".$identificacao."'  data-toggle='modal' data-target='#formDelete' title='excluir'><i class='fas fa-trash text-danger mr-2'></i></a>";
+            }else{
+                $actionDelete = "<a title='há compras vinculadas!'><i class='fas fa-trash text-secondary mr-2'></i></a>";
+            }
+            
+
             $actions = $actionShow. " ".$actionEdit. " ".$actionDelete;
 
             $data_arr[] = array(
