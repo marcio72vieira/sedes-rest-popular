@@ -81,6 +81,8 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::post('getbairrosrestaurante',[RestauranteController::class, 'getbairrosrestaurante'])->name('getbairrosrestaurante')->middleware(['auth']);
     Route::post('getnutricionistasempresas',[RestauranteController::class, 'getnutricionistasempresas'])->name('getnutricionistasempresas')->middleware(['auth']);
     Route::resource('restaurante', RestauranteController::class)->middleware(['auth']);
+    Route::get('ajaxgetRestaurantes',[RestauranteController::class,'ajaxgetRestaurantes'])->name('ajaxgetRestaurantes');    // Rota Ajax para datatable com paginação dinâmica
+
 
     // Empresa
     Route::post('getbairros',[EmpresaController::class, 'getbairros'])->name('getbairros')->middleware(['auth']);

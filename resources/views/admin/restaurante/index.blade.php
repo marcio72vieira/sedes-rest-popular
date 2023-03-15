@@ -31,82 +31,119 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
 
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-          <thead>
-            <tr>
-              <th>Id</th>
-              {{--<th>Município - Bairro</th>--}}
-              <th>Município</th>
-              <th>Identificacao</th>
-              {{--<th>Empresa</th>--}}
-              <th>Responsáveis / Contato / E-mail</th>
-              <th>Compras</th>
-              <th>Ativo</th>
-              <th style="width: 100px">Ações</th>
-            </tr>
-          </thead>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTableRestaurante" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                    <th>Id</th>
+                    <th>Município</th>
+                    <th>Identificacao</th>
+                    <th>Responsáveis / Contato / E-mail</th>
+                    <th>Compras</th>
+                    <th>Ativo</th>
+                    <th style="width: 100px">Ações</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                    <th>Id</th>
+                    <th>Município</th>
+                    <th>Identificacao</th>
+                    <th>Responsáveis / Contato / E-mail</th>
+                    <th>Compras</th>
+                    <th>Ativo</th>
+                    <th style="width: 100px">Ações</th>
+                    </tr>
+                </tfoot>
+                </table>
 
-          <tbody>
-          @foreach($restaurantes as $restaurante)
-             <tr>
-                <td>{{$restaurante->id}}</td>
-                {{-- <td>{{$restaurante->municipio->nome}} - {{$restaurante->bairro->nome}}</td>--}}
-                <td>{{$restaurante->municipio->nome}}</td>
-                <td>{{$restaurante->identificacao}}</td>
-                {{--<td>{{$restaurante->empresa->nomefantasia}}</td>--}}
-                {{--<td>{{$restaurante->ativo == 1 ? 'SIM' : 'NÃO'}}</td>--}}
-                <td>
-                  <span style="font-size: 10px; color: blue">SEDES:</span>  {{$restaurante->user->nomecompleto}} / {{$restaurante->user->telefone}} / {{$restaurante->user->email}}<br>
-                  <span style="font-size: 10px; color: blue">EMPRESA:</span> {{$restaurante->nutricionista->nomecompleto}} / {{$restaurante->nutricionista->telefone}} / {{$restaurante->nutricionista->email}}
-                </td>
-                <td style="text-align: center">{{$restaurante->qtdcomprasvinc($restaurante->id)}}</td>
-                <td style="text-align: center">@if($restaurante->ativo == 1) <b><i class="fas fa-check text-success mr-2"></i></b> @else <b><i class="fas fa-times  text-danger mr-2"></i></b> @endif</td>
-                <td>
-                    {{--<a href="{{route('admin.restaurante.compra.index', $restaurante->id)}}" title="compras"><i class="fas fa-shopping-cart text-success mr-2"></i></a>--}}
-                    <a href="{{route('admin.restaurante.show', $restaurante->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
-                    <a href="{{route('admin.restaurante.edit', $restaurante->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
-                    {{--<a href="{{route('admin.restaurante.ficha', $restaurante->id)}}" title="ficha" target="_blank"><i class="far fa-file-pdf text-danger mr-2"></i></a>--}}
-                    @if($restaurante->qtdcomprasvinc($restaurante->id) == 0)
-                        <a href="" data-toggle="modal" data-target="#formDelete{{$restaurante->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
-                    @else
-                        <a href="" title="há compras vinculadas!"><i class="fas fa-trash text-secondary mr-2"></i></a>
-                    @endif
-
-
-                    {{-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro --}}
-                    <div class="modal fade" id="formDelete{{$restaurante->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                {{-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro --}}
+                <div class="modal fade" id="formDelete" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
+                    <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="formDeleteLabel"><strong>Deletar restaurante</strong></h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                                <h5 class="modal-title" id="formDeleteLabel"><strong>Deletar restaurante</strong></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
+
                             <div class="modal-body">
-                                <h5>{{$restaurante->identificacao}}</h5>
+                                <h5 id='h5identificacao'></h5>
                             </div>
+
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                            <form action="{{route('admin.restaurante.destroy', $restaurante->id)}}" method="POST" style="display: inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger" role="button"> Confirmar</button>
-                            </form>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                <form id="formdelete" action="" method="POST" style="display: inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" role="button"> Confirmar</button>
+                                </form>
                             </div>
-                        </div>
                         </div>
                     </div>
-                </td>
-            </tr>
-            @endforeach
-          </tbody>
-      </table>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-    </div>
-
 </div>
 @endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            // DataTable
+            $('#dataTableRestaurante').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{route('admin.ajaxgetRestaurantes')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
+                columns: [
+                    { data: 'id' },
+                    { data: 'municipio' },
+                    { data: 'identificacao' },
+                    { data: 'responsaveis' },
+                    { data: 'compras' },
+                    { data: 'ativo' },
+                    { data: 'actions'}
+                ],
+                language: {
+                    "lengthMenu": "Mostrar _MENU_ registos",
+                    "search": "Procurar:",
+                    "info": "Mostrando os registros _START_ a _END_ num total de _TOTAL_",
+                    "paginate": {
+                        "first": "Primeiro",
+                        "previous": "Anterior",
+                        "next": "Seguinte",
+                        "last": "Último"
+                    },
+                    "zeroRecords": "Não foram encontrados resultados",
+                },
+                pagingType: "full_numbers", // Todos os links de paginação
+
+            });
+
+            // No script abaixo, uma função é disparada quando o usuário clicar exatamente [on('click', '.deleterestaurante')] em cima do ícone
+            // deletar (definido como um botão no controller: RestauranteController) cuja a classe está definida como ".deleterestaurante".
+            // Disparada esta função o id e o nome do restaurante são recuperados através dos dados armazenados nas propriedades
+            // "data-idrestaurante" e "data-identificacaorestaurante", do mesmo ícone de botão deletar também definido no controller RestauranteController.
+            // A "route" é uma string completa que possui o nome da rota juntamente com o id do restaurante. Infelizmente não tem
+            // como referenciar uma variável javascript em um script PHP(Laravel), por isso houve a necessidade de fazer esse junção
+            // com o recurso de substituição: route = route.replace('id', idrestaurante);
+            $('#dataTableRestaurante').on('click', '.deleterestaurante', function(event){
+                var idRestaurante = $(this).data('idrestaurante');
+                var identificacaoRestaurante = $(this).data('identificacaorestaurante');
+                var route = "{{route('admin.restaurante.destroy', 'id')}}";
+                    route = route.replace('id', idRestaurante);
+
+                // alert($(this).data('idrestaurante')); // alert($(this).data('identificacaoRestaurante')); // alert(route);
+
+                $('#h5identificacao').text(identificacaoRestaurante);
+                $('#formdelete').attr('action', route);
+            });
+
+         });
+    </script>
+@endsection
+

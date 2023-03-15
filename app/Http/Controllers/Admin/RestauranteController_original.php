@@ -28,7 +28,7 @@ class RestauranteController extends Controller
         //$this->middleware('auth', ['except' => ['index', 'show']]);
         $this->middleware(['auth', 'can:adm']);
     }
-
+    
 
     public function index()
     {
@@ -43,84 +43,6 @@ class RestauranteController extends Controller
 
         return view('admin.restaurante.index', compact('restaurantes'));
     }
-
-
-    ////// Início - Ajax para datatable com paginação dinâmica
-    /*
-        AJAX request.
-        Este método é executado automaticamente pela linha: ajax: "{{route('admin.ajaxgetRestaurantes')}}", que se encontra no script da view: admin.restaurantes.index
-    */
-    public function ajaxgetRestaurantes(Request $request){
-
-        ## Read value
-        $draw = $request->get('draw');
-        $start = $request->get("start");
-        $rowperpage = $request->get("length"); // Rows display per page
-
-        $columnIndex_arr = $request->get('order');
-        $columnName_arr = $request->get('columns');
-        $order_arr = $request->get('order');
-        $search_arr = $request->get('search');
-
-        $columnIndex = $columnIndex_arr[0]['column']; // Column index
-        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-        $searchValue = $search_arr['value']; // Search value
-
-        // Total records
-        $totalRecords = Restaurante::select('count(*) as allcount')->count();
-        $totalRecordswithFilter = Restaurante::select('count(*) as allcount')->where('identificacao', 'like', '%' .$searchValue . '%')->count();
-
-        // Fetch records
-        $records = Restaurante::orderBy($columnName,$columnSortOrder)
-        ->where('restaurantes.identificacao', 'like', '%' .$searchValue . '%')
-        ->select('restaurantes.*')
-        ->skip($start)
-        ->take($rowperpage)
-        ->get();
-
-        $data_arr = array();
-
-        foreach($records as $record){
-            // campos a serem exibidos
-            $id = $record->id;
-            $municipio = $record->municipio->nome;
-            $identificacao = $record->identificacao;
-            $compras = 10;
-            $ativo = true;
-            $responsaveis = $record->user->nomecompleto;
-
-            // ações
-            $actionShow = "<a href='".route('admin.restaurante.show', $id)."' title='exibir'><i class='fas fa-eye text-warning mr-2'></i></a>";
-            $actionEdit = "<a href='".route('admin.restaurante.edit', $id)."' title='editar'><i class='fas fa-edit text-info mr-2'></i></a>";
-            $actionDelete = "<a href='' class='deleterestaurante' data-idrestaurante='".$id."' data-identificacaorestaurante='".$identificacao."'  data-toggle='modal' data-target='#formDelete' title='excluir'><i class='fas fa-trash text-danger mr-2'></i></a>";
-            $actions = $actionShow. " ".$actionEdit. " ".$actionDelete;
-
-            $data_arr[] = array(
-                "id" => $id,
-                "municipio" => $municipio,
-                "identificacao" => $identificacao,
-                "responsaveis" => $responsaveis,
-                "compras" => $compras,
-                "ativo" => $ativo,
-                "actions" => $actions,
-            );
-        }
-
-        $response = array(
-            "draw" => intval($draw),
-            "iTotalRecords" => $totalRecords,
-            "iTotalDisplayRecords" => $totalRecordswithFilter,
-            "aaData" => $data_arr
-        );
-
-        echo json_encode($response);
-        exit;
-    }
-    ////// Fim - Ajax para datatable com paginação dinâmica
-
-
-
 
 
     public function getbairrosrestaurante(Request $request)
@@ -191,10 +113,10 @@ class RestauranteController extends Controller
         $usersAlocadosRestaurante = Restaurante::select('user_id')->get();
 
         //Recupera apenas os usuários que não estejam previamente associados a um Restaurante(evita selecionar o mesmo
-        //usuário para mais de um restaurante). Observação: Essa regra não deve ser aplicada para a edição de um
+        //usuário para mais de um restaurante). Observação: Essa regra não deve ser aplicada para a edição de um 
         //restaurante, devendo nesse caso, serem exibidos todos os usuários.
         $users = $users->diff(User::whereIn('id', $usersAlocadosRestaurante)->get());
-
+       
         return view('admin.restaurante.create', compact('municipios', 'bairros', 'empresas', 'nutricionistas','users'));
     }
 
