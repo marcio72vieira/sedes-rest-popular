@@ -169,7 +169,7 @@
                                 {{-- municipio --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="municipio">Município</label>
+                                        <label class="form-control-label" for="municipio">Município<span class="small text-danger">*</span></label>
                                         <input type="text" id="municipio" class="form-control" name="municipio" value="{{old('municipio', $empresa->municipio)}}">
                                         @error('municipio')
                                             <small style="color: red">{{$message}}</small>
@@ -180,7 +180,7 @@
                                 {{-- bairro --}}
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="bairro">bairro</label>
+                                        <label class="form-control-label" for="bairro">bairro<span class="small text-danger">*</span></label>
                                         <input type="text" id="bairro" class="form-control" name="bairro" value="{{old('bairro', $empresa->bairro)}}">
                                         @error('bairro')
                                             <small style="color: red">{{$message}}</small>

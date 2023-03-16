@@ -36,7 +36,7 @@ class RestauranteController extends Controller
         //$restaurantes = Restaurante::all();
 
         // Se ADMINISTRADOR, visualiza todos os RESTAURANTES, caso contrário, NUTRICIONISTA, só ao qual pertence
-        // Obs: Esta condição abaixo, só era faria sentido, se o USUÁRIO NUTRICIONISTA DA SEDES tivesse acesso 
+        // Obs: Esta condição abaixo, só era faria sentido, se o USUÁRIO NUTRICIONISTA DA SEDES tivesse acesso
         //      ao cadastro do restaurante ao qual o mesmo era responsável. Esta condição pode ser suprimida ficando
         //      apnenas a seguinte linha: $restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
         if(Auth::user()->perfil == 'adm'){
@@ -95,7 +95,7 @@ class RestauranteController extends Controller
             $responsaveis = "<span style='font-size: 10px; color: blue'>SEDES: </span>".$restaurante->user->nomecompleto." / ". $restaurante->user->telefone." / ".$restaurante->user->email."<br> <span style='font-size: 10px; color: blue'>EMPRESA: </span>".$restaurante->nutricionista->nomecompleto." / ". $restaurante->nutricionista->telefone." / ".$restaurante->nutricionista->email;
             $compras = $restaurante->qtdcomprasvinc($restaurante->id);
             $ativo = ($restaurante->ativo == 1) ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times  text-danger mr-2'></i></b>";
-            
+
 
             // ações
             $actionShow = "<a href='".route('admin.restaurante.show', $id)."' title='exibir'><i class='fas fa-eye text-warning mr-2'></i></a>";
@@ -106,7 +106,7 @@ class RestauranteController extends Controller
             }else{
                 $actionDelete = "<a title='há compras vinculadas!'><i class='fas fa-trash text-secondary mr-2'></i></a>";
             }
-            
+
 
             $actions = $actionShow. " ".$actionEdit. " ".$actionDelete;
 
@@ -133,7 +133,9 @@ class RestauranteController extends Controller
         ***********************************************************************************************************/
 
 
-        // Total records
+        // Total records.
+        // Obs: Como serão realizadas pesquisas apenas nos campos "identificacao e municipio" penso que não há a necessidade
+        //      de utilizarmos os joins: ->join('users', ....) e  ->join('nutricionistas', ...) mas, em todo caso...!!!,
         $totalRecords = Restaurante::select('count(*) as allcount')->count();
         $totalRecordswithFilter = DB::table('restaurantes')
             ->join('municipios', 'municipios.id', '=', 'restaurantes.municipio_id')
@@ -149,7 +151,7 @@ class RestauranteController extends Controller
         ->join('municipios', 'municipios.id', '=', 'restaurantes.municipio_id')
         ->join('users', 'users.id', '=', 'restaurantes.user_id')
         ->join('nutricionistas', 'nutricionistas.id', '=', 'restaurantes.nutricionista_id')
-        ->select('restaurantes.id', 'restaurantes.identificacao', 'restaurantes.ativo', 
+        ->select('restaurantes.id', 'restaurantes.identificacao', 'restaurantes.ativo',
                  'municipios.nome AS municipio',
                  'users.nomecompleto AS nomeusersedes', 'users.email AS emailusersedes', 'users.telefone AS telefoneusersedes',
                  'nutricionistas.nomecompleto AS nomenutricionista', 'nutricionistas.email AS emailnutricionista', 'nutricionistas.telefone AS telefonenutricionista')
@@ -171,7 +173,7 @@ class RestauranteController extends Controller
             $responsaveis = "<span style='font-size: 10px; color: blue'>SEDES: </span>".$restaurante->nomeusersedes." / ". $restaurante->telefoneusersedes." / ".$restaurante->emailusersedes."<br> <span style='font-size: 10px; color: blue'>EMPRESA: </span>".$restaurante->nomenutricionista." / ". $restaurante->telefonenutricionista." / ".$restaurante->emailnutricionista;
             $compras = DB::table('compras')->where('restaurante_id', '=', $id)->count();
             $ativo = ($restaurante->ativo == 1) ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times  text-danger mr-2'></i></b>";
-            
+
 
             // ações
             $actionShow = "<a href='".route('admin.restaurante.show', $id)."' title='exibir'><i class='fas fa-eye text-warning mr-2'></i></a>";
@@ -182,7 +184,7 @@ class RestauranteController extends Controller
             }else{
                 $actionDelete = "<a title='há compras vinculadas!'><i class='fas fa-trash text-secondary mr-2'></i></a>";
             }
-            
+
 
             $actions = $actionShow. " ".$actionEdit. " ".$actionDelete;
 

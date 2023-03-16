@@ -106,7 +106,8 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{route('admin.ajaxgetRestaurantes')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
-                // Obs: Para fazer a ordenação, o nome das colunas abaixo, devem conicidir com o nome dos campos retornados pela query na recuperação dos registros desejados
+                // Obs: O corpo da tabela com o dados e os ícones das ações (show, edit e delete), é construido no método "ajaxgetRestaurantes" do controller RestauranteController
+                // Obs: Para fazer a ordenação, o nome das colunas abaixo, devem conincidir com o nome dos campos retornados pela query na recuperação dos registros desejados
                 columns: [
                     { data: 'id' },
                     { data: 'municipio' },
