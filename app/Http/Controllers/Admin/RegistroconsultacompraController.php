@@ -1646,7 +1646,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 83px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -1817,7 +1817,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 83px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -1949,7 +1949,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 83px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2047,7 +2047,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 83px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2146,7 +2146,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 83px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2236,7 +2236,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 83px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2326,7 +2326,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 83px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2417,7 +2417,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2534,7 +2534,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2647,7 +2647,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2771,7 +2771,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -2888,7 +2888,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3004,7 +3004,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3119,7 +3119,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3242,7 +3242,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3363,7 +3363,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3474,7 +3474,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3584,7 +3584,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3698,7 +3698,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3809,7 +3809,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
@@ -3915,7 +3915,7 @@ class RegistroconsultacompraController extends Controller
             <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
                 <tr>
                     <td style="width: 108px">
-                        <img src="images/logo-ma.png" width="80"/>
+                        <img src="images/logo-ma.png" width="100"/>
                     </td>
                     <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                         Governo do Estado do Maranhão<br>
