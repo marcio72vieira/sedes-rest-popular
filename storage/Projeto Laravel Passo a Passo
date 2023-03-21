@@ -120,6 +120,18 @@ classes:
   }
 }
 
+
+===========================
+ALTERANDO A IMAGEM DO LOGIN
+===========================
+1 - Copiar o arquivo de imagem logo-ma.png para a pasta:
+    /home/marcio/ProjetosLaravel/sedes-rest-popular/public/template/img/logo-ma.png
+2 - No arquivo: /home/marcio/ProjetosLaravel/sedes-rest-popular/public/template/css/sb-admin-2.min.css alterar os seletores conforme necessidade:
+    ORIGINAL: {background:url(../img/capa_restaurant.svg);background-position:center;background-size:400px 600px;background-repeat:no-repeat;background-color:var(--purple); }
+    ALTERADO: {background:url(../img/logo-ma.png);background-position:center;background-size:400px 150px;background-repeat:no-repeat;background-color:var(--purple); }
+
+
+
 ===============================
 RESOLVENDO PROBLEMA DO GROUP BY
 ==============================

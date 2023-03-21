@@ -6,8 +6,11 @@
 
     <!-- Sidebar - Brand -->
     <br>
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-text mx-3">RESTAURANTE POPULAR <br> </div>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" style="margin-top: 30px; margin-bottom: 30px">
+        <div class="sidebar-brand-text mx-3">
+            <img src="{{asset('images/logo-ma.png')}}" width="150"><br>
+            RESTAURANTE POPULAR
+        </div>
     </a>
 
     <!-- Divider -->
@@ -17,7 +20,7 @@
     @can("adm")
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            {{-- Dashboard sendo a rota como do tipo resource  
+            {{-- Dashboard sendo a rota como do tipo resource
             <a class="nav-link" href="{{ route('admin.dashboard.index') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>
@@ -149,7 +152,7 @@
             -->
         @endcan
 
-        
+
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompra"
@@ -167,10 +170,10 @@
                 </div>
             </div>
         </li>
-    
+
         <hr class="sidebar-divider d-none d-md-block">
-    
-            
+
+
 
 
     <!-- Sidebar Toggler (Sidebar) -->

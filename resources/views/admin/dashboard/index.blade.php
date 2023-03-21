@@ -614,7 +614,7 @@
                         <div style="height:400px; overflow: auto;">
                             <table class="tabelaentidade">
                                 @php
-                                    //Dados vindo da view via método compact
+                                    //Dados vindo do controller (DashboardController) através da view via método compact
                                     if(count($usuarios))  {
                                         echo "<tr><td colspan='3' class='titulotabelavisualizacao'>USUÁRIOS</td></tr>";
                                         echo "<tr>
@@ -1188,7 +1188,7 @@
                 //Limpa espaço em branco no texto do link tipodados
                 entidade = $(this).text().trim();
 
-                //Faz requisição para obter novos dados
+                //Faz requisição para obter novos dados. Obs: "entidade" é uma variável global, sua definição pode ser lida em todo o código
                 $.ajax({
                     url:"{{route('admin.dashboard.ajaxrecuperadadosentidades')}}",    //urltipo
                     type: "GET",
@@ -1882,14 +1882,14 @@
                 datasets: [
                     {
                         label: 'Compra Normal',
-                        backgroundColor: 'rgb(255, 0, 0, 0.5)',
+                        backgroundColor: 'rgb(255, 0, 0, 0.3)',
                         borderColor: 'rgb(255, 0, 0, 0.1)',
                         data: [ {{ implode(',', $dataNormal) }} ],
                         fill: true  // para gráfico do tipo linha
                     },
                     {
                         label: 'Compra AF',
-                        backgroundColor: 'rgb(0, 0, 255, 0.5)',
+                        backgroundColor: 'rgb(0, 0, 255, 0.3)',
                         borderColor: 'rgb(0, 0, 255, 0.1)',
                         data: [ {{ implode(',', $dataAf) }} ],
                         fill: true  // para gráfico do tipo linha
@@ -1912,6 +1912,9 @@
                     subtitle: {
                         display: true,
                         text: 'Compras Gerais'
+                    },
+                    datalabels: {
+                        color: '#0000ff'
                     }
                 }
             }
@@ -1933,14 +1936,14 @@
                     datasets: [
                         {
                             label: 'Compra Normal',
-                            backgroundColor: 'rgb(255, 0, 0, 0.5)',
+                            backgroundColor: 'rgb(255, 0, 0, 0.3)',
                             borderColor: 'rgb(255, 0, 0, 0.1)',
                             data: comprasNORM,
                             fill: true  // para gráfico do tipo linha
                         },
                         {
                             label: 'Compra AF',
-                            backgroundColor: 'rgb(0, 0, 255, 0.5)',
+                            backgroundColor: 'rgb(0, 0, 255, 0.3)',
                             borderColor: 'rgb(0, 0, 255, 0.1)',
                             data: comprasAF,
                             fill: true  // para gráfico do tipo linha
@@ -1964,6 +1967,9 @@
                             display: true,
                             //text: titulo != 'GERAL' ? titulo : 'Compras Gerais'
                             text: subtitulo
+                        },
+                        datalabels: {
+                            color: '#0000ff'
                         }
                     }
                 }
@@ -2005,7 +2011,9 @@
                     $("#informacoes").append('<tr><td class="infolabel">CPF:</td><td class="infodados">' + result['dados'].cpf + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">CRN:</td><td class="infodados">' + (result['dados'].crn != null ? result['dados'].crn : "") + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Município:</td><td class="infodados">' + result['dados'].municipio.nome + '</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel">Restaurante:</td><td class="infodados">' + (result['dados'].perfil == "nut" || result['dados'].perfil == "ina"  ? result['dados'].restaurante.identificacao : "") + '</td></tr>');
+                    // Obs: Anteriormente, se um Usuario Nutriciionista (nut ou ina) não estivesse associado a um Restaurante, o código gerava um erro de javascript, visto que restaurante vinha como null e esse teste não era realizado como no código comentado abaixo:
+                    //      $("#informacoes").append('<tr><td class="infolabel">Restaurante:</td><td class="infodados">' + (result['dados'].perfil == "nut" || result['dados'].perfil == "ina"  ? result['dados'].restaurante.identificacao : "") + '</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel">Restaurante:</td><td class="infodados">' + (result['dados'].perfil == "nut" || result['dados'].perfil == "ina"  ? (result['dados'].restaurante == null ? "" : result['dados'].restaurante.identificacao) : "") + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">E-mail:</td><td class="infodados">' + result['dados'].email + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Telefone:</td><td class="infodados">' + result['dados'].telefone + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Cadastrado:</td><td class="infodados">' + mrc_formata_data(result['dados'].created_at) + '</td></tr>');
