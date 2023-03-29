@@ -192,7 +192,12 @@
                                     {{-- Unidade de Medida --}}
                                     <div class="col-lg-1">
                                         <div class="form-group focused">
-                                            <label class="form-control-label" for="medida_id"><strong>Medida</strong><span class="small text-danger">*</span></label>
+                                            <label class="form-control-label" for="medida_id"><strong>Medida</strong>
+                                                <span class="small text-danger">*</span>
+                                                <span>
+                                                    <a href="" data-toggle="modal" data-target="#exampleModalListaMedidas" class="listaMedidas" title="Lista de medidas adotadas"><i class="fas fa-question-circle"></i></a>
+                                                </span>
+                                            </label>
                                         </div>
                                     </div>
 
@@ -394,6 +399,42 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+          {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal lista de medidas adotadas -->
+  <div class="modal fade modalListaMedidas" id="exampleModalListaMedidas" tabindex="-1" aria-labelledby="exampleModalLabelListaMedidas" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelListaMedidas">LISTA DE MEDIDAS (Unidades de Medidas)</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-sm">
+                <thead style="background-color: #f6f6fa;">
+                  <tr>
+                    <th scope="col">Medida</th>
+                    <th scope="col">Símbolo (abreviação)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    @foreach($medidas  as $medida)
+                        <tr class="destaque">
+                            <td>{{$medida->nome}}</td>
+                            <td>{{$medida->simbolo}}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+              </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
           {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
         </div>
       </div>
