@@ -32,29 +32,6 @@ class DashboardController extends Controller
         $mes_corrente = date('m');
         $ano_corrente = date('Y');
 
-        ///
-        // Meses e anos para popular campos selects
-        $mesespesquisa = [
-            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
-            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
-        ];
-
-        $anoimplantacao = 2023;
-        $anoatual = date("Y");
-        $anospesquisa = [];
-        $anos = [];
-
-        if($anoimplantacao >= $anoatual){
-            $anospesquisa[] = $anoatual;
-        }else{
-            $qtdanosexibicao = $anoatual - $anoimplantacao;
-            for($a = $qtdanosexibicao; $a >= 0; $a--){
-                $anos[] = $anoatual - $a;
-            }
-            $anospesquisa = array_reverse($anos);
-        }
-        ///
-
         //Recuperando registros e seus totais para cards e menu de contexto do gráfico comparativo mês a mês e monitor
         $totEmpresas =  Empresa::all()->count();
         $totNutricionistas =  Nutricionista::all()->count();
@@ -151,7 +128,7 @@ class DashboardController extends Controller
         //Dados USUÁRIOS para preencher tabela Visualização Rápida na view
         $usuarios = $records = DB::select(DB::raw('SELECT id, nomecompleto, perfil FROM users ORDER BY nomecompleto ASC'));
 
-        return view('admin.dashboard.index', compact('mesespesquisa', 'anospesquisa', 'totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral',
+        return view('admin.dashboard.index', compact('totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral',
                         'totComprasMes', 'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totMunicipios',
                         'totUsuarios', 'regionais', 'categorias', 'produtos', 'dataRecords', 'usuarios',
                         'compras_af', 'compras_norm'));

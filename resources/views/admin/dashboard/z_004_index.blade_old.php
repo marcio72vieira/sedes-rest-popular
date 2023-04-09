@@ -8,34 +8,9 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        {{-- 
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                <i class="fas fa-download fa-sm text-white-50"></i> 
-                Generate Report
-            </a> 
-        --}}
-            
-        <div id="mesesanosparapesquisa" class="col-md-2 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px">
-            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm">
-                <option value="" selected disabled>Mês...</option>
-                @foreach($mesespesquisa as $key => $value)
-                    {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
-                    {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
-                    <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
-                @endforeach
-            </select>
-            &nbsp;&nbsp;
-            <select id="selectAnosPesquisa_id" class="form-control col-form-label-sm">
-                <option value="" selected disabled>Ano...</option>
-                @foreach($anospesquisa as $value)
-                    <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
-                @endforeach
-            </select>
-        </div>
+        {{-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> --}}
     </div>
-
-    
-    
 
 
     <!-- INICIO Content Row CARDS-->
@@ -944,109 +919,6 @@
                     }
                 });
             });
-
-
-
-
-
-
-
-
-
-
-
-            //####### INÍCIO PESQUISA POR MESES E ANOS ##################
-            // Forma alternativa de resgatar o valor de um option da tag select. Atribui-se uma classe diretamente em
-            // cada option do select (optionMesPesquisa) e depois utiliza-se o evento 'click' sobre a classe desejada conforme abaixo:
-            // $('.optionMesPesquisa').on('click', function() { var mespesquisa = $(this).data('mespesquisa'); alert(mespesquisa); });
-            // $('.optionAnoPesquisa').on('click', function() { var anopesquisa = $(this).data('anopesquisa'); alert(anopesquisa); });
-
-            
-            $('#selectMesPesquisa_id').on('change', function() {
-                //Resgatando o mês e o ano selecionados
-                //var mespesquisa = $(this).find(':selected').data('mespesquisa'); OU
-                var mespesquisa = this.value;
-                var anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnosPesquisa_id").val();
-
-                
-                alert(mespesquisa + " - " + anopesquisa);
-
-                /*
-                //Limpa espaço em branco no texto do link tipodados
-                tipodados = $(this).text().trim();
-
-                var urltipo = "";
-
-                //Faz requisição para obter novos dados
-                $.ajax({
-                    url:"{{route('admin.dashboard.ajaxrecuperadadosgrafico')}}",    //urltipo
-                    type: "GET",
-                    data: {
-                        tipodados: tipodados
-                    },
-                    dataType : 'json',
-
-                    //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo como resultado, temos:
-                    //      result['titulo'] que é uma string e result['dados'] que é um array
-                    success: function(result){
-
-                        //Zerando o valor das variáveis globais do tipo array
-                        valorLabels = [];
-                        valorData = [];
-                        somaCompra = 0;
-                        porcentagemCompra = 0;
-                        valorTituloGrafico = "";
-
-                        //Iterando sobre o array['dados'] e // Obtém o valor da soma de todas as compras realizadas, para cálculo da %
-                        $.each(result['dados'], function(key,value){
-                            valorLabels.push(key);
-                            valorData.push(value);
-                            somaCompra = somaCompra += Number(value);
-                        });
-
-                        valorTituloGrafico = result['titulo'];
-
-                        //Se tipo é igual a espaço em branco, é porque nenhum outro estilo de gráfico foi escolhido, permanecendo portanto o padrão "bar"
-                        if(estilo == ""){estilo = "bar";}
-
-                        //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
-
-                        //Atualiza a tabela tradução
-                        $(".tabelatraducao").html('');
-                        $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
-                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td><td class="subtitulovalortraducao">%</td></tr>');
-
-                        //Itera sobre os dados retornados pela requisição Ajax
-                        $.each(result['dados'], function(key,value){
-                            // Calcula a porcentagem da compra do produto atual
-                            porcentagemCompra = ((value * 100) / somaCompra);
-
-                            $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + key + '</td><td class="dadosvalor">' + number_format(value,2,",",".") + '</td><td class="dadosvalor">' + number_format(porcentagemCompra,2,",",".") + '</td></tr>');
-                            //somaCompra = somaCompra += Number(value);
-                        });
-
-                        $(".tabelatraducao").append('<tr class="totaldadosvalor"><td class="dadoslabel">Total GERAL</td><td class="dadosvalor">' + number_format(somaCompra,2,",",".") + '</td><td class="dadosvalor">' + number_format(100,2,",",".") + '</td></tr>');
-                    },
-                    error: function(result){
-                        alert("Error ao retornar dados!");
-                    }
-                });
-                */
-            });
-            
-
-            //####### FIM PESQUISA POR MESES E ANOS ##################
-
-
-
-
-
-
-
-
-
-
 
 
             //####### MONITOR ##################
