@@ -174,6 +174,7 @@ Route::get('admin/registroconsultacompra/comparativomensalgeralcategoria',[Regis
 //Route::get('admin/dashboard/ajaxgraficodadoscategoria', [DashboardController::class, 'ajaxgraficodadoscategoria'])->name('admin.dashboard.ajaxgraficodadoscategoria')->middleware(['auth']);
 //Route::get('admin/dashboard/ajaxgraficodadosregional', [DashboardController::class, 'ajaxgraficodadosregional'])->name('admin.dashboard.ajaxgraficodadosregional')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgrafico', [DashboardController::class, 'ajaxrecuperadadosgrafico'])->name('admin.dashboard.ajaxrecuperadadosgrafico')->middleware(['auth']);
+Route::get('admin/dashboard/ajaxrecuperadadosgraficomesesanospesquisa', [DashboardController::class, 'ajaxrecuperadadosgraficomesesanospesquisa'])->name('admin.dashboard.ajaxrecuperadadosgraficomesesanospesquisa')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhado', [DashboardController::class, 'ajaxrecuperadadosgraficoempilhado'])->name('admin.dashboard.ajaxrecuperadadosgraficoempilhado')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgraficoempilhadocategoriaproduto', [DashboardController::class, 'ajaxrecuperadadosgraficoempilhadocategoriaproduto'])->name('admin.dashboard.ajaxrecuperadadosgraficoempilhadocategoriaproduto')->middleware(['auth']);
 

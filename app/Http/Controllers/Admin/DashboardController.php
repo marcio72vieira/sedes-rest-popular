@@ -206,6 +206,55 @@ class DashboardController extends Controller
 
 
 
+
+    public function ajaxrecuperadadosgraficomesesanospesquisa(Request $request)
+    {
+        $tipodados = $request->tipodados;
+        $mes_corrente = $request->mescorrente;
+        $ano_corrente = $request->anocorrente;
+
+        $data = [];
+        $dataRecords = [];
+        $records = "";
+
+        switch($tipodados){
+            case "Produtos":
+                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR PRODUTOS ";
+            break;
+            case "Categorias":
+                $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY categoria_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR CATEGORIAS";
+            break;
+            case "Regionais":
+                $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR REGIONAIS";
+            break;
+        }
+
+
+        // foreach($records as $value) {
+        //     $dataRecords[$value->nome] =  $value->totalcompra;
+        // }
+
+        if(count($records) > 0){
+            foreach($records as $value) {
+                $dataRecords[$value->nome] =  $value->totalcompra;
+            }
+        }else{
+            $dataRecords[''] =  0;
+        }
+
+
+        $data['dados'] =  $dataRecords;
+
+        return response()->json($data);
+    }
+
+
+    
+
+
     public function ajaxrecuperadadosgraficoempilhado(Request $request)
     {
         $tipodados = $request->tipodados;

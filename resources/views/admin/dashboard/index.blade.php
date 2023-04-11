@@ -815,7 +815,11 @@
                 if(tipodados == ""){
                     renderGrafico(estilo);
                 }else{
-                    //Obs: Nesse momento valorTituloGrafico recebe o valor definido globalmente.
+                    //Obs: Nesse momento valorTituloGrafico recebe o valor definido globalmente. 
+                    //Obs: Os valores dos parâmetros para a função "renderGraficoDinamico()" são obtidos 
+                    //     a partir dos valores definidos quando for executado o script Jquery ($(".tipodadosgraficopadrao").on("click", function(){...})) localizado em algum 
+                    //     trecho de código abaixo. Se nenhum outro tipo de dados (produto, categoria, reginal) for escolhido, o gráfico a ser renderizado continuará a ser o 
+                    //     de produto, mudando-se apenas o estilo, só que desta vez, fazendo uso da função renderGraficoDinamico()
                     renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
                 }
 
@@ -969,20 +973,34 @@
                 var anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnosPesquisa_id").val();
 
                 
-                alert(mespesquisa + " - " + anopesquisa);
+                //alert(mespesquisa + " - " + anopesquisa);
+                if(tipodados == ""){
+                    tipodados = "Produtos";
+                }else{
+                    tipodados = tipodados;
+                }
 
-                /*
+                
+
+                
+
+                
                 //Limpa espaço em branco no texto do link tipodados
-                tipodados = $(this).text().trim();
+                //tipodados = $(this).text().trim();
+                //tipodados = "Produtos";
+                alert(tipodados);
+                
 
                 var urltipo = "";
 
                 //Faz requisição para obter novos dados
                 $.ajax({
-                    url:"{{route('admin.dashboard.ajaxrecuperadadosgrafico')}}",    //urltipo
+                    url:"{{route('admin.dashboard.ajaxrecuperadadosgraficomesesanospesquisa')}}",    //urltipo
                     type: "GET",
                     data: {
-                        tipodados: tipodados
+                        tipodados: tipodados,
+                        mescorrente: mespesquisa,
+                        anocorrente: anopesquisa
                     },
                     dataType : 'json',
 
@@ -1032,7 +1050,7 @@
                         alert("Error ao retornar dados!");
                     }
                 });
-                */
+                
             });
             
 
@@ -1233,7 +1251,7 @@
             //Escolha de outro tipo de dados além do tipo padrão: "Produtos"
             $(".tipodadosgraficopadrao").on("click", function(){
 
-                //Limpa espaço em branco no texto do link tipodados
+                //Limpa espaço em branco no texto do link tipodados (Produtos, Categorias, Regionais)
                 tipodados = $(this).text().trim();
 
                 var urltipo = "";
@@ -1247,7 +1265,7 @@
                     },
                     dataType : 'json',
 
-                    //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo como resultado, temos:
+                    //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo, como resultado, temos:
                     //      result['titulo'] que é uma string e result['dados'] que é um array
                     success: function(result){
 
@@ -1471,7 +1489,7 @@
                     labels: [ {!! implode(',', $arrLabel) !!} ],    //labels: ['GRÃOS', 'HORTALIÇAS', 'PROTEINA ANIMAL', 'VERDURAS'],
                     datasets: [{
                         label: 'Produtos',
-                        data: [ {{ implode(',', $dataRecords) }} ], //Dados vindo da view via método compact
+                        data: [ {{ implode(',', $dataRecords) }} ], //Dados vindo da view via método compact. São os valores propriamente ditos, ficando do tipo: [10, 30, 20.50, 70 ..etc]
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.5)',
                             'rgba(54, 162, 235, 0.5)',
