@@ -151,7 +151,7 @@ class DashboardController extends Controller
         //Dados USUÁRIOS para preencher tabela Visualização Rápida na view
         $usuarios = $records = DB::select(DB::raw('SELECT id, nomecompleto, perfil FROM users ORDER BY nomecompleto ASC'));
 
-        return view('admin.dashboard.index', compact('mesespesquisa', 'anospesquisa', 'totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral',
+        return view('admin.dashboard.index', compact('mes_corrente','ano_corrente','mesespesquisa', 'anospesquisa', 'totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral',
                         'totComprasMes', 'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totMunicipios',
                         'totUsuarios', 'regionais', 'categorias', 'produtos', 'dataRecords', 'usuarios',
                         'compras_af', 'compras_norm'));
@@ -160,10 +160,13 @@ class DashboardController extends Controller
 
     public function ajaxrecuperadadosgrafico(Request $request)
     {
-        $tipodados = $request->tipodados;
+        // $tipodados = $request->tipodados;
+        // $mes_corrente = date('m');
+        // $ano_corrente = date('Y');
 
-        $mes_corrente = date('m');
-        $ano_corrente = date('Y');
+        $tipodados = $request->tipodados;
+        $mes_corrente = $request->mescorrente;
+        $ano_corrente = $request->anocorrente;
 
         $data = [];
         $dataRecords = [];
@@ -257,10 +260,13 @@ class DashboardController extends Controller
 
     public function ajaxrecuperadadosgraficoempilhado(Request $request)
     {
-        $tipodados = $request->tipodados;
+        // $tipodados = $request->tipodados;
+        // $mes_corrente = date('m');
+        // $ano_corrente = date('Y');
 
-        $mes_corrente = date('m');
-        $ano_corrente = date('Y');
+        $tipodados = $request->tipodados;
+        $mes_corrente = $request->mescorrente;
+        $ano_corrente = $request->anocorrente;
 
 
         $data = [];

@@ -16,7 +16,7 @@
         --}}
             
         <div id="mesesanosparapesquisa" class="col-md-2 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px">
-            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm">
+            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
                 <option value="" selected disabled>Mês...</option>
                 @foreach($mesespesquisa as $key => $value)
                     {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
@@ -25,7 +25,7 @@
                 @endforeach
             </select>
             &nbsp;&nbsp;
-            <select id="selectAnosPesquisa_id" class="form-control col-form-label-sm">
+            <select id="selectAnosPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
                 <option value="" selected disabled>Ano...</option>
                 @foreach($anospesquisa as $value)
                     <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
@@ -757,7 +757,13 @@
             //Renderiza o gráfico padrão com dados vindo do método compact da view, logo que a página é carregada.
             renderGrafico("bar");
 
+
             //Definindo as variáveis de forma Global (fora de qualquer função) para que possam ser acessadas livremente.
+            
+            // Mês e ano corrente (valores obtidos a partir da view)
+            var mespesquisa = "{{$mes_corrente}}";
+            var anopesquisa = "{{$ano_corrente}}";
+
             var estilo = "";
             var tipodados = "";
             var valorLabels = [];
@@ -802,12 +808,12 @@
             var identidade = 0;
             var identificadorreg = 0;
 
-
+            alert(mespesquisa + "/" + anopesquisa);
 
             //ALTERAÇÃO DO ESTILO DE GRÁFICO
             $('.estilografico').on('click', function() {
 
-                //Define o estilo do gráfico
+                //Define o estilo do gráfico (bar, horizontalBar, pie, line, doughnut)
                 estilo = $(this).data('estilo-grafico');
 
                 //Logo que a página é carregada, tipodado não está definido, então renderiza-se o gráfico padrão (bar) com os dados padrão (produtos), vindos
@@ -841,7 +847,9 @@
                     url:"{{route('admin.dashboard.ajaxrecuperadadosgraficoempilhado')}}",
                     type: "GET",
                     data: {
-                        tipodados: tipodadosEmpilhado
+                        tipodados: tipodadosEmpilhado,
+                        mescorrente: mespesquisa,
+                        anocorrente: anopesquisa
                     },
                     dataType : 'json',
 
@@ -966,36 +974,24 @@
             // $('.optionAnoPesquisa').on('click', function() { var anopesquisa = $(this).data('anopesquisa'); alert(anopesquisa); });
 
             
-            $('#selectMesPesquisa_id').on('change', function() {
+            $('.selectsmesesanospesquisa').on('change', function() {
                 //Resgatando o mês e o ano selecionados
-                //var mespesquisa = $(this).find(':selected').data('mespesquisa'); OU
-                var mespesquisa = this.value;
-                var anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnosPesquisa_id").val();
-
+                mespesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectMesPesquisa_id").val();
+                anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnosPesquisa_id").val();
                 
-                //alert(mespesquisa + " - " + anopesquisa);
                 if(tipodados == ""){
                     tipodados = "Produtos";
                 }else{
                     tipodados = tipodados;
                 }
 
+                alert(tipodados + ": " + mespesquisa + "/" + anopesquisa);
                 
-
                 
-
-                
-                //Limpa espaço em branco no texto do link tipodados
-                //tipodados = $(this).text().trim();
-                //tipodados = "Produtos";
-                alert(tipodados);
-                
-
-                var urltipo = "";
-
                 //Faz requisição para obter novos dados
                 $.ajax({
-                    url:"{{route('admin.dashboard.ajaxrecuperadadosgraficomesesanospesquisa')}}",    //urltipo
+                    //url:"{{route('admin.dashboard.ajaxrecuperadadosgraficomesesanospesquisa')}}",    //urltipo
+                    url:"{{route('admin.dashboard.ajaxrecuperadadosgrafico')}}",    //urltipo
                     type: "GET",
                     data: {
                         tipodados: tipodados,
@@ -1261,7 +1257,9 @@
                     url:"{{route('admin.dashboard.ajaxrecuperadadosgrafico')}}",    //urltipo
                     type: "GET",
                     data: {
-                        tipodados: tipodados
+                        tipodados: tipodados,
+                        mescorrente: mespesquisa,
+                        anocorrente: anopesquisa
                     },
                     dataType : 'json',
 
@@ -2414,6 +2412,16 @@
             txtdadosarray += value.nomecompleto + " "+ value.telefone + "<br>";
             //$("#informacoes").append('<tr><td class="infolabel">Nutricionistas:</td><td class="infodados">'+ txtdadosarray +'</td></tr>');
         }
+
+
+        //*****************************************
+        // FORMAS DE SELECIONAR OPTIONS DOS SELECTS 
+        //*****************************************
+        $('#selectMesPesquisa_id').on('change', function() {
+        //Resgatando o mês e o ano selecionados
+        //var mespesquisa = $(this).find(':selected').data('mespesquisa'); OU
+        var mespesquisa = this.value;
+        var anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnosPesquisa_id").val();
         */
 
     </script>
