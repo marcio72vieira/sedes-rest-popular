@@ -8,13 +8,13 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        {{-- 
+        {{--
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                <i class="fas fa-download fa-sm text-white-50"></i> 
+                <i class="fas fa-download fa-sm text-white-50"></i>
                 Generate Report
-            </a> 
+            </a>
         --}}
-            
+
         <div id="mesesanosparapesquisa" class="col-md-2 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px">
             <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
                 <option value="" selected disabled>Mês...</option>
@@ -34,8 +34,8 @@
         </div>
     </div>
 
-    
-    
+
+
 
 
     <!-- INICIO Content Row CARDS-->
@@ -754,13 +754,13 @@
     <script>
         $(document).ready(function() {
 
-            
+
             //Definindo as variáveis de forma Global (fora de qualquer função) para que possam ser acessadas livremente.
-            
+
             // Mês e ano corrente (valores obtidos a partir da view)
             var mespesquisa = "{{$mes_corrente}}";
             var anopesquisa = "{{$ano_corrente}}";
-            var titulomesanoatual = "{{$mesespesquisa[$mes_corrente]}} " + " - " + "{{$ano_corrente}}"; 
+            var titulomesanoatual = "{{$mesespesquisa[$mes_corrente]}} " + " - " + "{{$ano_corrente}}";
 
             var estilo = "";
             var tipodados = "";
@@ -809,7 +809,7 @@
             //Renderiza o gráfico padrão com dados vindo do método compact da view, logo que a página é carregada.
             renderGrafico("bar", "COMPRAS POR PRODUTOS", titulomesanoatual);
 
-    
+
             //ALTERAÇÃO DO ESTILO DE GRÁFICO
             $('.estilografico').on('click', function() {
 
@@ -819,12 +819,12 @@
                 //Logo que a página é carregada, tipodado não está definido, então renderiza-se o gráfico padrão (bar) com os dados padrão (produtos), vindos
                 //do método compact da view
                 if(tipodados == ""){
-                    renderGrafico(estilo);
+                    renderGrafico(estilo, "COMPRAS POR PRODUTOS", titulomesanoatual);
                 }else{
-                    //Obs: Nesse momento valorTituloGrafico recebe o valor definido globalmente. 
-                    //Obs: Os valores dos parâmetros para a função "renderGraficoDinamico()" são obtidos 
-                    //     a partir dos valores definidos quando for executado o script Jquery ($(".tipodadosgraficopadrao").on("click", function(){...})) localizado em algum 
-                    //     trecho de código abaixo. Se nenhum outro tipo de dados (produto, categoria, reginal) for escolhido, o gráfico a ser renderizado continuará a ser o 
+                    //Obs: Nesse momento valorTituloGrafico recebe o valor definido globalmente.
+                    //Obs: Os valores dos parâmetros para a função "renderGraficoDinamico()" são obtidos
+                    //     a partir dos valores definidos quando for executado o script Jquery ($(".tipodadosgraficopadrao").on("click", function(){...})) localizado em algum
+                    //     trecho de código abaixo. Se nenhum outro tipo de dados (produto, categoria, reginal) for escolhido, o gráfico a ser renderizado continuará a ser o
                     //     de produto, mudando-se apenas o estilo, só que desta vez, fazendo uso da função renderGraficoDinamico()
                     renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual);
                 }
@@ -966,12 +966,12 @@
             // $('.optionMesPesquisa').on('click', function() { var mespesquisa = $(this).data('mespesquisa'); alert(mespesquisa); });
             // $('.optionAnoPesquisa').on('click', function() { var anopesquisa = $(this).data('anopesquisa'); alert(anopesquisa); });
 
-            
+
             $('.selectsmesesanospesquisa').on('change', function() {
                 //Resgatando o mês e o ano selecionados
                 mespesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectMesPesquisa_id").val();
                 anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnoPesquisa_id").val();
-                
+
                 // Título para compor cabeçalho da tabela de "Tradução".
                 var mes = $("#selectMesPesquisa_id").find('option:selected').text();
                 var ano = $("#selectAnoPesquisa_id").find('option:selected').text();
@@ -982,7 +982,7 @@
                 }else{
                     tipodados = tipodados;
                 }
-                
+
                 //Faz requisição para obter novos dados
                 $.ajax({
                     //url:"{{route('admin.dashboard.ajaxrecuperadadosgraficomesesanospesquisa')}}",    //urltipo
@@ -1041,9 +1041,9 @@
                         alert("Error ao retornar dados!");
                     }
                 });
-                
+
             });
-            
+
             //#######                               ##################
             //####### FIM PESQUISA POR MESES E ANOS ##################
             //########################################################
@@ -1719,7 +1719,7 @@
                         datalabels: {
                             color: '#0000ff'
                         }
-                    }, 
+                    },
                     */
                     /*
                     title: {
@@ -2040,7 +2040,7 @@
                     /* title: {
                         display: true,
                         text: titulomesano
-                    }, 
+                    },
                     */
                     legend: {
                         display: false,
@@ -2463,7 +2463,7 @@
 
 
         //*****************************************
-        // FORMAS DE SELECIONAR OPTIONS DOS SELECTS 
+        // FORMAS DE SELECIONAR OPTIONS DOS SELECTS
         //*****************************************
         $('#selectMesPesquisa_id').on('change', function() {
         //Resgatando o mês e o ano selecionados
