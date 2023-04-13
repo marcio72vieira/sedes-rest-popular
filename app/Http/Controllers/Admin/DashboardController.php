@@ -40,7 +40,7 @@ class DashboardController extends Controller
             '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
         ];
 
-        $anoimplantacao = 2020;
+        $anoimplantacao = 2023;
         $anoatual = date("Y");
         $anospesquisa = [];
         $anos = [];
