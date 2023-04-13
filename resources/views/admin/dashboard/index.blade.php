@@ -25,7 +25,7 @@
                 @endforeach
             </select>
             &nbsp;&nbsp;
-            <select id="selectAnosPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
+            <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
                 <option value="" selected disabled>Ano...</option>
                 @foreach($anospesquisa as $value)
                     <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
@@ -384,7 +384,7 @@
                                 // Evitando erro de divisão por zero
                                 // $somacompra = ($somacompra > 0 ? $somacompra : 1);
 
-                                echo "<tr><td colspan='3' class='titulotraducao'>COMPRAS POR PRODUTOS</td></tr>";
+                                echo "<tr><td colspan='3' class='titulotraducao'>COMPRAS POR PRODUTOS<br><span class='titulomesanoatual' style='font-size: 12px;'>".$mesespesquisa[$mes_corrente]." - ".$ano_corrente."</span></td></tr>";
                                 echo "<tr><td class='subtitulolabeltraducao'>Nome</td><td class='subtitulovalortraducao'>Valor</td><td class='subtitulovalortraducao'>%</td>";
                                 echo "</tr>";
 
@@ -754,15 +754,13 @@
     <script>
         $(document).ready(function() {
 
-            //Renderiza o gráfico padrão com dados vindo do método compact da view, logo que a página é carregada.
-            renderGrafico("bar");
-
-
+            
             //Definindo as variáveis de forma Global (fora de qualquer função) para que possam ser acessadas livremente.
             
             // Mês e ano corrente (valores obtidos a partir da view)
             var mespesquisa = "{{$mes_corrente}}";
             var anopesquisa = "{{$ano_corrente}}";
+            var titulomesanoatual = "{{$mesespesquisa[$mes_corrente]}} " + " - " + "{{$ano_corrente}}"; 
 
             var estilo = "";
             var tipodados = "";
@@ -803,13 +801,15 @@
             var valorafMesaMesmonitor = [];
 
             //Informações rápidaas
-
             var entidade = "";
             var identidade = 0;
             var identificadorreg = 0;
 
-            alert(mespesquisa + "/" + anopesquisa);
 
+            //Renderiza o gráfico padrão com dados vindo do método compact da view, logo que a página é carregada.
+            renderGrafico("bar", "COMPRAS POR PRODUTOS", titulomesanoatual);
+
+    
             //ALTERAÇÃO DO ESTILO DE GRÁFICO
             $('.estilografico').on('click', function() {
 
@@ -826,7 +826,7 @@
                     //     a partir dos valores definidos quando for executado o script Jquery ($(".tipodadosgraficopadrao").on("click", function(){...})) localizado em algum 
                     //     trecho de código abaixo. Se nenhum outro tipo de dados (produto, categoria, reginal) for escolhido, o gráfico a ser renderizado continuará a ser o 
                     //     de produto, mudando-se apenas o estilo, só que desta vez, fazendo uso da função renderGraficoDinamico()
-                    renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
+                    renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual);
                 }
 
             });
@@ -876,11 +876,11 @@
                         valorTituloGrafico = result['titulo'];
 
                         //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamicoEmpilhado(valorLabels, valorDataNormal, valorDataAf, valorTituloGrafico);
+                        renderGraficoDinamicoEmpilhado(valorLabels, valorDataNormal, valorDataAf, valorTituloGrafico, titulomesanoatual);
 
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
-                        $(".tabelatraducao").append('<tr><td colspan="6" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
+                        $(".tabelatraducao").append('<tr><td colspan="6" class="titulotraducao">'+ valorTituloGrafico +'<br><span class="titulomesanoatual" style="font-size: 12px;">'+ titulomesanoatual + '</span></td></tr>');
                         $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">'+ tipodadosEmpilhado +'</td><td class="subtitulovalortraducao">Normal</td><td class="subtitulovalortraducao">AF</td><td class="subtitulovalortraducao">Total</td><td class="subtitulovalortraducao">% Normal</td><td class="subtitulovalortraducao">% AF</td></tr>');
 
                         //Itera sobre os dados retornados pela requisição Ajax
@@ -958,16 +958,9 @@
             });
 
 
-
-
-
-
-
-
-
-
-
+            //###########################################################
             //####### INÍCIO PESQUISA POR MESES E ANOS ##################
+            //#######                                  ##################
             // Forma alternativa de resgatar o valor de um option da tag select. Atribui-se uma classe diretamente em
             // cada option do select (optionMesPesquisa) e depois utiliza-se o evento 'click' sobre a classe desejada conforme abaixo:
             // $('.optionMesPesquisa').on('click', function() { var mespesquisa = $(this).data('mespesquisa'); alert(mespesquisa); });
@@ -977,16 +970,18 @@
             $('.selectsmesesanospesquisa').on('change', function() {
                 //Resgatando o mês e o ano selecionados
                 mespesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectMesPesquisa_id").val();
-                anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnosPesquisa_id").val();
+                anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnoPesquisa_id").val();
                 
+                // Título para compor cabeçalho da tabela de "Tradução".
+                var mes = $("#selectMesPesquisa_id").find('option:selected').text();
+                var ano = $("#selectAnoPesquisa_id").find('option:selected').text();
+                titulomesanoatual = mes + " - " + ano;
+
                 if(tipodados == ""){
                     tipodados = "Produtos";
                 }else{
                     tipodados = tipodados;
                 }
-
-                alert(tipodados + ": " + mespesquisa + "/" + anopesquisa);
-                
                 
                 //Faz requisição para obter novos dados
                 $.ajax({
@@ -1024,11 +1019,11 @@
                         if(estilo == ""){estilo = "bar";}
 
                         //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
+                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual);
 
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
-                        $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
+                        $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico + '<br><span class="titulomesanoatual" style="font-size: 12px;">'+ titulomesanoatual + '</span></td></tr>');
                         $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td><td class="subtitulovalortraducao">%</td></tr>');
 
                         //Itera sobre os dados retornados pela requisição Ajax
@@ -1049,17 +1044,9 @@
                 
             });
             
-
+            //#######                               ##################
             //####### FIM PESQUISA POR MESES E ANOS ##################
-
-
-
-
-
-
-
-
-
+            //########################################################
 
 
 
@@ -1287,11 +1274,11 @@
                         if(estilo == ""){estilo = "bar";}
 
                         //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico);
+                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual);
 
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
-                        $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico +'</td></tr>');
+                        $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico + '<br><span class="titulomesanoatual" style="font-size: 12px;">'+ titulomesanoatual + '</span></td></tr>');
                         $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td><td class="subtitulovalortraducao">%</td></tr>');
 
                         //Itera sobre os dados retornados pela requisição Ajax
@@ -1470,7 +1457,7 @@
         // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS BAR - HORIZONTALBAR - LINHA - ROSCA
         //**************************************************************************
         //Renderiza Gráfico com dados padrão Produtos e o estilo igual a "bar" (Dados vindos via método compac, da view).
-        function renderGrafico(estilo){
+        function renderGrafico(estilo, titulo, titulomesano){
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
             $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
@@ -1538,6 +1525,24 @@
                 },
                 plugins: [ChartDataLabels], // Exibe rótulo dos valores dentro dos gráficos
                 options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: titulo,
+                            padding: {
+                                top: 3,
+                                bottom: 3
+                            }
+                        },
+                        subtitle: {
+                            display: true,
+                            text: titulomesano //text: 'Compras Gerais'
+                        },
+                        // Change options for ALL labels of THIS CHART
+                        datalabels: {
+                            color: '#0000ff'
+                        }
+                    },
                     scales: {
                         // versão 2.9.4
                         /* yAxes: [{
@@ -1553,6 +1558,7 @@
                         }
                     },
                     // versão 3.9.1
+                    /*
                     plugins: {
                     // Change options for ALL labels of THIS CHART
                         datalabels: {
@@ -1563,6 +1569,7 @@
                         display: true,
                         text: 'COMPRAS POR PRODUTOS'
                     },
+                    */
                     legend: {
                         display: false,
                     },
@@ -1604,7 +1611,7 @@
 
 
 
-        function renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, titulo){
+        function renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, titulo, titulomesano){
 
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
@@ -1671,6 +1678,24 @@
                 },
                 plugins: [ChartDataLabels], // Exibe rótulo dos valores dentro dos gráficos
                 options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: titulo,
+                            padding: {
+                                top: 3,
+                                bottom: 3
+                            }
+                        },
+                        subtitle: {
+                            display: true,
+                            text: titulomesano //text: 'Compras Gerais'
+                        },
+                        // Change options for ALL labels of THIS CHART
+                        datalabels: {
+                            color: '#0000ff'
+                        }
+                    },
                     scales: {
                         /*
                         versao 2.9.4
@@ -1687,16 +1712,21 @@
                         }
                     },
                     // versão 3.9.1
+
+                    /*
                     plugins: {
                     // Change options for ALL labels of THIS CHART
                         datalabels: {
                             color: '#0000ff'
                         }
-                    },
+                    }, 
+                    */
+                    /*
                     title: {
                         display: true,
                         text: titulo
                     },
+                    */
                     legend: {
                         display: false,
                     },
@@ -1849,7 +1879,7 @@
         //*************************************************
         // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS EMPILHADO
         //*************************************************
-        function renderGraficoDinamicoEmpilhado(valorLabels, valorNormal, valorAf, titulo){
+        function renderGraficoDinamicoEmpilhado(valorLabels, valorNormal, valorAf, titulo, titulomesano){
 
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
@@ -1970,6 +2000,23 @@
                 },
                 plugins: [ChartDataLabels], // Exibe rótulo dos valores dentro dos gráficos
                 options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: titulo,
+                            padding: {
+                                top: 3,
+                                bottom: 3
+                            }
+                        },
+                        subtitle: {
+                            display: true,
+                            text: titulomesano //text: 'Compras Gerais'
+                        },
+                        datalabels: {
+                            color: '#0000ff'
+                        }
+                    },
                     scales: {
                         /*
                         // versão 2.9.4
@@ -1990,10 +2037,11 @@
                             stacked: true
                         }
                     },
-                    title: {
+                    /* title: {
                         display: true,
-                        text: titulo
-                    },
+                        text: titulomesano
+                    }, 
+                    */
                     legend: {
                         display: false,
                     },
@@ -2421,7 +2469,7 @@
         //Resgatando o mês e o ano selecionados
         //var mespesquisa = $(this).find(':selected').data('mespesquisa'); OU
         var mespesquisa = this.value;
-        var anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnosPesquisa_id").val();
+        var anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnoPesquisa_id").val();
         */
 
     </script>

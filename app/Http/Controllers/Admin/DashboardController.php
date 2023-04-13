@@ -29,17 +29,18 @@ class DashboardController extends Controller
     {
 
         // Definindo mês para computo dos dados OK!
-        $mes_corrente = date('m');
+        // $mes_corrente = date('m');   // número do mês no formato 01, 02, 03, 04 ..., 09, 10, 11, 12
+        $mes_corrente = date('n');      // número do mês no formato 1, 2, 3, 4 ..., 9, 10, 11, 12
         $ano_corrente = date('Y');
 
         ///
-        // Meses e anos para popular campos selects
+        // Meses e anos para popular campos selects. Obs: os índices do array não pode ser: 01, 02, 03, etc... por isso a configuração acima: $mes_corrente = date('n');
         $mesespesquisa = [
             '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
             '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
         ];
 
-        $anoimplantacao = 2023;
+        $anoimplantacao = 2020;
         $anoatual = date("Y");
         $anospesquisa = [];
         $anos = [];
