@@ -15,23 +15,10 @@
             </a>
         --}}
 
-        <div id="mesesanosparapesquisa" class="col-md-2 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px">
-            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
-                <option value="" selected disabled>Mês...</option>
-                @foreach($mesespesquisa as $key => $value)
-                    {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
-                    {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
-                    <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
-                @endforeach
-            </select>
-            &nbsp;&nbsp;
-            <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
-                <option value="" selected disabled>Ano...</option>
-                @foreach($anospesquisa as $value)
-                    <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
-                @endforeach
-            </select>
-        </div>
+        {{--
+            espaço original reservado para SELECTS MÊS E ANO DE PESQUISA PARA GRÁFICOS.
+            Script no final desta página
+        --}}
     </div>
 
 
@@ -304,7 +291,7 @@
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 
                     {{-- <h6 class="m-0 font-weight-bold text-primary">GRÁFICOS</h6>
                     <input type="month" id="start" name="start"> --}}
@@ -321,6 +308,31 @@
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Regionais</a>
                         </div>
                     </div>
+
+
+                    <div id="mesesanosparapesquisa" class="col-md-3 d-sm-flex justify-content-between">
+                        <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
+                            <option value="" selected disabled>Mês...</option>
+                            @foreach($mesespesquisa as $key => $value)
+                                {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
+                                {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
+                                <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
+                            @endforeach
+                        </select>
+                        &nbsp;&nbsp;
+                        <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
+                            <option value="" selected disabled>Ano...</option>
+                            @foreach($anospesquisa as $value)
+                                <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+
+
+
+
 
                     <div class="dropdown no-arrow">
                         {{-- <a class="dropdown-toggle font-weight-bold text-primary" href="#" role="button" id="dropdownMenuTipografico"
@@ -2470,6 +2482,29 @@
         //var mespesquisa = $(this).find(':selected').data('mespesquisa'); OU
         var mespesquisa = this.value;
         var anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnoPesquisa_id").val();
+        */
+
+        //******************************************************
+        // SELECTS MÊS E ANO DE PESQUISA PARA GRÁFICOS ORIGINAL
+        //*****************************************************
+        /*
+        <div id="mesesanosparapesquisa" class="col-md-2 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px">
+            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
+                <option value="" selected disabled>Mês...</option>
+                @foreach($mesespesquisa as $key => $value)
+                    {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
+                    {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
+                    <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
+                @endforeach
+            </select>
+            &nbsp;&nbsp;
+            <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
+                <option value="" selected disabled>Ano...</option>
+                @foreach($anospesquisa as $value)
+                    <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
+                @endforeach
+            </select>
+        </div>
         */
 
     </script>
