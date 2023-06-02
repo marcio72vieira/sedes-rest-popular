@@ -106,10 +106,16 @@ class RegistroconsultacompraController extends Controller
             //      $restaurante = Restaurante::where('user_id', '=', Auth::user()->id)->first(); OU a query abaixo
             $restaurante = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->where('user_id', '=', Auth::user()->id)->first();
 
+            //dd(Auth::user()->id);
 
             //Se nenhum restaurante estiver associado ao User logado, desló-ga-o do sistema
+            //Se nenhum restaurante estiver associado ao User (nutricionista) logado desló-ga-o do sistema e o redireciona para a tela de login.
             if($restaurante == null) {
-                return redirect()->route('acesso.logout');
+                //return redirect()->route('acesso.logout');  Linha original
+
+                // Apresentar mensagem caso o usuário não esteja vinculado a um restaurante
+                Auth::logout();
+                return redirect()->back()->withInput()->withErrors(['Sem restaurante vinculado!']);
             }
 
             // Recupera todas as compras do restaurante
