@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CpfValidateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserUpdateRequest extends FormRequest
@@ -26,6 +27,7 @@ class UserUpdateRequest extends FormRequest
         return [
             'nomecompleto'          => 'bail|required|string',
             'cpf'                   => 'required',
+            'cpf'                   => new CpfValidateRule(),       // Valida o CPF com com regra de validação customizada
             'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
             'telefone'              => 'required',
             'name'                  => 'bail|required|string',  // é o campo usuário

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CnpjValidateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EmpresaCreateRequest extends FormRequest
@@ -27,6 +28,7 @@ class EmpresaCreateRequest extends FormRequest
             'razaosocial' => 'bail|required|min:5',
             'nomefantasia' => 'bail|required|min:2',
             'cnpj' => 'bail|required|min:10|unique:empresas,cnpj',
+            'cnpj' => new CnpjValidateRule(),   // Valida o CNPJ com com regra de validação customizada
             'titular' => 'bail|required',
             'cargotitular' => 'bail|required',
             'logradouro' => 'bail|required',

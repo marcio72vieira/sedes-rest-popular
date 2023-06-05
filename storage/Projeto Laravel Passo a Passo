@@ -808,7 +808,9 @@ ParseError Invalid numeric literal
 // https://stackoverflow.com/questions/44146007/how-to-call-javascript-modal-without-button-press
 
 // https://www.w3schools.com/php/func_date_date.asp
-// 
+// https://codeanddeploy.com/blog/laravel/laravel-8-simple-custom-validation-rules-example?utm_source=pocket_saves
+// https://gist.github.com/guisehn/3276302
+// https://gist.github.com/rafael-neri/ab3e58803a08cb4def059fce4e3c0e40
 
 
 
@@ -1674,3 +1676,143 @@ POLICES E GATES - PERMISSÃO DE ACESSO
         <a href="route(rota_d)>Item de menu D</a>
     @endcan
         <a href="route(rota_x)>Item de menu X</a>
+
+
+
+=============================================
+REGRAS DE VALIDAÇÃO PERSONALIZADAS CPF e CNPJ
+=============================================
+1 - Site de referência: https://codeanddeploy.com/blog/laravel/laravel-8-simple-custom-validation-rules-example?utm_source=pocket_saves
+
+2 - Crie as requests
+    Exemplo:
+    php artisan make:request UserCreateRequest
+    php artisan make:request UserUpdateRequest
+
+3 - Coloque as requests criadas acima, nos devidos métodos dos controladores apropriados, onde será necessario validar os campos com validação customizada, além das outras validações default do laravel
+    Exemplo:
+    No controller UserController no método store, update etc...
+    public function store(UserCreateRequest $request)
+    public function update(UserUpdateRequest $request)
+
+
+4 - Crie as regras de validação customizadas
+    Exemplo:
+    php artisan make:rule CpfValidateRule
+
+5 - Nas regra de validação customizada, criada acima, edite os métodos abaixo:
+    --------
+    PARA CPF
+    --------
+    public function passes($attribute, $value)
+    {
+        // Atribuindo à variável cpf o valor recebido
+        $cpf = $value;
+
+        // Extrai somente os números
+        $cpf = preg_replace( '/[^0-9]/is', '', $cpf );
+
+        // Verifica se foi informado todos os digitos corretamente
+        if (strlen($cpf) != 11) {
+            return false;
+        }
+
+        // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+        if (preg_match('/(\d)\1{10}/', $cpf)) {
+            return false;
+        }
+
+        // Faz o calculo para validar o CPF
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $cpf[$c] * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+            if ($cpf[$c] != $d) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public function message()
+    {
+        return 'CPF inválido';
+    }
+
+    ----------
+    PARA CNPJ
+    ----------
+    public function passes($attribute, $value)
+    {
+        // Atribuindo à variável cnpj o valor recebido
+        $cnpj = $value;
+
+        $cnpj = preg_replace('/[^0-9]/', '', (string) $cnpj);
+
+        // Valida tamanho
+        if (strlen($cnpj) != 14)
+            return false;
+
+        // Verifica se todos os digitos são iguais
+        if (preg_match('/(\d)\1{13}/', $cnpj))
+            return false;
+
+        // Valida primeiro dígito verificador
+        for ($i = 0, $j = 5, $soma = 0; $i < 12; $i++)
+        {
+            $soma += $cnpj[$i] * $j;
+            $j = ($j == 2) ? 9 : $j - 1;
+        }
+
+        $resto = $soma % 11;
+
+        if ($cnpj[12] != ($resto < 2 ? 0 : 11 - $resto))
+            return false;
+
+        // Valida segundo dígito verificador
+        for ($i = 0, $j = 6, $soma = 0; $i < 13; $i++)
+        {
+            $soma += $cnpj[$i] * $j;
+            $j = ($j == 2) ? 9 : $j - 1;
+        }
+
+        $resto = $soma % 11;
+
+        return $cnpj[13] == ($resto < 2 ? 0 : 11 - $resto);
+    }
+
+
+    public function message()
+    {
+        return 'CNPJ inválido.';
+    }
+
+6 - Invoque a regra de validação customizada criada no passo "4" nas request criadas no passo "2", e modifique os métodos conforme abaixo:
+    Em UserCreateRequest e UserUpdateRequest
+    invoque: use App\Rules\CpfValidateRule;
+
+    modifique o método rules
+        public function rules()
+        {
+            return [
+                'nomecompleto'          => 'bail|required|string',
+                'cpf'                   => 'required|unique:users,cpf',
+                'cpf'                   => new CpfValidateRule(),       // Valida o CPF com com regra de validação customizada
+                'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
+                'telefone'              => 'required',
+                'name'                  => 'bail|required|string',  // é o campo usuário
+                'email'                 => 'bail|required|string|email|unique:users,email',
+                'municipio_id'          => 'bail|required',
+                'perfil'                => 'bail|required',
+                'password'              => 'bail|required|confirmed',
+                'password_confirmation' => 'bail|required'
+            ];
+        }
+
+
+
+
+
+
