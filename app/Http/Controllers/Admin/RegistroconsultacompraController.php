@@ -218,7 +218,24 @@ class RegistroconsultacompraController extends Controller
                 '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
                 '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
             ];
-            $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+
+            //$anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
+
+            $anoimplantacao = 2023;
+            $anoatual = date("Y");
+            $anospesquisa = [];
+            $anos = [];
+
+            if($anoimplantacao >= $anoatual){
+                $anospesquisa[] = $anoatual;
+            }else{
+                $qtdanosexibicao = $anoatual - $anoimplantacao;
+                for($a = $qtdanosexibicao; $a >= 0; $a--){
+                    $anos[] = $anoatual - $a;
+                }
+                $anospesquisa = array_reverse($anos);
+            }
 
 
             if(Auth::user()->perfil == 'adm') {
