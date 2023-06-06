@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Rules\CpfValidateRule;  // Utilizado na alteração de profile
 use Illuminate\Http\Request;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
@@ -130,6 +131,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'nomecompleto'          => 'bail|required|string',
             'cpf'                   => 'required',
+            'cpf'                   => new CpfValidateRule(),       // Valida o CPF com com regra de validação customizada, sem fazer uso do UserCreate ou UserUdpdateRequest
             'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
             'telefone'              => 'required',
             'name'                  => 'bail|required|string',  // é o campo usuário
