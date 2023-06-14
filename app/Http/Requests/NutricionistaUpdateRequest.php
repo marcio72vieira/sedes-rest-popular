@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CpfValidateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class NutricionistaUpdateRequest extends FormRequest
@@ -26,12 +27,13 @@ class NutricionistaUpdateRequest extends FormRequest
         return [
             'nomecompleto'          => 'bail|required|string',
             'cpf'                   => 'required',
+            'cpf'                   => new CpfValidateRule(),       // Valida o CPF com com regra de validação customizada
             'crn'                   => 'bail|required',
             'email'                 => 'bail|required',
             'telefone'              => 'required',
             //'empresa_id'          => 'bail|required',
             'ativo'                 => 'bail|required'
-            
+
         ];
     }
 }
