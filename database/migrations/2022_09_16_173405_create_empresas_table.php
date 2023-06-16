@@ -17,7 +17,7 @@ class CreateEmpresasTable extends Migration
             $table->id();
             $table->string('razaosocial');
             $table->string('nomefantasia');
-            $table->string('cnpj');
+            $table->string('cnpj')->unique();
             $table->string('titular');
             $table->string('cargotitular');
             $table->string('logradouro');

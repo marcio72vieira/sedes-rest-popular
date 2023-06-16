@@ -27,8 +27,7 @@ class EmpresaCreateRequest extends FormRequest
         return [
             'razaosocial' => 'bail|required|min:5',
             'nomefantasia' => 'bail|required|min:2',
-            'cnpj' => 'bail|required|min:10|unique:empresas,cnpj',
-            'cnpj' => new CnpjValidateRule(),   // Valida o CNPJ com com regra de validação customizada
+            'cnpj' => ['bail', 'required', 'min:10', 'unique:empresas,cnpj', new CnpjValidateRule()], // Com regra de validação de CPF customizada,
             'titular' => 'bail|required',
             'cargotitular' => 'bail|required',
             'logradouro' => 'bail|required',

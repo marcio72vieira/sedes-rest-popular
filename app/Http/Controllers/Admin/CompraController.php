@@ -11,6 +11,8 @@ use App\Models\Compra;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CompraCreateRequest;
 use App\Http\Requests\CompraUpdateRequest;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Comprovante;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +28,16 @@ class CompraController extends Controller
 
     public function index(Request $request, $idrestaurante)
     {
+
+        // Caso o usuário não seja Administrador e queira utilizar a rota: admin/restaurante/{idrestaurante}/compra, o mesmo será deslogado e lançada uma exceção (abort(404))
+        // Opcionalmente pode-se apenas redirecioná-lo de volta para sua página original com: if(Auth::user()->perfil != 'adm'){ return redirect()->back(); }
+        if(Auth::user()->perfil != 'adm'){
+            Auth::logout();
+            abort(404);
+        }
+
+
+
 
         //echo "Mês: " . $request->mes_id. " Ano:" . $request->ano_id;
 

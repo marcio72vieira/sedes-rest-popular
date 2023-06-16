@@ -130,8 +130,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nomecompleto'          => 'bail|required|string',
-            'cpf'                   => 'required',
-            'cpf'                   => new CpfValidateRule(),       // Valida o CPF com com regra de validação customizada, sem fazer uso do UserCreate ou UserUdpdateRequest
+            'cpf'                   => ['bail', 'required', new CpfValidateRule()], // Valida o CPF com com regra de validação customizada, sem fazer uso do UserCreate ou UserUdpdateRequest
             'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
             'telefone'              => 'required',
             'name'                  => 'bail|required|string',  // é o campo usuário

@@ -26,8 +26,7 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'nomecompleto'          => 'bail|required|string',
-            'cpf'                   => 'required',
-            'cpf'                   => new CpfValidateRule(),       // Valida o CPF com com regra de validação customizada
+            'cpf'                   => ['bail', 'required', new CpfValidateRule()],    // Com regra de validação de CPF customizada,
             'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
             'telefone'              => 'required',
             'name'                  => 'bail|required|string',  // é o campo usuário

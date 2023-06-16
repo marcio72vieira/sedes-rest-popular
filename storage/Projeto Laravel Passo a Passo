@@ -811,6 +811,8 @@ ParseError Invalid numeric literal
 // https://codeanddeploy.com/blog/laravel/laravel-8-simple-custom-validation-rules-example?utm_source=pocket_saves
 // https://gist.github.com/guisehn/3276302
 // https://gist.github.com/rafael-neri/ab3e58803a08cb4def059fce4e3c0e40
+// https://laravel.com/docs/8.x/routing#accessing-the-current-route
+// https://stackoverflow.com/questions/46131745/laravel-throw-error-from-controller
 
 
 
@@ -839,6 +841,7 @@ ParseError Invalid numeric literal
 // https://www.youtube.com/watch?v=RyERAzUuZv8
 // https://www.youtube.com/watch?v=zh-ec7GTJiI&list=PLc1g3vwxhg1ULUTrmSrqwa1I75yndz3eb&index=5
 // https://www.youtube.com/watch?v=-6W8UICjDSo
+// https://www.youtube.com/watch?v=K-uvIn-4Ug0
 
 
 
@@ -1798,8 +1801,7 @@ REGRAS DE VALIDAÇÃO PERSONALIZADAS CPF e CNPJ
         {
             return [
                 'nomecompleto'          => 'bail|required|string',
-                'cpf'                   => 'required|unique:users,cpf',
-                'cpf'                   => new CpfValidateRule(),       // Valida o CPF com com regra de validação customizada
+                'cpf'                   => ['bail', 'required', 'unique:users,cpf', new CpfValidateRule()],    // Com regra de validação de CPF customizada,
                 'crn'                   => 'required_if:perfil,"nut"',  // campo requerido se perfil for do tipo "nut"
                 'telefone'              => 'required',
                 'name'                  => 'bail|required|string',  // é o campo usuário
@@ -1812,7 +1814,35 @@ REGRAS DE VALIDAÇÃO PERSONALIZADAS CPF e CNPJ
         }
 
 
+======================
+INSTALANDO A APLICAÇÃO
+======================
+20 - Instalando:
+   criar banco no MySQL
+   sedes_restaurante do tipo: utf8mb4_unicode_ci)
+    No terminal
+    Habilitar permissão de pasta 755
+    Fazer copia do arquivo .env.example com
+cp .env.example ./.env
+    Criar chave (se necessário)
+     php artisan Key:generate
+    Configurar variáveis de ambiente:
+     APP_DEBUG = false
+     APP_URL=http://localhost
+     FILESYSTEM_DRIVER=public
+     Credenciais do banco criado
 
+      git clone (endereço repositório)
+      compose install ou update
+      php artisan migrate
+      php artisan db:seed
+        OU php artisan migrate:fresh --seed (para zerar todas as tabelas do banco e começar tudo outra vez)
+      php artisan dump-autolad
+      php artisan storage-link
+      php artisan clear-cache
+      php artisan migrate:rollback --step=5
+      Sempre que modificar .env, executar: php artisan config:clear
+      No arquivo config/database.php, na chave 'mysql' alterar a propriedade  'strict' => de true para false (isso corrige problemas de groupBy nas consultas)
 
 
 

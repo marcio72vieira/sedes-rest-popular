@@ -37,7 +37,7 @@
           <thead>
             <tr>
                 <th>Id</th>
-                <th>Nome</th>
+                <th>Usuário / Nome Completo</th>
                 <th>Perfil</th>
                 <th>Cidade</th>
                 <th>E-mail / Telefone</th>
@@ -52,7 +52,7 @@
           @foreach($users as $user)
              <tr class="destaque">
                 <td scope="row">{{$user->id}}</th>
-                <td>{{$user->name}}</td>
+                <td>{{$user->name}}  <br> {{$user->nomecompleto}}</td>
                 {{-- <td>@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @elseif($user->perfil == 'nut') Nutricionista @else Nutricionista (inativo) @endif </td> --}}
                 <td>@if($user->perfil == 'adm') <b>ADMINISTRADOR</b> @else Nutricionista @endif </td>
                 <td>{{$user->municipio->nome}}</td>

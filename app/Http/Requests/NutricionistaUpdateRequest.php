@@ -26,8 +26,7 @@ class NutricionistaUpdateRequest extends FormRequest
     {
         return [
             'nomecompleto'          => 'bail|required|string',
-            'cpf'                   => 'required',
-            'cpf'                   => new CpfValidateRule(),       // Valida o CPF com com regra de validação customizada
+            'cpf'                   => ['bail', 'required', new CpfValidateRule()],    // Com regra de validação de CPF customizada
             'crn'                   => 'bail|required',
             'email'                 => 'bail|required',
             'telefone'              => 'required',
