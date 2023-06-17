@@ -813,6 +813,10 @@ ParseError Invalid numeric literal
 // https://gist.github.com/rafael-neri/ab3e58803a08cb4def059fce4e3c0e40
 // https://laravel.com/docs/8.x/routing#accessing-the-current-route
 // https://stackoverflow.com/questions/46131745/laravel-throw-error-from-controller
+// https://stackoverflow.com/questions/40975467/passing-parameters-to-middleware-in-laravel?utm_source=pocket_saves
+// https://pt.stackoverflow.com/questions/145845/definindo-um-middleware-para-um-controller-exceto-uma-fun%C3%A7%C3%A3o-no-laravel-5?utm_source=pocket_saves
+// https://stackoverflow.com/questions/51578472/check-if-a-route-parameter-exists-in-laravel-custom-validation-rule
+
 
 
 

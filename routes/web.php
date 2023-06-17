@@ -92,12 +92,13 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Nutricionista (Rota aninhada) fica do tipo: empresa/1/nutricionista.
     Route::resource('empresa.nutricionista', NutricionistaController::class)->middleware(['auth']);
 
-    // Compra (Rota aninhada) fica do tipo: restaurante/1/Compra.
-    Route::resource('restaurante.compra', CompraController::class)->middleware(['auth']);
+    // Compra (Rota aninhada) fica do tipo: restaurante/1/Compra. So acessa essa rota se estiver autenticado e for administrador ou proprietario.
+    // Route::resource('restaurante.compra', CompraController::class)->middleware(['auth']);
+    Route::resource('restaurante.compra', CompraController::class)->middleware(['auth','adminouproprietario']);
 
-    // Comprovante (Rota aninhada) fica do tipo: compra/1/comprovante
+    // Comprovante (Rota aninhada) fica do tipo: compra/1/comprovante. So acessa essa rota se estiver autenticado e for administrador ou proprietario.
     Route::resource('compra.comprovante', ComprovanteController::class)->except(['show', 'edit', 'update'])->middleware(['auth']);
-
+    // ***** Route::resource('compra.comprovante', ComprovanteController::class)->except(['show', 'edit', 'update'])->middleware(['auth', 'adminouproprietario']);
 
     // Regional
     Route::resource('regional', RegionalController::class)->middleware(['auth']);

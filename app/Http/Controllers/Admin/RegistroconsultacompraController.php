@@ -55,7 +55,7 @@ class RegistroconsultacompraController extends Controller
             //$restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
             //Obs: aqui era para recuperar apenas os restaurantes da regional cujo id seja igual a 1 (Metropolitana / Grande Ilha de São Luis), mas restaurantes, não possui um vínculo direto com
             //     regionais e sim com municípios.
-            $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
+            //-----$restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
 
             // Verifica se uma regional foi escolhida para fazer a pesquisa através do relacionamento cruzado hasManyThrough
             // no model Regional, uma vez que restaurante não possui relacionamento com Regional e sim com município, do tipo:
