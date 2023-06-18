@@ -39,6 +39,17 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Login</h1>
                                     </div>
+
+                                    {{-- Caso o município original do bairro tenha sido atualizado, há a necessidade de atualizar os dados do Restaurante referente a este bairro (o Muncípio e o bairro) --}}
+                                    @if(session('aviso'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <strong> {{session('aviso')}} </strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+
                                     <form class="user" action="{{ route('acesso.check') }}" method="post" autocomplete="off">
                                         @csrf
 
@@ -85,7 +96,8 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('template/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    {{-- <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script> --}}
+    <script src="{{asset('template/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
