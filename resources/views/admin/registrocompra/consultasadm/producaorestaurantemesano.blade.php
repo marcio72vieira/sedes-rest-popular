@@ -61,9 +61,9 @@
                                         <td style="text-align: right">{{ $item->somaquantidade }}</td>
                                         <td style="text-align: center">{{ $item->medida_simbolo }}</td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->mediapreco) }}</td>
-                                        <td style="text-align: center">  
-                                            <i class="{{$item->somaquantidade * $item->mediapreco > $item->somaprecototal ? 'fas fa-sort-amount-up-alt text-danger' : 
-                                            $item->somaquantidade * $item->mediapreco == $item->somaprecototal ? '' : 'fas fa-sort-amount-down-alt text-success' }}"></i>
+                                        <td style="text-align: center">
+                                            <i class="{{($item->somaquantidade * $item->mediapreco > $item->somaprecototal ? 'fas fa-sort-amount-up-alt text-danger' :
+                                            ($item->somaquantidade * $item->mediapreco == $item->somaprecototal ? '' : 'fas fa-sort-amount-down-alt text-success')) }}"></i>
                                         </td>
                                         <td style="text-align: right">{{ mrc_turn_value($item->somaprecototal) }}</td>
                                         @php $totalgeral  = $totalgeral += $item->somaprecototal; @endphp

@@ -210,6 +210,11 @@ class RegistroconsultacompraController extends Controller
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
+            // No caso do usuário digitar uma semana ou mês inválidos diretamente na URL
+            if((($sema_id != null) && (($sema_id < 1) || ($sema_id > 5))) || (($mes_id != null) && (($mes_id < 1) || ($mes_id > 12)))){
+                return redirect()->route('acesso.logout');
+            }
+
             // Semanas pesquisa
             $semanaspesquisa = ['1' => 'um', '2' => 'dois', '3' => 'três', '4' => 'quatro', '5' => 'cinco'];
 
@@ -334,10 +339,15 @@ class RegistroconsultacompraController extends Controller
             $mes_id = $request->mes_id;
             $ano_id = $request->ano_id;
 
+            // Protege inserção de mês inexistente
+            if($mes_id < 1 || $mes_id > 12) {
+                return redirect()->route('acesso.logout');
+            }
+
             // Meses e anos para popular campos selects
             $mesespesquisa = [
                 '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
-                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+                '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro',
             ];
             $anospesquisa = [date("Y"), date("Y") - 1, date("Y") - 2];
 
