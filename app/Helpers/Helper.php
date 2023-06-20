@@ -132,3 +132,26 @@ if (!function_exists('mrc_extract_month')) {
         return $mescompra;
     }
 }
+
+
+if (!function_exists('mrc_encrypt_decrypt')) {
+
+    function mrc_encrypt_decrypt($action, $string)
+    {
+        // https://www.allphptricks.com/how-to-encrypt-decrypt-string-in-php/
+        $output = false;
+        $encrypt_method = "AES-256-CBC";
+        $secret_key = '$7PHKqGt$yRlPjyt89rds4ioSDsglpk/';
+        $secret_iv = '$QG8$hj7TRE2allPHPlBbrthUtoiu23bKJYi/';
+        $key = hash('sha256', $secret_key);
+        
+        $iv = substr(hash('sha256', $secret_iv), 0, 16);
+        if ( $action == 'encrypt' ) {
+            $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+            $output = base64_encode($output);
+        } else if( $action == 'decrypt' ) {
+            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+        }
+        return $output;
+    }
+}

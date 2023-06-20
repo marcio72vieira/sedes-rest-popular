@@ -121,7 +121,9 @@ class UserController extends Controller
 
     public function profile($id)
     {
-        $user = User::find($id);
+        $id = mrc_encrypt_decrypt('decrypt', $id);
+
+        $user = User::findOrFail($id);
 
         return view('admin.user.profile', compact('user'));
     }

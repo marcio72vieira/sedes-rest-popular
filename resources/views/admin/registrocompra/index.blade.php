@@ -65,7 +65,7 @@
                                 </td>
                                 <td>
                                     @if($restaurante->ativo == 1)
-                                        <a class="btn btn-light" href="{{route('admin.restaurante.compra.index', $restaurante->id)}}" title="compras"><i class="fas fa-shopping-cart text-success  mr-2"></i> registrar</a>
+                                        <a class="btn btn-light" href="{{route('admin.restaurante.compra.index', mrc_encrypt_decrypt('encrypt', $restaurante->id))}}" title="compras"><i class="fas fa-shopping-cart text-success  mr-2"></i> registrar</a>
                                     @else
                                         <a class="btn btn-light" href="#" title="restaurante inativo"><i class="fas fa-times-circle text-danger mr-2"></i> registrar</a>
                                     @endif

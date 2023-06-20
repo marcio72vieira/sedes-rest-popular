@@ -343,7 +343,7 @@
                                 <div class="pl-lg-4">
                                     <div class="row">
                                         <div class="col text-center">
-                                            <a class="btn btn-primary" href="{{route('admin.restaurante.compra.index', $restaurante->id)}}" role="button">Cancelar</a>
+                                            <a class="btn btn-primary" href="{{route('admin.restaurante.compra.index', mrc_encrypt_decrypt('encrypt', $restaurante->id))}}" role="button">Cancelar</a>
                                             <button type="submit" id="sent" class="btn btn-primary" style="width: 95px;"> Salvar </button>
                                         </div>
                                     </div>

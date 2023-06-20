@@ -240,7 +240,7 @@
                                 <div class="pl-lg-4">
                                     <div class="row">
                                         <div class="col text-center">
-                                            <a class="btn btn-primary" href="{{route('admin.restaurante.compra.index', $restaurante->id)}}" role="button"><i class="fas fa-undo-alt"></i> Retornar</a>
+                                            <a class="btn btn-primary" href="{{route('admin.restaurante.compra.index', mrc_encrypt_decrypt('encrypt', $restaurante->id))}}" role="button"><i class="fas fa-undo-alt"></i> Retornar</a>
                                         </div>
                                     </div>
                                 </div>

@@ -817,6 +817,7 @@ ParseError Invalid numeric literal
 // https://pt.stackoverflow.com/questions/145845/definindo-um-middleware-para-um-controller-exceto-uma-fun%C3%A7%C3%A3o-no-laravel-5?utm_source=pocket_saves
 // https://stackoverflow.com/questions/51578472/check-if-a-route-parameter-exists-in-laravel-custom-validation-rule
 // https://stackoverflow.com/questions/61432488/php-error-unparenthesized-a-b-c-d-e-is-deprecated-use-either-a
+// https://www.allphptricks.com/how-to-encrypt-decrypt-string-in-php/
 
 
 

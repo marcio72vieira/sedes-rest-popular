@@ -28,6 +28,8 @@ class CompraController extends Controller
 
     public function index(Request $request, $idrestaurante)
     {
+        $idrestaurante = mrc_encrypt_decrypt('decrypt', $idrestaurante);
+        
         //echo "Mês: " . $request->mes_id. " Ano:" . $request->ano_id;
 
         // Meses e anos para popular campos selects
@@ -92,6 +94,8 @@ class CompraController extends Controller
 
     public function create($idrestaurante)
     {
+        $idrestaurante = mrc_encrypt_decrypt('decrypt', $idrestaurante);
+
         $restaurante = Restaurante::findOrFail($idrestaurante);
 
         $produtos = Produto::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
@@ -185,12 +189,17 @@ class CompraController extends Controller
 
         $request->session()->flash('sucesso', 'Registro incluído com sucesso!');
 
+        $idrestaurante = mrc_encrypt_decrypt('encrypt', $idrestaurante);
+
         return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
     }
 
 
     public function show($idrestaurante, $idcompra)
     {
+        $idrestaurante = mrc_encrypt_decrypt('decrypt', $idrestaurante);
+        $idcompra = mrc_encrypt_decrypt('decrypt', $idcompra);
+
         $restaurante = Restaurante::findOrFail($idrestaurante);
         $compra = Compra::with('produtos')->findOrFail($idcompra);
         $medidas = Medida::where('ativo', '=', '1')->orderBy('nome', 'ASC')->get();
@@ -203,6 +212,9 @@ class CompraController extends Controller
 
     public function edit($idrestaurante, $idcompra)
     {
+        $idrestaurante = mrc_encrypt_decrypt('decrypt', $idrestaurante);
+        $idcompra = mrc_encrypt_decrypt('decrypt', $idcompra);
+
         $restaurante = Restaurante::findOrFail($idrestaurante);
 
         $compra = Compra::with('produtos')->findOrFail($idcompra);
@@ -331,6 +343,8 @@ class CompraController extends Controller
         DB::commit();
 
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
+        
+        $idrestaurante = mrc_encrypt_decrypt('encrypt', $idrestaurante);
 
         return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
     }
@@ -356,6 +370,10 @@ class CompraController extends Controller
 
     public function relpdfcompra($idrest, $idcompra)
     {
+
+        $idrest = mrc_encrypt_decrypt('decrypt', $idrest);
+        $idcompra = mrc_encrypt_decrypt('decrypt', $idcompra);
+
         // Obtendo os dados
         $restaurante = Restaurante::findOrFail($idrest);
         $compra = Compra::with('produtos')->findOrFail($idcompra);

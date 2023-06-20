@@ -9,7 +9,7 @@
 
         <div class="row">
             <div class="col-4">
-                <a class="btn btn-primary" href="{{route('admin.restaurante.compra.create', $restaurante->id)}}" role="button" style="margin-bottom: 10px">
+                <a class="btn btn-primary" href="{{route('admin.restaurante.compra.create', mrc_encrypt_decrypt('encrypt',$restaurante->id))}}" role="button" style="margin-bottom: 10px">
                     <i class="fas fa-plus-circle"></i>
                     Adicionarr
                 </a>
@@ -24,7 +24,7 @@
                 <div class="col-4"  style="text-align: center">
                     <div style="width: 100%; margin: auto">
                         {{-- (Rota aninhada) Tipo: admin/restaurante/{idrestaurante}/compra/index --}}
-                        <form action="{{route('admin.restaurante.compra.index', $restaurante->id)}}"  method="GET" class="form-inline">
+                        <form action="{{route('admin.restaurante.compra.index', mrc_encrypt_decrypt('encrypt', $restaurante->id))}}"  method="GET" class="form-inline">
                                 <div class="form-group mx-sm-3 mb-2">
                                     <select name="mes_id" id="mes_id" class="form-control" style="margin-right: 20px">
                                         <option value="" selected disabled>Mês...</option>
@@ -59,7 +59,7 @@
                 <div class="col-8">
                     <div style="width: 40%; float: right;">
                         {{-- (Rota aninhada) Tipo: admin/restaurante/{idrestaurante}/compra/index --}}
-                        <form action="{{route('admin.restaurante.compra.index', $restaurante->id)}}"  method="GET" class="form-inline">
+                        <form action="{{route('admin.restaurante.compra.index', mrc_encrypt_decrypt('encrypt', $restaurante->id))}}"  method="GET" class="form-inline">
                                 <div class="form-group mx-sm-3 mb-2">
                                     <select name="mes_id" id="mes_id" class="form-control" style="margin-right: 20px">
                                         <option value="" selected disabled>Mês...</option>
@@ -139,9 +139,9 @@
                                 <td>
                                     <a href="{{route('admin.compra.comprovante.index', [$compra->id])}}" title="adicionar comprovantes"><i class="fas fa-file-upload text-success mr-2"></i></a>
                                     {{--<a href="{{route('admin.compra.relpdfcompra', [$compra->id])}}" title="relatório de compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>--}}
-                                    <a href="{{route('admin.restaurante.compra.relpdfcompra', [$restaurante->id, $compra->id])}}" title="relatório desta compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>
-                                    <a href="{{route('admin.restaurante.compra.show', [$restaurante->id, $compra->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
-                                    <a href="{{route('admin.restaurante.compra.edit', [$restaurante->id, $compra->id])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
+                                    <a href="{{route('admin.restaurante.compra.relpdfcompra', [mrc_encrypt_decrypt('encrypt', $restaurante->id), mrc_encrypt_decrypt('encrypt', $compra->id)])}}" title="relatório desta compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>
+                                    <a href="{{route('admin.restaurante.compra.show', [mrc_encrypt_decrypt('encrypt', $restaurante->id), mrc_encrypt_decrypt('encrypt', $compra->id)])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
+                                    <a href="{{route('admin.restaurante.compra.edit', [mrc_encrypt_decrypt('encrypt', $restaurante->id), mrc_encrypt_decrypt('encrypt', $compra->id)])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                                     @if($compra->qtdcomprovantesvinc($compra->id) == 0)
                                         <a href="" data-toggle="modal" data-target="#formDelete{{$compra->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
                                     @else
