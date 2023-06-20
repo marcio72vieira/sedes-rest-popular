@@ -7,13 +7,13 @@
 
         <h5><strong>COMPROVANTES Ref. à conpra de nº {{ $compra->id }}</strong></h5>
 
-        <a class="btn btn-primary" href="{{route('admin.compra.comprovante.create', [$compra->id])}}" role="button" style="margin-bottom: 10px">
+        <a class="btn btn-primary" href="{{route('admin.compra.comprovante.create', [mrc_encrypt_decrypt('encrypt', $compra->id)])}}" role="button" style="margin-bottom: 10px">
             <i class="fas fa-upload"></i>
              Adicionar
         </a>
 
         {{-- Obs: Eu não tenho uma rota do tipo compra.index mas sim restaurante.compra.index, visto que compra é aninhada --}}
-        <a class="btn btn-primary float-right" href="{{route('admin.restaurante.compra.index', [$compra->restaurante_id])}}" role="button" style="margin-bottom: 10px">
+        <a class="btn btn-primary float-right" href="{{route('admin.restaurante.compra.index', [mrc_encrypt_decrypt('encrypt', $compra->restaurante_id)])}}" role="button" style="margin-bottom: 10px">
             <i class="fas fa-undo-alt"></i>
             Listar Compras do restaurante: {{ $compra->restaurante->identificacao }}
         </a>

@@ -39,11 +39,11 @@
                                     </div>
                                 </div>
 
-                                
+
                                 <!-- Buttons -->
                                 <div class="pl-lg-4">
                                     <div style="margin-top: 30px">
-                                        <a class="btn btn-primary" href="{{route('admin.compra.comprovante.index', [$compra->id])}}" role="button">Cancelar</a>
+                                        <a class="btn btn-primary" href="{{route('admin.compra.comprovante.index', [mrc_encrypt_decrypt('encrypt',$compra->id)])}}" role="button">Cancelar</a>
                                         <button type="submit" class="btn btn-primary" style="width: 95px;"> Enviar </button>
                                     </div>
                                 </div>

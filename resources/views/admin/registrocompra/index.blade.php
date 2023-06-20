@@ -12,10 +12,13 @@
         <select name="regional_id" id="regional_id" class="form-control">
           <option value="" disabled>Região...</option>
           @foreach($regionais  as $regional)
-            <option value="{{$regional->id}}" {{($regional->id == $idRegional ? 'selected' : '')}}> {{$regional->nome}} </option>
+            {{-- <option value="{{$regional->id}}" {{($regional->id == $idRegional ? 'selected' : '')}}> {{$regional->nome}} </option> --}}
+            {{-- <option value="{{mrc_encrypt_decrypt('encrypt', $regional->id)}}" {{($regional->id == $idRegional ? 'selected' : '')}} {{($regional->ativo != 1 ? 'disabled' : '')}}> {{$regional->nome}} </option> --}}
+            <option value="{{mrc_encrypt_decrypt('encrypt', $regional->id)}}" {{($regional->id == $idRegional ? 'selected' : '')}}> {{$regional->nome}} </option>
           @endforeach
           <option value="" disabled>-------------</option>
-          <option value="100" {{($idRegional == 100 ? 'selected' : '')}}>TODAS</option>
+          {{-- <option value="100" {{($idRegional == 100 ? 'selected' : '')}}>TODAS</option> --}}
+          <option value="{{mrc_encrypt_decrypt('encrypt', 100)}}" {{($idRegional == 100 ? 'selected' : '')}}>TODAS</option>
         </select>
       </div>
       <button type="submit" class="btn btn-primary mb-2 btn-sm"><i class="fas fa-search-plus"></i> pesquisar</button>

@@ -64,20 +64,20 @@ class RegistroconsultacompraController extends Controller
             if($request->regional_id) {
 
                 //Se a opção escolhida for 100 (todos), não há a necessidade de fazer relacionamento cruzado, busca-se todos os restaurantes independente da regional
-                if($request->regional_id == 100) {
-                    $idRegional = $request->regional_id;
+                if(mrc_encrypt_decrypt('decrypt', $request->regional_id) == 100) {
+                    $idRegional = mrc_encrypt_decrypt('decrypt', $request->regional_id);
                     $restaurantes = Restaurante::with(['municipio', 'bairro', 'empresa', 'nutricionista', 'user', 'compras'])->orderBy('identificacao', 'ASC')->get();
 
                 //Se uma regional for escolhida, busca-se a regional primerio, depois os restaurantes dos municípios pertencentes a esta regional, através do relacionamento cruzado hasManyThrough
                 } else {
-                    $idRegional = $request->regional_id;
+                    $idRegional = mrc_encrypt_decrypt('decrypt', $request->regional_id);
                     $regional = Regional::findOrFail($idRegional);
                     $restaurantes =  $regional->restaurantes;
                 }
 
             } else {
 
-                //Regional fixa (metropolitana)
+                //Regional fixa (Regional Grande Ilha)
                 $idRegional = 1;
                 $regional = Regional::findOrFail($idRegional);
                 $restaurantes =  $regional->restaurantes;

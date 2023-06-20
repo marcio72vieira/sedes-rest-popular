@@ -137,7 +137,7 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.compra.comprovante.index', [$compra->id])}}" title="adicionar comprovantes"><i class="fas fa-file-upload text-success mr-2"></i></a>
+                                    <a href="{{route('admin.compra.comprovante.index', [mrc_encrypt_decrypt('encrypt', $compra->id)])}}" title="adicionar comprovantes"><i class="fas fa-file-upload text-success mr-2"></i></a>
                                     {{--<a href="{{route('admin.compra.relpdfcompra', [$compra->id])}}" title="relatório de compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>--}}
                                     <a href="{{route('admin.restaurante.compra.relpdfcompra', [mrc_encrypt_decrypt('encrypt', $restaurante->id), mrc_encrypt_decrypt('encrypt', $compra->id)])}}" title="relatório desta compra" target="_blank"><i class="fas fa-file-pdf text-danger mr-2"></i></a>
                                     <a href="{{route('admin.restaurante.compra.show', [mrc_encrypt_decrypt('encrypt', $restaurante->id), mrc_encrypt_decrypt('encrypt', $compra->id)])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>

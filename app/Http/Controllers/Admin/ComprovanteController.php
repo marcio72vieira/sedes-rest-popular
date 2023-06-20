@@ -20,8 +20,9 @@ class ComprovanteController extends Controller
 
     public function index($idcompra)
     {
+        $idcompra = mrc_encrypt_decrypt('decrypt', $idcompra);
 
-        $compra = Compra::find($idcompra);
+        $compra = Compra::findOrFail($idcompra);
         $comprovantes = Comprovante::where('compra_id', '=', $idcompra)->get();
 
         return view('admin.comprovante.index', compact('compra', 'comprovantes'));
@@ -31,7 +32,9 @@ class ComprovanteController extends Controller
 
     public function create($idcompra)
     {
-        $compra = Compra::find($idcompra);
+        $idcompra = mrc_encrypt_decrypt('decrypt', $idcompra);
+
+        $compra = Compra::findOrFail($idcompra);
 
         return view('admin.comprovante.create', compact('compra'));
     }
@@ -40,9 +43,9 @@ class ComprovanteController extends Controller
     public function store(ComprovanteCreateRequest $request, $idcompra)
     {
 
-       
 
-        $compra = Compra::find($idcompra);
+
+        $compra = Compra::findOrFail($idcompra);
 
         // Recuperando a identificação do restaurante da compra atual
         // $restaurante = Str::lower($compra->restaurante->identificacao);
@@ -52,7 +55,7 @@ class ComprovanteController extends Controller
         if($request->hasFile('url')) {
 
             if($request->url->isValid()) {
-                
+
                 // Armazenando o arquivo no disco public e retornando a url (caminho) do arquivo
                 //$comprovanteURL = $request->url->store("notasrecibos/$restaurante/$compra->id", "public");
                 $comprovanteURL = $request->url->store("notasrecibos/rest_$compra->restaurante_id/$compra->id", "public");
@@ -75,6 +78,8 @@ class ComprovanteController extends Controller
 
         $request->session()->flash('sucesso', 'Comprovante armazenado com sucesso!');
 
+        $idcompra = mrc_encrypt_decrypt('encrypt', $idcompra);
+
         return redirect()->route('admin.compra.comprovante.index', $idcompra);
     }
 
@@ -90,7 +95,7 @@ class ComprovanteController extends Controller
 
         // Apagando fisicamente o arquivo do disco //Storage::delete($comprovante->url); OU
         if(Storage::exists($comprovante->url)){
-            Storage::disk('public')->delete($comprovante->url);    
+            Storage::disk('public')->delete($comprovante->url);
         }
 
         // Apagando o registro no banco de dados
@@ -105,10 +110,11 @@ class ComprovanteController extends Controller
             Storage::deleteDirectory('notasrecibos/rest_'.$restaurante.'/'.$idcompra);
         }
 
+        $idcompra = mrc_encrypt_decrypt('encrypt', $idcompra);
 
         $request->session()->flash('sucesso', 'Comprovante deletado com sucesso!');
         return redirect()->route('admin.compra.comprovante.index', $idcompra);
-        
+
     }
 
 }
