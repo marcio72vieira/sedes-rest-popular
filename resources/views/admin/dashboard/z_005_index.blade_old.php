@@ -161,7 +161,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($totalValorCompras, 2, ',', '.') }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalValorCompras, 2, ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -179,7 +179,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compra Normal</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($totComprasNormal, '2', ',', '.') }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totComprasNormal, '2', ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -197,7 +197,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compras AF</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($totComprasAf, '2', ',', '.') }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totComprasAf, '2', ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -397,7 +397,7 @@
                                 // $somacompra = ($somacompra > 0 ? $somacompra : 1);
 
                                 echo "<tr><td colspan='3' class='titulotraducao'>COMPRAS POR PRODUTOS<br><span class='titulomesanoatual' style='font-size: 12px;'>".$mesespesquisa[$mes_corrente]." - ".$ano_corrente."</span></td></tr>";
-                                echo "<tr><td class='subtitulolabeltraducao'>Nome</td><td class='subtitulovalortraducao'>Valor (R$)</td><td class='subtitulovalortraducao'>Percentagem (%)</td>";
+                                echo "<tr><td class='subtitulolabeltraducao'>Nome</td><td class='subtitulovalortraducao'>Valor</td><td class='subtitulovalortraducao'>%</td>";
                                 echo "</tr>";
 
                                 if($somacompra > 0){
@@ -692,32 +692,6 @@
         </div>
     </div>
     <!-- FIM OUTROS DADOS  - VISUALIZAÇÃO RÁPIDA E INFORMAÇÕES -->
-
-
-    <!-- Modal PeríodoVazio -->
-    <div class="modal fade modalPeriodoVazio" id="exampleModalPeriodoVazio" tabindex="-1" aria-labelledby="exampleModalLabelPeriodoVazio" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabelPeriodoVazio" style="color: rgb(46, 63, 250)">SEM INFORMAÇÃO!</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-            Nenhum dado foi encontrado para o período especificado.
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-            {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
-            </div>
-        </div>
-        </div>
-    </div>
-
-
-
-
 
 </div>
 
@@ -1049,11 +1023,6 @@
                             valorLabels.push(key);
                             valorData.push(value);
                             somaCompra = somaCompra += Number(value);
-
-                            if(somaCompra == 0){
-                                $(".modalPeriodoVazio").modal("show");
-                            }
-
                         });
 
                         valorTituloGrafico = result['titulo'];
@@ -1067,7 +1036,7 @@
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
                         $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico + '<br><span class="titulomesanoatual" style="font-size: 12px;">'+ titulomesanoatual + '</span></td></tr>');
-                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor (R$)</td><td class="subtitulovalortraducao">Percentagem (%)</td></tr>');
+                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td><td class="subtitulovalortraducao">%</td></tr>');
 
                         //Itera sobre os dados retornados pela requisição Ajax
                         $.each(result['dados'], function(key,value){
@@ -1322,7 +1291,7 @@
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
                         $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico + '<br><span class="titulomesanoatual" style="font-size: 12px;">'+ titulomesanoatual + '</span></td></tr>');
-                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor (R$)</td><td class="subtitulovalortraducao">Percentagem (%)</td></tr>');
+                        $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor</td><td class="subtitulovalortraducao">%</td></tr>');
 
                         //Itera sobre os dados retornados pela requisição Ajax
                         $.each(result['dados'], function(key,value){
@@ -2426,7 +2395,7 @@
                     $("#informacoes").append('<tr><td class="infolabel">Id:</td><td class="infodados" colspan="4">' + result['dados'].id + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Nome:</td><td class="infodados" colspan="4">' + result['dados'].nome + '</td></tr>');
                     $("#informacoes").append('<tr><td class="infolabel">Categoria:</td><td class="infodados" colspan="4">'+ result['dados'].categoria.nome +'</td></tr>');
-                    $("#informacoes").append('<tr><td class="infolabel" rowspan="4">Compras</td><td class="infosublabel">Tipo</td><td class="infosublabel">Nº Vezes</td><td class="infosublabel">Quantidade</td><td class="infosublabel">Valor (R$)</td></tr>');
+                    $("#informacoes").append('<tr><td class="infolabel" rowspan="4">Compras</td><td class="infosublabel">Tipo</td><td class="infosublabel">Nº Vezes</td><td class="infosublabel">Quantidade</td><td class="infosublabel">Valor</td></tr>');
 
                         $("#informacoes").append('<tr><td class="infosubdados">Normal</td><td class="infosubdados"><span id="inf_nvez_cmp_normal"></span></td><td class="infosubdados"><span id="inf_qtd_cmp_normal"></span></td><td class="infosubdados"><span id="inf_prctot_cmp_normal"></span></td></tr>');
                         $("#informacoes").append('<tr><td class="infosubdados">AF</td><td class="infosubdados"><span id="inf_nvez_cmp_af"></span></td><td class="infosubdados"><span id="inf_qtd_cmp_af"></span></td><td class="infosubdados"><span id="inf_prctot_cmp_af"></span></td></tr>');
