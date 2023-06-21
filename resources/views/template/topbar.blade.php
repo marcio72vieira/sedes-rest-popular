@@ -6,6 +6,13 @@
         <i class="fa fa-bars"></i>
     </button>
 
+    {{-- 
+    <!-- Exibe o nome do restaurante atual de trabalho. O nome é obtido a partir do script localizado no 
+         final do arquivo de view: compra/index.blade.php Obs: Este script deve ser colocado em todas as 
+         view que se deseja exibir o nome do restaurante.-->
+    <h2 class="restaurantecorrente"></h2>
+    --}}
+
     @if($search !== false)
     <!-- Topbar Search -->
     <form

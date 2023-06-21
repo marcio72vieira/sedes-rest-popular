@@ -199,6 +199,8 @@
             $("#btnpesquisar").click(function(){
                 $("#formpesquisar").toggle();
             });
+            // refere-se à tag <h2> localizada no arquivo: topbar.blade.php
+            // $(".restaurantecorrente").text("{{$restaurante->identificacao}}");
         });
     </script>
 @endsection

@@ -695,17 +695,17 @@
 
 
     <!-- Modal PeríodoVazio -->
-    <div class="modal fade modalPeriodoVazio" id="exampleModalPeriodoVazio" tabindex="-1" aria-labelledby="exampleModalLabelPeriodoVazio" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade modalSemLancamento" id="exampleModalSemLancamento" tabindex="-1" aria-labelledby="exampleModalLabelSemLancamento" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabelPeriodoVazio" style="color: rgb(46, 63, 250)">SEM INFORMAÇÃO!</h5>
+            <h5 class="modal-title" id="exampleModalLabelSemLancamento" style="color: rgb(46, 63, 250)">SEM LANÇAMENTOS!</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
             <div class="modal-body">
-            Nenhum dado foi encontrado para o período especificado.
+            Nenhuma compra foi realizada no período especificado!.
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
@@ -1051,7 +1051,7 @@
                             somaCompra = somaCompra += Number(value);
 
                             if(somaCompra == 0){
-                                $(".modalPeriodoVazio").modal("show");
+                                $(".modalSemLancamento").modal("show");
                             }
 
                         });
