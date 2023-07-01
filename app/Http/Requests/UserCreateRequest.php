@@ -27,7 +27,7 @@ class UserCreateRequest extends FormRequest
         return [
             'nomecompleto'          => 'bail|required|string',
             'cpf'                   => ['bail', 'required', 'unique:users,cpf', new CpfValidateRule()],    // Com regra de validação de CPF customizada,
-            'crn'                   => 'required_if:perfil,"nut"|unique:users,crn',  // campo requerido se perfil for do tipo "nut"
+            'crn'                   => 'exclude_if:perfil,"adm"|required_if:perfil,"nut"|unique:users,crn',  // campo requerido se perfil for do tipo "nut"
             'telefone'              => 'required',
             'name'                  => 'bail|required|string',  // é o campo usuário
             'email'                 => 'bail|required|string|email|unique:users,email',
