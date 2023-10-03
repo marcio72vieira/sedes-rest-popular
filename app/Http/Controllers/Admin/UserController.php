@@ -92,6 +92,7 @@ class UserController extends Controller
             $user->telefone         = $request->telefone;
             $user->name             = $request->name;
             $user->email            = $request->email;
+            $user->municipio_id     = $request->municipio_id;
             $user->perfil           = $request->perfil;
 
             Validator::make($request->all(), [
