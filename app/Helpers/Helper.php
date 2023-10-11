@@ -39,11 +39,15 @@ if (!function_exists('mrc_turn_value')) {
 }
 
 
-if (!function_exists('mrc_calc_percentage')) {
+if (!function_exists('mrc_calc_percentaf')) {
 
     function mrc_calc_percentaf($val_tot, $val_parc)
     {
-        $percentage = (($val_parc * 100) / $val_tot);
+        if($val_tot != 0){
+            $percentage = (($val_parc * 100) / $val_tot);
+        } else {
+            $percentage = 0;
+        }
 
         $percentformated = number_format($percentage, '2', ',', '.');
         return $percentformated;
@@ -144,7 +148,7 @@ if (!function_exists('mrc_encrypt_decrypt')) {
         $secret_key = '$7PHKqGt$yRlPjyt89rds4ioSDsglpk/';
         $secret_iv = '$QG8$hj7TRE2allPHPlBbrthUtoiu23bKJYi/';
         $key = hash('sha256', $secret_key);
-        
+
         $iv = substr(hash('sha256', $secret_iv), 0, 16);
         if ( $action == 'encrypt' ) {
             $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
