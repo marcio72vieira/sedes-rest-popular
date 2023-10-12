@@ -7,14 +7,14 @@
     <!-- Sidebar - Brand -->
     <br>
     <a class="sidebar-brand d-flex align-items-center justify-content-center" style="margin-top: 30px; margin-bottom: 30px">
-        <div class="sidebar-brand-text mx-3">
+        <div class="mx-3 sidebar-brand-text">
             <img src="{{asset('images/logo-ma.png')}}" width="150"><br>
             RESTAURANTE POPULAR
         </div>
     </a>
 
     <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+    <hr class="my-0 sidebar-divider">
 
 
     @can("adm")
@@ -30,6 +30,18 @@
             <a class="nav-link" href="{{ route('admin.dashboard') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>
+            </a>
+        </li>
+
+
+         <!-- Divider -->
+         <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Nav Item - Monitor -->
+        <li class="nav-item active">
+            <a class="nav-link" href="">
+                <i class="fas fa-table"></i>
+                <span>Monitor</span>
             </a>
         </li>
 
@@ -99,7 +111,7 @@
                     <span>Suporte</span>
                 </a>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="py-2 bg-white rounded collapse-inner">
                         <h6 class="collapse-header">Tabelas de Suporte:</h6>
                         <a class="collapse-item" href="{{ route('admin.regional.index') }}"><i class="fas fa-globe-americas"></i>
                             Regionais</a>
@@ -140,7 +152,7 @@
                     <span>Configurações</span>
                 </a>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="py-2 bg-white rounded collapse-inner">
                         <h6 class="collapse-header">Recursos</h6>
                         <a class="collapse-item" href="#">Paises</a>
                         <a class="collapse-item" href="buttons.html">Estados</a>
@@ -161,7 +173,7 @@
                 <span>Compras</span>
             </a>
             <div id="collapseCompra" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div class="py-2 bg-white rounded collapse-inner">
                     <h6 class="collapse-header">Operação de Compras:</h6>
                     <a class="collapse-item" href="{{route('admin.registroconsultacompra.index')}}"><i class="fas fa-shopping-cart"></i>
                         Registros</a>
@@ -178,7 +190,7 @@
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        <button class="border-0 rounded-circle" id="sidebarToggle"></button>
     </div>
 
 </ul>

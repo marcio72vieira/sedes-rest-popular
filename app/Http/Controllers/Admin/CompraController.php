@@ -354,10 +354,12 @@ class CompraController extends Controller
 
     public function destroy($idrestaurante, $idcompra, Request $request)
     {
-
+        
         Compra::destroy($idcompra);
 
         $request->session()->flash('sucesso', 'Registro excluído com sucesso!');
+
+        $idrestaurante = mrc_encrypt_decrypt('encrypt', $idrestaurante);
 
         return redirect()->route('admin.restaurante.compra.index', $idrestaurante);
     }
