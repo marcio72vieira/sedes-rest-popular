@@ -54,6 +54,7 @@ class MonitorController extends Controller
             ->select('count(*) as allcount')
             ->where('restaurantes.identificacao', 'like', '%' .$searchValue . '%')
             ->orWhere('municipios.nome', 'like', '%' . $searchValue . '%' )
+            ->orWhere('regionais.nome', 'like', '%' .$searchValue . '%')
             ->count();
 
         // Fetch records (restaurantes)
@@ -68,6 +69,7 @@ class MonitorController extends Controller
                  'nutricionistas.nomecompleto AS nomenutricionista', 'nutricionistas.email AS emailnutricionista', 'nutricionistas.telefone AS telefonenutricionista')
         ->where('restaurantes.identificacao', 'like', '%' .$searchValue . '%')
         ->orWhere('municipios.nome', 'like', '%' .$searchValue . '%')
+        ->orWhere('regionais.nome', 'like', '%' .$searchValue . '%')
         ->orderBy($columnName,$columnSortOrder)
         ->skip($start)
         ->take($rowperpage)
@@ -122,5 +124,5 @@ class MonitorController extends Controller
         echo json_encode($response);
         exit;
     }
-    
+
 }

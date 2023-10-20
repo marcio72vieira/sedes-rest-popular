@@ -52,11 +52,17 @@
             // DataTable
             $('#dataTableMonitor').DataTable({
 
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ],
+
                 order: [[ 0, 'desc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
                 columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
                     { orderable: false, targets: [3, 4, 5, 6] }
                 ],
                 lengthMenu: [10, 20, 30, 40, 50, 100, 150, 200], //Configura o número de entra de registro a serem exibido por pagina
+                /* pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu */
+
 
                 processing: true,
                 serverSide: true,
