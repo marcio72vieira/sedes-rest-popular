@@ -39,7 +39,7 @@
 
         <!-- Nav Item - Monitor -->
         <li class="nav-item active">
-            <a class="nav-link" href="">
+                <a class="nav-link" href="{{ route('admin.monitor') }}">
                 <i class="fas fa-table"></i>
                 <span>Monitor</span>
             </a>

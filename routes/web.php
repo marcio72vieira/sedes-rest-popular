@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcessoController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MonitorController;
 use App\Http\Controllers\Admin\EmpresaController;
 use App\Http\Controllers\Admin\RestauranteController;
 use App\Http\Controllers\Admin\NutricionistaController;
@@ -57,6 +58,13 @@ Route::get('/acesso/logout', [AcessoController::class, 'logout'])->name('acesso.
 //=============================================
 // Dashboard
 Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth']);
+
+//=============================================
+//ROTA DO MONITOR (SEM SER DO TIPO RESOURCE)
+//=============================================
+// Monitor
+Route::get('monitor', [MonitorController::class, 'index'])->name('admin.monitor')->middleware(['auth']);
+Route::get('ajaxgetMonitorRestaurantes',[MonitorController::class,'ajaxgetMonitorRestaurantes'])->name('admin.ajaxgetMonitorRestaurantes')->middleware(['auth']);    // Rota Ajax para datatable com paginação dinâmica
 
 
 
