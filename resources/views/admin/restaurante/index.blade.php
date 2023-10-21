@@ -37,6 +37,7 @@
                 <thead>
                     <tr>
                     <th>Id</th>
+                    <th>Regional</th>
                     <th>Município</th>
                     <th>Identificacao</th>
                     <th>Responsáveis / Contato / E-mail</th>
@@ -48,6 +49,7 @@
                 <tfoot>
                     <tr>
                     <th>Id</th>
+                    <th>Regional</th>
                     <th>Município</th>
                     <th>Identificacao</th>
                     <th>Responsáveis / Contato / E-mail</th>
@@ -99,7 +101,7 @@
 
                 order: [[ 0, 'desc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
                 columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
-                    { orderable: false, targets: [3, 4, 5, 6] }
+                    { orderable: false, targets: [4, 5, 6, 7] }
                 ],
                 //lengthMenu: [5, 10, 20, 50, 100, 200, 500], //Configura o número de entra de registro a serem exibido por pagina
 
@@ -110,6 +112,7 @@
                 // Obs: Para fazer a ordenação, o nome das colunas abaixo, devem conincidir com o nome dos campos retornados pela query na recuperação dos registros desejados
                 columns: [
                     { data: 'id' },
+                    { data: 'regional'},
                     { data: 'municipio' },
                     { data: 'identificacao' },
                     { data: 'responsaveis' },

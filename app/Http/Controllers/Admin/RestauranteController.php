@@ -139,24 +139,28 @@ class RestauranteController extends Controller
         $totalRecords = Restaurante::select('count(*) as allcount')->count();
         $totalRecordswithFilter = DB::table('restaurantes')
             ->join('municipios', 'municipios.id', '=', 'restaurantes.municipio_id')
+            ->join('regionais', 'regionais.id', '=', 'municipios.regional_id')
             ->join('users', 'users.id', '=', 'restaurantes.user_id')
             ->join('nutricionistas', 'nutricionistas.id', '=', 'restaurantes.nutricionista_id')
             ->select('count(*) as allcount')
             ->where('restaurantes.identificacao', 'like', '%' .$searchValue . '%')
             ->orWhere('municipios.nome', 'like', '%' . $searchValue . '%' )
+            ->orWhere('regionais.nome', 'like', '%' . $searchValue . '%' )
             ->count();
 
         // Fetch records (restaurantes)
         $restaurantes = DB::table('restaurantes')
         ->join('municipios', 'municipios.id', '=', 'restaurantes.municipio_id')
+        ->join('regionais', 'regionais.id', '=', 'municipios.regional_id')
         ->join('users', 'users.id', '=', 'restaurantes.user_id')
         ->join('nutricionistas', 'nutricionistas.id', '=', 'restaurantes.nutricionista_id')
         ->select('restaurantes.id', 'restaurantes.identificacao', 'restaurantes.ativo',
-                 'municipios.nome AS municipio',
+                 'municipios.nome AS municipio', 'regionais.nome AS regional',
                  'users.nomecompleto AS nomeusersedes', 'users.email AS emailusersedes', 'users.telefone AS telefoneusersedes',
                  'nutricionistas.nomecompleto AS nomenutricionista', 'nutricionistas.email AS emailnutricionista', 'nutricionistas.telefone AS telefonenutricionista')
         ->where('restaurantes.identificacao', 'like', '%' .$searchValue . '%')
         ->orWhere('municipios.nome', 'like', '%' .$searchValue . '%')
+        ->orWhere('regionais.nome', 'like', '%' . $searchValue . '%' )
         ->orderBy($columnName,$columnSortOrder)
         ->skip($start)
         ->take($rowperpage)
@@ -168,6 +172,7 @@ class RestauranteController extends Controller
         foreach($restaurantes as $restaurante){
             // campos a serem exibidos
             $id = $restaurante->id;
+            $regional = $restaurante->regional;
             $municipio = $restaurante->municipio;
             $identificacao = $restaurante->identificacao;
             $responsaveis = "<span style='font-size: 10px; color: blue'>SEDES: </span>".$restaurante->nomeusersedes." / ". $restaurante->telefoneusersedes." / ".$restaurante->emailusersedes."<br> <span style='font-size: 10px; color: blue'>EMPRESA: </span>".$restaurante->nomenutricionista." / ". $restaurante->telefonenutricionista." / ".$restaurante->emailnutricionista;
@@ -190,6 +195,7 @@ class RestauranteController extends Controller
 
             $data_arr[] = array(
                 "id" => $id,
+                "regional" => $regional,
                 "municipio" => $municipio,
                 "identificacao" => $identificacao,
                 "responsaveis" => $responsaveis,

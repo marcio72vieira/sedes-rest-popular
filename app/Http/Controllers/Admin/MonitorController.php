@@ -84,33 +84,12 @@ class MonitorController extends Controller
             $regional =  $restaurante->regional;
             $municipio = $restaurante->municipio;
             $identificacao = $restaurante->identificacao;
-            $responsaveis = "<span style='font-size: 10px; color: blue'>SEDES: </span>".$restaurante->nomeusersedes." / ". $restaurante->telefoneusersedes." / ".$restaurante->emailusersedes."<br> <span style='font-size: 10px; color: blue'>EMPRESA: </span>".$restaurante->nomenutricionista." / ". $restaurante->telefonenutricionista." / ".$restaurante->emailnutricionista;
-            $compras = DB::table('compras')->where('restaurante_id', '=', $id)->count();
-            $ativo = ($restaurante->ativo == 1) ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times  text-danger mr-2'></i></b>";
-
-
-            // ações
-            $actionShow = "<a href='".route('admin.restaurante.show', $id)."' title='exibir'><i class='fas fa-eye text-warning mr-2'></i></a>";
-            $actionEdit = "<a href='".route('admin.restaurante.edit', $id)."' title='editar'><i class='fas fa-edit text-info mr-2'></i></a>";
-            // verifica se o restaurante possui compras vinculadas para não possibilitar sua exclusão acidental
-            if($compras == 0){
-                $actionDelete = "<a href='' class='deleterestaurante' data-idrestaurante='".$id."' data-identificacaorestaurante='".$identificacao."'  data-toggle='modal' data-target='#formDelete' title='excluir'><i class='fas fa-trash text-danger mr-2'></i></a>";
-            }else{
-                $actionDelete = "<a title='há compras vinculadas!'><i class='fas fa-trash text-secondary mr-2'></i></a>";
-            }
-
-
-            $actions = $actionShow. " ".$actionEdit. " ".$actionDelete;
 
             $data_arr[] = array(
                 "id" => $id,
                 "regional" => $regional,
                 "municipio" => $municipio,
                 "identificacao" => $identificacao,
-                "responsaveis" => $responsaveis,
-                "compras" => $compras,
-                "ativo" => $ativo,
-                "actions" => $actions,
             );
         }
 

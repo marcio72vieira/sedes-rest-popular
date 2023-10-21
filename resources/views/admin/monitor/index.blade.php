@@ -14,30 +14,59 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTableMonitor" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                    <th>Id</th>
-                    <th>Regional</th>
-                    <th>Município</th>
-                    <th>Restaurante</th>
-                    <th>Responsáveis / Contato / E-mail</th>
-                    <th>Compras</th>
-                    <th>Ativo</th>
-                    <th style="width: 100px">Ações</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                    <th>Id</th>
-                    <th>Regional</th>
-                    <th>Município</th>
-                    <th>Restaurante</th>
-                    <th>Responsáveis / Contato / E-mail</th>
-                    <th>Compras</th>
-                    <th>Ativo</th>
-                    <th style="width: 100px">Ações</th>
-                    </tr>
-                </tfoot>
+                    <thead>
+                        <tr>
+                            <th rowspan="3" style="vertical-align: middle; text-align:center">Id</th>
+                            <th rowspan="3" style="vertical-align: middle; text-align:center">Regionais</th>
+                            <th colspan="24" style="vertical-align: middle; text-align:center">MÊSES</th>
+                            <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL</th>
+                            <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PERCENT</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2" style="text-align:center">JAN</th>
+                            <th colspan="2" style="text-align:center">FEV</th>
+                            <th colspan="2" style="text-align:center">MAR</th>
+                            <th colspan="2" style="text-align:center">ABR</th>
+                            <th colspan="2" style="text-align:center">MAI</th>
+                            <th colspan="2" style="text-align:center">JUN</th>
+                            <th colspan="2" style="text-align:center">JUL</th>
+                            <th colspan="2" style="text-align:center">AGS</th>
+                            <th colspan="2" style="text-align:center">SET</th>
+                            <th colspan="2" style="text-align:center">OUT</th>
+                            <th colspan="2" style="text-align:center">NOV</th>
+                            <th colspan="2" style="text-align:center">DEZ</th>
+                        </tr>
+                        <tr>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>norm</th>
+                            <th>af</th>
+                            <th>NORMAL</th>
+                            <th>AF</th>
+                            <th>NORMAL</th>
+                            <th>AF</th>
+                        </tr>
+                    </thead>
                 </table>
             </div>
         </div>
@@ -52,16 +81,16 @@
             // DataTable
             $('#dataTableMonitor').DataTable({
 
-                buttons: [
-                    'copy', 'excel', 'pdf'
-                ],
-
+                
+                /*
                 order: [[ 0, 'desc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
-                columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
-                    { orderable: false, targets: [3, 4, 5, 6] }
-                ],
+                 
+                // columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
+                //     { orderable: false, targets: [3, 4, 5] }
+                // ], 
+                
                 lengthMenu: [10, 20, 30, 40, 50, 100, 150, 200], //Configura o número de entra de registro a serem exibido por pagina
-                /* pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu */
+                // pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu 
 
 
                 processing: true,
@@ -74,10 +103,6 @@
                     { data: 'regional' },
                     { data: 'municipio' },
                     { data: 'identificacao' },
-                    { data: 'responsaveis' },
-                    { data: 'compras' },
-                    { data: 'ativo' },
-                    { data: 'actions'}
                 ],
                 language: {
                     "lengthMenu": "Mostrar _MENU_ registos",
@@ -93,9 +118,21 @@
                     "zeroRecords": "Não foram encontrados resultados",
                 },
                 pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
+                //scrollY: 450, 
+                */
 
+    
             });
+
+            // Adicionando um select na toolbar do datatable
+            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
+            $('#dataTableMonitor_length').append('<select id="selectDataTable" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
+            $("#selectDataTable").on('change', function(){
+                alert($(this).children("option:selected").text());
+            });
+            
          });
+
     </script>
 @endsection
 
