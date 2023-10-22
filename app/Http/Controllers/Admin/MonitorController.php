@@ -104,4 +104,9 @@ class MonitorController extends Controller
         exit;
     }
 
+
+    public function ajaxgetMonitorComprasMensais(Request $request){
+        
+    }
+
 }

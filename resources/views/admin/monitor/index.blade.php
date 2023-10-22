@@ -78,11 +78,12 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
+            // Mudar o valor dessa rota conforme escolha do select an toolbar do datatable
+            var route = "{{route('admin.ajaxgetMonitorRestaurantes')}}";
+
             // DataTable
             $('#dataTableMonitor').DataTable({
 
-                
-                /*
                 order: [[ 0, 'desc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
                  
                 // columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
@@ -95,7 +96,8 @@
 
                 processing: true,
                 serverSide: true,
-                ajax: "{{route('admin.ajaxgetMonitorRestaurantes')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
+                //ajax: "{{route('admin.ajaxgetMonitorRestaurantes')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
+                ajax: route,
                 // Obs: O corpo da tabela com o dados e os ícones das ações (show, edit e delete), é construido no método "ajaxgetRestaurantes" do controller RestauranteController
                 // Obs: Para fazer a ordenação, o nome das colunas abaixo, devem conincidir com o nome dos campos retornados pela query na recuperação dos registros desejados
                 columns: [
@@ -119,7 +121,7 @@
                 },
                 pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
                 //scrollY: 450, 
-                */
+                
 
     
             });
