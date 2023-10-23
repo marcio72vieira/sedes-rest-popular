@@ -10,28 +10,28 @@ class Monitor extends Model
 {
     use HasFactory;
 
-    public static function entidade($informacao)
+    public static function comprasdogrupo($informacao)
     {
         switch ($informacao)
         {
-            case "regional":
-                $dadostabela = "regional_nome";
+            case "regi":
+                $grupo = "regional_nome";
             break;
 
-            case "municipio":
-                $dadostabela = "municipio_nome";
+            case "muni":
+                $grupo = "municipio_nome";
             break;
 
-            case "restaurante":
-                $dadostabela = "identificacao";
+            case "rest":
+                $grupo = "identificacao";
             break;
         }
 
-        $dadoscompramensal = DB::table('bigtable_data')
-                        ->select($dadostabela)
-                        ->orderBy('companhias.id');
+        $dadoscompradogrupomensal = DB::table('bigtable_data')
+                        ->select($grupo)
+                        ->orderBy($grupo);
         
-        return $dadoscompramensal;
+        return $dadoscompradogrupomensal;
 
         
 

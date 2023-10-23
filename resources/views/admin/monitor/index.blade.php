@@ -9,7 +9,7 @@
 
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+    <div class="mb-4 shadow card">
 
         <div class="card-body">
             <div class="table-responsive">
@@ -79,7 +79,7 @@
         $(document).ready(function(){
 
             // Mudar o valor dessa rota conforme escolha do select an toolbar do datatable
-            var route = "{{route('admin.ajaxgetMonitorRestaurantes')}}";
+            // var route = "{{route('admin.ajaxgetMonitorRestaurantes')}}";
 
             // DataTable
             $('#dataTableMonitor').DataTable({
@@ -96,16 +96,49 @@
 
                 processing: true,
                 serverSide: true,
+                
                 //ajax: "{{route('admin.ajaxgetMonitorRestaurantes')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
-                ajax: route,
+                ajax: {
+                    url: "{{route('admin.ajaxgetMonitorComprasMensais')}}",
+                    data: function(d){
+                        d.grupoEnviado = "Regionais";
+                    }
+                },
                 // Obs: O corpo da tabela com o dados e os ícones das ações (show, edit e delete), é construido no método "ajaxgetRestaurantes" do controller RestauranteController
                 // Obs: Para fazer a ordenação, o nome das colunas abaixo, devem conincidir com o nome dos campos retornados pela query na recuperação dos registros desejados
                 columns: [
                     { data: 'id' },
                     { data: 'regional' },
-                    { data: 'municipio' },
-                    { data: 'identificacao' },
+                    { data: 'jannormal' },
+                    { data: 'janaf' },
+                    { data: 'fevnormal' },
+                    { data: 'fevaf' },
+                    { data: 'marnormal' },
+                    { data: 'maraf' },
+                    { data: 'abrnormal' },
+                    { data: 'abraf' },
+                    { data: 'mainormal' },
+                    { data: 'maiaf' },
+                    { data: 'junnormal' },
+                    { data: 'junaf' },
+                    { data: 'julnormal' },
+                    { data: 'julaf' },
+                    { data: 'agsnormal' },
+                    { data: 'agsaf' },
+                    { data: 'setnormal' },
+                    { data: 'setaf' },
+                    { data: 'outnormal' },
+                    { data: 'outaf' },
+                    { data: 'novnormal' },
+                    { data: 'novaf' },
+                    { data: 'deznormal' },
+                    { data: 'dezaf' },
+                    { data: 'totalnormal' },
+                    { data: 'totalaf' },
+                    { data: 'percentagemnormal' },
+                    { data: 'percentagemaf' },
                 ],
+                
                 language: {
                     "lengthMenu": "Mostrar _MENU_ registos",
                     "search": "Procurar:",
@@ -121,15 +154,13 @@
                 },
                 pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
                 //scrollY: 450, 
-                
-
     
             });
 
             // Adicionando um select na toolbar do datatable
             $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
-            $('#dataTableMonitor_length').append('<select id="selectDataTable" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
-            $("#selectDataTable").on('change', function(){
+            $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
+            $("#selectGrupo").on('change', function(){
                 alert($(this).children("option:selected").text());
             });
             

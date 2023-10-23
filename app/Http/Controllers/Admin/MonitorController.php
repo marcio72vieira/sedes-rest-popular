@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Restaurante;
+use App\Models\Monitor;
 use Illuminate\Support\Facades\DB;
 
 class MonitorController extends Controller
@@ -106,7 +107,11 @@ class MonitorController extends Controller
 
 
     public function ajaxgetMonitorComprasMensais(Request $request){
+        $grupoRecebido = $request->grupoEnviado;
+        echo $request->grupoEnviado;
         
+        //return response()->json($$request->grupoEnviado);
+        //$compraspormes =  Monitor::comprasporgrupo();
     }
 
 }
