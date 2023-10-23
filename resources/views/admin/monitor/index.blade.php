@@ -84,28 +84,29 @@
             // DataTable
             $('#dataTableMonitor').DataTable({
 
-                order: [[ 0, 'desc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
-                 
+                order: [[ 1, 'asc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
+
                 // columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
                 //     { orderable: false, targets: [3, 4, 5] }
-                // ], 
-                
+                // ],
+
                 lengthMenu: [10, 20, 30, 40, 50, 100, 150, 200], //Configura o número de entra de registro a serem exibido por pagina
-                // pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu 
+                // pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu
 
 
                 processing: true,
                 serverSide: true,
-                
+
                 //ajax: "{{route('admin.ajaxgetMonitorRestaurantes')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
-                ajax: {
-                    url: "{{route('admin.ajaxgetMonitorComprasMensais')}}",
-                    data: function(d){
-                        d.grupoEnviado = "Regionais";
-                    }
-                },
-                // Obs: O corpo da tabela com o dados e os ícones das ações (show, edit e delete), é construido no método "ajaxgetRestaurantes" do controller RestauranteController
-                // Obs: Para fazer a ordenação, o nome das colunas abaixo, devem conincidir com o nome dos campos retornados pela query na recuperação dos registros desejados
+                ajax: "{{route('admin.ajaxgetRegionaisComprasMensais')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
+                // ajax: {
+                //     url: "{{route('admin.ajaxgetMonitorComprasMensais')}}",
+                //     data: function(d){
+                //         d.grupoEnviado = "Regionais";
+                //     }
+                // },
+
+
                 columns: [
                     { data: 'id' },
                     { data: 'regional' },
@@ -138,7 +139,7 @@
                     { data: 'percentagemnormal' },
                     { data: 'percentagemaf' },
                 ],
-                
+
                 language: {
                     "lengthMenu": "Mostrar _MENU_ registos",
                     "search": "Procurar:",
@@ -152,9 +153,10 @@
                     },
                     "zeroRecords": "Não foram encontrados resultados",
                 },
-                pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
-                //scrollY: 450, 
-    
+                pagingType: "simple_numbers",
+                //pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
+                //scrollY: 450,
+
             });
 
             // Adicionando um select na toolbar do datatable
@@ -163,7 +165,7 @@
             $("#selectGrupo").on('change', function(){
                 alert($(this).children("option:selected").text());
             });
-            
+
          });
 
     </script>

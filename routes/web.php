@@ -65,6 +65,7 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dash
 // Monitor
 Route::get('monitor', [MonitorController::class, 'index'])->name('admin.monitor')->middleware(['auth']);
 Route::get('ajaxgetMonitorRestaurantes',[MonitorController::class,'ajaxgetMonitorRestaurantes'])->name('admin.ajaxgetMonitorRestaurantes')->middleware(['auth']);           // Rota Ajax para datatable com paginação dinâmica
+Route::get('ajaxgetRegionaisComprasMensais',[MonitorController::class,'ajaxgetRegionaisComprasMensais'])->name('admin.ajaxgetRegionaisComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetMonitorComprasMensais',[MonitorController::class,'ajaxgetMonitorComprasMensais'])->name('admin.ajaxgetMonitorComprasMensais')->middleware(['auth']);     // Rota Ajax para datatable com paginação dinâmica
 
 

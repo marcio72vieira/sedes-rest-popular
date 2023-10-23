@@ -30,10 +30,18 @@ class Monitor extends Model
         $dadoscompradogrupomensal = DB::table('bigtable_data')
                         ->select($grupo)
                         ->orderBy($grupo);
-        
+
         return $dadoscompradogrupomensal;
 
-        
+    }
 
+    public static function comprasdogruporegional()
+    {
+        $dadosdacompradogruporegional =  DB::table("bigtable_data")
+            ->select(DB::RAW('bigtable_data.regional_id AS id, bigtable_data.regional_nome AS nome'))
+            ->groupBy('bigtable_data.regional_id')
+            ->get();
+
+        return $dadosdacompradogruporegional;
     }
 }
