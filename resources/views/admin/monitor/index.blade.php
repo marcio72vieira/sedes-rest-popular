@@ -159,12 +159,12 @@
 
             });
 
-            // Adicionando um select na toolbar do datatable
+            /* // Adicionando um select na toolbar do datatable
             $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
             $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
             $("#selectGrupo").on('change', function(){
                 alert($(this).children("option:selected").text());
-            });
+            }); */
 
          });
 
