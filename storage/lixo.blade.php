@@ -158,3 +158,712 @@ SELECT
     WHERE YEAR(data_ini) = 2023
     GROUP BY regional_id, MONTH(data_ini)
     ORDER BY regional_nome;
+
+
+    $regionais = DB::table('bigtable_data')
+        ->selectRaw('
+            data_ini,
+            regional_id AS id,
+            regional_nome AS regional,
+
+            IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+            IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf,
+
+            IF(MONTH(data_ini) = 02 AND af = "nao", SUM(precototal), 0.00) AS fevnormal,
+            IF(MONTH(data_ini) = 02 AND af = "sim", SUM(precototal), 0.00) AS fevaf,
+
+            IF(MONTH(data_ini) = 03 AND af = "nao", SUM(precototal), 0.00) AS marnormal,
+            IF(MONTH(data_ini) = 03 AND af = "sim", SUM(precototal), 0.00) AS maraf,
+
+            IF(MONTH(data_ini) = 04 AND af = "nao", SUM(precototal), 0.00) AS abrnormal,
+            IF(MONTH(data_ini) = 04 AND af = "sim", SUM(precototal), 0.00) AS abraf,
+
+            IF(MONTH(data_ini) = 05 AND af = "nao", SUM(precototal), 0.00) AS mainormal,
+            IF(MONTH(data_ini) = 05 AND af = "sim", SUM(precototal), 0.00) AS maiaf,
+
+            IF(MONTH(data_ini) = 06 AND af = "nao", SUM(precototal), 0.00) AS junnormal,
+            IF(MONTH(data_ini) = 06 AND af = "sim", SUM(precototal), 0.00) AS junaf,
+
+            IF(MONTH(data_ini) = 07 AND af = "nao", SUM(precototal), 0.00) AS julnormal,
+            IF(MONTH(data_ini) = 07 AND af = "sim", SUM(precototal), 0.00) AS julaf,
+
+            IF(MONTH(data_ini) = 08 AND af = "nao", SUM(precototal), 0.00) AS agsnormal,
+            IF(MONTH(data_ini) = 08 AND af = "sim", SUM(precototal), 0.00) AS agsaf,
+
+            IF(MONTH(data_ini) = 09 AND af = "nao", SUM(precototal), 0.00) AS setnormal,
+            IF(MONTH(data_ini) = 09 AND af = "sim", SUM(precototal), 0.00) AS setaf,
+
+            IF(MONTH(data_ini) = 10 AND af = "nao", SUM(precototal), 0.00) AS outnormal,
+            IF(MONTH(data_ini) = 10 AND af = "sim", SUM(precototal), 0.00) AS outaf,
+
+            IF(MONTH(data_ini) = 11 AND af = "nao", SUM(precototal), 0.00) AS novnormal,
+            IF(MONTH(data_ini) = 11 AND af = "sim", SUM(precototal), 0.00) AS novaf,
+
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS deznormal,
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS dezaf
+        ')
+        ->whereRaw('YEAR(data_ini) =  2023')
+        ->groupBy('regional_id')
+        ->orderBy($columnName,$columnSortOrder)
+        ->skip($start)
+        ->take($rowperpage)
+        ->get();
+
+// QUERYS COMPATÍVEIS
+// Essa query em Mysql Puro
+SELECT
+        MONTH(data_ini),
+        regional_id,
+        regional_nome,
+        IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf,
+
+        IF(MONTH(data_ini) = 02 AND af = "nao", SUM(precototal), 0.00) AS fevnormal,
+        IF(MONTH(data_ini) = 02 AND af = "sim", SUM(precototal), 0.00) AS fevaf,
+
+        IF(MONTH(data_ini) = 03 AND af = "nao", SUM(precototal), 0.00) AS marnormal,
+        IF(MONTH(data_ini) = 03 AND af = "sim", SUM(precototal), 0.00) AS maraf,
+
+        IF(MONTH(data_ini) = 04 AND af = "nao", SUM(precototal), 0.00) AS abrnormal,
+        IF(MONTH(data_ini) = 04 AND af = "sim", SUM(precototal), 0.00) AS abraf,
+
+        IF(MONTH(data_ini) = 05 AND af = "nao", SUM(precototal), 0.00) AS mainormal,
+        IF(MONTH(data_ini) = 05 AND af = "sim", SUM(precototal), 0.00) AS maiaf,
+
+        IF(MONTH(data_ini) = 06 AND af = "nao", SUM(precototal), 0.00) AS junnormal,
+        IF(MONTH(data_ini) = 06 AND af = "sim", SUM(precototal), 0.00) AS junaf,
+
+        IF(MONTH(data_ini) = 07 AND af = "nao", SUM(precototal), 0.00) AS julnormal,
+        IF(MONTH(data_ini) = 07 AND af = "sim", SUM(precototal), 0.00) AS julaf,
+
+        IF(MONTH(data_ini) = 08 AND af = "nao", SUM(precototal), 0.00) AS agsnormal,
+        IF(MONTH(data_ini) = 08 AND af = "sim", SUM(precototal), 0.00) AS agsaf,
+
+        IF(MONTH(data_ini) = 09 AND af = "nao", SUM(precototal), 0.00) AS setnormal,
+        IF(MONTH(data_ini) = 09 AND af = "sim", SUM(precototal), 0.00) AS setaf,
+
+        IF(MONTH(data_ini) = 10 AND af = "nao", SUM(precototal), 0.00) AS outnormal,
+        IF(MONTH(data_ini) = 10 AND af = "sim", SUM(precototal), 0.00) AS outaf,
+
+        IF(MONTH(data_ini) = 11 AND af = "nao", SUM(precototal), 0.00) AS novnormal,
+        IF(MONTH(data_ini) = 11 AND af = "sim", SUM(precototal), 0.00) AS novaf,
+
+        IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS deznormal,
+        IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS dezaf
+
+    FROM `bigtable_data`
+    WHERE YEAR(data_ini) = 2023
+    GROUP BY regional_id, MONTH(data_ini)
+    ORDER BY regional_nome
+
+    // É compatível com essa QueryBuilder
+
+    $regionais = DB::table('bigtable_data')
+    ->selectRaw('
+        MONTH(data_ini),
+        regional_id AS id,
+        regional_nome AS regional,
+
+        IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf,
+
+        IF(MONTH(data_ini) = 02 AND af = "nao", SUM(precototal), 0.00) AS fevnormal,
+        IF(MONTH(data_ini) = 02 AND af = "sim", SUM(precototal), 0.00) AS fevaf,
+
+        IF(MONTH(data_ini) = 03 AND af = "nao", SUM(precototal), 0.00) AS marnormal,
+        IF(MONTH(data_ini) = 03 AND af = "sim", SUM(precototal), 0.00) AS maraf,
+
+        IF(MONTH(data_ini) = 04 AND af = "nao", SUM(precototal), 0.00) AS abrnormal,
+        IF(MONTH(data_ini) = 04 AND af = "sim", SUM(precototal), 0.00) AS abraf,
+
+        IF(MONTH(data_ini) = 05 AND af = "nao", SUM(precototal), 0.00) AS mainormal,
+        IF(MONTH(data_ini) = 05 AND af = "sim", SUM(precototal), 0.00) AS maiaf,
+
+        IF(MONTH(data_ini) = 06 AND af = "nao", SUM(precototal), 0.00) AS junnormal,
+        IF(MONTH(data_ini) = 06 AND af = "sim", SUM(precototal), 0.00) AS junaf,
+
+        IF(MONTH(data_ini) = 07 AND af = "nao", SUM(precototal), 0.00) AS julnormal,
+        IF(MONTH(data_ini) = 07 AND af = "sim", SUM(precototal), 0.00) AS julaf,
+
+        IF(MONTH(data_ini) = 08 AND af = "nao", SUM(precototal), 0.00) AS agsnormal,
+        IF(MONTH(data_ini) = 08 AND af = "sim", SUM(precototal), 0.00) AS agsaf,
+
+        IF(MONTH(data_ini) = 09 AND af = "nao", SUM(precototal), 0.00) AS setnormal,
+        IF(MONTH(data_ini) = 09 AND af = "sim", SUM(precototal), 0.00) AS setaf,
+
+        IF(MONTH(data_ini) = 10 AND af = "nao", SUM(precototal), 0.00) AS outnormal,
+        IF(MONTH(data_ini) = 10 AND af = "sim", SUM(precototal), 0.00) AS outaf,
+
+        IF(MONTH(data_ini) = 11 AND af = "nao", SUM(precototal), 0.00) AS novnormal,
+        IF(MONTH(data_ini) = 11 AND af = "sim", SUM(precototal), 0.00) AS novaf,
+
+        IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS deznormal,
+        IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS dezaf
+    ')
+    ->whereRaw('YEAR(data_ini) =  2023')
+    ->groupBy('regional_id', 'MONTH(data_ini)')
+    ->orderBy($columnName,$columnSortOrder)
+    ->skip($start)
+    ->take($rowperpage)
+    ->get();
+
+*************************************
+  REQUISIÇÃO AJAX ORIGINAL COMPLETA
+*************************************
+public function ajaxgetRegionaisComprasMensais(Request $request){
+
+    //$grupoRecebido = $request->grupoEnviado;
+    //echo $request->grupoEnviado;
+    //return response()->json($$request->grupoEnviado);
+    //$compraspormes =  Monitor::comprasporgrupo();
+
+    ## Read value
+    $draw = $request->get('draw');
+    $start = $request->get("start");
+    $rowperpage = $request->get("length"); // Rows display per page
+
+    $columnIndex_arr = $request->get('order');
+    $columnName_arr = $request->get('columns');
+    $order_arr = $request->get('order');
+    $search_arr = $request->get('search');
+
+    $columnIndex = $columnIndex_arr[0]['column']; // Column index
+    $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+    $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+    $searchValue = $search_arr['value']; // Search value
+
+    //$totalRecords = Regional::select('count(*) as allcount')->count();
+    //$totalRecords = DB::table("bigtable_data")->select(DB::RAW('COUNT(DISTINCT(bigtable_data.regional_id)) as allcount'))->count();
+    $totalRecords = DB::table("bigtable_data")->select('regional_id')->distinct('regional_id')->count();
+
+    $totalRecordswithFilter = DB::table("bigtable_data")
+        ->select(DB::RAW('regional_id AS id, regional_nome AS regional'))
+        ->distinct('regional_id')
+        ->where('regional_nome', 'like', '%' .$searchValue . '%')
+        ->count();
+
+    $regionais = DB::table('bigtable_data')
+    ->selectRaw('
+        MONTH(data_ini),
+        regional_id AS id,
+        regional_nome AS regional,
+
+        IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf,
+
+        IF(MONTH(data_ini) = 02 AND af = "nao", SUM(precototal), 0.00) AS fevnormal,
+        IF(MONTH(data_ini) = 02 AND af = "sim", SUM(precototal), 0.00) AS fevaf,
+
+        IF(MONTH(data_ini) = 03 AND af = "nao", SUM(precototal), 0.00) AS marnormal,
+        IF(MONTH(data_ini) = 03 AND af = "sim", SUM(precototal), 0.00) AS maraf,
+
+        IF(MONTH(data_ini) = 04 AND af = "nao", SUM(precototal), 0.00) AS abrnormal,
+        IF(MONTH(data_ini) = 04 AND af = "sim", SUM(precototal), 0.00) AS abraf,
+
+        IF(MONTH(data_ini) = 05 AND af = "nao", SUM(precototal), 0.00) AS mainormal,
+        IF(MONTH(data_ini) = 05 AND af = "sim", SUM(precototal), 0.00) AS maiaf,
+
+        IF(MONTH(data_ini) = 06 AND af = "nao", SUM(precototal), 0.00) AS junnormal,
+        IF(MONTH(data_ini) = 06 AND af = "sim", SUM(precototal), 0.00) AS junaf,
+
+        IF(MONTH(data_ini) = 07 AND af = "nao", SUM(precototal), 0.00) AS julnormal,
+        IF(MONTH(data_ini) = 07 AND af = "sim", SUM(precototal), 0.00) AS julaf,
+
+        IF(MONTH(data_ini) = 08 AND af = "nao", SUM(precototal), 0.00) AS agsnormal,
+        IF(MONTH(data_ini) = 08 AND af = "sim", SUM(precototal), 0.00) AS agsaf,
+
+        IF(MONTH(data_ini) = 09 AND af = "nao", SUM(precototal), 0.00) AS setnormal,
+        IF(MONTH(data_ini) = 09 AND af = "sim", SUM(precototal), 0.00) AS setaf,
+
+        IF(MONTH(data_ini) = 10 AND af = "nao", SUM(precototal), 0.00) AS outnormal,
+        IF(MONTH(data_ini) = 10 AND af = "sim", SUM(precototal), 0.00) AS outaf,
+
+        IF(MONTH(data_ini) = 11 AND af = "nao", SUM(precototal), 0.00) AS novnormal,
+        IF(MONTH(data_ini) = 11 AND af = "sim", SUM(precototal), 0.00) AS novaf,
+
+        IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS deznormal,
+        IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS dezaf
+    ')
+    ->whereRaw('YEAR(data_ini) =  2023')
+    ->groupBy('regional_id', 'MONTH(data_ini)')
+    ->orderBy($columnName,$columnSortOrder)
+    ->skip($start)
+    ->take($rowperpage)
+    ->get();
+
+
+    /*
+    SELECT
+        regional_id,
+        regional_nome,
+        IF(MONTH(data_ini) = 01, SUM(IF(af = "sim", precototal, 0)), NULL) AS janaf,
+        IF(MONTH(data_ini) = 01, SUM(IF(af = "nao", precototal, 0)), NULL) AS jannorm
+    FROM `bigtable_data`
+    WHERE YEAR(data_ini) = 2023
+    GROUP BY regional_id, MONTH(data_ini);
+
+    SELECT
+        regional_id,
+        regional_nome,
+        IF(MONTH(data_ini) = 01, SUM(IF(af = "sim", precototal, 0)), NULL) AS janaf,
+        IF(MONTH(data_ini) = 01, SUM(IF(af = "nao", precototal, 0)), NULL) AS jannormal,
+        IF(MONTH(data_ini) = 02, SUM(IF(af = "sim", precototal, 0)), NULL) AS fevaf,
+        IF(MONTH(data_ini) = 02, SUM(IF(af = "nao", precototal, 0)), NULL) AS fevnormal,
+        IF(MONTH(data_ini) = 03, SUM(IF(af = "sim", precototal, 0)), NULL) AS maraf,
+        IF(MONTH(data_ini) = 03, SUM(IF(af = "nao", precototal, 0)), NULL) AS marnormal
+    FROM `bigtable_data`
+    WHERE YEAR(data_ini) = 2023
+    GROUP BY regional_id;
+    */
+
+    /*
+    $regionais = DB::table('bigtable_data')
+            ->selectRaw('data_ini, regional_id AS id, regional_nome AS regional,
+
+                IF(MONTH(data_ini) = 01, SUM(IF(af = "nao", precototal, 0)) AS jannormal), NULL),
+                IF(MONTH(data_ini) = 01, SUM(IF(af = "sim", precototal, 0)) AS janaf), NULL),
+
+                IF(MONTH(data_ini) = 02, SUM(IF(af = "sim", precototal, 0)) AS fevaf), NULL),
+                IF(MONTH(data_ini) = 02, SUM(IF(af = "nao", precototal, 0)) AS fevnormal), NULL),
+
+                IF(MONTH(data_ini) = 03, SUM(IF(af = "sim", precototal, 0)) AS maraf), NULL),
+                IF(MONTH(data_ini) = 03, SUM(IF(af = "nao", precototal, 0)) AS marnormal), NULL),
+
+                IF(MONTH(data_ini) = 04, SUM(IF(af = "sim", precototal, 0)) AS abraf), NULL),
+                IF(MONTH(data_ini) = 04, SUM(IF(af = "nao", precototal, 0)) AS abrnormal), NULL),
+
+                IF(MONTH(data_ini) = 05, SUM(IF(af = "sim", precototal, 0)) AS maiaf), NULL),
+                IF(MONTH(data_ini) = 05, SUM(IF(af = "nao", precototal, 0)) AS mainormal), NULL),
+
+                IF(MONTH(data_ini) = 06, SUM(IF(af = "sim", precototal, 0)) AS junaf), NULL),
+                IF(MONTH(data_ini) = 06, SUM(IF(af = "nao", precototal, 0)) AS junnormal), NULL),
+
+                IF(MONTH(data_ini) = 07, SUM(IF(af = "sim", precototal, 0)) AS julaf), NULL),
+                IF(MONTH(data_ini) = 07, SUM(IF(af = "nao", precototal, 0)) AS julnormal), NULL),
+
+                IF(MONTH(data_ini) = 08, SUM(IF(af = "sim", precototal, 0)) AS agsaf), NULL),
+                IF(MONTH(data_ini) = 08, SUM(IF(af = "nao", precototal, 0)) AS agsnormal), NULL),
+
+                IF(MONTH(data_ini) = 09, SUM(IF(af = "sim", precototal, 0)) AS setaf), NULL),
+                IF(MONTH(data_ini) = 09, SUM(IF(af = "nao", precototal, 0)) AS setnormal), NULL),
+
+                IF(MONTH(data_ini) = 10, SUM(IF(af = "sim", precototal, 0)) AS outaf), NULL),
+                IF(MONTH(data_ini) = 10, SUM(IF(af = "nao", precototal, 0)) AS outnormal), NULL),
+
+                IF(MONTH(data_ini) = 11, SUM(IF(af = "sim", precototal, 0)) AS novaf), NULL),
+                IF(MONTH(data_ini) = 11, SUM(IF(af = "sim", precototal, 0)) AS novnormal), NULL),
+
+                IF(MONTH(data_ini) = 12, SUM(IF(af = "sim", precototal, 0)) AS dezaf), NULL),
+                IF(MONTH(data_ini) = 12, SUM(IF(af = "nao", precototal, 0)) AS deznormal), NULL),
+
+                WHERE YEAR(data_ini) = 2023')
+            ->groupBy('regional_id')
+            ->orderBy($columnName,$columnSortOrder)
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
+    */
+
+    /*
+    $regionais = DB::table("bigtable_data")
+        ->select(DB::raw("SELECT data_ini, regional_id AS id, regional_nome AS regional,
+            IF(MONTH(data_ini) = 01, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 01, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 02, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 02, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 03, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 03, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 04, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 04, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 05, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 05, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 06, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 06, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 07, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 07, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 08, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 08, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 09, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 09, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 10, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 10, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 11, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 11, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL),
+            IF(MONTH(data_ini) = 12, SUM(IF(af = 'sim', precototal, 0)) AS janaf ), NULL),
+            IF(MONTH(data_ini) = 12, SUM(IF(af = 'nao', precototal, 0)) AS jannormal ), NULL)
+            GROUP BY regional_id
+            WHERE YEAR(data_ini) = 2023"))
+            ->orderBy($columnName,$columnSortOrder)
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
+    */
+
+
+    /*
+        QUERY ORIGINAL CORRETA
+        $regionais = DB::table("bigtable_data")
+        ->select(DB::RAW('regional_id AS id, regional_nome AS regional'))
+        ->groupBy('regional_id')
+        ->orderBy($columnName,$columnSortOrder)
+        ->skip($start)
+        ->take($rowperpage)
+        ->get();
+    */
+
+    $data_arr = array();
+
+    foreach($regionais as $regional){
+        $id = $regional->id;
+        $regional =  $regional->regional;
+
+        // Testar se o valor vier null, atribuir 0.0, do tipo: $jannormal = $registro->jannormal != NULL ? $registro->janmnoram ; 0.00;
+        $jannormal = 0.00;
+        $janaf = 0.00;
+        $fevnormal = 0.00;
+        $fevaf = 0.00;
+        $marnormal = 0.00;
+        $maraf = 0.00;
+        $abrnormal = 0.00;
+        $abraf = 0.00;
+        $mainormal = 0.00;
+        $maiaf = 0.00;
+        $junnormal = 0.00;
+        $junaf = 0.00;
+        $julnormal = 0.00;
+        $julaf = 0.00;
+        $agsnormal = 0.00;
+        $agsaf = 0.00;
+        $setnormal = 0.00;
+        $setaf = 0.00;
+        $outnormal = 0.00;
+        $outaf = 0.00;
+        $novnormal = 0.00;
+        $novaf = 0.00;
+        $deznormal = 0.00;
+        $dezaf = 0.00;
+        $totalnormal = 0.00;
+        $totalaf = 0.00;
+        $percentagemnormal = 0.00;
+        $percentagemaf = 0.00;
+
+
+        $data_arr[] = array(
+            "id"                => $id,
+            "regional"          => $regional,
+            "jannormal"         => $jannormal,
+            "janaf"             => $janaf,
+            "fevnormal"         => $fevnormal,
+            "fevaf"             => $fevaf,
+            "marnormal"         => $marnormal,
+            "maraf"             => $maraf,
+            "abrnormal"         => $abrnormal,
+            "abraf"             => $abraf,
+            "mainormal"         => $mainormal,
+            "maiaf"             => $maiaf,
+            "junnormal"         => $junnormal,
+            "junaf"             => $junaf,
+            "julnormal"         => $julnormal,
+            "julaf"             => $julaf,
+            "agsnormal"         => $agsnormal,
+            "agsaf"             => $agsaf,
+            "setnormal"         => $setnormal,
+            "setaf"             => $setaf,
+            "outnormal"         => $outnormal,
+            "outaf"             => $outaf,
+            "novnormal"         => $novnormal,
+            "novaf"             => $novaf,
+            "deznormal"         => $deznormal,
+            "dezaf"             => $dezaf,
+            "totalnormal"       => $totalnormal,
+            "totalaf"           => $totalaf,
+            "percentagemnormal" => $percentagemnormal,
+            "percentagemaf"     => $percentagemaf,
+        );
+    }
+
+    $response = array(
+        "draw" => intval($draw),
+        "iTotalRecords" => $totalRecords,
+        "iTotalDisplayRecords" => $totalRecordswithFilter,
+        "aaData" => $data_arr
+    );
+
+    echo json_encode($response);
+    exit;
+}
+
+
+**********
+SUBQUERIES
+**********
+01--------
+SELECT 
+	regional_id, 
+    regional_nome 
+FROM 
+	(
+        SELECT 
+        	regional_id, regional_nome,
+        	IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        	IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf
+        FROM
+        	bigtable_data
+        WHERE
+        	YEAR(data_ini) = 2023
+    ) AS valoresmeses
+
+02----------
+SELECT
+	regional_id, 
+    regional_nome,
+    IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+    IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf
+FROM 
+	(
+        SELECT 
+        	data_ini,
+        	af,
+        	precototal,
+        	regional_id, regional_nome,
+        	IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        	IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf
+        FROM
+        	bigtable_data
+        WHERE
+        	YEAR(data_ini) = 2023
+    ) AS valoresmeses
+
+03------------
+SELECT
+	regional_id, 
+    regional_nome,
+    jannormal, janaf, fevnormal, fevaf, marnormal, maraf, abrnormal, abrnormal, mainormal, maiaf, junnormal, junaf
+    julnormal, julaf, agsnormal, agsaf, setnormal, setaf, outnormal, outaf, novnormal, novaf, deznormal, dezaf
+FROM 
+	(
+        SELECT 
+        	data_ini,
+        	af,
+        	precototal,
+        	regional_id, regional_nome,
+        	IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        	IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf,
+        	
+        	IF(MONTH(data_ini) = 02 AND af = "nao", SUM(precototal), 0.00) AS fevnormal,
+        	IF(MONTH(data_ini) = 02 AND af = "sim", SUM(precototal), 0.00) AS fevaf,
+
+            IF(MONTH(data_ini) = 03 AND af = "nao", SUM(precototal), 0.00) AS marnormal,
+            IF(MONTH(data_ini) = 03 AND af = "sim", SUM(precototal), 0.00) AS maraf,
+
+            IF(MONTH(data_ini) = 04 AND af = "nao", SUM(precototal), 0.00) AS abrnormal,
+            IF(MONTH(data_ini) = 04 AND af = "sim", SUM(precototal), 0.00) AS abraf,
+
+            IF(MONTH(data_ini) = 05 AND af = "nao", SUM(precototal), 0.00) AS mainormal,
+            IF(MONTH(data_ini) = 05 AND af = "sim", SUM(precototal), 0.00) AS maiaf,
+
+            IF(MONTH(data_ini) = 06 AND af = "nao", SUM(precototal), 0.00) AS junnormal,
+            IF(MONTH(data_ini) = 06 AND af = "sim", SUM(precototal), 0.00) AS junaf,
+
+            IF(MONTH(data_ini) = 07 AND af = "nao", SUM(precototal), 0.00) AS julnormal,
+            IF(MONTH(data_ini) = 07 AND af = "sim", SUM(precototal), 0.00) AS julaf,
+
+            IF(MONTH(data_ini) = 08 AND af = "nao", SUM(precototal), 0.00) AS agsnormal,
+            IF(MONTH(data_ini) = 08 AND af = "sim", SUM(precototal), 0.00) AS agsaf,
+
+            IF(MONTH(data_ini) = 09 AND af = "nao", SUM(precototal), 0.00) AS setnormal,
+            IF(MONTH(data_ini) = 09 AND af = "sim", SUM(precototal), 0.00) AS setaf,
+
+            IF(MONTH(data_ini) = 10 AND af = "nao", SUM(precototal), 0.00) AS outnormal,
+            IF(MONTH(data_ini) = 10 AND af = "sim", SUM(precototal), 0.00) AS outaf,
+
+            IF(MONTH(data_ini) = 11 AND af = "nao", SUM(precototal), 0.00) AS novnormal,
+            IF(MONTH(data_ini) = 11 AND af = "sim", SUM(precototal), 0.00) AS novaf,
+
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS deznormal,
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS dezaf
+        
+        FROM
+        	bigtable_data
+        WHERE
+        	YEAR(data_ini) = 2023
+    ) AS valoresmeses
+WHERE YEAR(data_ini) = 2023
+GROUP BY regional_id
+
+4 ------ PERFEITA
+SELECT
+	regional_id, 
+    regional_nome,
+    jannormal, janaf, fevnormal, fevaf, marnormal, maraf, abrnormal, abrnormal, mainormal, maiaf, junnormal, junaf
+    julnormal, julaf, agsnormal, agsaf, setnormal, setaf, outnormal, outaf, novnormal, novaf, deznormal, dezaf
+FROM 
+	(
+        SELECT 
+        	data_ini,
+        	af,
+        	precototal,
+        	regional_id, regional_nome,
+        	IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        	IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf,
+        	
+        	IF(MONTH(data_ini) = 02 AND af = "nao", SUM(precototal), 0.00) AS fevnormal,
+        	IF(MONTH(data_ini) = 02 AND af = "sim", SUM(precototal), 0.00) AS fevaf,
+
+            IF(MONTH(data_ini) = 03 AND af = "nao", SUM(precototal), 0.00) AS marnormal,
+            IF(MONTH(data_ini) = 03 AND af = "sim", SUM(precototal), 0.00) AS maraf,
+
+            IF(MONTH(data_ini) = 04 AND af = "nao", SUM(precototal), 0.00) AS abrnormal,
+            IF(MONTH(data_ini) = 04 AND af = "sim", SUM(precototal), 0.00) AS abraf,
+
+            IF(MONTH(data_ini) = 05 AND af = "nao", SUM(precototal), 0.00) AS mainormal,
+            IF(MONTH(data_ini) = 05 AND af = "sim", SUM(precototal), 0.00) AS maiaf,
+
+            IF(MONTH(data_ini) = 06 AND af = "nao", SUM(precototal), 0.00) AS junnormal,
+            IF(MONTH(data_ini) = 06 AND af = "sim", SUM(precototal), 0.00) AS junaf,
+
+            IF(MONTH(data_ini) = 07 AND af = "nao", SUM(precototal), 0.00) AS julnormal,
+            IF(MONTH(data_ini) = 07 AND af = "sim", SUM(precototal), 0.00) AS julaf,
+
+            IF(MONTH(data_ini) = 08 AND af = "nao", SUM(precototal), 0.00) AS agsnormal,
+            IF(MONTH(data_ini) = 08 AND af = "sim", SUM(precototal), 0.00) AS agsaf,
+
+            IF(MONTH(data_ini) = 09 AND af = "nao", SUM(precototal), 0.00) AS setnormal,
+            IF(MONTH(data_ini) = 09 AND af = "sim", SUM(precototal), 0.00) AS setaf,
+
+            IF(MONTH(data_ini) = 10 AND af = "nao", SUM(precototal), 0.00) AS outnormal,
+            IF(MONTH(data_ini) = 10 AND af = "sim", SUM(precototal), 0.00) AS outaf,
+
+            IF(MONTH(data_ini) = 11 AND af = "nao", SUM(precototal), 0.00) AS novnormal,
+            IF(MONTH(data_ini) = 11 AND af = "sim", SUM(precototal), 0.00) AS novaf,
+
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS deznormal,
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS dezaf
+        
+        FROM
+        	bigtable_data
+        WHERE
+        	YEAR(data_ini) = 2023
+        GROUP BY regional_id, MONTH(data_ini)
+        ORDER BY regional_nome
+    ) AS valoresmeses
+WHERE YEAR(data_ini) = 2023
+GROUP BY regional_id
+
+
+5 ------ PÓS PERFEITA
+SELECT
+	regional_id, 
+    regional_nome,
+    jannormal, janaf, fevnormal, fevaf, marnormal, maraf, abrnormal, abrnormal, mainormal, maiaf, junnormal, junaf
+    julnormal, julaf, agsnormal, agsaf, setnormal, setaf, outnormal, outaf, novnormal, novaf, deznormal, dezaf
+FROM 
+	(
+        SELECT 
+        	data_ini,
+        	af,
+        	precototal,
+        	regional_id, regional_nome,
+        	IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        	IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf,
+        	
+        	IF(MONTH(data_ini) = 02 AND af = "nao", SUM(precototal), 0.00) AS fevnormal,
+        	IF(MONTH(data_ini) = 02 AND af = "sim", SUM(precototal), 0.00) AS fevaf,
+
+            IF(MONTH(data_ini) = 03 AND af = "nao", SUM(precototal), 0.00) AS marnormal,
+            IF(MONTH(data_ini) = 03 AND af = "sim", SUM(precototal), 0.00) AS maraf,
+
+            IF(MONTH(data_ini) = 04 AND af = "nao", SUM(precototal), 0.00) AS abrnormal,
+            IF(MONTH(data_ini) = 04 AND af = "sim", SUM(precototal), 0.00) AS abraf,
+
+            IF(MONTH(data_ini) = 05 AND af = "nao", SUM(precototal), 0.00) AS mainormal,
+            IF(MONTH(data_ini) = 05 AND af = "sim", SUM(precototal), 0.00) AS maiaf,
+
+            IF(MONTH(data_ini) = 06 AND af = "nao", SUM(precototal), 0.00) AS junnormal,
+            IF(MONTH(data_ini) = 06 AND af = "sim", SUM(precototal), 0.00) AS junaf,
+
+            IF(MONTH(data_ini) = 07 AND af = "nao", SUM(precototal), 0.00) AS julnormal,
+            IF(MONTH(data_ini) = 07 AND af = "sim", SUM(precototal), 0.00) AS julaf,
+
+            IF(MONTH(data_ini) = 08 AND af = "nao", SUM(precototal), 0.00) AS agsnormal,
+            IF(MONTH(data_ini) = 08 AND af = "sim", SUM(precototal), 0.00) AS agsaf,
+
+            IF(MONTH(data_ini) = 09 AND af = "nao", SUM(precototal), 0.00) AS setnormal,
+            IF(MONTH(data_ini) = 09 AND af = "sim", SUM(precototal), 0.00) AS setaf,
+
+            IF(MONTH(data_ini) = 10 AND af = "nao", SUM(precototal), 0.00) AS outnormal,
+            IF(MONTH(data_ini) = 10 AND af = "sim", SUM(precototal), 0.00) AS outaf,
+
+            IF(MONTH(data_ini) = 11 AND af = "nao", SUM(precototal), 0.00) AS novnormal,
+            IF(MONTH(data_ini) = 11 AND af = "sim", SUM(precototal), 0.00) AS novaf,
+
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS deznormal,
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS dezaf
+        
+        FROM
+        	bigtable_data
+        WHERE
+        	YEAR(data_ini) = 2023
+        GROUP BY regional_id, MONTH(data_ini)
+        ORDER BY regional_nome
+    ) AS valoresmeses
+WHERE YEAR(data_ini) = 2023
+
+6 ---- A MAIS PERFEITA DE TODAS
+SELECT
+	regional_id, 
+    regional_nome,
+    SUM(jannormal), SUM(janaf), SUM(fevnormal), SUM(fevaf), SUM(marnormal), SUM(maraf), SUM(abrnormal), SUM(abraf), SUM(mainormal), SUM(maiaf), SUM(junnormal), SUM(junaf),
+    SUM(julnormal), SUM(julaf), SUM(agsnormal), SUM(agsaf), SUM(setnormal), SUM(setaf), SUM(outnormal), SUM(outaf), SUM(novnormal), SUM(novaf), SUM(deznormal), SUM(dezaf)
+FROM 
+	(
+        SELECT 
+        	data_ini,
+        	af,
+        	precototal,
+        	regional_id, regional_nome,
+        	IF(MONTH(data_ini) = 01 AND af = "nao", SUM(precototal), 0.00) AS jannormal,
+        	IF(MONTH(data_ini) = 01 AND af = "sim", SUM(precototal), 0.00) AS janaf,
+        	
+        	IF(MONTH(data_ini) = 02 AND af = "nao", SUM(precototal), 0.00) AS fevnormal,
+        	IF(MONTH(data_ini) = 02 AND af = "sim", SUM(precototal), 0.00) AS fevaf,
+
+            IF(MONTH(data_ini) = 03 AND af = "nao", SUM(precototal), 0.00) AS marnormal,
+            IF(MONTH(data_ini) = 03 AND af = "sim", SUM(precototal), 0.00) AS maraf,
+
+            IF(MONTH(data_ini) = 04 AND af = "nao", SUM(precototal), 0.00) AS abrnormal,
+            IF(MONTH(data_ini) = 04 AND af = "sim", SUM(precototal), 0.00) AS abraf,
+
+            IF(MONTH(data_ini) = 05 AND af = "nao", SUM(precototal), 0.00) AS mainormal,
+            IF(MONTH(data_ini) = 05 AND af = "sim", SUM(precototal), 0.00) AS maiaf,
+
+            IF(MONTH(data_ini) = 06 AND af = "nao", SUM(precototal), 0.00) AS junnormal,
+            IF(MONTH(data_ini) = 06 AND af = "sim", SUM(precototal), 0.00) AS junaf,
+
+            IF(MONTH(data_ini) = 07 AND af = "nao", SUM(precototal), 0.00) AS julnormal,
+            IF(MONTH(data_ini) = 07 AND af = "sim", SUM(precototal), 0.00) AS julaf,
+
+            IF(MONTH(data_ini) = 08 AND af = "nao", SUM(precototal), 0.00) AS agsnormal,
+            IF(MONTH(data_ini) = 08 AND af = "sim", SUM(precototal), 0.00) AS agsaf,
+
+            IF(MONTH(data_ini) = 09 AND af = "nao", SUM(precototal), 0.00) AS setnormal,
+            IF(MONTH(data_ini) = 09 AND af = "sim", SUM(precototal), 0.00) AS setaf,
+
+            IF(MONTH(data_ini) = 10 AND af = "nao", SUM(precototal), 0.00) AS outnormal,
+            IF(MONTH(data_ini) = 10 AND af = "sim", SUM(precototal), 0.00) AS outaf,
+
+            IF(MONTH(data_ini) = 11 AND af = "nao", SUM(precototal), 0.00) AS novnormal,
+            IF(MONTH(data_ini) = 11 AND af = "sim", SUM(precototal), 0.00) AS novaf,
+
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS deznormal,
+            IF(MONTH(data_ini) = 12 AND af = "nao", SUM(precototal), 0.00) AS dezaf
+        
+        FROM
+        	bigtable_data
+        WHERE
+        	YEAR(data_ini) = 2023
+        GROUP BY regional_id, MONTH(data_ini)
+        ORDER BY regional_nome
+    ) AS valoresmeses
+WHERE YEAR(data_ini) = 2023
+GROUP BY regional_id
