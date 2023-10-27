@@ -69,7 +69,7 @@ versão do bootstrap: Bootstrap v4.5.3
 para aumentar o tamanho dos ícones utilize as classes
 To increase icon sizes relative to their container, use the fa-lg (33% increase), fa-2x , fa-3x , fa-4x , or fa-5x classes
 Exemplo:
-    <b><i class="fa-lg fas fa-check text-success mr-2"></i></b>
+    <b><i class="mr-2 fa-lg fas fa-check text-success"></i></b>
 
 ================================
 VERSÃO DO CHARTJS MOCADO: 2.9.4
@@ -1854,6 +1854,81 @@ cp .env.example ./.env
       php artisan migrate:rollback --step=5
       Sempre que modificar .env, executar: php artisan config:clear
       No arquivo config/database.php, na chave 'mysql' alterar a propriedade  'strict' => de true para false (isso corrige problemas de groupBy nas consultas)
+
+
+========================================================================================
+QUERY COM RESULTADO SIMPLES (Só o id e o nome das regionais sem categorização mês a mês)
+=======================================================================================
+            $regionais = DB::table("bigtable_data")
+            ->select(DB::RAW('regional_id AS id, regional_nome AS regional'))
+            ->groupBy('regional_id')
+            ->orderBy($columnName,$columnSortOrder)
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
+
+
+========================
+SUB QUERYS NO MySQL
+=======================
+// Traz todas as regionais com seus respectivos valores de compra mês a mês (jan a dez) de um determinado ano por categorizados por compra normal e af(agricultura famiiar)
+SELECT
+	regional_id,
+    regional_nome,
+    SUM(jannormal), SUM(janaf), SUM(fevnormal), SUM(fevaf), SUM(marnormal), SUM(maraf), SUM(abrnormal), SUM(abraf), SUM(mainormal), SUM(maiaf), SUM(junnormal), SUM(junaf),
+    SUM(julnormal), SUM(julaf), SUM(agsnormal), SUM(agsaf), SUM(setnormal), SUM(setaf), SUM(outnormal), SUM(outaf), SUM(novnormal), SUM(novaf), SUM(deznormal), SUM(dezaf)
+FROM
+	(
+        SELECT
+        	data_ini,
+        	af,
+        	precototal,
+        	regional_id, regional_nome,
+
+            SUM(IF(MONTH(data_ini) = 01 AND af = "nao", precototal, 0.00)) AS jannormal,
+            SUM(IF(MONTH(data_ini) = 01 AND af = "sim", precototal, 0.00)) AS janaf,
+
+            SUM(IF(MONTH(data_ini) = 02 AND af = "nao", precototal, 0.00)) AS fevnormal,
+            SUM(IF(MONTH(data_ini) = 02 AND af = "sim", precototal, 0.00)) AS fevaf,
+
+            SUM(IF(MONTH(data_ini) = 03 AND af = "nao", precototal, 0.00)) AS marnormal,
+            SUM(IF(MONTH(data_ini) = 03 AND af = "sim", precototal, 0.00)) AS maraf,
+
+            SUM(IF(MONTH(data_ini) = 04 AND af = "nao", precototal, 0.00)) AS abrnormal,
+            SUM(IF(MONTH(data_ini) = 04 AND af = "sim", precototal, 0.00)) AS abraf,
+
+            SUM(IF(MONTH(data_ini) = 05 AND af = "nao", precototal, 0.00)) AS mainormal,
+            SUM(IF(MONTH(data_ini) = 05 AND af = "sim", precototal, 0.00)) AS maiaf,
+
+            SUM(IF(MONTH(data_ini) = 06 AND af = "nao", precototal, 0.00)) AS junnormal,
+            SUM(IF(MONTH(data_ini) = 06 AND af = "sim", precototal, 0.00)) AS junaf,
+
+            SUM(IF(MONTH(data_ini) = 07 AND af = "nao", precototal, 0.00)) AS julnormal,
+            SUM(IF(MONTH(data_ini) = 07 AND af = "sim", precototal, 0.00)) AS julaf,
+
+            SUM(IF(MONTH(data_ini) = 08 AND af = "nao", precototal, 0.00)) AS agsnormal,
+            SUM(IF(MONTH(data_ini) = 08 AND af = "sim", precototal, 0.00)) AS agsaf,
+
+            SUM(IF(MONTH(data_ini) = 09 AND af = "nao", precototal, 0.00)) AS setnormal,
+            SUM(IF(MONTH(data_ini) = 09 AND af = "sim", precototal, 0.00)) AS setaf,
+
+            SUM(IF(MONTH(data_ini) = 10 AND af = "nao", precototal, 0.00)) AS outnormal,
+            SUM(IF(MONTH(data_ini) = 10 AND af = "sim", precototal, 0.00)) AS outaf,
+
+            SUM(IF(MONTH(data_ini) = 11 AND af = "nao", precototal, 0.00)) AS novnormal,
+            SUM(IF(MONTH(data_ini) = 11 AND af = "sim", precototal, 0.00)) AS novaf,
+
+            SUM(IF(MONTH(data_ini) = 12 AND af = "nao", precototal, 0.00)) AS deznormal,
+            SUM(IF(MONTH(data_ini) = 12 AND af = "sim", precototal, 0.00)) AS dezaf
+        FROM
+        	bigtable_data
+        WHERE
+        	YEAR(data_ini) = 2023
+        GROUP BY regional_id, MONTH(data_ini)
+        ORDER BY regional_nome
+    ) AS valoresmeses
+WHERE YEAR(data_ini) = 2023
+GROUP BY regional_id;
 
 
 
