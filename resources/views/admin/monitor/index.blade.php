@@ -84,13 +84,13 @@
             // DataTable
             $('#dataTableMonitor').DataTable({
 
-                order: [[ 1, 'asc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
+                order: [[ 1, 'desc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
 
                 // columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
                 //     { orderable: false, targets: [3, 4, 5] }
                 // ],
 
-                lengthMenu: [10, 20, 30, 40, 50, 100, 150, 200], //Configura o número de entra de registro a serem exibido por pagina
+                lengthMenu: [5, 10, 20, 30, 40, 50, 100, 150, 200], //Configura o número de entra de registro a serem exibido por pagina
                 // pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu
 
 
@@ -153,8 +153,8 @@
                     },
                     "zeroRecords": "Não foram encontrados resultados",
                 },
-                pagingType: "simple_numbers",
-                //pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
+                //pagingType: "simple_numbers",
+                pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
                 //scrollY: 450,
 
             });
