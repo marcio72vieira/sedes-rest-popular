@@ -148,7 +148,7 @@ class MonitorController extends Controller
             */
 
             $ano = 2023;
-            $regionais = DB::select(DB::raw("
+            $records = DB::select(DB::raw("
                 SELECT
                     regional_id AS id, regional_nome AS regional,
                     SUM(mesjannormal) AS jannormal, SUM(mesjanaf) AS janaf, SUM(mesfevnormal) AS fevnormal, SUM(mesfevaf) AS fevaf, SUM(mesmarnormal) AS marnormal, SUM(mesmaraf) AS maraf,
@@ -192,55 +192,61 @@ class MonitorController extends Controller
 
         $data_arr = array();
 
-        $regionaltotalnormal = 0;
-        $regionaltotalaf = 0;
-        $regionaltotalnormalaf = 0;
-        $regionalpercentagemnormal = 0;
-        $regionalpercentagemaf = 0;
+        $linhatotalnormal = 0;
+        $linhatotalaf = 0;
+        $linhatotalgeral = 0;
+        $linhapercentagemnormal = 0;
+        $linhapercentagemaf = 0;
+        $calculopercentagemnormal = 0;
+        $calculopercentagemaf = 0;
 
-        foreach($regionais as $item){
-            $id = $item->id;
-            $regional =  $item->regional;
-            $jannormal = $item->jannormal;
-            $janaf = $item->janaf;
-            $fevnormal = $item->fevnormal;
-            $fevaf = $item->fevaf;
-            $marnormal = $item->marnormal;
-            $maraf = $item->maraf;
-            $abrnormal = $item->abrnormal;
-            $abraf = $item->abraf;
-            $mainormal = $item->mainormal;
-            $maiaf = $item->maiaf;
-            $junnormal = $item->junnormal;
-            $junaf = $item->junaf;
-            $julnormal = $item->julnormal;
-            $julaf = $item->julaf;
-            $agsnormal = $item->agsnormal;
-            $agsaf = $item->agsaf;
-            $setnormal = $item->setnormal;
-            $setaf = $item->setaf;
-            $outnormal = $item->outnormal;
-            $outaf = $item->outaf;
-            $novnormal = $item->novnormal;
-            $novaf = $item->novaf;
-            $deznormal = $item->deznormal;
-            $dezaf = $item->dezaf;
+        foreach($records as $record){
+            // Transformando o valor retornado em float e aplicando a a formatação decimal. 
+            $id = $record->id;
+            $regional =  $record->regional;
+            $jannormal = number_format(floatval($record->jannormal), 2, ",", ".");
+            $janaf = number_format(floatval($record->janaf), 2, ",", ".");
+            $fevnormal = number_format(floatval($record->fevnormal), 2, ",", ".");
+            $fevaf = number_format(floatval($record->fevaf), 2, ",", ".");
+            $marnormal = number_format(floatval($record->marnormal), 2, ",", ".");
+            $maraf = number_format(floatval($record->maraf), 2, ",", ".");
+            $abrnormal = number_format(floatval($record->abrnormal), 2, ",", ".");
+            $abraf = number_format(floatval($record->abraf), 2, ",", ".");
+            $mainormal = number_format(floatval($record->mainormal), 2, ",", ".");
+            $maiaf = number_format(floatval($record->maiaf), 2, ",", ".");
+            $junnormal = number_format(floatval($record->junnormal), 2, ",", ".");
+            $junaf = number_format(floatval($record->junaf), 2, ",", ".");
+            $julnormal = number_format(floatval($record->julnormal), 2, ",", ".");
+            $julaf = number_format(floatval($record->julaf), 2, ",", ".");
+            $agsnormal = number_format(floatval($record->agsnormal), 2, ",", ".");
+            $agsaf = number_format(floatval($record->agsaf), 2, ",", ".");
+            $setnormal = number_format(floatval($record->setnormal), 2, ",", ".");
+            $setaf = number_format(floatval($record->setaf), 2, ",", ".");
+            $outnormal = number_format(floatval($record->outnormal), 2, ",", ".");
+            $outaf = number_format(floatval($record->outaf), 2, ",", ".");
+            $novnormal = number_format(floatval($record->novnormal), 2, ",", ".");
+            $novaf = number_format(floatval($record->novaf), 2, ",", ".");
+            $deznormal = number_format(floatval($record->deznormal), 2, ",", ".");
+            $dezaf = number_format(floatval($record->dezaf), 2, ",", ".");
 
-            //Soma dos valores normal e af de cada regional
-            $regionaltotalnormal = floatval($item->jannormal) + floatval($item->fevnormal) + floatval($item->marnormal) + floatval($item->abrnormal) + floatval($item->mainormal) + floatval($item->junnormal) + floatval($item->julnormal) + floatval($item->agsnormal) + floatval($item->setnormal) + floatval($item->outnormal) + floatval($item->novnormal) + floatval($item->deznormal);
-            $regionaltotalaf = floatval($item->janaf) + floatval($item->fevaf) + floatval($item->maraf) + floatval($item->abraf) + floatval($item->maiaf) + floatval($item->junaf) + floatval($item->julaf) + floatval($item->agsaf) + floatval($item->setaf) + floatval($item->outaf) + floatval($item->novaf) + floatval($item->dezaf);
+            //Soma dos valores normal e af de cada (linha)
+            $linhatotalnormal = floatval($record->jannormal) + floatval($record->fevnormal) + floatval($record->marnormal) + floatval($record->abrnormal) + floatval($record->mainormal) + floatval($record->junnormal) + floatval($record->julnormal) + floatval($record->agsnormal) + floatval($record->setnormal) + floatval($record->outnormal) + floatval($record->novnormal) + floatval($record->deznormal);
+            $linhatotalaf = floatval($record->janaf) + floatval($record->fevaf) + floatval($record->maraf) + floatval($record->abraf) + floatval($record->maiaf) + floatval($record->junaf) + floatval($record->julaf) + floatval($record->agsaf) + floatval($record->setaf) + floatval($record->outaf) + floatval($record->novaf) + floatval($record->dezaf);
 
-            //Calculando percentagem normal e af
-            $regionaltotalnormalaf = $regionaltotalnormal + $regionaltotalaf;
-            $regionalpercentagemnormal = (($regionaltotalnormal * 100)/$regionaltotalnormalaf);
-            $regionalpercentagemaf = (($regionaltotalaf * 100)/$regionaltotalnormalaf);
+            //Soma geral(total normal mais total af) de cada regional (linha)
+            $linhatotalgeral = $linhatotalnormal + $linhatotalaf;
+
+            //Calculando percentagem normal e af de cada regional (linha)
+            $calculopercentagemnormal = (($linhatotalnormal * 100)/$linhatotalgeral);
+            $calculopercentagemaf = (($linhatotalaf * 100)/$linhatotalgeral);
 
 
 
-            $totalnormal = number_format($regionaltotalnormal, 2, ",", ".");
-            $totalaf = number_format($regionaltotalaf, 2, ",", ".");
-            $percentagemnormal = $regionalpercentagemnormal;
-            $percentagemaf = $regionalpercentagemaf;
+            $totalnormal = number_format($linhatotalnormal, 2, ",",".");
+            $totalaf = number_format($linhatotalaf, 2, ",",".");
+            $linhatotalgeral = number_format($linhatotalgeral, 2, ",",".");
+            $linhapercentagemnormal = number_format($calculopercentagemnormal, 2, ",",".");
+            $linhapercentagemaf = number_format($calculopercentagemaf, 2, ",", ".");
 
 
             $data_arr[] = array(
@@ -271,10 +277,11 @@ class MonitorController extends Controller
                 "deznormal"         => $deznormal != 0 ? $deznormal : '',
                 "dezaf"             => $dezaf != 0 ? $dezaf : '',
 
-                "totalnormal"       => $totalnormal,
-                "totalaf"           => $totalaf,
-                "percentagemnormal" => $percentagemnormal,
-                "percentagemaf"     => $percentagemaf,
+                "totalnormal"       => $totalnormal != 0 ? $totalnormal : '',
+                "totalaf"           => $totalaf != 0 ? $totalaf : '',
+                "totalgeral"        => $linhatotalgeral != 0 ? $linhatotalgeral : '',
+                "percentagemnormal" => $linhapercentagemnormal != 0 ? $linhapercentagemnormal : '',
+                "percentagemaf"     => $linhapercentagemaf != 0 ? $linhapercentagemaf : '',
             );
         }
 

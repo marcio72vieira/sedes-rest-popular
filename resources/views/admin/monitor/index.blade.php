@@ -19,7 +19,8 @@
                             <th rowspan="3" style="vertical-align: middle; text-align:center">Id</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">Regionais</th>
                             <th colspan="24" style="vertical-align: middle; text-align:center">MÊSES</th>
-                            <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL</th>
+                            <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL<br>PARCIAL</th>
+                            <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PERCENT</th>
                         </tr>
                         <tr>
@@ -136,6 +137,7 @@
                     { data: 'dezaf' },
                     { data: 'totalnormal' },
                     { data: 'totalaf' },
+                    { data: 'totalgeral' },
                     { data: 'percentagemnormal' },
                     { data: 'percentagemaf' },
                 ],
