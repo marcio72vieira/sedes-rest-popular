@@ -1265,3 +1265,50 @@ $records =  DB::table('bigtable_data')->join($valoresmeses, 'aliasValoresMeses',
 
 dd($records);
 */
+
+
+$valoresmeses = DB::table('bigtable_data')
+->select(DB::RAW("
+        bigtable_data.data_ini, bigtable_data.af, bigtable_data.precototal, bigtable_data.regional_id, bigtable_data.regional_nome,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 01 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjannormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 01 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjanaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 02 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesfevnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 02 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesfevaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 03 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesmarnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 03 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesmaraf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 04 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesabrnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 04 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesabraf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 05 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesmainormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 05 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesmaiaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 06 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjunnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 06 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjunaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 07 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjulnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 07 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjulaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 08 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesagsnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 08 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesagsaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 09 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS messetnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 09 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS messetaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 10 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesoutnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 10 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesoutaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 11 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesnovnormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 11 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesnovaf,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 12 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesdeznormal,
+        SUM(IF(MONTH(bigtable_data.data_ini) = 12 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesdezaf"
+    )
+)
+->whereRaw("YEAR(bigtable_data.data_ini) = $ano")
+->groupByRaw('bigtable_data.regional_id, MONTH(bigtable_data.data_ini)')
+->orderBy("bigtable_data.regional_nome");
+
+
+$records =  DB::table('bigtable_data')->joinSub($valoresmeses, 'aliasValoresMeses', function($join){
+$join->on('bigtable_data.regional_id', '=', 'aliasValoresMeses.regional_id');
+})->select(DB::raw("aliasValoresMeses.regional_id AS id, aliasValoresMeses.regional_nome AS regional,
+                SUM(aliasValoresMeses.mesjannormal) AS jannormal, SUM(aliasValoresMeses.mesjanaf) AS janaf, SUM(aliasValoresMeses.mesfevnormal) AS fevnormal, SUM(aliasValoresMeses.mesfevaf) AS fevaf, SUM(aliasValoresMeses.mesmarnormal) AS marnormal, SUM(aliasValoresMeses.mesmaraf) AS maraf,
+                SUM(aliasValoresMeses.mesabrnormal) AS abrnormal, SUM(aliasValoresMeses.mesabraf) AS abraf, SUM(aliasValoresMeses.mesmainormal) AS mainormal, SUM(aliasValoresMeses.mesmaiaf) AS maiaf, SUM(aliasValoresMeses.mesjunnormal) AS junnormal, SUM(aliasValoresMeses.mesjunaf) AS junaf,
+                SUM(aliasValoresMeses.mesjulnormal) AS julnormal, SUM(aliasValoresMeses.mesjulaf) AS julaf, SUM(aliasValoresMeses.mesagsnormal) AS agsnormal, SUM(aliasValoresMeses.mesagsaf) AS agsaf, SUM(aliasValoresMeses.messetnormal) AS setnormal, SUM(aliasValoresMeses.messetaf) AS setaf,
+                SUM(aliasValoresMeses.mesoutnormal) AS outnormal, SUM(aliasValoresMeses.mesoutaf) AS outaf, SUM(aliasValoresMeses.mesnovnormal) AS novnormal, SUM(aliasValoresMeses.mesnovaf) AS novaf, SUM(aliasValoresMeses.mesdeznormal) AS deznormal, SUM(aliasValoresMeses.mesdezaf) AS dezaf"
+            )
+)->groupBy("aliasValoresMeses.regional_id")->get();
+
+//dd($records);

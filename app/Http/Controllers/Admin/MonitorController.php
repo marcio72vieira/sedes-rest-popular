@@ -148,6 +148,7 @@ class MonitorController extends Controller
             */
 
             $ano = 2023;
+            /*
             $records = DB::select(DB::raw("
                 SELECT
                     regional_id AS id, regional_nome AS regional,
@@ -189,6 +190,55 @@ class MonitorController extends Controller
                         ORDER BY regional_nome ) AS valoresmeses
                 WHERE YEAR(data_ini) = $ano
                 GROUP BY regional_id"));
+            */
+
+
+            $valoresmeses = DB::table('bigtable_data')
+            ->select(DB::RAW("
+                    bigtable_data.data_ini, bigtable_data.af, bigtable_data.precototal, bigtable_data.regional_id, bigtable_data.regional_nome,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 01 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjannormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 01 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjanaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 02 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesfevnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 02 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesfevaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 03 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesmarnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 03 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesmaraf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 04 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesabrnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 04 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesabraf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 05 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesmainormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 05 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesmaiaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 06 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjunnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 06 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjunaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 07 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjulnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 07 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjulaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 08 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesagsnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 08 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesagsaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 09 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS messetnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 09 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS messetaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 10 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesoutnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 10 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesoutaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 11 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesnovnormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 11 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesnovaf,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 12 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesdeznormal,
+                    SUM(IF(MONTH(bigtable_data.data_ini) = 12 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesdezaf"
+                )
+            )
+            ->whereRaw("YEAR(bigtable_data.data_ini) = $ano")
+            ->groupByRaw('bigtable_data.regional_id, MONTH(bigtable_data.data_ini)')
+            ->orderBy("bigtable_data.regional_nome");
+
+
+            $records =  DB::table('bigtable_data')->joinSub($valoresmeses, 'aliasValoresMeses', function($join){
+            $join->on('bigtable_data.regional_id', '=', 'aliasValoresMeses.regional_id');
+            })->select(DB::raw("aliasValoresMeses.regional_id AS id, aliasValoresMeses.regional_nome AS regional,
+                            SUM(aliasValoresMeses.mesjannormal) AS jannormal, SUM(aliasValoresMeses.mesjanaf) AS janaf, SUM(aliasValoresMeses.mesfevnormal) AS fevnormal, SUM(aliasValoresMeses.mesfevaf) AS fevaf, SUM(aliasValoresMeses.mesmarnormal) AS marnormal, SUM(aliasValoresMeses.mesmaraf) AS maraf,
+                            SUM(aliasValoresMeses.mesabrnormal) AS abrnormal, SUM(aliasValoresMeses.mesabraf) AS abraf, SUM(aliasValoresMeses.mesmainormal) AS mainormal, SUM(aliasValoresMeses.mesmaiaf) AS maiaf, SUM(aliasValoresMeses.mesjunnormal) AS junnormal, SUM(aliasValoresMeses.mesjunaf) AS junaf,
+                            SUM(aliasValoresMeses.mesjulnormal) AS julnormal, SUM(aliasValoresMeses.mesjulaf) AS julaf, SUM(aliasValoresMeses.mesagsnormal) AS agsnormal, SUM(aliasValoresMeses.mesagsaf) AS agsaf, SUM(aliasValoresMeses.messetnormal) AS setnormal, SUM(aliasValoresMeses.messetaf) AS setaf,
+                            SUM(aliasValoresMeses.mesoutnormal) AS outnormal, SUM(aliasValoresMeses.mesoutaf) AS outaf, SUM(aliasValoresMeses.mesnovnormal) AS novnormal, SUM(aliasValoresMeses.mesnovaf) AS novaf, SUM(aliasValoresMeses.mesdeznormal) AS deznormal, SUM(aliasValoresMeses.mesdezaf) AS dezaf"
+                        )
+            )->groupBy("aliasValoresMeses.regional_id")->get();
+
+            //dd($records);
+
 
         $data_arr = array();
 
@@ -201,7 +251,7 @@ class MonitorController extends Controller
         $calculopercentagemaf = 0;
 
         foreach($records as $record){
-            // Transformando o valor retornado em float e aplicando a a formatação decimal.
+            // Transformando o valor retornado em float e aplicando a a formatação decimal. 
             $id = $record->id;
             $regional =  $record->regional;
             $jannormal = number_format(floatval($record->jannormal), 2, ",", ".");
@@ -237,14 +287,9 @@ class MonitorController extends Controller
             $linhatotalgeral = $linhatotalnormal + $linhatotalaf;
 
             //Calculando percentagem normal e af de cada regional (linha)
-            //Evitando divisão por zero
-            if($linhatotalgeral != 0){
-                $calculopercentagemnormal = (($linhatotalnormal * 100)/$linhatotalgeral);
-                $calculopercentagemaf = (($linhatotalaf * 100)/$linhatotalgeral);
-            }else {
-                $calculopercentagemnormal = 0;
-                $calculopercentagemaf = 0;
-            }
+            $calculopercentagemnormal = (($linhatotalnormal * 100)/$linhatotalgeral);
+            $calculopercentagemaf = (($linhatotalaf * 100)/$linhatotalgeral);
+
 
 
             $totalnormal = number_format($linhatotalnormal, 2, ",",".");
@@ -257,36 +302,36 @@ class MonitorController extends Controller
             $data_arr[] = array(
                 "id"                => $id,
                 "regional"          => $regional,
-                "jannormal"         => $jannormal != '0,00' ? $jannormal : '',
-                "janaf"             => $janaf != '0,00' ? $janaf : '',
-                "fevnormal"         => $fevnormal != '0,00' ? $fevnormal : '',
-                "fevaf"             => $fevaf != '0,00' ? $fevaf : '',
-                "marnormal"         => $marnormal != '0,00' ? $marnormal : '',
-                "maraf"             => $maraf != '0,00' ? $maraf : '',
-                "abrnormal"         => $abrnormal != '0,00' ? $abrnormal : '',
-                "abraf"             => $abraf != '0,00' ? $abraf : '',
-                "mainormal"         => $mainormal != '0,00' ? $mainormal : '',
-                "maiaf"             => $maiaf != '0,00' ? $maiaf : '',
-                "junnormal"         => $junnormal != '0,00' ? $junnormal : '',
-                "junaf"             => $junaf != '0,00' ? $junaf : '',
-                "julnormal"         => $julnormal != '0,00' ? $julnormal : '',
-                "julaf"             => $julaf != '0,00' ? $julaf : '',
-                "agsnormal"         => $agsnormal != '0,00' ? $agsnormal : '',
-                "agsaf"             => $agsaf != '0,00' ? $agsaf : '',
-                "setnormal"         => $setnormal != '0,00' ? $setnormal : '',
-                "setaf"             => $setaf != '0,00' ? $setaf : '',
-                "outnormal"         => $outnormal != '0,00' ? $outnormal : '',
-                "outaf"             => $outaf != '0,00' ? $outaf : '',
-                "novnormal"         => $novnormal != '0,00' ? $novnormal : '',
-                "novaf"             => $novaf != '0,00' ? $novaf : '',
-                "deznormal"         => $deznormal != '0,00' ? $deznormal : '',
-                "dezaf"             => $dezaf != '0,00' ? $dezaf : '',
+                "jannormal"         => $jannormal != 0 ? $jannormal : '',
+                "janaf"             => $janaf != 0 ? $janaf : '',
+                "fevnormal"         => $fevnormal != 0 ? $fevnormal : '',
+                "fevaf"             => $fevaf != 0 ? $fevaf : '',
+                "marnormal"         => $marnormal != 0 ? $marnormal : '',
+                "maraf"             => $maraf != 0 ? $maraf : '',
+                "abrnormal"         => $abrnormal != 0 ? $abrnormal : '',
+                "abraf"             => $abraf != 0 ? $abraf : '',
+                "mainormal"         => $mainormal != 0 ? $mainormal : '',
+                "maiaf"             => $maiaf != 0 ? $maiaf : '',
+                "junnormal"         => $junnormal != 0 ? $junnormal : '',
+                "junaf"             => $junaf != 0 ? $junaf : '',
+                "julnormal"         => $julnormal != 0 ? $julnormal : '',
+                "julaf"             => $julaf != 0 ? $julaf : '',
+                "agsnormal"         => $agsnormal != 0 ? $agsnormal : '',
+                "agsaf"             => $agsaf != 0 ? $agsaf : '',
+                "setnormal"         => $setnormal != 0 ? $setnormal : '',
+                "setaf"             => $setaf != 0 ? $setaf : '',
+                "outnormal"         => $outnormal != 0 ? $outnormal : '',
+                "outaf"             => $outaf != 0 ? $outaf : '',
+                "novnormal"         => $novnormal != 0 ? $novnormal : '',
+                "novaf"             => $novaf != 0 ? $novaf : '',
+                "deznormal"         => $deznormal != 0 ? $deznormal : '',
+                "dezaf"             => $dezaf != 0 ? $dezaf : '',
 
-                "totalnormal"       => $totalnormal != '0,00' ? $totalnormal : '',
-                "totalaf"           => $totalaf != '0,00' ? $totalaf : '',
-                "totalgeral"        => $linhatotalgeral != '0,00' ? $linhatotalgeral : '',
-                "percentagemnormal" => $linhapercentagemnormal != '0,00' ? $linhapercentagemnormal : '',
-                "percentagemaf"     => $linhapercentagemaf != '0,00' ? $linhapercentagemaf : '',
+                "totalnormal"       => $totalnormal != 0 ? $totalnormal : '',
+                "totalaf"           => $totalaf != 0 ? $totalaf : '',
+                "totalgeral"        => $linhatotalgeral != 0 ? $linhatotalgeral : '',
+                "percentagemnormal" => $linhapercentagemnormal != 0 ? $linhapercentagemnormal : '',
+                "percentagemaf"     => $linhapercentagemaf != 0 ? $linhapercentagemaf : '',
             );
         }
 
