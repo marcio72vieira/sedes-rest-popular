@@ -287,8 +287,14 @@ class MonitorController extends Controller
             $linhatotalgeral = $linhatotalnormal + $linhatotalaf;
 
             //Calculando percentagem normal e af de cada regional (linha)
-            $calculopercentagemnormal = (($linhatotalnormal * 100)/$linhatotalgeral);
-            $calculopercentagemaf = (($linhatotalaf * 100)/$linhatotalgeral);
+            //Evitando divisão por zero
+            if($linhatotalgeral != 0){
+                $calculopercentagemnormal = (($linhatotalnormal * 100)/$linhatotalgeral);
+                $calculopercentagemaf = (($linhatotalaf * 100)/$linhatotalgeral);
+            }else {
+                $calculopercentagemnormal = 0;
+                $calculopercentagemaf = 0;
+            }
 
 
 
@@ -302,36 +308,37 @@ class MonitorController extends Controller
             $data_arr[] = array(
                 "id"                => $id,
                 "regional"          => $regional,
-                "jannormal"         => $jannormal != 0 ? $jannormal : '',
-                "janaf"             => $janaf != 0 ? $janaf : '',
-                "fevnormal"         => $fevnormal != 0 ? $fevnormal : '',
-                "fevaf"             => $fevaf != 0 ? $fevaf : '',
-                "marnormal"         => $marnormal != 0 ? $marnormal : '',
-                "maraf"             => $maraf != 0 ? $maraf : '',
-                "abrnormal"         => $abrnormal != 0 ? $abrnormal : '',
-                "abraf"             => $abraf != 0 ? $abraf : '',
-                "mainormal"         => $mainormal != 0 ? $mainormal : '',
-                "maiaf"             => $maiaf != 0 ? $maiaf : '',
-                "junnormal"         => $junnormal != 0 ? $junnormal : '',
-                "junaf"             => $junaf != 0 ? $junaf : '',
-                "julnormal"         => $julnormal != 0 ? $julnormal : '',
-                "julaf"             => $julaf != 0 ? $julaf : '',
-                "agsnormal"         => $agsnormal != 0 ? $agsnormal : '',
-                "agsaf"             => $agsaf != 0 ? $agsaf : '',
-                "setnormal"         => $setnormal != 0 ? $setnormal : '',
-                "setaf"             => $setaf != 0 ? $setaf : '',
-                "outnormal"         => $outnormal != 0 ? $outnormal : '',
-                "outaf"             => $outaf != 0 ? $outaf : '',
-                "novnormal"         => $novnormal != 0 ? $novnormal : '',
-                "novaf"             => $novaf != 0 ? $novaf : '',
-                "deznormal"         => $deznormal != 0 ? $deznormal : '',
-                "dezaf"             => $dezaf != 0 ? $dezaf : '',
+                "jannormal"         => $jannormal != '0,00' ? $jannormal : '',
+                "janaf"             => $janaf != '0,00' ? $janaf : '',
+                "fevnormal"         => $fevnormal != '0,00' ? $fevnormal : '',
+                "fevaf"             => $fevaf != '0,00' ? $fevaf : '',
+                "marnormal"         => $marnormal != '0,00' ? $marnormal : '',
+                "maraf"             => $maraf != '0,00' ? $maraf : '',
+                "abrnormal"         => $abrnormal != '0,00' ? $abrnormal : '',
+                "abraf"             => $abraf != '0,00' ? $abraf : '',
+                "mainormal"         => $mainormal != '0,00' ? $mainormal : '',
+                "maiaf"             => $maiaf != '0,00' ? $maiaf : '',
+                "junnormal"         => $junnormal != '0,00' ? $junnormal : '',
+                "junaf"             => $junaf != '0,00' ? $junaf : '',
+                "julnormal"         => $julnormal != '0,00' ? $julnormal : '',
+                "julaf"             => $julaf != '0,00' ? $julaf : '',
+                "agsnormal"         => $agsnormal != '0,00' ? $agsnormal : '',
+                "agsaf"             => $agsaf != '0,00' ? $agsaf : '',
+                "setnormal"         => $setnormal != '0,00' ? $setnormal : '',
+                "setaf"             => $setaf != '0,00' ? $setaf : '',
+                "outnormal"         => $outnormal != '0,00' ? $outnormal : '',
+                "outaf"             => $outaf != '0,00' ? $outaf : '',
+                "novnormal"         => $novnormal != '0,00' ? $novnormal : '',
+                "novaf"             => $novaf != '0,00' ? $novaf : '',
+                "deznormal"         => $deznormal != '0,00' ? $deznormal : '',
+                "dezaf"             => $dezaf != '0,00' ? $dezaf : '',
 
-                "totalnormal"       => $totalnormal != 0 ? $totalnormal : '',
-                "totalaf"           => $totalaf != 0 ? $totalaf : '',
-                "totalgeral"        => $linhatotalgeral != 0 ? $linhatotalgeral : '',
-                "percentagemnormal" => $linhapercentagemnormal != 0 ? $linhapercentagemnormal : '',
-                "percentagemaf"     => $linhapercentagemaf != 0 ? $linhapercentagemaf : '',
+                "totalnormal"       => $totalnormal != '0,00' ? $totalnormal : '',
+                "totalaf"           => $totalaf != '0,00' ? $totalaf : '',
+                "totalgeral"        => $linhatotalgeral != '0,00' ? $linhatotalgeral : '',
+                "percentagemnormal" => $linhapercentagemnormal != '0,00' ? $linhapercentagemnormal : '',
+                "percentagemaf"     => $linhapercentagemaf != '0,00' ? $linhapercentagemaf : '',
+
             );
         }
 
