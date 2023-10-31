@@ -85,13 +85,13 @@
             // DataTable
             $('#dataTableMonitor').DataTable({
 
-                order: [[ 1, 'desc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
+                order: [[ 1, 'asc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
 
-                // columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
-                //     { orderable: false, targets: [3, 4, 5] }
-                // ],
+                columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
+                    { orderable: false, targets: [26, 27, 28, 29, 30] }
+                ],
 
-                lengthMenu: [5, 10, 20, 30, 40, 50, 100, 150, 200], //Configura o número de entra de registro a serem exibido por pagina
+                lengthMenu: [10, 15, 20, 25, 30, 35, 40, 45, 50], //Configura o número de entra de registro a serem exibido por pagina
                 // pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu
 
 

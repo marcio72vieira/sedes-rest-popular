@@ -194,48 +194,56 @@ class MonitorController extends Controller
 
 
             $valoresmeses = DB::table('bigtable_data')
-            ->select(DB::RAW("
-                    bigtable_data.data_ini, bigtable_data.af, bigtable_data.precototal, bigtable_data.regional_id, bigtable_data.regional_nome,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 01 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjannormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 01 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjanaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 02 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesfevnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 02 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesfevaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 03 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesmarnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 03 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesmaraf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 04 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesabrnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 04 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesabraf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 05 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesmainormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 05 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesmaiaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 06 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjunnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 06 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjunaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 07 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesjulnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 07 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesjulaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 08 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesagsnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 08 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesagsaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 09 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS messetnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 09 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS messetaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 10 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesoutnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 10 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesoutaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 11 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesnovnormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 11 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesnovaf,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 12 AND bigtable_data.af = 'nao', bigtable_data.precototal, 0.00)) AS mesdeznormal,
-                    SUM(IF(MONTH(bigtable_data.data_ini) = 12 AND bigtable_data.af = 'sim', bigtable_data.precototal, 0.00)) AS mesdezaf"
+            ->select(DB::RAW("data_ini, af, precototal, regional_id, regional_nome,
+                    SUM(IF(MONTH(data_ini) = 01 AND af = 'nao', precototal, 0.00)) AS mesjannormal,
+                    SUM(IF(MONTH(data_ini) = 01 AND af = 'sim', precototal, 0.00)) AS mesjanaf,
+                    SUM(IF(MONTH(data_ini) = 02 AND af = 'nao', precototal, 0.00)) AS mesfevnormal,
+                    SUM(IF(MONTH(data_ini) = 02 AND af = 'sim', precototal, 0.00)) AS mesfevaf,
+                    SUM(IF(MONTH(data_ini) = 03 AND af = 'nao', precototal, 0.00)) AS mesmarnormal,
+                    SUM(IF(MONTH(data_ini) = 03 AND af = 'sim', precototal, 0.00)) AS mesmaraf,
+                    SUM(IF(MONTH(data_ini) = 04 AND af = 'nao', precototal, 0.00)) AS mesabrnormal,
+                    SUM(IF(MONTH(data_ini) = 04 AND af = 'sim', precototal, 0.00)) AS mesabraf,
+                    SUM(IF(MONTH(data_ini) = 05 AND af = 'nao', precototal, 0.00)) AS mesmainormal,
+                    SUM(IF(MONTH(data_ini) = 05 AND af = 'sim', precototal, 0.00)) AS mesmaiaf,
+                    SUM(IF(MONTH(data_ini) = 06 AND af = 'nao', precototal, 0.00)) AS mesjunnormal,
+                    SUM(IF(MONTH(data_ini) = 06 AND af = 'sim', precototal, 0.00)) AS mesjunaf,
+                    SUM(IF(MONTH(data_ini) = 07 AND af = 'nao', precototal, 0.00)) AS mesjulnormal,
+                    SUM(IF(MONTH(data_ini) = 07 AND af = 'sim', precototal, 0.00)) AS mesjulaf,
+                    SUM(IF(MONTH(data_ini) = 08 AND af = 'nao', precototal, 0.00)) AS mesagsnormal,
+                    SUM(IF(MONTH(data_ini) = 08 AND af = 'sim', precototal, 0.00)) AS mesagsaf,
+                    SUM(IF(MONTH(data_ini) = 09 AND af = 'nao', precototal, 0.00)) AS messetnormal,
+                    SUM(IF(MONTH(data_ini) = 09 AND af = 'sim', precototal, 0.00)) AS messetaf,
+                    SUM(IF(MONTH(data_ini) = 10 AND af = 'nao', precototal, 0.00)) AS mesoutnormal,
+                    SUM(IF(MONTH(data_ini) = 10 AND af = 'sim', precototal, 0.00)) AS mesoutaf,
+                    SUM(IF(MONTH(data_ini) = 11 AND af = 'nao', precototal, 0.00)) AS mesnovnormal,
+                    SUM(IF(MONTH(data_ini) = 11 AND af = 'sim', precototal, 0.00)) AS mesnovaf,
+                    SUM(IF(MONTH(data_ini) = 12 AND af = 'nao', precototal, 0.00)) AS mesdeznormal,
+                    SUM(IF(MONTH(data_ini) = 12 AND af = 'sim', precototal, 0.00)) AS mesdezaf",
+
                 )
             )
-            ->whereRaw("YEAR(bigtable_data.data_ini) = $ano")
-            ->groupByRaw('bigtable_data.regional_id, MONTH(bigtable_data.data_ini)')
-            ->orderBy("bigtable_data.regional_nome");
+            ->whereYear("data_ini", "=",  $ano)
+            ->groupByRaw("regional_id")
+            ->orderByRaw("regional_nome");
 
 
             $records =  DB::table('bigtable_data')->joinSub($valoresmeses, 'aliasValoresMeses', function($join){
             $join->on('bigtable_data.regional_id', '=', 'aliasValoresMeses.regional_id');
-            })->select(DB::raw("aliasValoresMeses.regional_id AS id, aliasValoresMeses.regional_nome AS regional,
-                            SUM(aliasValoresMeses.mesjannormal) AS jannormal, SUM(aliasValoresMeses.mesjanaf) AS janaf, SUM(aliasValoresMeses.mesfevnormal) AS fevnormal, SUM(aliasValoresMeses.mesfevaf) AS fevaf, SUM(aliasValoresMeses.mesmarnormal) AS marnormal, SUM(aliasValoresMeses.mesmaraf) AS maraf,
-                            SUM(aliasValoresMeses.mesabrnormal) AS abrnormal, SUM(aliasValoresMeses.mesabraf) AS abraf, SUM(aliasValoresMeses.mesmainormal) AS mainormal, SUM(aliasValoresMeses.mesmaiaf) AS maiaf, SUM(aliasValoresMeses.mesjunnormal) AS junnormal, SUM(aliasValoresMeses.mesjunaf) AS junaf,
-                            SUM(aliasValoresMeses.mesjulnormal) AS julnormal, SUM(aliasValoresMeses.mesjulaf) AS julaf, SUM(aliasValoresMeses.mesagsnormal) AS agsnormal, SUM(aliasValoresMeses.mesagsaf) AS agsaf, SUM(aliasValoresMeses.messetnormal) AS setnormal, SUM(aliasValoresMeses.messetaf) AS setaf,
-                            SUM(aliasValoresMeses.mesoutnormal) AS outnormal, SUM(aliasValoresMeses.mesoutaf) AS outaf, SUM(aliasValoresMeses.mesnovnormal) AS novnormal, SUM(aliasValoresMeses.mesnovaf) AS novaf, SUM(aliasValoresMeses.mesdeznormal) AS deznormal, SUM(aliasValoresMeses.mesdezaf) AS dezaf"
+            })->select(DB::raw("bigtable_data.regional_id AS id, bigtable_data.regional_nome AS regional, bigtable_data.data_ini,
+                            aliasValoresMeses.mesjannormal AS jannormal, aliasValoresMeses.mesjanaf AS janaf, aliasValoresMeses.mesfevnormal AS fevnormal, aliasValoresMeses.mesfevaf AS fevaf, aliasValoresMeses.mesmarnormal AS marnormal, aliasValoresMeses.mesmaraf AS maraf,
+                            aliasValoresMeses.mesabrnormal AS abrnormal, aliasValoresMeses.mesabraf AS abraf, aliasValoresMeses.mesmainormal AS mainormal, aliasValoresMeses.mesmaiaf AS maiaf, aliasValoresMeses.mesjunnormal AS junnormal, aliasValoresMeses.mesjunaf AS junaf,
+                            aliasValoresMeses.mesjulnormal AS julnormal, aliasValoresMeses.mesjulaf AS julaf, aliasValoresMeses.mesagsnormal AS agsnormal, aliasValoresMeses.mesagsaf AS agsaf, aliasValoresMeses.messetnormal AS setnormal, aliasValoresMeses.messetaf AS setaf,
+                            aliasValoresMeses.mesoutnormal AS outnormal, aliasValoresMeses.mesoutaf AS outaf, aliasValoresMeses.mesnovnormal AS novnormal, aliasValoresMeses.mesnovaf AS novaf, aliasValoresMeses.mesdeznormal AS deznormal, aliasValoresMeses.mesdezaf AS dezaf"
                         )
-            )->groupBy("aliasValoresMeses.regional_id")->get();
+            )
+            ->whereYear("bigtable_data.data_ini", "=",  $ano)
+            ->groupBy("bigtable_data.regional_id")
+            //->orderBy("bigtable_data.regional_nome")
+            ->orderBy($columnName,$columnSortOrder)
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
+
 
             //dd($records);
 
@@ -251,7 +259,7 @@ class MonitorController extends Controller
         $calculopercentagemaf = 0;
 
         foreach($records as $record){
-            // Transformando o valor retornado em float e aplicando a a formatação decimal. 
+            // Transformando o valor retornado em float e aplicando a a formatação decimal.
             $id = $record->id;
             $regional =  $record->regional;
             $jannormal = number_format(floatval($record->jannormal), 2, ",", ".");
@@ -332,7 +340,6 @@ class MonitorController extends Controller
                 "novaf"             => $novaf != '0,00' ? $novaf : '',
                 "deznormal"         => $deznormal != '0,00' ? $deznormal : '',
                 "dezaf"             => $dezaf != '0,00' ? $dezaf : '',
-
                 "totalnormal"       => $totalnormal != '0,00' ? $totalnormal : '',
                 "totalaf"           => $totalaf != '0,00' ? $totalaf : '',
                 "totalgeral"        => $linhatotalgeral != '0,00' ? $linhatotalgeral : '',
