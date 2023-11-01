@@ -154,6 +154,8 @@
 
                             <div class="row">
                                 {{-- municipio_id --}}
+                                {{-- Guarda o antigo Municipio do Restaurante atual para pesquisa e futura alteração do mesmo --}}
+                                <input type="hidden" name="municipio_id_old_hidden" value="{{ $restaurante->municipio_id }}">
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="municipio_id">Município<span class="small text-danger">*</span></label>
@@ -170,6 +172,8 @@
                                 </div>
 
                                 {{-- bairro_id --}}
+                                {{-- Guarda o antigo Bairro do Restaurante atual para pesquisa e futura alteração do mesmo --}}
+                                <input type="hidden" name="bairro_id_old_hidden" value="{{ $restaurante->bairro_id }}">
                                 <div class="col-lg-3">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="bairro_id">Bairro<span class="small text-danger">*</span></label>

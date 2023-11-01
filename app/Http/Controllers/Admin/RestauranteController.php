@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Regional;
 use App\Models\Restaurante;
 use App\Models\Municipio;
 use App\Models\Bairro;
@@ -357,6 +358,27 @@ class RestauranteController extends Controller
         ]);
 
         $restaurante->update($request->all());
+
+        //**** inicio Alterando informaçõe na bigtable_data
+            // Alterando dados na bigtable_data, se além do nome do município for alterado sua regional de origem.
+            // Se o Município ou Bairro forem alterados além da identificação do restaurante, altera o Município e/ou Bairro do Restaurante, caso contrárioi, altera só a IDENTIFICAÇÃO DO RESTAURANTE.
+            if(($request->municipio_id != $request->regional_id_old_hidden) || ($request->bairro_id != $request->bairro_id_old_hidden)){
+                $novo_municipio = Municipio::findOrFail($request->municipio_id);
+                $novo_nome_municipio = $novo_municipio->nome;                       // Recupera o nome do municipio
+
+                $novo_bairro = Bairro::findOrFail($request->bairro_id);
+                $novo_nome_bairro = $novo_bairro->nome;                             // Recupera o nome do bairro
+
+                $id_regional_do_novo_municipio = $novo_municipio->regional_id;         // Recupera o id da Regional com base no novo município
+                $nova_regional = Regional::findOrFail($id_regional_do_novo_municipio); // Recupera a Regional
+                $novo_nome_regional = $nova_regional->nome;                         // Recupera o nome da regional
+
+                // Altera a identificação do restaurante, o id do município e seu nome assim como o id do bairro e seu nome
+                $affected = DB::table('bigtable_data')->where('restaurante_id', '=',  $id)->update(['identificacao' => $restaurante->identificacao, 'municipio_id' => $restaurante->municipio_id, 'municipio_nome' => $novo_nome_municipio, 'bairro_id' => $restaurante->bairro_id, 'bairro_nome' => $novo_nome_bairro, 'regional_id' => $nova_regional->id, 'regional_nome' => $novo_nome_regional ]);
+            } else {
+                $affected = DB::table('bigtable_data')->where('restaurante_id', '=',  $id)->update(['identificacao' => $restaurante->identificacao]);
+            }
+        //**** fim Alterando informações na bigtable_data
 
         $request->session()->flash('sucesso', 'Registro atualizado com sucesso!');
 
