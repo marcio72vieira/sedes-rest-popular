@@ -84,6 +84,22 @@
 
             // DataTable
             $('#dataTableMonitor').DataTable({
+                //## Fixando colunas e cabeçalhos
+                fixedColumns: {
+                    left: 2,
+                    //right: 5,
+                },
+                //paging: false,
+                scrollCollapse: true,
+                scrollY: '400px',
+                scrollX: true,
+
+                //## Exibindo button
+                //dom: "Blfrtip",
+                //    "buttons": [
+                //        'copy', 'csv', 'excel', 'pdf', 'print'
+                //    ],
+
 
                 order: [[ 1, 'asc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
 

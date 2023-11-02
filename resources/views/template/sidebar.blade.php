@@ -37,7 +37,7 @@
          <!-- Divider -->
          <hr class="sidebar-divider d-none d-md-block">
 
-         {{--
+        
         <!-- Nav Item - Monitor -->
         <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.monitor') }}">
@@ -49,7 +49,7 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
-        --}}
+        
 
         <!-- Heading -->
         <div class="sidebar-heading">
