@@ -2405,3 +2405,59 @@ Modificações no sede após o primeiro dia das minhas férias:
     <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 
 
+5 - Comentei o trecho de código como abaixo, no arquivo: app/Http/Controllers/Admin/MonitorController.php
+    public function index()
+    {
+        //$restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
+        //return view('admin.monitor.index', compact('restaurantes'));
+        
+        return view('admin.monitor.index');
+    }
+    
+6 - Acrescentei as rotas abaixo, no arquivo: routes/web.php
+    Route::get('ajaxgetRegionaisComprasMensais',[MonitorController::class,'ajaxgetRegionaisComprasMensais'])->name('admin.ajaxgetRegionaisComprasMensais')->middleware(['auth']);
+    Route::get('ajaxgetMunicipiosComprasMensais',[MonitorController::class,'ajaxgetMunicipiosComprasMensais'])->name('admin.ajaxgetMunicipiosComprasMensais')->middleware(['auth']);
+
+7 - Acrescentei os métodos abaixo, no arquivo: app/Http/Controllers/Admin/MonitorController.php
+    public function ajaxgetRegionaisComprasMensais
+    public function ajaxgetMunicipiosComprasMensais
+
+8 - Alterei o arquivo: resources/views/admin/monitor/index.blade.php conforme abaixo@auth
+     DE: <h5><strong>MONITOR</strong></h5>
+     PARA <h5><strong>MONITOR DE COMPRAS</strong></h5>
+
+    DE: <th rowspan="3" style="vertical-align: middle; text-align:center">Regionais</th>
+    PARA: <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Regionais</th>
+
+    DE: { data: 'reginonal' },
+    PARA: { data: 'nomeentidade' },
+
+
+9 - Acrescentei o código abaixo, no arquivo: resources/views/admin/monitor/index.blade.php conforme abaixo
+    $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras por:</label>');
+    $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
+    $("#selectGrupo").on('change', function(){
+        //alert($(this).children("option:selected").text());
+        //alert(oTable.ajax.data);
+        var entidadeSelecionada = $(this).children("option:selected").text();
+        var rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
+        switch (entidadeSelecionada){
+            case "Regionais":
+                rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+            break;
+            case "Municipios":
+                rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
+            break;
+            case "Restaurantes":
+                rotaAjax = "{{route('admin.ajaxgetRestaurantesComprasMensais')}}";
+            break;
+            default:
+                rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+
+        }
+        $("#entidade").text(entidadeSelecionada);
+        //oTable.ajax.url("{{route('admin.ajaxgetMunicipiosComprasMensais')}}");
+        oTable.ajax.url(rotaAjax);
+        oTable.ajax.reload();
+    });
+

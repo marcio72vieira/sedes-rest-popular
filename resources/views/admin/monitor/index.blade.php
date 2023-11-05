@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-        <h5><strong>MONITOR</strong></h5>
+        <h5><strong>MONITOR DE COMPRAS</strong></h5>
 
 
     <!-- DataTales Example -->
@@ -17,7 +17,7 @@
                     <thead>
                         <tr>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">Id</th>
-                            <th rowspan="3" style="vertical-align: middle; text-align:center">Regionais</th>
+                            <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Regionais</th>
                             <th colspan="24" style="vertical-align: middle; text-align:center">MÊSES</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL<br>PARCIAL</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL</th>
@@ -79,11 +79,8 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
-            // Mudar o valor dessa rota conforme escolha do select an toolbar do datatable
-            // var route = "{{route('admin.ajaxgetMonitorRestaurantes')}}";
-
-            // DataTable
-            $('#dataTableMonitor').DataTable({
+            // DataTable. Aqui, estamos atribuindo todo o dataTable à uma variável, para posterior manipulação caso seja necessário
+            var oTable = $('#dataTableMonitor').DataTable({
                 //## Fixando colunas e cabeçalhos
                 fixedColumns: {
                     left: 2,
@@ -111,22 +108,21 @@
                 // pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu
 
 
-                processing: true,
+                processing: true,   // Indicador de processamento
                 serverSide: true,
 
-                //ajax: "{{route('admin.ajaxgetMonitorRestaurantes')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
                 ajax: "{{route('admin.ajaxgetRegionaisComprasMensais')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
-                // ajax: {
-                //     url: "{{route('admin.ajaxgetMonitorComprasMensais')}}",
-                //     data: function(d){
-                //         d.grupoEnviado = "Regionais";
-                //     }
-                // },
+                /* ajax: {
+                    url: "{{route('admin.ajaxgetRegionaisComprasMensais')}}",
+                    data: function(d){
+                        d.grupoEnviado = "Regionais";
+                    }
+                }, */
 
-
+                
                 columns: [
                     { data: 'id' },
-                    { data: 'regional' },
+                    { data: 'nomeentidade' },
                     { data: 'jannormal' },
                     { data: 'janaf' },
                     { data: 'fevnormal' },
@@ -175,15 +171,48 @@
                 pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
                 //scrollY: 450,
 
+                // Quando a tabela estiver completamente inicializada(carregada), executa a função abaixo
+                /* initComplete: function (settings, json) {
+                    // "#dataTableMonitor_length" é o nome atribuido dinamicamente à div onde está localizado o menu de 
+                    // de opçoes length. Nesse caso nesta div adicionando um select na toolbar do datatable
+                    $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
+                    $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
+                    $("#selectGrupo").on('change', function(){
+                        alert($(this).children("option:selected").text());
+                        //alert(oTable.ajax.data);
+                        //oTable.ajax.reload();
+                        //oTable.draw();
+                    });
+                } */
+
             });
 
-            /* // Adicionando um select na toolbar do datatable
-            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
+            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras por:</label>');
             $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
             $("#selectGrupo").on('change', function(){
-                alert($(this).children("option:selected").text());
-            }); */
+                //alert($(this).children("option:selected").text());
+                //alert(oTable.ajax.data);
+                var entidadeSelecionada = $(this).children("option:selected").text();
+                var rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
+                switch (entidadeSelecionada){
+                    case "Regionais":
+                        rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+                    break;
+                    case "Municipios":
+                        rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
+                    break;
+                    case "Restaurantes":
+                        rotaAjax = "{{route('admin.ajaxgetRestaurantesComprasMensais')}}";
+                    break;
+                    default:
+                        rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
 
+                }
+                $("#entidade").text(entidadeSelecionada);
+                //oTable.ajax.url("{{route('admin.ajaxgetMunicipiosComprasMensais')}}");
+                oTable.ajax.url(rotaAjax);
+                oTable.ajax.reload();
+            });
          });
 
     </script>
