@@ -46,9 +46,11 @@ class MonitorController extends Controller
         $searchValue = $search_arr['value']; // Search value
 
 
+        //dd($request);
         // Obtendo o ano de referência (ano atual)
-        $anoRef = date("Y");
-
+        // $anoRef = date("Y");
+        $anoRef =  $request->periodo;
+       
         // Obtendo o total de registros de acordo com os critérios de pesquia (fitro)
         $totalRecords = DB::table("bigtable_data")->select('regional_id')->whereYear("data_ini", "=",  $anoRef)->distinct('regional_id')->count();
         $totalRecordswithFilter =  DB::table('bigtable_data')
@@ -246,7 +248,8 @@ class MonitorController extends Controller
 
 
         // Obtendo o ano de referência (ano atual)
-        $anoRef = date("Y");
+        //$anoRef = date("Y");
+        $anoRef =  $request->periodo;
 
         // Obtendo o total de registros de acordo com os critérios de pesquia (fitro)
         $totalRecords = DB::table("bigtable_data")->select('municipio_id')->whereYear("data_ini", "=",  $anoRef)->distinct('municipio_id')->count();
@@ -446,7 +449,8 @@ class MonitorController extends Controller
 
 
         // Obtendo o ano de referência (ano atual)
-        $anoRef = date("Y");
+        //$anoRef = date("Y");
+        $anoRef =  $request->periodo;
 
         // Obtendo o total de registros de acordo com os critérios de pesquia (fitro)
         $totalRecords = DB::table("bigtable_data")->select('restaurante_id')->whereYear("data_ini", "=",  $anoRef)->distinct('restaurante_id')->count();

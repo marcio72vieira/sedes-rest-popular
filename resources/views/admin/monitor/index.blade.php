@@ -79,6 +79,9 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
+            rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+            periodoAno = new Date().getFullYear();
+
             // DataTable. Aqui, estamos atribuindo todo o dataTable à uma variável, para posterior manipulação caso seja necessário
             var oTable = $('#dataTableMonitor').DataTable({
                 //## Fixando colunas e cabeçalhos
@@ -111,14 +114,25 @@
                 processing: true,   // Indicador de processamento
                 serverSide: true,
 
-                ajax: "{{route('admin.ajaxgetRegionaisComprasMensais')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
+                //ajax: "{{route('admin.ajaxgetRegionaisComprasMensais')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
+                
+                
+
                 /* ajax: {
                     url: "{{route('admin.ajaxgetRegionaisComprasMensais')}}",
                     data: function(d){
-                        d.grupoEnviado = "Regionais";
+                        //d.grupoEnviado = "Regionais";
+                        d.periodo = $("#selectPeriodo").val();
                     }
-                }, */
+                }, 
+                */
 
+                ajax: {
+                    url: rotaAjax,
+                    data: function(d){
+                        d.periodo = periodoAno;
+                    },
+                },
                 
                 columns: [
                     { data: 'id' },
@@ -172,7 +186,8 @@
                 //scrollY: 450,
 
                 // Quando a tabela estiver completamente inicializada(carregada), executa a função abaixo
-                /* initComplete: function (settings, json) {
+                initComplete: function (settings, json) {
+                    /*
                     // "#dataTableMonitor_length" é o nome atribuido dinamicamente à div onde está localizado o menu de 
                     // de opçoes length. Nesse caso nesta div adicionando um select na toolbar do datatable
                     $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
@@ -183,17 +198,26 @@
                         //oTable.ajax.reload();
                         //oTable.draw();
                     });
-                } */
+                    */
+                    //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Período:</label>');
+                    //$('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"><option value="2023" selected>2023</option><option value="2024">2024</option><option value="2025">2025</option></select>');
+                }
 
             });
 
             $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras por:</label>');
             $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
+            
+            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Período:</label>');
+            $('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"><option value="2023" selected>2023</option><option value="2024">2024</option><option value="2025">2025</option></select>');
+            
             $("#selectGrupo").on('change', function(){
                 //alert($(this).children("option:selected").text());
                 //alert(oTable.ajax.data);
                 var entidadeSelecionada = $(this).children("option:selected").text();
-                var rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
+                //var rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
+                periodoAno = $("#selectPeriodo").val();
+
                 switch (entidadeSelecionada){
                     case "Regionais":
                         rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
@@ -210,8 +234,8 @@
                 }
                 $("#entidade").text(entidadeSelecionada);
                 //oTable.ajax.url("{{route('admin.ajaxgetMunicipiosComprasMensais')}}");
-                oTable.ajax.url(rotaAjax);
-                oTable.ajax.reload();
+                oTable.ajax.url(rotaAjax).load();
+                //oTable.ajax.reload();
             });
          });
 
