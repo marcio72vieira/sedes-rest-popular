@@ -67,7 +67,8 @@ Route::get('monitor', [MonitorController::class, 'index'])->name('admin.monitor'
 Route::get('ajaxgetRegionaisComprasMensais',[MonitorController::class,'ajaxgetRegionaisComprasMensais'])->name('admin.ajaxgetRegionaisComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetMunicipiosComprasMensais',[MonitorController::class,'ajaxgetMunicipiosComprasMensais'])->name('admin.ajaxgetMunicipiosComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetRestaurantesComprasMensais',[MonitorController::class,'ajaxgetRestaurantesComprasMensais'])->name('admin.ajaxgetRestaurantesComprasMensais')->middleware(['auth']);
-
+Route::get('ajaxgetCategoriasComprasMensais',[MonitorController::class,'ajaxgetCategoriasComprasMensais'])->name('admin.ajaxgetCategoriasComprasMensais')->middleware(['auth']);
+Route::get('ajaxgetProdutosComprasMensais',[MonitorController::class,'ajaxgetProdutosComprasMensais'])->name('admin.ajaxgetProdutosComprasMensais')->middleware(['auth']);
 
 
 

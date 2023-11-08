@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-        <h5><strong>MONITOR DE COMPRAS</strong></h5>
+        <h5><strong>MONITOR</strong></h5>
 
 
     <!-- DataTales Example -->
@@ -18,10 +18,10 @@
                         <tr>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">Id</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Regionais</th>
-                            <th colspan="24" style="vertical-align: middle; text-align:center" id="mesesdoano">ANO: @php echo date("Y") @endphp</th>
+                            <th colspan="24" style="vertical-align: middle; text-align:center" id="mesesdoano">COMPRAS POR REGIONAL EM @php echo date("Y") @endphp</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL<br>PARCIAL</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL</th>
-                            <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PERCENT</th>
+                            <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PERCENTAGEM</th>
                         </tr>
                         <tr>
                             <th colspan="2" style="text-align:center">JAN</th>
@@ -79,11 +79,10 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
-            rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
-            periodoAno = new Date().getFullYear();
+            var rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+            var periodoAno = new Date().getFullYear();
             
-            // anospesquisa = "{$anospesquisa}"; // {variavel}, desta forma evita erro de htmlspecialchar
-            var anoimplementacao = 2020;
+            var anoimplementacao = 2023;
             var anoatual = new Date().getFullYear();
             var anos = [];
             var anosexibicao = [];
@@ -100,55 +99,33 @@
             }
 
             
-            // DataTable. Aqui, estamos atribuindo todo o dataTable à uma variável, para posterior manipulação caso seja necessário
+
             var oTable = $('#dataTableMonitor').DataTable({
-                //## Fixando colunas e cabeçalhos
                 fixedColumns: {
                     left: 2,
-                    //right: 5,
                 },
-                //paging: false,
                 scrollCollapse: true,
-                scrollY: '400px',
+                scrollY: '500px',
                 scrollX: true,
 
-                //## Exibindo button
-                //dom: "Blfrtip",
-                //    "buttons": [
-                //        'copy', 'csv', 'excel', 'pdf', 'print'
-                //    ],
+                order: [[ 1, 'asc' ]],
 
-
-                order: [[ 1, 'asc' ]],     // Exibe os registros em ordem decrescente pelo ID (coluna 0) (Regra de negócio: último registro cadastrado)
-
-                columnDefs: [               // Impede que as colunas 3, 4, 5 e 6 sejam ordenadas pelo usuário
+                columnDefs: [
                     { orderable: false, targets: [26, 27, 28, 29, 30] }
                 ],
 
-                lengthMenu: [10, 15, 20, 25, 30, 35, 40, 45, 50], //Configura o número de entra de registro a serem exibido por pagina
-                // pageLength: 5, //Define a quantidade de registros a serem exibidos independente da escolha feita em: lengthMenu
-
-
-                processing: true,   // Indicador de processamento
+                lengthMenu: [15, 20, 25, 30, 35, 40, 45, 50],
+                
+                processing: true,
                 serverSide: true,
-
-                //ajax: "{{route('admin.ajaxgetRegionaisComprasMensais')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
-                /* ajax: {
-                    url: "{{route('admin.ajaxgetRegionaisComprasMensais')}}",
-                    data: function(d){
-                        //d.grupoEnviado = "Regionais";
-                        d.periodo = $("#selectPeriodo").val();
-                    }
-                }, 
-                */
-
+                
                 ajax: {
                     url: rotaAjax,
                     data: function(d){
                         d.periodo = periodoAno;
                     },
                 },
-                
+
                 columns: [
                     { data: 'id' },
                     { data: 'nomeentidade' },
@@ -196,35 +173,14 @@
                     },
                     "zeroRecords": "Não foram encontrados resultados",
                 },
-                //pagingType: "simple_numbers",
-                pagingType: "full_numbers", // Todos os links de paginação   "simple_numbers" // Sómente anterior; seguinte e os núemros da página:
-                //scrollY: 450,
 
-                // Quando a tabela estiver completamente inicializada(carregada), executa a função abaixo
-                initComplete: function (settings, json) {
-                    /*
-                    // "#dataTableMonitor_length" é o nome atribuido dinamicamente à div onde está localizado o menu de 
-                    // de opçoes length. Nesse caso nesta div adicionando um select na toolbar do datatable
-                    $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
-                    $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
-                    $("#selectGrupo").on('change', function(){
-                        alert($(this).children("option:selected").text());
-                        //alert(oTable.ajax.data);
-                        //oTable.ajax.reload();
-                        //oTable.draw();
-                    });
-                    */
-                    //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Período:</label>');
-                    //$('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"><option value="2023" selected>2023</option><option value="2024">2024</option><option value="2025">2025</option></select>');
-                }
-
+                pagingType: "full_numbers",
             });
 
-            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras por:</label>');
-            $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
+            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras</label>');
+            $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municípios</option><option value="rest">Restaurantes</option><option disabled>___________</option><option value="rest">Categorias</option><option value="rest">Produtos</option></select>');
             
-            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Período:</label>');
-            //$('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"><option value="2023" selected>2023</option><option value="2024">2024</option><option value="2025">2025</option></select>'); // OU
+            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Ano</label>');
             $('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"></select>');
             $.each(anosexibicao, function(indx, valorano) {
                     $('#selectPeriodo').append($('<option></option>').val(valorano).html(valorano));
@@ -232,34 +188,34 @@
 
             
             $("#selectGrupo, #selectPeriodo").on('change', function(){
-                //alert($(this).children("option:selected").text());
-                //alert(oTable.ajax.data);
-                var entidadeSelecionada = $(this).children("option:selected").text();
-                //var rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
+                var entidadeSelecionada = $("#selectGrupo").children("option:selected").text();
                 periodoAno = $("#selectPeriodo").val();
 
                 switch (entidadeSelecionada){
                     case "Regionais":
                         rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
                     break;
-                    case "Municipios":
+                    case "Municípios":
                         rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
                     break;
                     case "Restaurantes":
                         rotaAjax = "{{route('admin.ajaxgetRestaurantesComprasMensais')}}";
+                    break;
+                    case "Categorias":
+                        rotaAjax = "{{route('admin.ajaxgetCategoriasComprasMensais')}}";
+                    break;
+                    case "Produtos":
+                        rotaAjax = "{{route('admin.ajaxgetProdutosComprasMensais')}}";
                     break;
                     default:
                         rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
 
                 }
                 $("#entidade").text(entidadeSelecionada);
-                $("#mesesdoano").text("ANO: " + periodoAno);
-                //oTable.ajax.url("{{route('admin.ajaxgetMunicipiosComprasMensais')}}");
+                $("#mesesdoano").text("COMPRAS POR " + entidadeSelecionada.toUpperCase() + " EM " + periodoAno);
                 oTable.ajax.url(rotaAjax).load();
-                //oTable.ajax.reload();
             });
          });
-
     </script>
 @endsection
 
