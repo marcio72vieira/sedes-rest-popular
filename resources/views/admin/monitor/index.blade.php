@@ -18,7 +18,7 @@
                         <tr>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">Id</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Regionais</th>
-                            <th colspan="24" style="vertical-align: middle; text-align:center">MÊSES</th>
+                            <th colspan="24" style="vertical-align: middle; text-align:center" id="mesesdoano">ANO: @php echo date("Y") @endphp</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL<br>PARCIAL</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PERCENT</th>
@@ -81,7 +81,25 @@
 
             rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
             periodoAno = new Date().getFullYear();
+            
+            // anospesquisa = "{$anospesquisa}"; // {variavel}, desta forma evita erro de htmlspecialchar
+            var anoimplementacao = 2020;
+            var anoatual = new Date().getFullYear();
+            var anos = [];
+            var anosexibicao = [];
+            var qtdanosexibicao = 0;
 
+            if(anoimplementacao >= anoatual){
+                anosexibicao.push(anoatual);
+            }else{
+                qtdanosexibicao = anoatual -  anoimplementacao;
+                for(var a = qtdanosexibicao; a >= 0; a-- ){
+                    anos.push(anoatual - a);
+                }
+                anosexibicao = anos.reverse();
+            }
+
+            
             // DataTable. Aqui, estamos atribuindo todo o dataTable à uma variável, para posterior manipulação caso seja necessário
             var oTable = $('#dataTableMonitor').DataTable({
                 //## Fixando colunas e cabeçalhos
@@ -115,9 +133,6 @@
                 serverSide: true,
 
                 //ajax: "{{route('admin.ajaxgetRegionaisComprasMensais')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
-                
-                
-
                 /* ajax: {
                     url: "{{route('admin.ajaxgetRegionaisComprasMensais')}}",
                     data: function(d){
@@ -209,9 +224,14 @@
             $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
             
             $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Período:</label>');
-            $('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"><option value="2023" selected>2023</option><option value="2024">2024</option><option value="2025">2025</option></select>');
+            //$('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"><option value="2023" selected>2023</option><option value="2024">2024</option><option value="2025">2025</option></select>'); // OU
+            $('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"></select>');
+            $.each(anosexibicao, function(indx, valorano) {
+                    $('#selectPeriodo').append($('<option></option>').val(valorano).html(valorano));
+            });
+
             
-            $("#selectGrupo").on('change', function(){
+            $("#selectGrupo, #selectPeriodo").on('change', function(){
                 //alert($(this).children("option:selected").text());
                 //alert(oTable.ajax.data);
                 var entidadeSelecionada = $(this).children("option:selected").text();
@@ -233,6 +253,7 @@
 
                 }
                 $("#entidade").text(entidadeSelecionada);
+                $("#mesesdoano").text("ANO: " + periodoAno);
                 //oTable.ajax.url("{{route('admin.ajaxgetMunicipiosComprasMensais')}}");
                 oTable.ajax.url(rotaAjax).load();
                 //oTable.ajax.reload();
