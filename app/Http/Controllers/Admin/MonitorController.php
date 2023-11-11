@@ -24,7 +24,15 @@ class MonitorController extends Controller
         //$restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
         //return view('admin.monitor.index', compact('restaurantes'));
         
-        return view('admin.monitor.index');
+        // Obtendo apenas as Categorias e Produtos que foram efetivamente comprados.
+        $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
+        $produtos =  DB::table('bigtable_data')->select('produto_id', 'produto_nome')->distinct('produto_id')->orderBy('produto_nome')->get();
+      
+        // Transformando as coleções retornada acima, em arrays JSON(javascript) e enviando-os para a view
+        $categoriaJSON =  json_encode($categorias);
+        $produtosJSON =  json_encode($produtos);
+        
+        return view('admin.monitor.index', compact('categoriaJSON', 'produtosJSON'));
     }
 
     // Monitor Compras Mensais por Regionais

@@ -79,6 +79,12 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
+            // Acessando os array em php via javascript, ou seja, transformando-os em um array json
+            var arrayCategorias =  @php echo $categoriaJSON; @endphp;
+            var arrayProdutos = @php echo $produtosJSON; @endphp;
+
+            console.log(arrayCategorias, arrayProdutos);
+
             var rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
             var periodoAno = new Date().getFullYear();
             
@@ -175,13 +181,36 @@
                 },
 
                 pagingType: "full_numbers",
+
+                initComplete: function (settings, json) {
+                    //$("#dataTableMonitor_filter").css("width", "30%");
+                }
             });
 
-            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras</label>');
-            $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municípios</option><option value="rest">Restaurantes</option><option disabled>___________</option><option value="rest">Categorias</option><option value="rest">Produtos</option></select>');
+            //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras</label>');
+            $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option value="" disabled>Compras</option><option value="regi" selected>Regionais</option><option value="muni">Municípios</option><option value="rest">Restaurantes</option><option disabled>___________</option><option value="rest">Categorias</option><option value="rest">Produtos</option></select>');
             
-            $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Ano</label>');
-            $('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"></select>');
+
+            // Populando o selectCategorias a partir de um Array JSON(ou seja, um objeto) com jQuery
+            // $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Categorias</label>');
+            $('#dataTableMonitor_length').append('<select id="selectCategorias" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
+            $('#selectCategorias').append($('<option selected disabled></option>').val('').html('Categorias'));
+            $.each(arrayCategorias, function() {
+                    $('#selectCategorias').append($('<option></option>').val(this.categoria_id).html(this.categoria_nome));
+            });
+
+            // Populando o selectProdutos a partir de um Array JSON(ou seja, um objeto) com jQuery
+            // $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Produtos</label>');
+            $('#dataTableMonitor_length').append('<select id="selectProdutos" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
+            $('#selectProdutos').append($('<option selected disabled></option>').val('').html('Produtos'));
+            $.each(arrayProdutos, function() {
+                    $('#selectProdutos').append($('<option></option>').val(this.produto_id).html(this.produto_nome));
+            });
+
+            // Populando o selectPeriodo a partir de um Array "padrão" com jQuery
+            // $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Ano</label>');
+            $('#dataTableMonitor_filter').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px; width: 80px; float:left"></select>');
+            $('#selectPeriodo').append($('<option disabled></option>').val('').html('Ano'));
             $.each(anosexibicao, function(indx, valorano) {
                     $('#selectPeriodo').append($('<option></option>').val(valorano).html(valorano));
             });
