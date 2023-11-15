@@ -1037,6 +1037,13 @@ class MonitorController extends Controller
 
         echo json_encode($response);
         exit;
-    }    
+    }   
+    
+    
+    public function ajaxgetProdutosDaCategoriaComprasMensais(Request $request){
+        $idCat = $request->idcategoria;
+        $records = DB::select(DB::raw("SELECT DISTINCT produto_id, produto_nome FROM bigtable_data WHERE categoria_id = $idCat ORDER BY produto_nome ASC"));
+        return response()->json($records);
+    }
 
 }
