@@ -1169,7 +1169,7 @@ class MonitorController extends Controller
         ->groupByRaw("$entidade_id")
         ->orderByRaw("$entidade_nome");
 
-        // Utilizando uma variável dentro de uma cláusua joinSub
+        // Utilizando uma variável externa dentro de uma cláusua joinSub com "use", caso contrário a mesma não é reconhecida pelo Laravel
         $records =  DB::table("bigtable_data")->joinSub($valoresmeses, "aliasValoresMeses", function($join) use($entidade_id){
             $join->on("bigtable_data.$entidade_id", "=", "aliasValoresMeses.$entidade_id");
         })->select(DB::raw("bigtable_data.$entidade_id AS id, bigtable_data.$entidade_nome AS nomeentidade, bigtable_data.data_ini,
@@ -1302,11 +1302,6 @@ class MonitorController extends Controller
     }
 
 
-
-
-
-
-
     // Monitor Compras Mensais Produtos por Entidade (Regionais, Município ou Restaurantes)
     public function ajaxgetProdutosPorEntidadeComprasMensais(Request $request){
 
@@ -1327,23 +1322,42 @@ class MonitorController extends Controller
 
 
         // Obtendo os parâmetros enviado via ajax
-        $entitRef   = $request->entidade;
-        $prodRef    = $request->produto;
         $anoRef     =  $request->periodo;
+        $entitRef   = $request->entidade;
+        $categRef   = $request->categoria;
+        $prodRef    = $request->produto;
+
+        switch($entitRef){
+            case "1":
+                $entidade_id = "regional_id";
+                $entidade_nome =  "regional_nome";
+            break;
+            case "2":
+                $entidade_id = "municipio_id";
+                $entidade_nome = "municipio_nome";
+            break;
+            case "3":
+                $entidade_id = "restaurante_id";
+                $entidade_nome =  "identificacao";
+            break;
+        }
+
+
 
         // Obtendo o total de registros de acordo com os critérios de pesquia (fitro)
-        $totalRecords = DB::table("bigtable_data")->select('produto_id')->whereYear("data_ini", "=",  $anoRef)->distinct('produto_id')->count();
+        $totalRecords = DB::table("bigtable_data")->select("$entidade_id")->where("produto_id", "=", $prodRef)->whereYear("data_ini", "=",  $anoRef)->distinct("$entidade_id")->count();
         $totalRecordswithFilter =  DB::table('bigtable_data')
         ->select("count(*) as allcount")
+        ->where("produto_id", "=", $prodRef)
         ->whereYear("data_ini", "=",  $anoRef)
-        ->distinct('bigtable_data.produto_id')
-        ->where('bigtable_data.produto_nome', 'like', '%' .$searchValue . '%')
+        ->distinct("bigtable_data.$entidade_id")
+        ->where("bigtable_data.$entidade_nome", "like", "%" .$searchValue . "%")
         ->count();
         
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
-        ->select(DB::RAW("data_ini, af, precototal, produto_id, produto_nome,
+        ->select(DB::RAW("data_ini, af, precototal, $entidade_id, $entidade_nome,
                 SUM(IF(MONTH(data_ini) = 01 AND af = 'nao', precototal, 0.00)) AS mesjannormal,
                 SUM(IF(MONTH(data_ini) = 01 AND af = 'sim', precototal, 0.00)) AS mesjanaf,
                 SUM(IF(MONTH(data_ini) = 02 AND af = 'nao', precototal, 0.00)) AS mesfevnormal,
@@ -1372,13 +1386,14 @@ class MonitorController extends Controller
             )
         )
         ->whereYear("data_ini", "=",  $anoRef)
-        ->groupByRaw("produto_id")
-        ->orderByRaw("produto_nome");
+        ->where("produto_id", "=", $prodRef)
+        ->groupByRaw("$entidade_id")
+        ->orderByRaw("$entidade_nome");
 
-
-        $records =  DB::table('bigtable_data')->joinSub($valoresmeses, 'aliasValoresMeses', function($join){
-        $join->on('bigtable_data.produto_id', '=', 'aliasValoresMeses.produto_id');
-        })->select(DB::raw("bigtable_data.produto_id AS id, bigtable_data.produto_nome AS nomeentidade, bigtable_data.data_ini,
+        // Utilizando uma variável externa dentro de uma cláusua joinSub com "use", caso contrário a mesma não é reconhecida pelo Laravel
+        $records =  DB::table("bigtable_data")->joinSub($valoresmeses, "aliasValoresMeses", function($join) use($entidade_id){
+            $join->on("bigtable_data.$entidade_id", "=", "aliasValoresMeses.$entidade_id");
+        })->select(DB::raw("bigtable_data.$entidade_id AS id, bigtable_data.$entidade_nome AS nomeentidade, bigtable_data.data_ini,
                         aliasValoresMeses.mesjannormal AS jannormal, aliasValoresMeses.mesjanaf AS janaf, aliasValoresMeses.mesfevnormal AS fevnormal, aliasValoresMeses.mesfevaf AS fevaf, aliasValoresMeses.mesmarnormal AS marnormal, aliasValoresMeses.mesmaraf AS maraf,
                         aliasValoresMeses.mesabrnormal AS abrnormal, aliasValoresMeses.mesabraf AS abraf, aliasValoresMeses.mesmainormal AS mainormal, aliasValoresMeses.mesmaiaf AS maiaf, aliasValoresMeses.mesjunnormal AS junnormal, aliasValoresMeses.mesjunaf AS junaf,
                         aliasValoresMeses.mesjulnormal AS julnormal, aliasValoresMeses.mesjulaf AS julaf, aliasValoresMeses.mesagsnormal AS agsnormal, aliasValoresMeses.mesagsaf AS agsaf, aliasValoresMeses.messetnormal AS setnormal, aliasValoresMeses.messetaf AS setaf,
@@ -1386,8 +1401,8 @@ class MonitorController extends Controller
                     )
         )
         ->whereYear("bigtable_data.data_ini", "=",  $anoRef)
-        ->where('bigtable_data.produto_nome', 'like', '%' .$searchValue . '%')
-        ->groupBy("bigtable_data.produto_id")
+        ->where("bigtable_data.$entidade_nome", "like", "%" .$searchValue . "%")
+        ->groupBy("bigtable_data.$entidade_id")
         //->orderBy("bigtable_data.produto_nome")
         ->orderBy($columnName,$columnSortOrder)
         ->skip($start)
@@ -1506,11 +1521,5 @@ class MonitorController extends Controller
         echo json_encode($response);
         exit;
     }
-
-
-
-
-
-
 
 }

@@ -341,16 +341,25 @@
             }); */
 
             $("#btnCarregar").on('click', function(){
+
                 // Recupera os valores selecionados dos elementos
-                valEntidadeSelecionada = $("#selectEntidade").val();
+                valEntidadeSelecionada  = $("#selectEntidade").val();
                 valCategoriaSelecionada = $("#selectCategorias").val() == undefined ? 0 : $("#selectCategorias").val() ;
-                valProdutoSelecionado  = $("#selectProdutos").val() == undefined ? 0 : $("#selectProdutos").val();
-                valAnoSelecionado = $("#selectPeriodo").val();
-                
+                valProdutoSelecionado   = $("#selectProdutos").val() == undefined ? 0 : $("#selectProdutos").val();
+                valAnoSelecionado       = $("#selectPeriodo").val();
                 periodoAno  = valAnoSelecionado;
+
+                // Recupera os textos selecionados dos elementos
+                txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
+                txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
+                txtAnoSelecionado       = $("#selectPeriodo").children("option:selected").text();
                 
                 if(valEntidadeSelecionada != 0 && valCategoriaSelecionada == 0 && valProdutoSelecionado == 0){
+                    
                     switch (valEntidadeSelecionada){
+                        
+                        // Define a rota de acordo com a Entidade escolhida
                         case "1":
                             rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
                         break;
@@ -369,10 +378,22 @@
                         default:
                             rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
                     }
+
                     oTable.ajax.url(rotaAjax).load();
+
+
                 }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
+                    
+                    // Define a rota de acordo com a Entidade e a Categoria escolhida
                     rotaAjax = "{{route('admin.ajaxgetCategoriasPorEntidadeComprasMensais')}}";
                     oTable.ajax.url(rotaAjax).load();
+
+                }else {
+
+                    // Define a rota de acordo com a Entidade, Categoria e Produto escolhido
+                    rotaAjax = "{{route('admin.ajaxgetProdutosPorEntidadeComprasMensais')}}";
+                    oTable.ajax.url(rotaAjax).load();
+
                 }
                 
             })
