@@ -79,21 +79,20 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
-            // Acessando os array em php via javascript, ou seja, transformando-os em um array json
+            // Acessando os array em php(enviados pela view) via javascript, ou seja, transformando-os em um array json
             var arrayCategorias =  @php echo $categoriaJSON; @endphp;
             var arrayProdutos = @php echo $produtosJSON; @endphp;
 
-            console.log(arrayCategorias, arrayProdutos);
-
+            // Definindo uma requisição padrão para inicializar o datatable
             //var rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
             var rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
             var periodoAno = new Date().getFullYear();
-
             var valEntidadeSelecionada = 0;
             var valCategoriaSelecionada = 0;
             var valProdutoSelecionado = 0;
             
             
+            // Definindo os anos a serem exibidos a partir do ano de implementação do sistema
             var anoimplementacao = 2023;
             var anoatual = new Date().getFullYear();
             var anos = [];
@@ -111,8 +110,9 @@
             }
 
             
-
+            // Definindo o datatabble e suas propriedades e atribuindo à variável oTable(objeto dataTable)
             var oTable = $('#dataTableMonitor').DataTable({
+                // Define "congelamento" de colunas e rolagens vertical/horizontal. Necessário importar CSS correspondente
                 fixedColumns: {
                     left: 2,
                 },
@@ -120,17 +120,22 @@
                 scrollY: '500px',
                 scrollX: true,
 
+                // Ordena os dados em ordem alfabética pela coluna 1
                 order: [[ 1, 'asc' ]],
 
+                // Colunas que não serão ordenadas
                 columnDefs: [
                     { orderable: false, targets: [26, 27, 28, 29, 30] }
                 ],
 
+                // Menu da quantidade de registros a serem exibidos
                 lengthMenu: [15, 20, 25, 30, 35, 40, 45, 50],
                 
+                // Indica a mensagem de processamento e que os dados virão de um servidor
                 processing: true,
                 serverSide: true,
                 
+                // Requisição ajax indicando a rota e os parâmetros a serem enviados
                 ajax: {
                     url: rotaAjax,
                     data: function(d){
@@ -141,6 +146,7 @@
                     },
                 },
 
+                // Define as colunas(campos) da tabela que irão receber os dados vindo do servidor. Os nomes deverão corresponder
                 columns: [
                     { data: 'id' },
                     { data: 'nomeentidade' },
@@ -175,6 +181,7 @@
                     { data: 'percentagemaf' },
                 ],
 
+                // Traduzindo as informações de exibição, pesquisa e paginação
                 language: {
                     "lengthMenu": "Mostrar _MENU_ registos",
                     "search": "Procurar:",
@@ -189,8 +196,10 @@
                     "zeroRecords": "Não foram encontrados resultados",
                 },
 
+                // Definindo o tipo de exibição de paginação(completa)
                 pagingType: "full_numbers",
 
+                // Executa uma função assim que o dataTable estiver carregado complementante
                 initComplete: function (settings, json) {
                     //$("#dataTableMonitor_filter").css("width", "30%");
                 }
@@ -198,26 +207,31 @@
 
             
 
-            // ELEMENTOS DA DIV dataTableMonitor_length
+            // ELEMENTOS DA DIV dataTableMonitor_length (Div, criada dinamicamente)
             //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Entidades</label>');
             $('#dataTableMonitor_length').append('<select id="selectEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option selected value="0">Entidades</option><option value="1">Regionais</option><option value="2">Municípios</option><option value="3">Restaurantes</option><option disabled>___________</option><option value="4">Categorias</option><option value="5">Produtos</option></select>');
             
 
             $("#selectEntidade").on("change", function(){
-                // Esconde os "controles" Ano, btnCarregar e Pdf para pesquisa e impressão
+                
+                // Carrega uma tabela vazia e esconde os controles de ano, carregamento e impresssão
                 if($(this).val() == "0" ){
-                    $("#espacoReservadoAnoAcaoPdf").css("display", "none"); 
+                    rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
+                    oTable.ajax.url(rotaAjax).load();
+
+                    $("#controlesPeriodoCarregarPdf").css("display", "none"); 
                 }
 
-                // Remove dropdown categorias e produtos, caso existam, para "resetar" seus valores
+                // Remove dropdown CATEGORIAS e PRODUTOS(caso existam) para "resetar" seus valores
                 $("#selectCategorias, #selectProdutos").remove();
 
-                // Exibe dropdown cateogrias se Entidade for igua a Regional, Município ou Restaurante
+                // Exibe dropdown CATEGORIAS se Entidade for: Regional, Município ou Restaurante
                 if($(this).val() == "1" || $(this).val() == "2" || $(this).val() == "3"){
-                    // Exibe os "controles" Ano, btnCarregar e Pdf para pesquisa e impressão
-                    $("#espacoReservadoAnoAcaoPdf").css("display", "inline");
 
-                    // Populando o selectCategorias a partir de um Array JSON(ou seja, um objeto, enviado pela View) com jQuery
+                    // Exibe os "controles" Periodo, btnCarregar e Pdf para pesquisa e impressão
+                    $("#controlesPeriodoCarregarPdf").css("display", "inline");
+
+                    // Populando o selectCategorias a partir de um Array JSON com jQuery
                     $('#dataTableMonitor_length').append('<select id="selectCategorias" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
                     $('#selectCategorias').append($('<option selected></option>').val('0').html('Categorias'));
                     $.each(arrayCategorias, function() {
@@ -250,28 +264,28 @@
                         }
                     });
                 } else if($(this).val() == "4" || $(this).val() == "5"){
-                    // Exibe os "controles" Ano, btnCarregar e Pdf para pesquisa e impressão E REMOVE DROPDOWN's Categorias e Produtos
-                    $("#espacoReservadoAnoAcaoPdf").css("display", "inline");
+                    // Exibe os "controles" Periodo, btnCarregar e Pdf para pesquisa e impressão E REMOVE DROPDOWN's Categorias e Produtos
+                    $("#controlesPeriodoCarregarPdf").css("display", "inline");
                     $("#selectCategorias, #selectProdutos").remove();
                 } else{
-                    // Removendo dropdown categorias e produtos, caso Entidade, Categorias ou Produtos sejam selecionados, para "resetar" seus valores
+                    // Removendo dropdown CATEGORIAS e PRODUTOS, caso Entidade (Entidde com valor 0) seja selecionada. para "resetar" seus valores
                     $("#selectCategorias, #selectProdutos").remove();
                 }
             });
 
 
             // ELEMENTOS DA DIV dataTableMonitor_filter
-            $('#dataTableMonitor_filter').append('<div id="espacoReservadoAnoAcaoPdf" style="float:left; display:none"></div>');
+            $('#dataTableMonitor_filter').append('<div id="controlesPeriodoCarregarPdf" style="float:left; display:none"></div>');
             // Populando o selectPeriodo a partir de um Array "padrão" com jQuery
-            $('#espacoReservadoAnoAcaoPdf').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px; width: 80px; float:left"></select>');
+            $('#controlesPeriodoCarregarPdf').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px; width: 80px; float:left"></select>');
             $('#selectPeriodo').append($('<option disabled></option>').val('0').html('Ano'));
             $.each(anosexibicao, function(indx, valorano) {
                     $('#selectPeriodo').append($('<option></option>').val(valorano).html(valorano));
             });
 
 
-            $('#espacoReservadoAnoAcaoPdf').append('<button type="button" id="btnCarregar" class="btn btn-light" style="height: 36px; width: 80px; float:left; margin-left: 30px;"><i class="fas fa-search"></i></button>');
-            $('#espacoReservadoAnoAcaoPdf').append('<a class="btn btn-light" style="height: 36px; width: 80px; float:left; margin-left: 30px;"><i class="far fa-file-pdf"></i></a>');
+            $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
+            $('#controlesPeriodoCarregarPdf').append('<a href="" class="btn btn-danger" id="btnPdf" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
 
 
 
