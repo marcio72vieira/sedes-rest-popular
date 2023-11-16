@@ -64,12 +64,16 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dash
 //=============================================
 // Monitor
 Route::get('monitor', [MonitorController::class, 'index'])->name('admin.monitor')->middleware(['auth']);
+Route::get('ajaxgetRecordsEmpty',[MonitorController::class,'ajaxgetRecordsEmpty'])->name('admin.ajaxgetRecordsEmpty')->middleware(['auth']);
 Route::get('ajaxgetRegionaisComprasMensais',[MonitorController::class,'ajaxgetRegionaisComprasMensais'])->name('admin.ajaxgetRegionaisComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetMunicipiosComprasMensais',[MonitorController::class,'ajaxgetMunicipiosComprasMensais'])->name('admin.ajaxgetMunicipiosComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetRestaurantesComprasMensais',[MonitorController::class,'ajaxgetRestaurantesComprasMensais'])->name('admin.ajaxgetRestaurantesComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetCategoriasComprasMensais',[MonitorController::class,'ajaxgetCategoriasComprasMensais'])->name('admin.ajaxgetCategoriasComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetProdutosComprasMensais',[MonitorController::class,'ajaxgetProdutosComprasMensais'])->name('admin.ajaxgetProdutosComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetProdutosDaCategoriaComprasMensais',[MonitorController::class,'ajaxgetProdutosDaCategoriaComprasMensais'])->name('admin.ajaxgetProdutosDaCategoriaComprasMensais')->middleware(['auth']);
+
+Route::get('ajaxgetCategoriasPorEntidadeComprasMensais',[MonitorController::class,'ajaxgetCategoriasPorEntidadeComprasMensais'])->name('admin.ajaxgetCategoriasPorEntidadeComprasMensais')->middleware(['auth']);
+Route::get('ajaxgetProdutosPorEntidadeComprasMensais',[MonitorController::class,'ajaxgetProdutosPorEntidadeComprasMensais'])->name('admin.ajaxgetProdutosPorEntidadeComprasMensais')->middleware(['auth']);
 
 
 

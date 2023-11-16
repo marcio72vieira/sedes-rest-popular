@@ -818,6 +818,9 @@ ParseError Invalid numeric literal
 // https://stackoverflow.com/questions/51578472/check-if-a-route-parameter-exists-in-laravel-custom-validation-rule
 // https://stackoverflow.com/questions/61432488/php-error-unparenthesized-a-b-c-d-e-is-deprecated-use-either-a
 // https://www.allphptricks.com/how-to-encrypt-decrypt-string-in-php/
+// https://www.google.com/search?q=Too+few+arguments+to+function+%7Bclosure%7D%28%29%2C+1+passed+in++and+exactly+2+expected+in+laravel+joinSub&client=ubuntu&hs=N2p&sca_esv=582799658&channel=fs&sxsrf=AM9HkKmsA42FUaNMtBGlhUwLr3Y2aoa7Hw%3A1700097522161&ei=8m1VZZGtCcnd1sQP6I6-2A4&ved=0ahUKEwiR7pDnrMeCAxXJrpUCHWiHD-sQ4dUDCA8&uact=5&oq=Too+few+arguments+to+function+%7Bclosure%7D%28%29%2C+1+passed+in++and+exactly+2+expected+in+laravel+joinSub&gs_lp=Egxnd3Mtd2l6LXNlcnAiYVRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIHtjbG9zdXJlfSgpLCAxIHBhc3NlZCBpbiAgYW5kIGV4YWN0bHkgMiBleHBlY3RlZCBpbiBsYXJhdmVsIGpvaW5TdWJIAFAAWABwAHgBkAEAmAEAoAEAqgEAuAEDyAEA-AEB4gMEGAAgQQ&sclient=gws-wiz-serp
+// https://stackoverflow.com/questions/60036313/laravel-eloquent-too-few-arguments-to-function-1-passed-2-expected-in-my-query
+// https://laracasts.com/discuss/channels/laravel/too-few-arguments-to-function-4
 
 
 

@@ -16,9 +16,9 @@
                 <table class="table table-bordered" id="dataTableMonitor" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th rowspan="3" style="vertical-align: middle; text-align:center">Id</th>
-                            <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Regionais</th>
-                            <th colspan="24" style="vertical-align: middle; text-align:center" id="mesesdoano">COMPRAS POR REGIONAL EM @php echo date("Y") @endphp</th>
+                            <th rowspan="3" style="vertical-align: middle; text-align:center;">Id</th>
+                            <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Entidade</th>
+                            <th colspan="24" style="vertical-align: middle; text-align:center" id="mesesdoano">COMPRAS EM @php echo date("Y") @endphp</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL<br>PARCIAL</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PERCENTAGEM</th>
@@ -85,8 +85,14 @@
 
             console.log(arrayCategorias, arrayProdutos);
 
-            var rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+            //var rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+            var rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
             var periodoAno = new Date().getFullYear();
+
+            var valEntidadeSelecionada = 0;
+            var valCategoriaSelecionada = 0;
+            var valProdutoSelecionado = 0;
+            
             
             var anoimplementacao = 2023;
             var anoatual = new Date().getFullYear();
@@ -129,6 +135,9 @@
                     url: rotaAjax,
                     data: function(d){
                         d.periodo = periodoAno;
+                        d.entidade = valEntidadeSelecionada;
+                        d.categoria = valCategoriaSelecionada;
+                        d.produto = valProdutoSelecionado;
                     },
                 },
 
@@ -189,63 +198,91 @@
 
             
 
-
-            //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras</label>');
-            $('#dataTableMonitor_length').append('<select id="selectEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option selected disabled value="0">Compras</option><option value="1">Regionais</option><option value="2">Municípios</option><option value="3">Restaurantes</option><option disabled>___________</option><option value="4">Categorias</option><option value="5">Produtos</option></select>');
+            // ELEMENTOS DA DIV dataTableMonitor_length
+            //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Entidades</label>');
+            $('#dataTableMonitor_length').append('<select id="selectEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option selected value="0">Entidades</option><option value="1">Regionais</option><option value="2">Municípios</option><option value="3">Restaurantes</option><option disabled>___________</option><option value="4">Categorias</option><option value="5">Produtos</option></select>');
             
 
-            // Populando o selectCategorias a partir de um Array JSON(ou seja, um objeto) com jQuery
-            // $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Categorias</label>');
-            $('#dataTableMonitor_length').append('<select id="selectCategorias" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
-            $('#selectCategorias').append($('<option selected></option>').val('0').html('Categorias'));
-            $.each(arrayCategorias, function() {
-                    $('#selectCategorias').append($('<option></option>').val(this.categoria_id).html(this.categoria_nome));
+            $("#selectEntidade").on("change", function(){
+                // Esconde os "controles" Ano, btnCarregar e Pdf para pesquisa e impressão
+                if($(this).val() == "0" ){
+                    $("#espacoReservadoAnoAcaoPdf").css("display", "none"); 
+                }
+
+                // Remove dropdown categorias e produtos, caso existam, para "resetar" seus valores
+                $("#selectCategorias, #selectProdutos").remove();
+
+                // Exibe dropdown cateogrias se Entidade for igua a Regional, Município ou Restaurante
+                if($(this).val() == "1" || $(this).val() == "2" || $(this).val() == "3"){
+                    // Exibe os "controles" Ano, btnCarregar e Pdf para pesquisa e impressão
+                    $("#espacoReservadoAnoAcaoPdf").css("display", "inline");
+
+                    // Populando o selectCategorias a partir de um Array JSON(ou seja, um objeto, enviado pela View) com jQuery
+                    $('#dataTableMonitor_length').append('<select id="selectCategorias" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
+                    $('#selectCategorias').append($('<option selected></option>').val('0').html('Categorias'));
+                    $.each(arrayCategorias, function() {
+                            $('#selectCategorias').append($('<option></option>').val(this.categoria_id).html(this.categoria_nome));
+                    });
+
+                    // Criando e populadno o dropdown selectProdutos a partir da categoria escolhida
+                    $("#selectCategorias").on("change", function(){
+                        if($(this).val() == "0"){
+                            $("#selectProdutos").remove();
+                        }else{
+                            $("#selectProdutos").remove();
+                            var idCatSelecionada = $(this).val();
+                            $.ajax({
+                                url: "{{route('admin.ajaxgetProdutosDaCategoriaComprasMensais')}}",
+                                type: "GET",
+                                data: {idcategoria: idCatSelecionada},
+                                dataType : 'json',
+                                success: function(result){
+                                    $('#dataTableMonitor_length').append('<select id="selectProdutos" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
+                                    $('#selectProdutos').append($('<option selected></option>').val('0').html('Produtos'));
+                                    $.each(result, function() {
+                                        $('#selectProdutos').append($('<option></option>').val(this.produto_id).html(this.produto_nome));
+                                    }); 
+                                },
+                                error: function(result){
+                                    alert("Error ao retornar produtos desta Categoria!");
+                                }
+                            });
+                        }
+                    });
+                } else if($(this).val() == "4" || $(this).val() == "5"){
+                    // Exibe os "controles" Ano, btnCarregar e Pdf para pesquisa e impressão E REMOVE DROPDOWN's Categorias e Produtos
+                    $("#espacoReservadoAnoAcaoPdf").css("display", "inline");
+                    $("#selectCategorias, #selectProdutos").remove();
+                } else{
+                    // Removendo dropdown categorias e produtos, caso Entidade, Categorias ou Produtos sejam selecionados, para "resetar" seus valores
+                    $("#selectCategorias, #selectProdutos").remove();
+                }
             });
 
-            $("#selectCategorias").on("change", function(){
-                $("#selectProdutos").remove();
-                var idCatSelecionada = $(this).val();
-                $.ajax({
-                    url: "{{route('admin.ajaxgetProdutosDaCategoriaComprasMensais')}}",
-                    type: "GET",
-                    data: {idcategoria: idCatSelecionada},
-                    dataType : 'json',
-                    success: function(result){
-                        $('#dataTableMonitor_length').append('<select id="selectProdutos" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
-                        $('#selectProdutos').append($('<option selected></option>').val('0').html('Produtos'));
-                        $.each(result, function() {
-                            $('#selectProdutos').append($('<option></option>').val(this.produto_id).html(this.produto_nome));
-                        }); 
-                    },
-                    error: function(result){
-                        alert("Error ao retornar produtos desta Categoria!");
-                    }
-                });
-            });
 
-            // Populando o selectProdutos a partir de um Array JSON(ou seja, um objeto) com jQuery
-            // $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Produtos</label>');
-            //$('#dataTableMonitor_length').append('<select id="selectProdutos" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
-            //$('#selectProdutos').append($('<option selected></option>').val('0').html('Produtos'));
-            //$.each(arrayProdutos, function() {
-            //        $('#selectProdutos').append($('<option></option>').val(this.produto_id).html(this.produto_nome));
-            //});
-
+            // ELEMENTOS DA DIV dataTableMonitor_filter
+            $('#dataTableMonitor_filter').append('<div id="espacoReservadoAnoAcaoPdf" style="float:left; display:none"></div>');
             // Populando o selectPeriodo a partir de um Array "padrão" com jQuery
-            // $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Ano</label>');
-            $('#dataTableMonitor_filter').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px; width: 80px; float:left"></select>');
-            $('#selectPeriodo').append($('<option disabled></option>').val('').html('Ano'));
+            $('#espacoReservadoAnoAcaoPdf').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px; width: 80px; float:left"></select>');
+            $('#selectPeriodo').append($('<option disabled></option>').val('0').html('Ano'));
             $.each(anosexibicao, function(indx, valorano) {
                     $('#selectPeriodo').append($('<option></option>').val(valorano).html(valorano));
             });
 
-            $('#dataTableMonitor_filter').append('<button type="button" id="btnAcao" class="btn btn-light" style="height: 36px; width: 80px; float:left; margin-left: 30px;"><i class="fas fa-search"></i></button>');
-            $('#dataTableMonitor_filter').append('<a class="btn btn-light" style="height: 36px; width: 80px; float:left; margin-left: 30px;"><i class="far fa-file-pdf"></i></a>');
 
-            
+            $('#espacoReservadoAnoAcaoPdf').append('<button type="button" id="btnCarregar" class="btn btn-light" style="height: 36px; width: 80px; float:left; margin-left: 30px;"><i class="fas fa-search"></i></button>');
+            $('#espacoReservadoAnoAcaoPdf').append('<a class="btn btn-light" style="height: 36px; width: 80px; float:left; margin-left: 30px;"><i class="far fa-file-pdf"></i></a>');
+
+
+
+            /*
             $("#selectEntidade, #selectPeriodo").on('change', function(){
                 var textEntidadeSelecionada = $("#selectEntidade").children("option:selected").text();
                 var entidadeSelecionada = $("#selectEntidade").val();
+
+                var textCategoriaSelecionada = $("#selectCategoria").children("option:selected").text();
+                var categoriaSelecionada = $("#selectCategoria").val();
+                
                 periodoAno = $("#selectPeriodo").val();
 
                 switch (entidadeSelecionada){
@@ -270,28 +307,60 @@
                         rotaAjax = "{{route('admin.ajaxgetProdutosComprasMensais')}}";
                     break;
                     default:
-                        rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+                        rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
 
                 }
                 $("#entidade").text(textEntidadeSelecionada);
                 $("#mesesdoano").text("COMPRAS POR " + textEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
                 oTable.ajax.url(rotaAjax).load();
             });
+            */
+
 
             // Novo
-            $("#selectCategorias").on('change', function(){
+            /* $("#selectCategorias").on('change', function(){
                 $("#selectProdutos").css("display", "inline");
                 // var valGrupoSelecionado = $("#selectEntidade").val();
                 // var txtGrupoSelecionado = $("#selectEntidade").children("option:selected").text();
                 // var valAnoSelecionado = $("#selectPeriodo").val();
                 // alert("Grupo: " + $("#selectEntidade").val() + " Categorias: " + $("#selectCategorias").val() + " Ano: " + $("#selectPeriodo").val());
-            });
+            }); */
 
-            $("#btnAcao").on('click', function(){
-                var valGrupoSelecionado     = $("#selectEntidade").val();
-                var valCategoriaSelecionada = $("#selectCategorias").val();
-                var valProdutosSelecionada  = $("#selectProdutos").val();
-                alert(valGrupoSelecionado + " " + valCategoriaSelecionada + " " + valProdutosSelecionada);
+            $("#btnCarregar").on('click', function(){
+                // Recupera os valores selecionados dos elementos
+                valEntidadeSelecionada = $("#selectEntidade").val();
+                valCategoriaSelecionada = $("#selectCategorias").val() == undefined ? 0 : $("#selectCategorias").val() ;
+                valProdutoSelecionado  = $("#selectProdutos").val() == undefined ? 0 : $("#selectProdutos").val();
+                valAnoSelecionado = $("#selectPeriodo").val();
+                
+                periodoAno  = valAnoSelecionado;
+                
+                if(valEntidadeSelecionada != 0 && valCategoriaSelecionada == 0 && valProdutoSelecionado == 0){
+                    switch (valEntidadeSelecionada){
+                        case "1":
+                            rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
+                        break;
+                        case "2":
+                            rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
+                        break;
+                        case "3":
+                            rotaAjax = "{{route('admin.ajaxgetRestaurantesComprasMensais')}}";
+                        break;
+                        case "4":
+                            rotaAjax = "{{route('admin.ajaxgetCategoriasComprasMensais')}}";
+                        break;
+                        case "5":
+                            rotaAjax = "{{route('admin.ajaxgetProdutosComprasMensais')}}";
+                        break;
+                        default:
+                            rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
+                    }
+                    oTable.ajax.url(rotaAjax).load();
+                }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
+                    rotaAjax = "{{route('admin.ajaxgetCategoriasPorEntidadeComprasMensais')}}";
+                    oTable.ajax.url(rotaAjax).load();
+                }
+                
             })
 
          });
