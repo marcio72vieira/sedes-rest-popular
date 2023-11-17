@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-        <h5><strong>MONITOR</strong></h5>
+        <h5><strong id="titulomonitor">MONITOR</strong></h5>
 
 
     <!-- DataTales Example -->
@@ -18,7 +18,7 @@
                         <tr>
                             <th rowspan="3" style="vertical-align: middle; text-align:center;">Id</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Entidade</th>
-                            <th colspan="24" style="vertical-align: middle; text-align:center" id="mesesdoano">COMPRAS EM @php echo date("Y") @endphp</th>
+                            <th colspan="24" style="vertical-align: middle; text-align:center" id="titulopesquisa">COMPRAS EM @php echo date("Y") @endphp</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL<br>PARCIAL</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PERCENTAGEM</th>
@@ -350,10 +350,10 @@
                 periodoAno  = valAnoSelecionado;
 
                 // Recupera os textos selecionados dos elementos
-                txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
-                txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
-                txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
-                txtAnoSelecionado       = $("#selectPeriodo").children("option:selected").text();
+                // txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                // txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
+                // txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
+                // txtAnoSelecionado       = $("#selectPeriodo").children("option:selected").text();
                 
                 if(valEntidadeSelecionada != 0 && valCategoriaSelecionada == 0 && valProdutoSelecionado == 0){
                     
@@ -379,16 +379,37 @@
                             rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
                     }
 
+                    // Configura o texto da pesquisa
+                    var txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                    $("#entidade").text(txtEntidadeSelecionada);
+                    $("#titulopesquisa").text("COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+                    $("#titulomonitor").text("MONITOR | COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+                    
                     oTable.ajax.url(rotaAjax).load();
 
 
                 }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
                     
+                    // Configura o texto da pesquisa
+                    var txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                    var txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
+                    $("#entidade").text(txtEntidadeSelecionada);
+                    $("#titulopesquisa").text("COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+                    $("#titulomonitor").text("MONITOR | COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+
+
                     // Define a rota de acordo com a Entidade e a Categoria escolhida
                     rotaAjax = "{{route('admin.ajaxgetCategoriasPorEntidadeComprasMensais')}}";
                     oTable.ajax.url(rotaAjax).load();
 
                 }else {
+
+                    // Configura o texto da pesquisa
+                    var txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                    var txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
+                    $("#entidade").text(txtEntidadeSelecionada);
+                    $("#titulopesquisa").text("COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+                    $("#titulomonitor").text("MONITOR | COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
 
                     // Define a rota de acordo com a Entidade, Categoria e Produto escolhido
                     rotaAjax = "{{route('admin.ajaxgetProdutosPorEntidadeComprasMensais')}}";
