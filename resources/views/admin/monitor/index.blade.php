@@ -90,10 +90,14 @@
             var valEntidadeSelecionada = 0;
             var valCategoriaSelecionada = 0;
             var valProdutoSelecionado = 0;
-            
+            var valAnoSelecionado = 2023;
+            var txtEntidadeSelecionada = "";
+            var txtCategoriaSelecionada = "";
+            var txtProdutoSelecionado = "";
+            var habilitaImpresao = 0;
             
             // Definindo os anos a serem exibidos a partir do ano de implementação do sistema
-            var anoimplementacao = 2023;
+            var anoimplementacao = 2020;
             var anoatual = new Date().getFullYear();
             var anos = [];
             var anosexibicao = [];
@@ -136,6 +140,7 @@
                 serverSide: true,
                 
                 // Requisição ajax indicando a rota e os parâmetros a serem enviados
+                // Como as variáveis que definem os parâmetros são globais ("var") quaisquer modifiações nos mesmos refletem aqui
                 ajax: {
                     url: rotaAjax,
                     data: function(d){
@@ -200,9 +205,9 @@
                 pagingType: "full_numbers",
 
                 // Executa uma função assim que o dataTable estiver carregado complementante
-                initComplete: function (settings, json) {
-                    //$("#dataTableMonitor_filter").css("width", "30%");
-                }
+                // initComplete: function (settings, json) {
+                //      wire:$("#dataTableMonitor_filter").css("width", "30%");
+                // }
             });
 
             
@@ -214,8 +219,12 @@
 
             $("#selectEntidade").on("change", function(){
                 
-                // Carrega uma tabela vazia e esconde os controles de ano, carregamento e impresssão
+                // Define informações, carrega uma tabela vazia e esconde os controles de ano, carregamento e impresssão
                 if($(this).val() == "0" ){
+                    $("#entidade").text("Entidades");
+                    $("#titulomonitor").text("MONITOR");
+                    $("#titulopesquisa").text("COMPRAS EM " + anoatual);
+
                     rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
                     oTable.ajax.url(rotaAjax).load();
 
@@ -285,7 +294,7 @@
 
 
             $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
-            $('#controlesPeriodoCarregarPdf').append('<a href="" class="btn btn-danger" id="btnPdf" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
+            $('#controlesPeriodoCarregarPdf').append('<a href="" class="btn btn-danger" id="btnPdf" style="height: 36px; width: 80px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
 
 
 
@@ -331,14 +340,6 @@
             */
 
 
-            // Novo
-            /* $("#selectCategorias").on('change', function(){
-                $("#selectProdutos").css("display", "inline");
-                // var valGrupoSelecionado = $("#selectEntidade").val();
-                // var txtGrupoSelecionado = $("#selectEntidade").children("option:selected").text();
-                // var valAnoSelecionado = $("#selectPeriodo").val();
-                // alert("Grupo: " + $("#selectEntidade").val() + " Categorias: " + $("#selectCategorias").val() + " Ano: " + $("#selectPeriodo").val());
-            }); */
 
             $("#btnCarregar").on('click', function(){
 
@@ -380,7 +381,7 @@
                     }
 
                     // Configura o texto da pesquisa
-                    var txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                    txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
                     $("#entidade").text(txtEntidadeSelecionada);
                     $("#titulopesquisa").text("COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
                     $("#titulomonitor").text("MONITOR | COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
@@ -391,8 +392,8 @@
                 }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
                     
                     // Configura o texto da pesquisa
-                    var txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
-                    var txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
+                    txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                    txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
                     $("#entidade").text(txtEntidadeSelecionada);
                     $("#titulopesquisa").text("COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
                     $("#titulomonitor").text("MONITOR | COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
@@ -405,8 +406,8 @@
                 }else {
 
                     // Configura o texto da pesquisa
-                    var txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
-                    var txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
+                    txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                    txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
                     $("#entidade").text(txtEntidadeSelecionada);
                     $("#titulopesquisa").text("COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
                     $("#titulomonitor").text("MONITOR | COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
@@ -417,7 +418,28 @@
 
                 }
                 
-            })
+            });
+
+
+            // Acessando os Dados Retornados pela Requisição AJAx para o DATATABLE
+            // oTable.on( 'xhr', function () {
+            //      var dataJSON = oTable.ajax.json();
+            //      console.log( dataJSON); 
+            //      console.log( dataJSON.iTotalRecords); 
+            //      console.log( dataJSON.aaData[3].id);
+            //      console.log( dataJSON.aaData[3].nomeentidade); 
+            //      alert(dataJSON.aaData.length);
+            // });
+
+            // Exibe/Oculta o Botão para Ipressão PDF de acordo com o número de registros retornados
+            oTable.on( 'xhr', function () {
+                var dataJSON = oTable.ajax.json();
+                if(dataJSON.iTotalRecords > 0){
+                    $("#btnPdf").css("display", "inline");
+                }else{
+                    $("#btnPdf").css("display", "none");
+                }
+            });
 
          });
     </script>
