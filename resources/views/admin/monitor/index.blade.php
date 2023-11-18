@@ -216,7 +216,6 @@
             //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Entidades</label>');
             $('#dataTableMonitor_length').append('<select id="selectEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option selected value="0">Entidades</option><option value="1">Regionais</option><option value="2">Municípios</option><option value="3">Restaurantes</option><option disabled>___________</option><option value="4">Categorias</option><option value="5">Produtos</option></select>');
             
-
             $("#selectEntidade").on("change", function(){
                 
                 // Define informações, carrega uma tabela vazia e esconde os controles de ano, carregamento e impresssão
@@ -298,47 +297,14 @@
 
 
 
-            /*
-            $("#selectEntidade, #selectPeriodo").on('change', function(){
-                var textEntidadeSelecionada = $("#selectEntidade").children("option:selected").text();
-                var entidadeSelecionada = $("#selectEntidade").val();
-
-                var textCategoriaSelecionada = $("#selectCategoria").children("option:selected").text();
-                var categoriaSelecionada = $("#selectCategoria").val();
-                
-                periodoAno = $("#selectPeriodo").val();
-
-                switch (entidadeSelecionada){
-                    case "1":
-                        $("#selectCategorias, #selectProdutos").attr("disabled", false);
-                        rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
-                    break;
-                    case "2":
-                        $("#selectCategorias, #selectProdutos").attr("disabled", false);
-                        rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
-                    break;
-                    case "3":
-                        $("#selectCategorias, #selectProdutos").attr("disabled", false);
-                        rotaAjax = "{{route('admin.ajaxgetRestaurantesComprasMensais')}}";
-                    break;
-                    case "4":
-                        $("#selectCategorias, #selectProdutos").attr("disabled", true);
-                        rotaAjax = "{{route('admin.ajaxgetCategoriasComprasMensais')}}";
-                    break;
-                    case "5":
-                        $("#selectCategorias, #selectProdutos").attr("disabled", true);
-                        rotaAjax = "{{route('admin.ajaxgetProdutosComprasMensais')}}";
-                    break;
-                    default:
-                        rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
-
-                }
-                $("#entidade").text(textEntidadeSelecionada);
-                $("#mesesdoano").text("COMPRAS POR " + textEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                oTable.ajax.url(rotaAjax).load();
+            // Ocultando o botão PDF com a DELEGAÇÃO DE EVENTOS para os elementos dentro da div #dataTableMonitor_length e para
+            // o elemento #selectPeriodo. Deixando o botão PDF disponível apenas se o resultado da pesquisa retornar dados.
+            $("#dataTableMonitor_length").on("change", "#selectEntidade, #selectCategorias, #selectProdutos", function(){
+                $("#btnPdf").css("display", "none");
             });
-            */
-
+            $("#selectPeriodo").on("change", function(){
+                $("#btnPdf").css("display", "none");
+            });
 
 
             $("#btnCarregar").on('click', function(){
