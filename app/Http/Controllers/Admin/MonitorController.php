@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Restaurante;
 use App\Models\Regional;
 use App\Models\Monitor;
+use App\Models\Municipio;
 use Cron\MonthField;
 use Illuminate\Support\Facades\DB;
 
@@ -21,10 +22,20 @@ class MonitorController extends Controller
 
     public function index()
     {
-        //$restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
-        //return view('admin.monitor.index', compact('restaurantes'));
-        
-        // Obtendo apenas as Categorias e Produtos que foram efetivamente comprados.
+        /*
+        // primeira maneira válida
+        return view('admin.monitor.index');
+        */
+
+        /*
+        // segunda maneira válida
+        $restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
+        return view('admin.monitor.index', compact('restaurantes'));
+        */
+
+        /*
+        // terceira maneira válida
+        // Obtendo apenas as Categorias e Produtos que foram efetivamente comprados (independnete do ano).
         $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
         $produtos =  DB::table('bigtable_data')->select('produto_id', 'produto_nome')->distinct('produto_id')->orderBy('produto_nome')->get();
       
@@ -33,6 +44,15 @@ class MonitorController extends Controller
         $produtosJSON =  json_encode($produtos);
         
         return view('admin.monitor.index', compact('categoriaJSON', 'produtosJSON'));
+        */
+
+
+        // Obtendo apenas as Categorias que foram efetivamente compradas (independnete do ano).
+        $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
+        // Transformando a coleção retornada acima, em array JSON(javascript) e enviando-a para a view
+        $categoriaJSON =  json_encode($categorias);
+        
+        return view('admin.monitor.index', compact('categoriaJSON'));
     }
 
     
@@ -1521,5 +1541,179 @@ class MonitorController extends Controller
         echo json_encode($response);
         exit;
     }
+
+
+
+    
+    // Configuração de relatórios PDF's
+    public function relpdfmonitorentidade($idEntidade)
+    {
+        //// INÍCIO ENTIDADE
+        $anoRef = 2023;
+
+        $valoresmeses = DB::table('bigtable_data')
+        ->select(DB::RAW("data_ini, af, precototal, regional_id, regional_nome,
+                SUM(IF(MONTH(data_ini) = 01 AND af = 'nao', precototal, 0.00)) AS mesjannormal,
+                SUM(IF(MONTH(data_ini) = 01 AND af = 'sim', precototal, 0.00)) AS mesjanaf,
+                SUM(IF(MONTH(data_ini) = 02 AND af = 'nao', precototal, 0.00)) AS mesfevnormal,
+                SUM(IF(MONTH(data_ini) = 02 AND af = 'sim', precototal, 0.00)) AS mesfevaf,
+                SUM(IF(MONTH(data_ini) = 03 AND af = 'nao', precototal, 0.00)) AS mesmarnormal,
+                SUM(IF(MONTH(data_ini) = 03 AND af = 'sim', precototal, 0.00)) AS mesmaraf,
+                SUM(IF(MONTH(data_ini) = 04 AND af = 'nao', precototal, 0.00)) AS mesabrnormal,
+                SUM(IF(MONTH(data_ini) = 04 AND af = 'sim', precototal, 0.00)) AS mesabraf,
+                SUM(IF(MONTH(data_ini) = 05 AND af = 'nao', precototal, 0.00)) AS mesmainormal,
+                SUM(IF(MONTH(data_ini) = 05 AND af = 'sim', precototal, 0.00)) AS mesmaiaf,
+                SUM(IF(MONTH(data_ini) = 06 AND af = 'nao', precototal, 0.00)) AS mesjunnormal,
+                SUM(IF(MONTH(data_ini) = 06 AND af = 'sim', precototal, 0.00)) AS mesjunaf,
+                SUM(IF(MONTH(data_ini) = 07 AND af = 'nao', precototal, 0.00)) AS mesjulnormal,
+                SUM(IF(MONTH(data_ini) = 07 AND af = 'sim', precototal, 0.00)) AS mesjulaf,
+                SUM(IF(MONTH(data_ini) = 08 AND af = 'nao', precototal, 0.00)) AS mesagsnormal,
+                SUM(IF(MONTH(data_ini) = 08 AND af = 'sim', precototal, 0.00)) AS mesagsaf,
+                SUM(IF(MONTH(data_ini) = 09 AND af = 'nao', precototal, 0.00)) AS messetnormal,
+                SUM(IF(MONTH(data_ini) = 09 AND af = 'sim', precototal, 0.00)) AS messetaf,
+                SUM(IF(MONTH(data_ini) = 10 AND af = 'nao', precototal, 0.00)) AS mesoutnormal,
+                SUM(IF(MONTH(data_ini) = 10 AND af = 'sim', precototal, 0.00)) AS mesoutaf,
+                SUM(IF(MONTH(data_ini) = 11 AND af = 'nao', precototal, 0.00)) AS mesnovnormal,
+                SUM(IF(MONTH(data_ini) = 11 AND af = 'sim', precototal, 0.00)) AS mesnovaf,
+                SUM(IF(MONTH(data_ini) = 12 AND af = 'nao', precototal, 0.00)) AS mesdeznormal,
+                SUM(IF(MONTH(data_ini) = 12 AND af = 'sim', precototal, 0.00)) AS mesdezaf",
+
+            )
+        )
+        ->whereYear("data_ini", "=",  $anoRef)
+        ->groupByRaw("regional_id")
+        ->orderByRaw("regional_nome");
+
+
+        $records =  DB::table('bigtable_data')->joinSub($valoresmeses, 'aliasValoresMeses', function($join){
+        $join->on('bigtable_data.regional_id', '=', 'aliasValoresMeses.regional_id');
+        })->select(DB::raw("bigtable_data.regional_id AS id, bigtable_data.regional_nome AS nomeentidade, bigtable_data.data_ini,
+                        aliasValoresMeses.mesjannormal AS jannormal, aliasValoresMeses.mesjanaf AS janaf, aliasValoresMeses.mesfevnormal AS fevnormal, aliasValoresMeses.mesfevaf AS fevaf, aliasValoresMeses.mesmarnormal AS marnormal, aliasValoresMeses.mesmaraf AS maraf,
+                        aliasValoresMeses.mesabrnormal AS abrnormal, aliasValoresMeses.mesabraf AS abraf, aliasValoresMeses.mesmainormal AS mainormal, aliasValoresMeses.mesmaiaf AS maiaf, aliasValoresMeses.mesjunnormal AS junnormal, aliasValoresMeses.mesjunaf AS junaf,
+                        aliasValoresMeses.mesjulnormal AS julnormal, aliasValoresMeses.mesjulaf AS julaf, aliasValoresMeses.mesagsnormal AS agsnormal, aliasValoresMeses.mesagsaf AS agsaf, aliasValoresMeses.messetnormal AS setnormal, aliasValoresMeses.messetaf AS setaf,
+                        aliasValoresMeses.mesoutnormal AS outnormal, aliasValoresMeses.mesoutaf AS outaf, aliasValoresMeses.mesnovnormal AS novnormal, aliasValoresMeses.mesnovaf AS novaf, aliasValoresMeses.mesdeznormal AS deznormal, aliasValoresMeses.mesdezaf AS dezaf"
+                    )
+        )
+        ->whereYear("bigtable_data.data_ini", "=",  $anoRef)
+        ->groupBy("bigtable_data.regional_id")
+        ->orderBy("bigtable_data.regional_nome")
+        ->get();
+
+        //dd($records);
+        /// FIM ENTIDADE
+
+        $fileName = ('Monitor_Entidade.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'orientation' => 'L',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 43,
+            'margin_bottom' => 15,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:1080px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 108px">
+                        <img src="images/logo-ma.png" width="100"/>
+                    </td>
+                    <td style="width: 432px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 540px;" class="titulo-rel">
+                        RELATÓRIO: 
+                    </td>
+                </tr>
+            </table>
+
+
+            <table style="width:1080px; border-collapse: collapse;">
+                <tr>
+                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 25px;">Id</td>
+                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 69px;" id="entidade">Entidade</td>
+                    <td  colspan="24"  class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 816px;">MÊSES</td>
+                    <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 68px;">TOTAL<br>PARCIAL</td>
+                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 34px;">TOTAL<br>GERAL</td>
+                    <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 68px;">PERCENTAGEM</td>
+                </tr>
+                <tr>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">JAN</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">FEV</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">MAR</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">ABR</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">MAI</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">JUN</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">JUL</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">AGS</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">SET</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">OUT</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">NOV</td>
+                    <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">DEZ</td>
+                </tr>
+                <tr>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >NM</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >AF</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >NM</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >AF</td>
+                </tr>
+            </table>
+        ');
+
+        $mpdf->SetHTMLFooter('
+            <table style="width:1080px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="360px">São Luis(MA) {DATE d/m/Y}</td>
+                    <td width="360px" align="center"></td>
+                    <td width="360px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        $html = \View::make('admin.monitor.pdf.pdfrelatoriomonitorentidade', compact('records'));
+        $html = $html->render();
+
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
+
+
+
 
 }

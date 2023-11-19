@@ -71,10 +71,10 @@ Route::get('ajaxgetRestaurantesComprasMensais',[MonitorController::class,'ajaxge
 Route::get('ajaxgetCategoriasComprasMensais',[MonitorController::class,'ajaxgetCategoriasComprasMensais'])->name('admin.ajaxgetCategoriasComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetProdutosComprasMensais',[MonitorController::class,'ajaxgetProdutosComprasMensais'])->name('admin.ajaxgetProdutosComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetProdutosDaCategoriaComprasMensais',[MonitorController::class,'ajaxgetProdutosDaCategoriaComprasMensais'])->name('admin.ajaxgetProdutosDaCategoriaComprasMensais')->middleware(['auth']);
-
 Route::get('ajaxgetCategoriasPorEntidadeComprasMensais',[MonitorController::class,'ajaxgetCategoriasPorEntidadeComprasMensais'])->name('admin.ajaxgetCategoriasPorEntidadeComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetProdutosPorEntidadeComprasMensais',[MonitorController::class,'ajaxgetProdutosPorEntidadeComprasMensais'])->name('admin.ajaxgetProdutosPorEntidadeComprasMensais')->middleware(['auth']);
 
+Route::get('admin/monitor/{id}/pdf/relpdfmonitorentidade', [MonitorController::class, 'relpdfmonitorentidade'])->name('admin.monitor.relpdfmonitorentidade')->middleware(['auth']);
 
 
 // =====================

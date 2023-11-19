@@ -141,3 +141,49 @@
   }
 
 
+/*CONFIGURAÇÕES CSS DO RELATÓRIO PDF DO MONITOR */
+
+td.col-header-table-monitor {
+  background-color: #e3e3e3;
+  border: 0.5px solid #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+td.label-monitor{
+font-family: Arial, Helvetica, sans-serif;
+font-size: 10px;
+padding-left: 5px;
+padding-top: 4px;
+padding-bottom: 4px;
+border: 0.5px solid #000000;
+background-color: #d7d5d5;
+}
+
+td.dados-monitor{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  padding-left: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border: 0.5px solid #000000;
+}
+
+td.dados-lista-monitor {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 7px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  vertical-align: top;
+}
+
+td.dados-lista-valor-monitor {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 7px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  vertical-align: top;
+  text-align: right;
+}

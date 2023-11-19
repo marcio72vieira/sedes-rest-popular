@@ -38,33 +38,33 @@
                             <th colspan="2" style="text-align:center">DEZ</th>
                         </tr>
                         <tr>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>norm</th>
+                            <th>nm</th>
                             <th>af</th>
-                            <th>NORMAL</th>
+                            <th>NM</th>
                             <th>AF</th>
-                            <th>NORMAL</th>
+                            <th>NM</th>
                             <th>AF</th>
                         </tr>
                     </thead>
@@ -81,7 +81,6 @@
 
             // Acessando os array em php(enviados pela view) via javascript, ou seja, transformando-os em um array json
             var arrayCategorias =  @php echo $categoriaJSON; @endphp;
-            var arrayProdutos = @php echo $produtosJSON; @endphp;
 
             // Definindo uma requisição padrão para inicializar o datatable
             //var rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
@@ -292,8 +291,9 @@
             });
 
 
+            // Botões de CarregarDados e Impressão PDF
             $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
-            $('#controlesPeriodoCarregarPdf').append('<a href="" class="btn btn-danger" id="btnPdf" style="height: 36px; width: 80px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
+            $('#controlesPeriodoCarregarPdf').append('<a href="{{route("admin.monitor.relpdfmonitorentidade", 2)}}" class="btn btn-danger" id="btnPdf" style="height: 36px; width: 80px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
 
 
 
