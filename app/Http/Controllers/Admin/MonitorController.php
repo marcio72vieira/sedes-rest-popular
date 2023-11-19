@@ -1599,7 +1599,6 @@ class MonitorController extends Controller
         ->orderBy("bigtable_data.regional_nome")
         ->get();
 
-        //dd($records);
         /// FIM ENTIDADE
 
         $fileName = ('Monitor_Entidade.pdf');
@@ -1609,7 +1608,7 @@ class MonitorController extends Controller
             'orientation' => 'L',
             'margin_left' => 10,
             'margin_right' => 10,
-            'margin_top' => 43,
+            'margin_top' => 40,
             'margin_bottom' => 15,
             'margin-header' => 10,
             'margin_footer' => 5

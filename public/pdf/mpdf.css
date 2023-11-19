@@ -145,7 +145,7 @@
 
 td.col-header-table-monitor {
   background-color: #e3e3e3;
-  border: 0.5px solid #000000;
+  border: 0.1px solid #b1aeae;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 9px;
   padding-top: 5px;
@@ -173,17 +173,19 @@ td.dados-monitor{
 
 td.dados-lista-monitor {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 7px;
+  font-size: 6px;
   padding-top: 5px;
   padding-bottom: 5px;
   vertical-align: top;
+  border-right: 0.1px solid #b1aeae;
 }
 
 td.dados-lista-valor-monitor {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 7px;
+  font-size: 6px;
   padding-top: 5px;
   padding-bottom: 5px;
   vertical-align: top;
   text-align: right;
+  border-right: 0.1px solid #b1aeae;
 }
