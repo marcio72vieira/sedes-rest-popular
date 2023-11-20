@@ -1608,7 +1608,7 @@ class MonitorController extends Controller
             'orientation' => 'L',
             'margin_left' => 10,
             'margin_right' => 10,
-            'margin_top' => 40,
+            'margin_top' => 38,
             'margin_bottom' => 15,
             'margin-header' => 10,
             'margin_footer' => 5
@@ -1639,9 +1639,9 @@ class MonitorController extends Controller
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 25px;">Id</td>
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 69px;" id="entidade">Entidade</td>
                     <td  colspan="24"  class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 816px;">MÊSES</td>
-                    <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 68px;">TOTAL<br>PARCIAL</td>
-                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 34px;">TOTAL<br>GERAL</td>
-                    <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 68px;">PERCENTAGEM</td>
+                    <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 78px;">TOTAL<br>PARCIAL</td>
+                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 42px;">TOTAL<br>GERAL<br>(nm + af)</td>
+                    <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 50px;">PORCENTO<br>%</td>
                 </tr>
                 <tr>
                     <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">JAN</td>
@@ -1658,34 +1658,34 @@ class MonitorController extends Controller
                     <td style="width: 68px;" colspan="2" class="col-header-table-monitor" style="text-align:center">DEZ</td>
                 </tr>
                 <tr>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >nm</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >af</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >NM</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >AF</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >NM</td>
-                    <td style="width: 34px; text-align:center" class="col-header-table-monitor" >AF</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 34px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 39px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 39px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 25px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 25px; text-align:center" class="col-header-table-monitor">af</td>
                 </tr>
             </table>
         ');

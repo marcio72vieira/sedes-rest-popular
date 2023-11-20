@@ -141,13 +141,12 @@
   }
 
 
-/*CONFIGURAÇÕES CSS DO RELATÓRIO PDF DO MONITOR */
-
+/*CONFIGURAÇÕES CSS PARA RELATÓRIOS MONITOR */
 td.col-header-table-monitor {
   background-color: #e3e3e3;
   border: 0.1px solid #b1aeae;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 9px;
+  font-size: 7px;
   padding-top: 5px;
   padding-bottom: 5px;
 }

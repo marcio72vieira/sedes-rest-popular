@@ -20,8 +20,8 @@
                             <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Entidade</th>
                             <th colspan="24" style="vertical-align: middle; text-align:center" id="titulopesquisa">COMPRAS EM @php echo date("Y") @endphp</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL<br>PARCIAL</th>
-                            <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL</th>
-                            <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PERCENTAGEM</th>
+                            <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL<br>(nm + af)</th>
+                            <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">PORCENTO<br>%</th>
                         </tr>
                         <tr>
                             <th colspan="2" style="text-align:center">JAN</th>
@@ -62,10 +62,10 @@
                             <th>af</th>
                             <th>nm</th>
                             <th>af</th>
-                            <th>NM</th>
-                            <th>AF</th>
-                            <th>NM</th>
-                            <th>AF</th>
+                            <th>nm</th>
+                            <th>af</th>
+                            <th>nm</th>
+                            <th>af</th>
                         </tr>
                     </thead>
                 </table>

@@ -109,11 +109,11 @@
                 <td style="width: 34px;" class="dados-lista-valor-monitor">{{ $record->novaf     == 0 ? "" : number_format($record->novaf, "2", ",", ".") }}</td>
                 <td style="width: 34px;" class="dados-lista-valor-monitor">{{ $record->deznormal == 0 ? "" : number_format($record->deznormal, "2", ",", ".") }}</td>
                 <td style="width: 34px;" class="dados-lista-valor-monitor">{{ $record->dezaf     == 0 ? "" : number_format($record->dezaf, "2", ",", ".") }}</td>
-                <td style="width: 34px;" class="dados-lista-valor-monitor">{{ $linhatotalnormal  == 0 ? "" : number_format($linhatotalnormal, "2", ",", ".") }}</td>
-                <td style="width: 34px;" class="dados-lista-valor-monitor">{{ $linhatotalaf      == 0 ? "" : number_format($linhatotalaf, "2", ",", ".") }}</td>
-                <td style="width: 34px;" class="dados-lista-valor-monitor">{{ $linhatotalgeral   == 0 ? "" : number_format($linhatotalgeral, "2", ",", ".") }}</td>
-                <td style="width: 34px;" class="dados-lista-valor-monitor">{{ $linhapercentagemnormal == 0 ? "" : number_format($linhapercentagemnormal, "2", ",", ".") }}</td>
-                <td style="width: 34px;" class="dados-lista-valor-monitor">{{ $linhapercentagemaf     == 0 ? "" : number_format($linhapercentagemaf, "2", ",", ".") }}</td>
+                <td style="width: 39px;" class="dados-lista-valor-monitor">{{ $linhatotalnormal  == 0 ? "" : number_format($linhatotalnormal, "2", ",", ".") }}</td>
+                <td style="width: 39px;" class="dados-lista-valor-monitor">{{ $linhatotalaf      == 0 ? "" : number_format($linhatotalaf, "2", ",", ".") }}</td>
+                <td style="width: 42px;" class="dados-lista-valor-monitor">{{ $linhatotalgeral   == 0 ? "" : number_format($linhatotalgeral, "2", ",", ".") }}</td>
+                <td style="width: 25px;" class="dados-lista-valor-monitor">{{ $linhapercentagemnormal == 0 ? "" : number_format($linhapercentagemnormal, "2", ",", ".") }}</td>
+                <td style="width: 25px;" class="dados-lista-valor-monitor">{{ $linhapercentagemaf     == 0 ? "" : number_format($linhapercentagemaf, "2", ",", ".") }}</td>
             </tr>
             @php
                 // Cálculo dos totais parciais normal e af dos meses
@@ -173,6 +173,8 @@
             $totalgeralout = $totalcolunaoutnormal + $totalcolunaoutaf;
             $totalgeralnov = $totalcolunanovnormal + $totalcolunanovaf;
             $totalgeraldez = $totalcolunadeznormal + $totalcolunadezaf;
+            $totalgeralcolunaparcial = $totalcolunatotalparcialnormal + $totalcolunatotalparcialaf;
+            $totalgeralcolunatotalgeral = $totalgeraljan + $totalgeralfev + $totalgeralmar + $totalgeralabr + $totalgeralmai + $totalgeraljun + $totalgeraljul + $totalgeralags + $totalgeralset + $totalgeralout + $totalgeralnov + $totalgeraldez;
             
         @endphp
 
@@ -202,17 +204,17 @@
             <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunanovnormal == 0 ? "" : number_format($totalcolunanovnormal, "2", ",", ".")}}</td>
             <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunanovaf == 0 ? "" : number_format($totalcolunanovaf, "2", ",", ".")}}</td>
             <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunadeznormal == 0 ? "" : number_format($totalcolunadeznormal, "2", ",", ".")}}</td>
-            <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunadezaf == 0 ? "" : number_format($totalcolunadeznormal, "2", ",", ".")}}</td>
-            <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialnormal == 0 ? "" : number_format($totalcolunatotalparcialnormal, "2", ",", ".")}}</td>
-            <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialaf == 0 ? "" : number_format($totalcolunatotalparcialaf, "2", ",", ".")}}</td>
-            <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalgeral == 0 ? "" : number_format($totalcolunatotalgeral, "2", ",", ".") }}</td>
-            <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunapercentagemtotalnormal == 0 ? "" : number_format($totalcolunapercentagemtotalnormal, "2", ",", ".") }}</td>
-            <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunapercentagemtotalaf == 0 ? "" : number_format($totalcolunapercentagemtotalaf, "2", ",", ".") }}</td>
+            <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunadezaf == 0 ? "" : number_format($totalcolunadezaf, "2", ",", ".")}}</td>
+            <td style="width: 39px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialnormal == 0 ? "" : number_format($totalcolunatotalparcialnormal, "2", ",", ".")}}</td>
+            <td style="width: 39px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialaf == 0 ? "" : number_format($totalcolunatotalparcialaf, "2", ",", ".")}}</td>
+            <td style="width: 42px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalgeral == 0 ? "" : number_format($totalcolunatotalgeral, "2", ",", ".") }}</td>
+            <td style="width: 25px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunapercentagemtotalnormal == 0 ? "" : number_format($totalcolunapercentagemtotalnormal, "2", ",", ".") }}</td>
+            <td style="width: 25px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunapercentagemtotalaf == 0 ? "" : number_format($totalcolunapercentagemtotalaf, "2", ",", ".") }}</td>
         </tr>
 
         
         <tr>
-            <td colspan="2" style="width: 94px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor">&nbsp;&nbsp;TOTAIS GERAIS</td>
+            <td colspan="2" style="width: 94px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor">&nbsp;&nbsp;TOTAIS GERAIS (nm + af)</td>
             <td colspan="2" style="width: 68px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeraljan == 0 ? "" : number_format($totalgeraljan, "2", ",", ".")}}</td>
             <td colspan="2" style="width: 68px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeralfev == 0 ? "" : number_format($totalgeralfev, "2", ",", ".")}}</td>
             <td colspan="2" style="width: 68px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeralmar == 0 ? "" : number_format($totalgeralmar, "2", ",", ".")}}</td>
@@ -225,9 +227,9 @@
             <td colspan="2" style="width: 68px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeralout == 0 ? "" : number_format($totalgeralout, "2", ",", ".")}}</td>
             <td colspan="2" style="width: 68px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeralnov == 0 ? "" : number_format($totalgeralnov, "2", ",", ".")}}</td>
             <td colspan="2" style="width: 68px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeraldez == 0 ? "" : number_format($totalgeraldez, "2", ",", ".")}}</td>
-            <td colspan="2" style="width: 68px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialnormal == 0 ? "" : number_format($totalcolunatotalparcialnormal, "2", ",", ".")}}</td>
-            <td style="width: 34px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalcolunatotalgeral == 0 ? "" : number_format($totalcolunatotalgeral, "2", ",", ".") }}</td>
-            <td colspan="2" style="width: 68px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalcolunapercentagemtotalaf == 0 ? "" : number_format($totalcolunapercentagemtotalaf, "2", ",", ".") }}</td>
+            <td colspan="2" style="width: 78px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeralcolunaparcial == 0 ? "" : number_format($totalgeralcolunaparcial, "2", ",", ".")}}</td>
+            <td style="width: 42px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeralcolunatotalgeral == 0 ? "" : number_format($totalgeralcolunatotalgeral, "2", ",", ".") }}</td>
+            <td colspan="2" style="width: 50px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ "100,00" }}</td>
         </tr>
     </table>
 </body>
