@@ -1,5 +1,5 @@
 <?php
-
+// Ponto inicial de alteração
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -1550,37 +1550,74 @@ class MonitorController extends Controller
     public function relpdfmonitorentidade(Request $request)
     {
         //// INÍCIO ENTIDADE
-        $anoRef     = $request->idano;
         $entitRef   = $request->identidade;
-
+        $catRef     = $request->idcategoria;
+        $prodRef   = $request->idproduto;
+        $anoRef     = $request->idano;
+        
         
         switch($entitRef){
             case "1":
                 $entidade_id = "regional_id";
                 $entidade_nome =  "regional_nome";
                 $entidaderotulo = "Regionais";
+                $titulorelatorio =  "COMPRAS POR REGIONAIS EM ".$anoRef;
             break;
             case "2":
                 $entidade_id = "municipio_id";
                 $entidade_nome = "municipio_nome";
                 $entidaderotulo = "Municípios";
+                $titulorelatorio =  "COMPRAS POR MUNICÍPIOS EM ".$anoRef;
             break;
             case "3":
                 $entidade_id = "restaurante_id";
                 $entidade_nome =  "identificacao";
                 $entidaderotulo = "Restaurantes";
+                $titulorelatorio =  "COMPRAS POR RESTAURANTES EM ".$anoRef;
             break;
             case "4":
                 $entidade_id = "categoria_id";
                 $entidade_nome =  "categoria_nome";
                 $entidaderotulo = "Categorias";
+                $titulorelatorio =  "COMPRAS POR CATEGORIAS EM ".$anoRef;
             break;
             case "5":
                 $entidade_id = "produto_id";
                 $entidade_nome =  "produto_nome";
                 $entidaderotulo = "Produtos";
+                $titulorelatorio =  "COMPRAS POR PRODUTOS EM ".$anoRef;
             break;
         }
+
+
+        // Montando o título do relatório com base na CATEGORIA, se Regional, Município ou Restaurantes forem escolhidos
+        if($entitRef == "1" && $catRef != 0 && $prodRef == 0 ){
+            $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
+            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR REGIONAIS EM ".$anoRef;
+        }
+        if($entitRef == "2" && $catRef != 0 && $prodRef == 0 ){
+            $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
+            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR MUNICÍPIOS EM ".$anoRef;
+        }
+        if($entitRef == "3" && $catRef != 0 && $prodRef == 0 ){
+            $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
+            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR RESTAURANTES EM ".$anoRef;
+        }
+
+        // Montando o título do relatório com base no PRODUTO, se Regional, Município ou Restaurantes forem escolhidos
+        if($entitRef == "1" && $catRef != 0 && $prodRef != 0 ){
+            $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
+            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR REGIONAIS EM ".$anoRef;
+        }
+        if($entitRef == "2" && $catRef != 0 && $prodRef != 0 ){
+            $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
+            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR MUNICÍPIOS EM ".$anoRef;
+        }
+        if($entitRef == "3" && $catRef != 0 && $prodRef != 0 ){
+            $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
+            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR RESTAURANTES EM ".$anoRef;
+        }
+
 
 
         $valoresmeses = DB::table('bigtable_data')
@@ -1615,6 +1652,15 @@ class MonitorController extends Controller
         ->whereYear("data_ini", "=",  $anoRef)
         ->groupByRaw("$entidade_id")
         ->orderByRaw("$entidade_nome");
+
+
+        //MONTAGEM CONDICIONAL DA QUERYBUILDER COM BASE NO ENVIO DE CATEGORIAS OU PRODUTOS
+        if($catRef != 0 && $prodRef == 0){
+            $valoresmeses->where("categoria_id", "=", $catRef);
+        }
+        if($catRef != 0 && $prodRef != 0){
+            $valoresmeses->where("produto_id", "=", $prodRef);
+        }
 
 
         $records =  DB::table("bigtable_data")->joinSub($valoresmeses, "aliasValoresMeses", function($join)  use($entidade_id){
@@ -1659,9 +1705,7 @@ class MonitorController extends Controller
                         Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
                         Secretaria do Estado de Desenvolvimento Social/SEDES
                     </td>
-                    <td style="width: 540px;" class="titulo-rel">
-                        COMPRAS POR '.Str::upper($entidaderotulo).' EM '. $anoRef .' 
-                    </td>
+                    <td style="width: 540px;" class="titulo-rel">'. $titulorelatorio .'</td>
                 </tr>
             </table>
 
@@ -1670,7 +1714,7 @@ class MonitorController extends Controller
                 <tr>
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 25px;">Id</td>
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 69px;">'.$entidaderotulo.'</td>
-                    <td  colspan="24"  class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 816px;">MÊSES / '.$anoRef.'</td>
+                    <td  colspan="24"  class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 816px;">ANO: '.$anoRef.'</td>
                     <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 78px;">TOTAL<br>PARCIAL</td>
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 42px;">TOTAL<br>GERAL<br>(nm + af)</td>
                     <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 50px;">PORCENTO<br>%</td>

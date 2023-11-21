@@ -1,5 +1,5 @@
 @extends('template.templateadmin')
-
+{{-- Ponto inicial de alteração --}}
 @section('content-page')
 
 <!-- Begin Page Content -->
@@ -309,7 +309,7 @@
 
             $("#btnCarregar").on('click', function(){
 
-                // Recupera os valores selecionados dos elementos
+                // Recupera os valores (se selecionados) dos elementos
                 valEntidadeSelecionada  = $("#selectEntidade").val();
                 valCategoriaSelecionada = $("#selectCategorias").val() == undefined ? 0 : $("#selectCategorias").val() ;
                 valProdutoSelecionado   = $("#selectProdutos").val() == undefined ? 0 : $("#selectProdutos").val();
@@ -411,15 +411,17 @@
                 var dataJSON = oTable.ajax.json();
                 if(dataJSON.iTotalRecords > 0){
                     var entidadepdf = valEntidadeSelecionada;
+                    var categoriapdf =  valCategoriaSelecionada;
+                    var produtopdf = valProdutoSelecionado;
                     var anopdf =  periodoAno;
 
-
-                    var routepdf = "{{route('admin.monitor.relpdfmonitorentidade', ['identidade', 'idano'])}}";
+                    var routepdf = "{{route('admin.monitor.relpdfmonitorentidade', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
                         routepdf = routepdf.replace('identidade', entidadepdf);
+                        routepdf = routepdf.replace('idcategoria', categoriapdf);
+                        routepdf = routepdf.replace('idproduto', produtopdf);
                         routepdf = routepdf.replace('idano', anopdf);
 
                     $('#btnPdf').attr('href', routepdf);
-                
                     $("#btnPdf").css("display", "inline");
                 }else{
                     $("#btnPdf").css("display", "none");
