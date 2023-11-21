@@ -3236,7 +3236,3 @@ Exibição de select Dinâmico Categoria x Produtos
          });
     </script>
 @endsection
-
-
-
-        

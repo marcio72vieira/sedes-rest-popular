@@ -10,6 +10,7 @@ use App\Models\Monitor;
 use App\Models\Municipio;
 use Cron\MonthField;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class MonitorController extends Controller
 {
@@ -1546,13 +1547,44 @@ class MonitorController extends Controller
 
     
     // Configuração de relatórios PDF's
-    public function relpdfmonitorentidade($idEntidade)
+    public function relpdfmonitorentidade(Request $request)
     {
         //// INÍCIO ENTIDADE
-        $anoRef = 2023;
+        $anoRef     = $request->idano;
+        $entitRef   = $request->identidade;
+
+        
+        switch($entitRef){
+            case "1":
+                $entidade_id = "regional_id";
+                $entidade_nome =  "regional_nome";
+                $entidaderotulo = "Regionais";
+            break;
+            case "2":
+                $entidade_id = "municipio_id";
+                $entidade_nome = "municipio_nome";
+                $entidaderotulo = "Municípios";
+            break;
+            case "3":
+                $entidade_id = "restaurante_id";
+                $entidade_nome =  "identificacao";
+                $entidaderotulo = "Restaurantes";
+            break;
+            case "4":
+                $entidade_id = "categoria_id";
+                $entidade_nome =  "categoria_nome";
+                $entidaderotulo = "Categorias";
+            break;
+            case "5":
+                $entidade_id = "produto_id";
+                $entidade_nome =  "produto_nome";
+                $entidaderotulo = "Produtos";
+            break;
+        }
+
 
         $valoresmeses = DB::table('bigtable_data')
-        ->select(DB::RAW("data_ini, af, precototal, regional_id, regional_nome,
+        ->select(DB::RAW("data_ini, af, precototal, $entidade_id, $entidade_nome,
                 SUM(IF(MONTH(data_ini) = 01 AND af = 'nao', precototal, 0.00)) AS mesjannormal,
                 SUM(IF(MONTH(data_ini) = 01 AND af = 'sim', precototal, 0.00)) AS mesjanaf,
                 SUM(IF(MONTH(data_ini) = 02 AND af = 'nao', precototal, 0.00)) AS mesfevnormal,
@@ -1581,13 +1613,13 @@ class MonitorController extends Controller
             )
         )
         ->whereYear("data_ini", "=",  $anoRef)
-        ->groupByRaw("regional_id")
-        ->orderByRaw("regional_nome");
+        ->groupByRaw("$entidade_id")
+        ->orderByRaw("$entidade_nome");
 
 
-        $records =  DB::table('bigtable_data')->joinSub($valoresmeses, 'aliasValoresMeses', function($join){
-        $join->on('bigtable_data.regional_id', '=', 'aliasValoresMeses.regional_id');
-        })->select(DB::raw("bigtable_data.regional_id AS id, bigtable_data.regional_nome AS nomeentidade, bigtable_data.data_ini,
+        $records =  DB::table("bigtable_data")->joinSub($valoresmeses, "aliasValoresMeses", function($join)  use($entidade_id){
+            $join->on("bigtable_data.$entidade_id", "=", "aliasValoresMeses.$entidade_id");
+        })->select(DB::raw("bigtable_data.$entidade_id AS id, bigtable_data.$entidade_nome AS nomeentidade, bigtable_data.data_ini,
                         aliasValoresMeses.mesjannormal AS jannormal, aliasValoresMeses.mesjanaf AS janaf, aliasValoresMeses.mesfevnormal AS fevnormal, aliasValoresMeses.mesfevaf AS fevaf, aliasValoresMeses.mesmarnormal AS marnormal, aliasValoresMeses.mesmaraf AS maraf,
                         aliasValoresMeses.mesabrnormal AS abrnormal, aliasValoresMeses.mesabraf AS abraf, aliasValoresMeses.mesmainormal AS mainormal, aliasValoresMeses.mesmaiaf AS maiaf, aliasValoresMeses.mesjunnormal AS junnormal, aliasValoresMeses.mesjunaf AS junaf,
                         aliasValoresMeses.mesjulnormal AS julnormal, aliasValoresMeses.mesjulaf AS julaf, aliasValoresMeses.mesagsnormal AS agsnormal, aliasValoresMeses.mesagsaf AS agsaf, aliasValoresMeses.messetnormal AS setnormal, aliasValoresMeses.messetaf AS setaf,
@@ -1595,8 +1627,8 @@ class MonitorController extends Controller
                     )
         )
         ->whereYear("bigtable_data.data_ini", "=",  $anoRef)
-        ->groupBy("bigtable_data.regional_id")
-        ->orderBy("bigtable_data.regional_nome")
+        ->groupBy("bigtable_data.$entidade_id")
+        ->orderBy("bigtable_data.$entidade_nome")
         ->get();
 
         /// FIM ENTIDADE
@@ -1608,8 +1640,8 @@ class MonitorController extends Controller
             'orientation' => 'L',
             'margin_left' => 10,
             'margin_right' => 10,
-            'margin_top' => 38,
-            'margin_bottom' => 15,
+            'margin_top' => 39,
+            'margin_bottom' => 10,
             'margin-header' => 10,
             'margin_footer' => 5
         ]);
@@ -1628,17 +1660,17 @@ class MonitorController extends Controller
                         Secretaria do Estado de Desenvolvimento Social/SEDES
                     </td>
                     <td style="width: 540px;" class="titulo-rel">
-                        RELATÓRIO: 
+                        COMPRAS POR '.Str::upper($entidaderotulo).' EM '. $anoRef .' 
                     </td>
                 </tr>
             </table>
 
 
-            <table style="width:1080px; border-collapse: collapse;">
+            <table style="width:1080px; border-collapse: collapse; border: 0.1px solid #000000;">
                 <tr>
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 25px;">Id</td>
-                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 69px;" id="entidade">Entidade</td>
-                    <td  colspan="24"  class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 816px;">MÊSES</td>
+                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 69px;">'.$entidaderotulo.'</td>
+                    <td  colspan="24"  class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 816px;">MÊSES / '.$anoRef.'</td>
                     <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 78px;">TOTAL<br>PARCIAL</td>
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 42px;">TOTAL<br>GERAL<br>(nm + af)</td>
                     <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 50px;">PORCENTO<br>%</td>

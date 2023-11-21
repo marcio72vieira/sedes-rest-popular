@@ -291,10 +291,10 @@
             });
 
 
-            // Botões de CarregarDados e Impressão PDF
+            // Botões de CarregarDados e Impressão PDF. O valor do atributo href, é criado dinamicamente
             $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
-            $('#controlesPeriodoCarregarPdf').append('<a href="{{route("admin.monitor.relpdfmonitorentidade", 2)}}" class="btn btn-danger" id="btnPdf" style="height: 36px; width: 80px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
-
+            $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 80px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
+            
 
 
             // Ocultando o botão PDF com a DELEGAÇÃO DE EVENTOS para os elementos dentro da div #dataTableMonitor_length e para
@@ -398,9 +398,28 @@
             // });
 
             // Exibe/Oculta o Botão para Ipressão PDF de acordo com o número de registros retornados
+            /* oTable.on( 'xhr', function () {
+                var dataJSON = oTable.ajax.json();
+                if(dataJSON.iTotalRecords > 0){
+                    $("#btnPdf").css("display", "inline");
+                }else{
+                    $("#btnPdf").css("display", "none");
+                }
+            }); */
+
             oTable.on( 'xhr', function () {
                 var dataJSON = oTable.ajax.json();
                 if(dataJSON.iTotalRecords > 0){
+                    var entidadepdf = valEntidadeSelecionada;
+                    var anopdf =  periodoAno;
+
+
+                    var routepdf = "{{route('admin.monitor.relpdfmonitorentidade', ['identidade', 'idano'])}}";
+                        routepdf = routepdf.replace('identidade', entidadepdf);
+                        routepdf = routepdf.replace('idano', anopdf);
+
+                    $('#btnPdf').attr('href', routepdf);
+                
                     $("#btnPdf").css("display", "inline");
                 }else{
                     $("#btnPdf").css("display", "none");
