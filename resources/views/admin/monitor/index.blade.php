@@ -1,5 +1,5 @@
 @extends('template.templateadmin')
-{{-- Ponto inicial de alteração --}}
+
 @section('content-page')
 
 <!-- Begin Page Content -->
@@ -72,6 +72,29 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal PeríodoVazio -->
+    <div class="modal fade modalSemLancamento" id="exampleModalSemLancamento" tabindex="-1" aria-labelledby="exampleModalLabelSemLancamento" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabelSemLancamento" style="color: rgb(46, 63, 250)">SEM LANÇAMENTOS!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            Nenhum registro encontrado com os critérios especifiados!.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+            </div>
+        </div>
+        </div>
+    </div>
+
+
 </div>
 @endsection
 
@@ -397,25 +420,17 @@
             //      alert(dataJSON.aaData.length);
             // });
 
-            // Exibe/Oculta o Botão para Ipressão PDF de acordo com o número de registros retornados
-            /* oTable.on( 'xhr', function () {
-                var dataJSON = oTable.ajax.json();
-                if(dataJSON.iTotalRecords > 0){
-                    $("#btnPdf").css("display", "inline");
-                }else{
-                    $("#btnPdf").css("display", "none");
-                }
-            }); */
-
+            // Exibe/Oculta o Botão para Ipressão PDF e ou Modal de acordo com o número de registros retornados.
             oTable.on( 'xhr', function () {
                 var dataJSON = oTable.ajax.json();
+                // Se retornar registros, configura a rota para impressão dos mesmos e exibe o botão PDF.
                 if(dataJSON.iTotalRecords > 0){
                     var entidadepdf = valEntidadeSelecionada;
                     var categoriapdf =  valCategoriaSelecionada;
                     var produtopdf = valProdutoSelecionado;
                     var anopdf =  periodoAno;
 
-                    var routepdf = "{{route('admin.monitor.relpdfmonitorentidade', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
+                    var routepdf = "{{route('admin.monitor.relpdfmonitor', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
                         routepdf = routepdf.replace('identidade', entidadepdf);
                         routepdf = routepdf.replace('idcategoria', categoriapdf);
                         routepdf = routepdf.replace('idproduto', produtopdf);
@@ -423,10 +438,17 @@
 
                     $('#btnPdf').attr('href', routepdf);
                     $("#btnPdf").css("display", "inline");
+
+                // Se nenhum registro for retornado, exibe a modal
+                }else if(dataJSON.iTotalRecords == 0 && valEntidadeSelecionada != 0){
+                    $(".modalSemLancamento").modal("show");
                 }else{
                     $("#btnPdf").css("display", "none");
                 }
+                
             });
+
+            
 
          });
     </script>

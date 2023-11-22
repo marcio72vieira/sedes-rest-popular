@@ -1,5 +1,5 @@
 <?php
-// Ponto inicial de alteração
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -1547,9 +1547,8 @@ class MonitorController extends Controller
 
     
     // Configuração de relatórios PDF's
-    public function relpdfmonitorentidade(Request $request)
+    public function relpdfmonitor(Request $request)
     {
-        //// INÍCIO ENTIDADE
         $entitRef   = $request->identidade;
         $catRef     = $request->idcategoria;
         $prodRef   = $request->idproduto;
@@ -1677,9 +1676,7 @@ class MonitorController extends Controller
         ->orderBy("bigtable_data.$entidade_nome")
         ->get();
 
-        /// FIM ENTIDADE
-
-        $fileName = ('Monitor_Entidade.pdf');
+        $fileName = ('RelMonitor.pdf');
 
         // Invocando a biblioteca mpdf e definindo as margens do arquivo
         $mpdf = new \Mpdf\Mpdf([
@@ -1777,7 +1774,7 @@ class MonitorController extends Controller
         ');
 
 
-        $html = \View::make('admin.monitor.pdf.pdfrelatoriomonitorentidade', compact('records'));
+        $html = \View::make('admin.monitor.pdf.pdfrelatoriomonitor', compact('records'));
         $html = $html->render();
 
         $stylesheet = file_get_contents('pdf/mpdf.css');
@@ -1787,8 +1784,5 @@ class MonitorController extends Controller
         $mpdf->Output($fileName, 'I');
 
     }
-
-
-
 
 }
