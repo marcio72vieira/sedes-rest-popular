@@ -63,7 +63,7 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dash
 //ROTA DO MONITOR (SEM SER DO TIPO RESOURCE)
 //=============================================
 // Monitor
-Route::get('monitor', [MonitorController::class, 'index'])->name('admin.monitor')->middleware(['auth']);
+Route::get('monitor/{tipo}', [MonitorController::class, 'index'])->name('admin.monitor')->middleware(['auth']);
 Route::get('ajaxgetRecordsEmpty',[MonitorController::class,'ajaxgetRecordsEmpty'])->name('admin.ajaxgetRecordsEmpty')->middleware(['auth']);
 Route::get('ajaxgetRegionaisComprasMensais',[MonitorController::class,'ajaxgetRegionaisComprasMensais'])->name('admin.ajaxgetRegionaisComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetMunicipiosComprasMensais',[MonitorController::class,'ajaxgetMunicipiosComprasMensais'])->name('admin.ajaxgetMunicipiosComprasMensais')->middleware(['auth']);
@@ -73,6 +73,8 @@ Route::get('ajaxgetProdutosComprasMensais',[MonitorController::class,'ajaxgetPro
 Route::get('ajaxgetProdutosDaCategoriaComprasMensais',[MonitorController::class,'ajaxgetProdutosDaCategoriaComprasMensais'])->name('admin.ajaxgetProdutosDaCategoriaComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetCategoriasPorEntidadeComprasMensais',[MonitorController::class,'ajaxgetCategoriasPorEntidadeComprasMensais'])->name('admin.ajaxgetCategoriasPorEntidadeComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetProdutosPorEntidadeComprasMensais',[MonitorController::class,'ajaxgetProdutosPorEntidadeComprasMensais'])->name('admin.ajaxgetProdutosPorEntidadeComprasMensais')->middleware(['auth']);
+
+Route::get('ajaxgetCarregaRegistrosDaEntidade',[MonitorController::class,'ajaxgetCarregaRegistrosDaEntidade'])->name('admin.ajaxgetCarregaRegistrosDaEntidade')->middleware(['auth']);
 
 Route::get('admin/monitor/{identidade}/{idcategoria?}/{idproduto?}/{idano}/pdf/relpdfmonitor', [MonitorController::class, 'relpdfmonitor'])->name('admin.monitor.relpdfmonitor')->middleware(['auth']);
 

@@ -11,6 +11,7 @@ use App\Models\Municipio;
 use Cron\MonthField;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class MonitorController extends Controller
 {
@@ -21,7 +22,7 @@ class MonitorController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
         /*
         // primeira maneira válida
@@ -47,13 +48,29 @@ class MonitorController extends Controller
         return view('admin.monitor.index', compact('categoriaJSON', 'produtosJSON'));
         */
 
-
+        /*
         // Obtendo apenas as Categorias que foram efetivamente compradas (independnete do ano).
         $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
         // Transformando a coleção retornada acima, em array JSON(javascript) e enviando-a para a view
         $categoriaJSON =  json_encode($categorias);
-        
         return view('admin.monitor.index', compact('categoriaJSON'));
+        */
+
+        if($request->tipo == "g"){
+            // Obtendo apenas as Categorias que foram efetivamente compradas (independnete do ano).
+            $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
+            // Transformando a coleção retornada acima, em array JSON(javascript) e enviando-a para a view
+            $categoriaJSON =  json_encode($categorias);
+            return view('admin.monitor.monitorgeral', compact('categoriaJSON'));
+        }else if($request->tipo == "e"){
+            $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
+            $categoriaJSON =  json_encode($categorias);
+            return view('admin.monitor.monitorespecifico', compact('categoriaJSON'));
+        }else{
+            Auth::logout();
+	        return redirect()->route('acesso.login');
+        }
+
     }
 
     
@@ -1101,6 +1118,26 @@ class MonitorController extends Controller
 
 
 
+
+    // Requisição ajax simples, para carregar os registros específicos das Regionais, Municípios ou Restaurantes
+    public function ajaxgetCarregaRegistrosDaEntidade(Request $request){
+        $entidade = $request->idEntidade;
+
+        switch($entidade){
+            case "1":
+                $records = DB::select(DB::raw("SELECT DISTINCT regional_id AS id, regional_nome AS nome FROM bigtable_data ORDER BY regional_nome ASC"));
+            break;
+            case "2":
+                $records = DB::select(DB::raw("SELECT DISTINCT municipio_id AS id, municipio_nome AS nome FROM bigtable_data ORDER BY municipio_nome ASC"));
+            break;
+            case "3":
+                $records = DB::select(DB::raw("SELECT DISTINCT restaurante_id AS id, identificacao AS nome FROM bigtable_data ORDER BY identificacao ASC"));
+            break;
+        }
+        
+        return response()->json($records);
+    }
+    
 
     // Monitor Compras Mensais Categorias por Entidade (Regionais, Município ou Restaurantes)
     public function ajaxgetCategoriasPorEntidadeComprasMensais(Request $request){

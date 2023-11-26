@@ -39,12 +39,31 @@
 
         
         <!-- Nav Item - Monitor -->
+        {{--
         <li class="nav-item active">
                 <a class="nav-link" href="{{ route('admin.monitor') }}">
                 <i class="fas fa-table"></i>
                 <span>Monitor</span>
             </a>
         </li>
+        --}}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMonitor"
+                aria-expanded="true" aria-controls="collapseThree">
+                <i class="fas fa-table"></i>
+                <span>Monitor</span>
+            </a>
+            <div id="collapseMonitor" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="py-2 bg-white rounded collapse-inner">
+                    <h6 class="collapse-header">Monitoramento :</h6>
+                    <a class="collapse-item" href="{{ route('admin.monitor', ['tipo' => 'g']) }}"><i class="fas fa-ellipsis-v"></i>
+                        Geral</a>
+                    <a class="collapse-item" href="{{ route('admin.monitor', ['tipo' => 'e']) }}"><i class="fas fa-ellipsis-h"></i>
+                        Específico</a>
+                </div>
+            </div>
+        </li>
+
 
 
         <!-- Divider -->
@@ -52,7 +71,7 @@
         
 
         <!-- Heading -->
-        <div class="sidebar-heading">
+        <div class="sidebar-heading" style="margin-top: 15px;">
             Gerenciar
         </div>
 
