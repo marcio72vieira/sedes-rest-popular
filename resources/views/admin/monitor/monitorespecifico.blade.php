@@ -84,7 +84,7 @@
             </button>
             </div>
             <div class="modal-body">
-            Nenhum registro encontrado com os critérios especifiados!.
+                Nenhum registro encontrado com os dados fornecidos!
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
@@ -115,6 +115,7 @@
             var txtEntidadeSelecionada = "";
             var txtCategoriaSelecionada = "";
             var txtProdutoSelecionado = "";
+            var txtGrupoRegistrosEntidade = "";
             var habilitaImpresao = 0;
             
             // Definindo os anos a serem exibidos a partir do ano de implementação do sistema
@@ -256,6 +257,16 @@
 
                     var nomeEntidadeEscolhida = $("#selectEntidade").children("option:selected").text();
                     var valorEntidadeEscolhida = $(this).val();
+
+                    if(valorEntidadeEscolhida == "1"){
+                        txtGrupoRegistrosEntidade = "Regional";
+                    }else if(valorEntidadeEscolhida == "2"){
+                        txtGrupoRegistrosEntidade = "Município";
+                    }else if(valorEntidadeEscolhida == "3"){
+                        txtGrupoRegistrosEntidade = "Restaurante";
+                    }else{
+                        txtGrupoRegistrosEntidade = "";
+                    }
                     
                     $.ajax({
                         url: "{{route('admin.ajaxgetCarregaRegistrosDaEntidade')}}",
@@ -265,7 +276,7 @@
                         success: function(result){
                             // Populando o selectRegistrosDaEntidade a partir da Entidade Selecionada
                             $('#dataTableMonitor_length').append('<select id="selectRegistrosDaEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"></select>');
-                            $('#selectRegistrosDaEntidade').append($('<option selected></option>').val('0').html(nomeEntidadeEscolhida));
+                            $('#selectRegistrosDaEntidade').append($('<option selected></option>').val('0').html(txtGrupoRegistrosEntidade));
                             $.each(result, function() {
                                 $('#selectRegistrosDaEntidade').append($('<option></option>').val(this.id).html(this.nome));
                             });
@@ -313,8 +324,8 @@
 
 
             // Botões de CarregarDados e Impressão PDF. O valor do atributo href, é criado dinamicamente
-            $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
-            $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 80px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
+            $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 40px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
+            $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 40px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
             
 
 
@@ -336,71 +347,43 @@
                 valCategProd            = $("#selectCategoriaProduto").val() == undefined ? 0 : $("#selectCategoriaProduto").val();
                 valAno                  = $("#selectPeriodo").val();
                 periodoAno              = valAno;
-
-                //valCategoriaSelecionada = $("#selectRegistrosDaEntidade").val() == undefined ? 0 : $("#selectRegistrosDaEntidade").val() ;
-                //valProdutoSelecionado   = $("#selectCategoriaProduto").val() == undefined ? 0 : $("#selectCategoriaProduto").val();
-
-                //alert("Entidade: " + $("#selectEntidade").children("option:selected").text() + "  Valor: " + $("#selectRegistrosDaEntidade").children("option:selected").text() + "  Tipo: " + $("#selectCategoriaProduto").children("option:selected").text());
-                //alert("Entidade: " + valEntidadeSelecionada + "  Valor: " + valRegistro + "  Tipo: " + valCategProd);
                 
                 if(valEntidadeSelecionada != 0 && valRegistro != 0 && valCategProd != 0){
 
+                    // Define a Rota
                     rotaAjax = "{{route('admin.ajaxgetComprasPorCategoriasOuProdutos')}}";
                     
                     // Configura o texto da pesquisa
+                    txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
+                    txtRegistro = $("#selectRegistrosDaEntidade").children("option:selected").text();
                     txtTipoPesquisa = $("#selectCategoriaProduto").children("option:selected").text();
+
                     $("#tipopesquisa").text(txtTipoPesquisa);
-                    $("#titulopesquisa").text("COMPRAS POR " + txtTipoPesquisa.toUpperCase() + " EM " + periodoAno);
-                    $("#titulomonitor").text("MONITOR ESPECÍFICO | COMPRAS POR " + txtTipoPesquisa.toUpperCase() + " EM " + periodoAno);
+                    $("#titulopesquisa").text("COMPRAS POR " + txtTipoPesquisa.toUpperCase() + " - " + txtGrupoRegistrosEntidade.toUpperCase() + ": " + txtRegistro.toUpperCase() + " EM " + periodoAno);
+                    $("#titulomonitor").text("MONITOR ESPECÍFICO | COMPRAS POR " + txtTipoPesquisa.toUpperCase() + " - " + txtGrupoRegistrosEntidade.toUpperCase() + ": " + txtRegistro.toUpperCase() + " EM " + periodoAno);
                     
-                    oTable.ajax.url(rotaAjax).load();
-
-
-                }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
-                    
-                    // Configura o texto da pesquisa
-                    txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
-                    txtCategoriaSelecionada = $("#selectRegistrosDaEntidade").children("option:selected").text();
-                    $("#entidade").text(txtEntidadeSelecionada);
-                    $("#titulopesquisa").text("COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                    $("#titulomonitor").text("MONITOR ESPECÍFICO | COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-
-
-                    // Define a rota de acordo com a Entidade e a Categoria escolhida
-                    rotaAjax = "{{route('admin.ajaxgetCategoriasPorEntidadeComprasMensais')}}";
-                    oTable.ajax.url(rotaAjax).load();
-
-                }else {
-
-                    // Configura o texto da pesquisa
-                    txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
-                    txtProdutoSelecionado   = $("#selectCategoriaProduto").children("option:selected").text();
-                    $("#entidade").text(txtEntidadeSelecionada);
-                    $("#titulopesquisa").text("COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                    $("#titulomonitor").text("MONITOR ESPECÍFICO | COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-
-                    // Define a rota de acordo com a Entidade, Categoria e Produto escolhido
-                    rotaAjax = "{{route('admin.ajaxgetProdutosPorEntidadeComprasMensais')}}";
+                    // Carrega o DataTable com a nova rota (com os valores dos parâmetros já configurados de acordo com as escolhas selecionadas)
                     oTable.ajax.url(rotaAjax).load();
 
                 }
                 
             });
 
+            // Toda vez que ocorrer uma requisição XMLHTTREQUEST, execute a função abaixo:
             // Exibe/Oculta o Botão para Ipressão PDF e ou Modal de acordo com o número de registros retornados.
             oTable.on( 'xhr', function () {
                 var dataJSON = oTable.ajax.json();
                 // Se retornar registros, configura a rota para impressão dos mesmos e exibe o botão PDF.
                 if(dataJSON.iTotalRecords > 0){
-                    var entidadepdf = valEntidadeSelecionada;
-                    var categoriapdf =  valCategoriaSelecionada;
-                    var produtopdf = valProdutoSelecionado;
-                    var anopdf =  periodoAno;
+                    var entidadepdf     = valEntidadeSelecionada;
+                    var registropdf     = valRegistro;
+                    var tipopesquisapdf = valCategProd;
+                    var anopdf          = periodoAno;
 
-                    var routepdf = "{{route('admin.monitor.relpdfmonitor', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
+                    var routepdf = "{{route('admin.monitor.relpdfmonitorespecifico', ['identidade', 'idregistro', 'idtipopesquisa', 'idano'])}}";
                         routepdf = routepdf.replace('identidade', entidadepdf);
-                        routepdf = routepdf.replace('idcategoria', categoriapdf);
-                        routepdf = routepdf.replace('idproduto', produtopdf);
+                        routepdf = routepdf.replace('idregistro', registropdf);
+                        routepdf = routepdf.replace('idtipopesquisa', tipopesquisapdf);
                         routepdf = routepdf.replace('idano', anopdf);
 
                     $('#btnPdf').attr('href', routepdf);
@@ -414,8 +397,6 @@
                 }
                 
             });
-
-            
 
          });
     </script>
