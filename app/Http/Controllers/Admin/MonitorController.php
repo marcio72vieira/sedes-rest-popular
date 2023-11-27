@@ -1633,22 +1633,13 @@ class MonitorController extends Controller
         }
 
 
-
-        // // Obtendo o total de registros de acordo com os critérios de pesquia (fitro)
-        // $totalRecords = DB::table("bigtable_data")->select("$entidade_id")->where("categoria_id", "=", $categRef)->whereYear("data_ini", "=",  $anoRef)->distinct("$entidade_id")->count();
-        // $totalRecordswithFilter =  DB::table('bigtable_data')
-        // ->select("count(*) as allcount")
-        // ->where("categoria_id", "=", $categRef)
-        // ->whereYear("data_ini", "=",  $anoRef)
-        // ->distinct("bigtable_data.$entidade_id")
-        // ->where("bigtable_data.$entidade_nome", "like", "%" .$searchValue . "%")
-        // ->count();
-
         // Obtendo o total de registros de acordo com os critérios de pesquia (fitro)
+        // Obs: A linha: ->select("count($campo_id) as allcount") pode substitui a linha: ->where("$campo_id", "<>", 0), PERFEITAMENTE, uma vez que count($campo_id), retorna todos os valores não nulos
         $totalRecords = DB::table("bigtable_data")->select("$campo_id")->where("$entidade_id", "=", $idregRef)->whereYear("data_ini", "=",  $anoRef)->distinct("$campo_id")->count();
         $totalRecordswithFilter =  DB::table('bigtable_data')
         ->select("count(*) as allcount")
         ->where("$campo_id", "<>", 0)
+        ->where("$entidade_id", "=", $idregRef)
         ->whereYear("data_ini", "=",  $anoRef)
         ->distinct("bigtable_data.$campo_id")
         ->where("bigtable_data.$campo_nome", "like", "%" .$searchValue . "%")
