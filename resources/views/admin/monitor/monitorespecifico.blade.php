@@ -17,7 +17,7 @@
                     <thead>
                         <tr>
                             <th rowspan="3" style="vertical-align: middle; text-align:center;">Id</th>
-                            <th rowspan="3" style="vertical-align: middle; text-align:center" id="entidade">Entidade</th>
+                            <th rowspan="3" style="vertical-align: middle; text-align:center" id="tipopesquisa">Tipo</th>
                             <th colspan="24" style="vertical-align: middle; text-align:center" id="titulopesquisa">COMPRAS EM @php echo date("Y") @endphp</th>
                             <th rowspan="2" colspan="2" style="vertical-align: middle; text-align:center">TOTAL<br>PARCIAL</th>
                             <th rowspan="3" style="vertical-align: middle; text-align:center">TOTAL<br>GERAL<br>(nm + af)</th>
@@ -107,6 +107,8 @@
             var rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
             var periodoAno = new Date().getFullYear();
             var valEntidadeSelecionada = 0;
+            var valRegistro = 0;
+            var valCategProd = 0;
             var valCategoriaSelecionada = 0;
             var valProdutoSelecionado = 0;
             var valAnoSelecionado = 2023;
@@ -163,10 +165,10 @@
                 ajax: {
                     url: rotaAjax,
                     data: function(d){
-                        d.periodo = periodoAno;
                         d.entidade = valEntidadeSelecionada;
-                        d.categoria = valCategoriaSelecionada;
-                        d.produto = valProdutoSelecionado;
+                        d.registro = valRegistro;
+                        d.catprod = valCategProd;
+                        d.periodo = periodoAno;
                     },
                 },
 
@@ -330,40 +332,26 @@
 
                 // Recupera os valores (se selecionados) dos elementos
                 valEntidadeSelecionada  = $("#selectEntidade").val();
-                valCategoriaSelecionada = $("#selectRegistrosDaEntidade").val() == undefined ? 0 : $("#selectRegistrosDaEntidade").val() ;
-                valProdutoSelecionado   = $("#selectCategoriaProduto").val() == undefined ? 0 : $("#selectCategoriaProduto").val();
-                valAnoSelecionado       = $("#selectPeriodo").val();
-                periodoAno  = valAnoSelecionado;
-                
-                if(valEntidadeSelecionada != 0 && valCategoriaSelecionada == 0 && valProdutoSelecionado == 0){
-                    
-                    switch (valEntidadeSelecionada){
-                        
-                        // Define a rota de acordo com a Entidade escolhida
-                        case "1":
-                            rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
-                        break;
-                        case "2":
-                            rotaAjax = "{{route('admin.ajaxgetMunicipiosComprasMensais')}}";
-                        break;
-                        case "3":
-                            rotaAjax = "{{route('admin.ajaxgetRestaurantesComprasMensais')}}";
-                        break;
-                        case "4":
-                            rotaAjax = "{{route('admin.ajaxgetCategoriasComprasMensais')}}";
-                        break;
-                        case "5":
-                            rotaAjax = "{{route('admin.ajaxgetProdutosComprasMensais')}}";
-                        break;
-                        default:
-                            rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
-                    }
+                valRegistro             = $("#selectRegistrosDaEntidade").val() == undefined ? 0 : $("#selectRegistrosDaEntidade").val();
+                valCategProd            = $("#selectCategoriaProduto").val() == undefined ? 0 : $("#selectCategoriaProduto").val();
+                valAno                  = $("#selectPeriodo").val();
+                periodoAno              = valAno;
 
+                //valCategoriaSelecionada = $("#selectRegistrosDaEntidade").val() == undefined ? 0 : $("#selectRegistrosDaEntidade").val() ;
+                //valProdutoSelecionado   = $("#selectCategoriaProduto").val() == undefined ? 0 : $("#selectCategoriaProduto").val();
+
+                //alert("Entidade: " + $("#selectEntidade").children("option:selected").text() + "  Valor: " + $("#selectRegistrosDaEntidade").children("option:selected").text() + "  Tipo: " + $("#selectCategoriaProduto").children("option:selected").text());
+                //alert("Entidade: " + valEntidadeSelecionada + "  Valor: " + valRegistro + "  Tipo: " + valCategProd);
+                
+                if(valEntidadeSelecionada != 0 && valRegistro != 0 && valCategProd != 0){
+
+                    rotaAjax = "{{route('admin.ajaxgetComprasPorCategoriasOuProdutos')}}";
+                    
                     // Configura o texto da pesquisa
-                    txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
-                    $("#entidade").text(txtEntidadeSelecionada);
-                    $("#titulopesquisa").text("COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                    $("#titulomonitor").text("MONITOR ESPECÍFICO | COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+                    txtTipoPesquisa = $("#selectCategoriaProduto").children("option:selected").text();
+                    $("#tipopesquisa").text(txtTipoPesquisa);
+                    $("#titulopesquisa").text("COMPRAS POR " + txtTipoPesquisa.toUpperCase() + " EM " + periodoAno);
+                    $("#titulomonitor").text("MONITOR ESPECÍFICO | COMPRAS POR " + txtTipoPesquisa.toUpperCase() + " EM " + periodoAno);
                     
                     oTable.ajax.url(rotaAjax).load();
 
