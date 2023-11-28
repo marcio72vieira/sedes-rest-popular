@@ -75,8 +75,7 @@ Route::get('ajaxgetCategoriasPorEntidadeComprasMensais',[MonitorController::clas
 Route::get('ajaxgetProdutosPorEntidadeComprasMensais',[MonitorController::class,'ajaxgetProdutosPorEntidadeComprasMensais'])->name('admin.ajaxgetProdutosPorEntidadeComprasMensais')->middleware(['auth']);
 Route::get('ajaxgetCarregaRegistrosDaEntidade',[MonitorController::class,'ajaxgetCarregaRegistrosDaEntidade'])->name('admin.ajaxgetCarregaRegistrosDaEntidade')->middleware(['auth']);
 Route::get('ajaxgetComprasPorCategoriasOuProdutos',[MonitorController::class,'ajaxgetComprasPorCategoriasOuProdutos'])->name('admin.ajaxgetComprasPorCategoriasOuProdutos')->middleware(['auth']);
-
-Route::get('admin/monitor/{identidade}/{idcategoria?}/{idproduto?}/{idano}/pdf/relpdfmonitor', [MonitorController::class, 'relpdfmonitor'])->name('admin.monitor.relpdfmonitor')->middleware(['auth']);
+Route::get('admin/monitor/{identidade}/{idcategoria?}/{idproduto?}/{idano}/pdf/relpdfmonitorgeral', [MonitorController::class, 'relpdfmonitorgeral'])->name('admin.monitor.relpdfmonitorgeral')->middleware(['auth']);
 Route::get('admin/monitor/{identidade}/{idregistro}/{idtipopesquisa}/{idano}/pdf/relpdfmonitorespecifico', [MonitorController::class, 'relpdfmonitorespecifico'])->name('admin.monitor.relpdfmonitorespecifico')->middleware(['auth']);
 
 

@@ -61,11 +61,10 @@ class MonitorController extends Controller
             $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
             // Transformando a coleção retornada acima, em array JSON(javascript) e enviando-a para a view
             $categoriaJSON =  json_encode($categorias);
+            
             return view('admin.monitor.monitorgeral', compact('categoriaJSON'));
         }else if($request->tipo == "e"){
-            $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
-            $categoriaJSON =  json_encode($categorias);
-            return view('admin.monitor.monitorespecifico', compact('categoriaJSON'));
+            return view('admin.monitor.monitorespecifico');
         }else{
             Auth::logout();
 	        return redirect()->route('acesso.login');
@@ -1582,7 +1581,6 @@ class MonitorController extends Controller
 
 
 
-//////////////////******************
     // Monitor Compras Mensais por Categorias ou Produtos de um Registro Específico (Regionais, Município ou Restaurantes)
     public function ajaxgetComprasPorCategoriasOuProdutos(Request $request){
 
@@ -1816,13 +1814,9 @@ class MonitorController extends Controller
 
 
 
-/////////////////*******************
-
-
-
     
     // Configuração de relatórios PDF's
-    public function relpdfmonitor(Request $request)
+    public function relpdfmonitorgeral(Request $request)
     {
         $entitRef   = $request->identidade;
         $catRef     = $request->idcategoria;
@@ -2049,7 +2043,7 @@ class MonitorController extends Controller
         ');
 
 
-        $html = \View::make('admin.monitor.pdf.pdfrelatoriomonitor', compact('records'));
+        $html = \View::make('admin.monitor.pdf.pdfrelatoriomonitorgeral', compact('records'));
         $html = $html->render();
 
         $stylesheet = file_get_contents('pdf/mpdf.css');
@@ -2073,21 +2067,18 @@ class MonitorController extends Controller
         switch($entitRef){
             case "1":
                 $entidade_id = "regional_id";
-                $entidade_nome =  "regional_nome";
-                $entidaderotulo = "Regionais";
-                $titulorelatorio =  "COMPRAS POR REGIONAIS EM ".$anoRef;
+                $rotuloentidade = "REGIONAL: ";
+                $rotuloregistro = DB::table('regionais')->where('id', '=', $idregRef)->value('nome');
             break;
             case "2":
                 $entidade_id = "municipio_id";
-                $entidade_nome = "municipio_nome";
-                $entidaderotulo = "Municípios";
-                $titulorelatorio =  "COMPRAS POR MUNICÍPIOS EM ".$anoRef;
+                $rotuloentidade = "MUNICÍPIO: ";
+                $rotuloregistro = DB::table('municipios')->where('id', '=', $idregRef)->value('nome');
             break;
             case "3":
                 $entidade_id = "restaurante_id";
-                $entidade_nome =  "identificacao";
-                $entidaderotulo = "Restaurantes";
-                $titulorelatorio =  "COMPRAS POR RESTAURANTES EM ".$anoRef;
+                $rotuloentidade = "RESTAURANTE: ";
+                $rotuloregistro = DB::table('restaurantes')->where('id', '=', $idregRef)->value('identificacao');
             break;
         }
 
@@ -2095,43 +2086,16 @@ class MonitorController extends Controller
         if($idtipoRef == "1"){
             $campo_id = "categoria_id"; 
             $campo_nome = "categoria_nome";
+            $rotulopesquisa =  "Categorias";
+            $titulorelatorio =  "COMPRAS POR CATEGORIAS - ". $rotuloentidade . $rotuloregistro ." EM ".$anoRef;
         }else{
             $campo_id = "produto_id"; 
             $campo_nome = "produto_nome";
+            $rotulopesquisa =  "Produtos";
+            $titulorelatorio =  "COMPRAS POR PRODUTOS - ". $rotuloentidade . $rotuloregistro ." EM ".$anoRef;
         }
 
-
-        /* 
-        // Montando o título do relatório com base na CATEGORIA, se Regional, Município ou Restaurantes forem escolhidos
-        if($entitRef == "1" && $catRef != 0 && $prodRef == 0 ){
-            $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR REGIONAIS EM ".$anoRef;
-        }
-        if($entitRef == "2" && $catRef != 0 && $prodRef == 0 ){
-            $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR MUNICÍPIOS EM ".$anoRef;
-        }
-        if($entitRef == "3" && $catRef != 0 && $prodRef == 0 ){
-            $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR RESTAURANTES EM ".$anoRef;
-        }
-
-        // Montando o título do relatório com base no PRODUTO, se Regional, Município ou Restaurantes forem escolhidos
-        if($entitRef == "1" && $catRef != 0 && $prodRef != 0 ){
-            $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR REGIONAIS EM ".$anoRef;
-        }
-        if($entitRef == "2" && $catRef != 0 && $prodRef != 0 ){
-            $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR MUNICÍPIOS EM ".$anoRef;
-        }
-        if($entitRef == "3" && $catRef != 0 && $prodRef != 0 ){
-            $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR RESTAURANTES EM ".$anoRef;
-        }
-         */
-
-
+        
         $valoresmeses = DB::table('bigtable_data')
         ->select(DB::RAW("data_ini, af, precototal, $campo_id, $campo_nome,
                 SUM(IF(MONTH(data_ini) = 01 AND af = 'nao', precototal, 0.00)) AS mesjannormal,
@@ -2165,17 +2129,6 @@ class MonitorController extends Controller
         ->where("$entidade_id", "=", $idregRef)
         ->groupByRaw("$campo_id")
         ->orderByRaw("$campo_nome");
-
-
-        /* 
-        //MONTAGEM CONDICIONAL DA QUERYBUILDER COM BASE NO ENVIO DE CATEGORIAS OU PRODUTOS
-        if($catRef != 0 && $prodRef == 0){
-            $valoresmeses->where("categoria_id", "=", $catRef);
-        }
-        if($catRef != 0 && $prodRef != 0){
-            $valoresmeses->where("produto_id", "=", $prodRef);
-        }
-         */
 
         $records =  DB::table("bigtable_data")->joinSub($valoresmeses, "aliasValoresMeses", function($join)  use($campo_id){
             $join->on("bigtable_data.$campo_id", "=", "aliasValoresMeses.$campo_id");
@@ -2217,7 +2170,7 @@ class MonitorController extends Controller
                         Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
                         Secretaria do Estado de Desenvolvimento Social/SEDES
                     </td>
-                    <td style="width: 540px;" class="titulo-rel">ESPECÍFICO '. $titulorelatorio .'</td>
+                    <td style="width: 540px;" class="titulo-rel">'. $titulorelatorio .'</td>
                 </tr>
             </table>
 
@@ -2225,7 +2178,7 @@ class MonitorController extends Controller
             <table style="width:1080px; border-collapse: collapse; border: 0.1px solid #000000;">
                 <tr>
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 25px;">Id</td>
-                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 69px;">'.$entidaderotulo.'</td>
+                    <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 69px;">'.$rotulopesquisa.'</td>
                     <td  colspan="24"  class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 816px;">ANO: '.$anoRef.'</td>
                     <td  rowspan="2" class="col-header-table-monitor" colspan="2" style="vertical-align: middle; text-align:center; width: 78px;">TOTAL<br>PARCIAL</td>
                     <td  rowspan="3" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 42px;">TOTAL<br>GERAL<br>(nm + af)</td>

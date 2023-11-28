@@ -119,7 +119,7 @@
             var habilitaImpresao = 0;
             
             // Definindo os anos a serem exibidos a partir do ano de implementação do sistema
-            var anoimplementacao = 2020;
+            var anoimplementacao = 2023;
             var anoatual = new Date().getFullYear();
             var anos = [];
             var anosexibicao = [];
@@ -430,7 +430,7 @@
                     var produtopdf = valProdutoSelecionado;
                     var anopdf =  periodoAno;
 
-                    var routepdf = "{{route('admin.monitor.relpdfmonitor', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
+                    var routepdf = "{{route('admin.monitor.relpdfmonitorgeral', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
                         routepdf = routepdf.replace('identidade', entidadepdf);
                         routepdf = routepdf.replace('idcategoria', categoriapdf);
                         routepdf = routepdf.replace('idproduto', produtopdf);
