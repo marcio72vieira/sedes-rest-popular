@@ -249,7 +249,13 @@
                     rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
                     oTable.ajax.url(rotaAjax).load();
 
+                    // Define sempre o ano atual como sendo o ano padrão de pesquisa antes de ocultar a div com o seletor
+                    $('#selectPeriodo option[value="' + anoatual +'"]').prop('selected', true);
                     $("#controlesPeriodoCarregarPdf").css("display", "none"); 
+                    
+                    // Evita exibição da modal de forma desnecessária na avaliação da condição: "dataJSON.iTotalRecords == 0 && valEntidadeSelecionada != 0"
+                    // no trecho de código no final deste script.
+                    valEntidadeSelecionada = 0; 
                 }
 
                 // Remove dropdown CATEGORIAS e PRODUTOS(caso existam) para "resetar" seus valores
