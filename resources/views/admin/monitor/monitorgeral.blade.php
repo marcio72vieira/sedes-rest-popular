@@ -13,7 +13,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered hover" id="dataTableMonitor" width="100%" cellspacing="0">
+                <table class="table table-bordered row-border hover order-column" id="dataTableMonitor" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th rowspan="3" style="vertical-align: middle; text-align:center;">Id</th>
@@ -463,7 +463,34 @@
                 e.currentTarget.classList.toggle('selected');
             });
 
+
+            // Script para destaque de linha e coluna ao mesmo tempo com hover. Necessita o style personalizado
+            oTable.on('mouseenter', 'td', function () {
+                let colIdx = oTable.cell(this).index().column;
+                oTable
+                    .cells()
+                    .nodes()
+                    .each((el) => el.classList.remove('highlight'));
             
+                oTable
+                    .column(colIdx)
+                    .nodes()
+                    .each((el) => el.classList.add('highlight'));
+            });
+
+            /*            
+            // Obtendo os dados de uma linha que foi clicada
+            oTable.on( 'click', 'tbody tr', function () {
+                console.log( oTable.row( this ).data());                // Todos os dados da linha atual
+                console.log( oTable.row( this ).data().id);             // Só o id da linha atual
+                console.log( oTable.row( this ).data().nomeentidade);   // Só o nomedaentidade da linha atual
+                console.log( oTable.row( this ).data().fevaf);          // Um valor específico da linha atual
+
+                console.log( oTable.row( 0 ).data() );                  // Todos os dados da linha de índice 0
+                console.log( oTable.row( 0 ).data().id);                // Só o id da linha de índice 0
+                console.log( oTable.row( 3 ).data().nomeentidade);      // Só o nomedaentidade da linha de índice 3
+            });
+            */
 
          });
     </script>

@@ -30,6 +30,17 @@
     <!-- Styles personalizado para HOVER e HIGHLIGHT BLUE(destaque de linha na cor azul)-->
     <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
 
+    <!-- Style personalizado para destaque de linhas e colunas simultaneamente além do link do CSS Hover e HIGHLIGHT acima -->
+    <style>
+        td.highlight {
+            background-color: whitesmoke !important;
+        }
+        
+        html.dark td.highlight {
+            background-color: rgba(var(--dt-row-hover), 0.082) !important;
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
