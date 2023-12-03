@@ -13,7 +13,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTableMonitor" width="100%" cellspacing="0">
+                <table class="table table-bordered hover" id="dataTableMonitor" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th rowspan="3" style="vertical-align: middle; text-align:center;">Id</th>
@@ -320,7 +320,11 @@
 
 
             // ELEMENTOS DA DIV dataTableMonitor_filter
-            $('#dataTableMonitor_filter').append('<div id="controlesPeriodoCarregarPdf" style="float:left; display:none"></div>');
+            // Sem classe "hover" na tabela
+            // $('#dataTableMonitor_filter').append('<div id="controlesPeriodoCarregarPdf" style="float:left; display:none"></div>');
+            // ELEMENTOS DA DIV dataTableMonitor_filter
+            // Com implementação da classe "hover" na tabela
+            $('#dataTableMonitor_filter').append('<div id="controlesPeriodoCarregarPdf" style="float:left; margin-left: -430px; display:none;"></div>');
             // Populando o selectPeriodo a partir de um Array "padrão" com jQuery
             $('#controlesPeriodoCarregarPdf').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px; width: 80px; float:left"></select>');
             $('#selectPeriodo').append($('<option disabled></option>').val('0').html('Ano'));
@@ -402,6 +406,11 @@
                     $("#btnPdf").css("display", "none");
                 }
                 
+            });
+
+            // Destaca com o fundo azul, uma ou mais linha ao serem clicadas
+            oTable.on('click', 'tbody tr', function (e) {
+                e.currentTarget.classList.toggle('selected');
             });
 
          });
