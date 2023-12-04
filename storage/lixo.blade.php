@@ -3440,3 +3440,5 @@ public function relpdfmonitorentidade(Request $request)
     $mpdf->Output($fileName, 'I');
 
 }
+
+

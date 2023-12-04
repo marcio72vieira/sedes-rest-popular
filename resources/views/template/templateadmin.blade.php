@@ -21,25 +21,24 @@
     <!-- Custom styles for this template-->
     <link href="{{asset('template/css/sb-admin-2.min.css')}}" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
-    <link href="{{asset('template/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-
-    <!-- Styles personalizado para fixação de colunas e cabeçalhos em um datatable. Opera com a extensão javascript abaixo -->
-    <link href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css" rel="stylesheet">
-
     <!-- Styles personalizado para HOVER e HIGHLIGHT BLUE(destaque de linha na cor azul)-->
     <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
 
-    <!-- Style personalizado para destaque de linhas e colunas simultaneamente além do link do CSS Hover e HIGHLIGHT acima -->
-    <style>
-        td.highlight {
-            background-color: whitesmoke !important;
-        }
-        
-        html.dark td.highlight {
-            background-color: rgba(var(--dt-row-hover), 0.082) !important;
-        }
-    </style>
+    <!-- Custom styles for this page -->
+    <link href="{{asset('template/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+
+    {{--
+        // Altera a fonte do DataTable, deixando-as mais vívidas 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"> 
+        <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet"> 
+    
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    --}}
+
+
+    <!-- Styles personalizado para fixação de colunas e cabeçalhos em um datatable. Opera com a extensão javascript abaixo -->
+    <link href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css" rel="stylesheet">
 
 </head>
 
@@ -84,10 +83,18 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
+    <!-- INICIO HOVER e HIGHLIGHT BLUE(destaque de linha na cor azul) -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+    <!-- FIM HOVER -->
 
+
+    {{-- 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{asset('template/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('template/vendor/jquery/jquery.min.js')}}"></script>--}}
     <script src="{{asset('template/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    
 
     <!-- Core plugin JavaScript-->
     <script src="{{asset('template/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
@@ -109,19 +116,18 @@
     <script src="{{asset('template/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
     <!-- INICIO BUTTONS PARA SEREM EXIBIDOS NOS DATATABLES-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    {{-- 
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"> 
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    --}}
     <!-- FIM BUTTONS PARA SEREM EXIBIDOS NOS DATATABLES-->
 
-    <!-- INICIO HOVER e HIGHLIGHT BLUE(destaque de linha na cor azul) -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <!-- FIM HOVER -->
+    
 
     <!-- Extensão javascript para fixação de colunas e cabeçalhos no DataTables. Opera em conjunto com o css acima -->
     <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>

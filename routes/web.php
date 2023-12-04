@@ -78,6 +78,7 @@ Route::get('ajaxgetComprasPorCategoriasOuProdutos',[MonitorController::class,'aj
 Route::get('admin/monitor/{identidade}/{idcategoria?}/{idproduto?}/{idano}/pdf/relpdfmonitorgeral', [MonitorController::class, 'relpdfmonitorgeral'])->name('admin.monitor.relpdfmonitorgeral')->middleware(['auth']);
 Route::get('admin/monitor/{identidade}/{idregistro}/{idtipopesquisa}/{idano}/pdf/relpdfmonitorespecifico', [MonitorController::class, 'relpdfmonitorespecifico'])->name('admin.monitor.relpdfmonitorespecifico')->middleware(['auth']);
 
+Route::get('admin/monitor/{identidade}/{idcategoria?}/{idproduto?}/{idano}/pdf/relpdfmonitorgeralprimeirosemestre', [MonitorController::class, 'relpdfmonitorgeralprimeirosemestre'])->name('admin.monitor.relpdfmonitorgeralprimeirosemestre')->middleware(['auth']);
 
 // =====================
 // RECURSOS - RESOURCES
