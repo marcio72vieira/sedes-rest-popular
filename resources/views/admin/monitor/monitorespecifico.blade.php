@@ -117,7 +117,7 @@
             var txtProdutoSelecionado = "";
             var txtGrupoRegistrosEntidade = "";
             var habilitaImpresao = 0;
-            
+
             // Definindo os anos a serem exibidos a partir do ano de implementação do sistema
             var anoimplementacao = 2023;
             var anoatual = new Date().getFullYear();
@@ -135,7 +135,7 @@
                 anosexibicao = anos.reverse();
             }
 
-            
+
             // Definindo o datatabble e suas propriedades e atribuindo à variável oTable(objeto dataTable)
             var oTable = $('#dataTableMonitor').DataTable({
                 // Define "congelamento" de colunas e rolagens vertical/horizontal. Necessário importar CSS correspondente
@@ -143,7 +143,7 @@
                     left: 2,
                 },
                 scrollCollapse: true,
-                scrollY: '500px',
+                scrollY: '1000px',
                 scrollX: true,
 
                 // Ordena os dados em ordem alfabética pela coluna 1
@@ -156,11 +156,11 @@
 
                 // Menu da quantidade de registros a serem exibidos
                 lengthMenu: [15, 20, 25, 30, 35, 40, 45, 50],
-                
+
                 // Indica a mensagem de processamento e que os dados virão de um servidor
                 processing: true,
                 serverSide: true,
-                
+
                 // Requisição ajax indicando a rota e os parâmetros a serem enviados
                 // Como as variáveis que definem os parâmetros são globais ("var") quaisquer modifiações nos mesmos refletem aqui
                 ajax: {
@@ -227,13 +227,13 @@
                 pagingType: "full_numbers",
             });
 
-            
+
 
             // ELEMENTOS DA DIV dataTableMonitor_length (Div, criada dinamicamente)
             $('#dataTableMonitor_length').append('<select id="selectEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option selected value="0">Entidades</option><option value="1">Regionais</option><option value="2">Municípios</option><option value="3">Restaurantes</option></select>');
-            
+
             $("#selectEntidade").on("change", function(){
-                
+
                 // Define informações, carrega uma tabela vazia e esconde os controles de ano, carregamento e impresssão
                 if($(this).val() == "0" ){
                     $("#entidade").text("Entidades");
@@ -249,7 +249,7 @@
 
                     // Evita exibição da modal de forma desnecessária na avaliação da condição: "dataJSON.iTotalRecords == 0 && valEntidadeSelecionada != 0"
                     // no trecho de código no final deste script.
-                    valEntidadeSelecionada = 0; 
+                    valEntidadeSelecionada = 0;
                 }
 
                 // Remove dropdown REGISTROSDAENTIDADE e CATEGORIAPRODUTO (caso existam) para "resetar" seus valores
@@ -273,7 +273,7 @@
                     }else{
                         txtGrupoRegistrosEntidade = "";
                     }
-                    
+
                     $.ajax({
                         url: "{{route('admin.ajaxgetCarregaRegistrosDaEntidade')}}",
                         type: "GET",
@@ -291,7 +291,7 @@
                             alert("Error ao retornar Registros desta Entidade!");
                         }
                     });
-                    
+
                     // Criando o dropdown selectCategoriaProduto a partir da entidade escolhida com a DELEGAÇÃO DE EVENTOS
                     $("#dataTableMonitor_length").on("change", "#selectRegistrosDaEntidade", function(){
                         if($(this).val() == "0"){
@@ -336,7 +336,7 @@
             // Botões de CarregarDados e Impressão PDF. O valor do atributo href, é criado dinamicamente
             $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 40px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
             $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 40px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
-            
+
 
 
             // Ocultando o botão PDF com a DELEGAÇÃO DE EVENTOS para os elementos dentro da div #dataTableMonitor_length e para
@@ -357,12 +357,12 @@
                 valCategProd            = $("#selectCategoriaProduto").val() == undefined ? 0 : $("#selectCategoriaProduto").val();
                 valAno                  = $("#selectPeriodo").val();
                 periodoAno              = valAno;
-                
+
                 if(valEntidadeSelecionada != 0 && valRegistro != 0 && valCategProd != 0){
 
                     // Define a Rota
                     rotaAjax = "{{route('admin.ajaxgetComprasPorCategoriasOuProdutos')}}";
-                    
+
                     // Configura o texto da pesquisa
                     txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
                     txtRegistro = $("#selectRegistrosDaEntidade").children("option:selected").text();
@@ -371,12 +371,12 @@
                     $("#tipopesquisa").text(txtTipoPesquisa);
                     $("#titulopesquisa").text("COMPRAS POR " + txtTipoPesquisa.toUpperCase() + " - " + txtGrupoRegistrosEntidade.toUpperCase() + ": " + txtRegistro.toUpperCase() + " EM " + periodoAno);
                     $("#titulomonitor").text("MONITOR ESPECÍFICO | COMPRAS POR " + txtTipoPesquisa.toUpperCase() + " - " + txtGrupoRegistrosEntidade.toUpperCase() + ": " + txtRegistro.toUpperCase() + " EM " + periodoAno);
-                    
+
                     // Carrega o DataTable com a nova rota (com os valores dos parâmetros já configurados de acordo com as escolhas selecionadas)
                     oTable.ajax.url(rotaAjax).load();
 
                 }
-                
+
             });
 
             // Toda vez que ocorrer uma requisição XMLHTTREQUEST, execute a função abaixo:
@@ -405,7 +405,7 @@
                 }else{
                     $("#btnPdf").css("display", "none");
                 }
-                
+
             });
 
             // Destaca com o fundo azul, uma ou mais linha ao serem clicadas

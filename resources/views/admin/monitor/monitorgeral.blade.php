@@ -119,9 +119,9 @@
             var txtCategoriaSelecionada = "";
             var txtProdutoSelecionado = "";
             var habilitaImpresao = 0;
-            
+
             // Definindo os anos a serem exibidos a partir do ano de implementação do sistema
-            var anoimplementacao = 2020;
+            var anoimplementacao = 2023;
             var anoatual = new Date().getFullYear();
             var anos = [];
             var anosexibicao = [];
@@ -137,7 +137,7 @@
                 anosexibicao = anos.reverse();
             }
 
-            
+
             // Definindo o datatabble e suas propriedades e atribuindo à variável oTable(objeto dataTable)
             var oTable = $('#dataTableMonitor').DataTable({
                 // Define "congelamento" de colunas e rolagens vertical/horizontal. Necessário importar CSS correspondente
@@ -145,7 +145,7 @@
                     left: 2,
                 },
                 scrollCollapse: true,
-                scrollY: '500px',
+                scrollY: '1000px',
                 scrollX: true,
 
                 // Ordena os dados em ordem alfabética pela coluna 1
@@ -158,11 +158,11 @@
 
                 // Menu da quantidade de registros a serem exibidos
                 lengthMenu: [15, 20, 25, 30, 35, 40, 45, 50],
-                
+
                 // Indica a mensagem de processamento e que os dados virão de um servidor
                 processing: true,
                 serverSide: true,
-                
+
                 // Requisição ajax indicando a rota e os parâmetros a serem enviados
                 // Como as variáveis que definem os parâmetros são globais ("var") quaisquer modifiações nos mesmos refletem aqui
                 ajax: {
@@ -234,14 +234,14 @@
                 // }
             });
 
-            
+
 
             // ELEMENTOS DA DIV dataTableMonitor_length (Div, criada dinamicamente)
             //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Entidades</label>');
             $('#dataTableMonitor_length').append('<select id="selectEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option selected value="0">Entidades</option><option value="1">Regionais</option><option value="2">Municípios</option><option value="3">Restaurantes</option><option disabled>___________</option><option value="4">Categorias</option><option value="5">Produtos</option></select>');
-            
+
             $("#selectEntidade").on("change", function(){
-                
+
                 // Define informações, carrega uma tabela vazia e esconde os controles de ano, carregamento e impresssão
                 if($(this).val() == "0" ){
                     $("#entidade").text("Entidades");
@@ -253,11 +253,11 @@
 
                     // Define sempre o ano atual como sendo o ano padrão de pesquisa antes de ocultar a div com o seletor
                     $('#selectPeriodo option[value="' + anoatual +'"]').prop('selected', true);
-                    $("#controlesPeriodoCarregarPdf").css("display", "none"); 
-                    
+                    $("#controlesPeriodoCarregarPdf").css("display", "none");
+
                     // Evita exibição da modal de forma desnecessária na avaliação da condição: "dataJSON.iTotalRecords == 0 && valEntidadeSelecionada != 0"
                     // no trecho de código no final deste script.
-                    valEntidadeSelecionada = 0; 
+                    valEntidadeSelecionada = 0;
                 }
 
                 // Remove dropdown CATEGORIAS e PRODUTOS(caso existam) para "resetar" seus valores
@@ -293,7 +293,7 @@
                                     $('#selectProdutos').append($('<option selected></option>').val('0').html('Produtos'));
                                     $.each(result, function() {
                                         $('#selectProdutos').append($('<option></option>').val(this.produto_id).html(this.produto_nome));
-                                    }); 
+                                    });
                                 },
                                 error: function(result){
                                     alert("Error ao retornar produtos desta Categoria!");
@@ -337,7 +337,7 @@
             $("#dataTableMonitor_length").on("change", "#selectEntidade, #selectCategorias, #selectProdutos", function(){
                 $("#btnPdf").css("display", "none");
                 $("#btnPdfPrimeiroSemestre").css("display", "none");
-                
+
             });
             $("#selectPeriodo").on("change", function(){
                 $("#btnPdf").css("display", "none");
@@ -359,11 +359,11 @@
                 // txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
                 // txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
                 // txtAnoSelecionado       = $("#selectPeriodo").children("option:selected").text();
-                
+
                 if(valEntidadeSelecionada != 0 && valCategoriaSelecionada == 0 && valProdutoSelecionado == 0){
-                    
+
                     switch (valEntidadeSelecionada){
-                        
+
                         // Define a rota de acordo com a Entidade escolhida
                         case "1":
                             rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
@@ -389,12 +389,12 @@
                     $("#entidade").text(txtEntidadeSelecionada);
                     $("#titulopesquisa").text("COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
                     $("#titulomonitor").text("MONITOR GERAL | COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                    
+
                     oTable.ajax.url(rotaAjax).load();
 
 
                 }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
-                    
+
                     // Configura o texto da pesquisa
                     txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
                     txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
@@ -421,17 +421,17 @@
                     oTable.ajax.url(rotaAjax).load();
 
                 }
-                
+
             });
 
 
             // Acessando os Dados Retornados pela Requisição AJAx para o DATATABLE
             // oTable.on( 'xhr', function () {
             //      var dataJSON = oTable.ajax.json();
-            //      console.log( dataJSON); 
-            //      console.log( dataJSON.iTotalRecords); 
+            //      console.log( dataJSON);
+            //      console.log( dataJSON.iTotalRecords);
             //      console.log( dataJSON.aaData[3].id);
-            //      console.log( dataJSON.aaData[3].nomeentidade); 
+            //      console.log( dataJSON.aaData[3].nomeentidade);
             //      alert(dataJSON.aaData.length);
             // });
 
@@ -460,7 +460,7 @@
                         routepdfprimeirosemestre = routepdfprimeirosemestre.replace('idcategoria', categoriapdf);
                         routepdfprimeirosemestre = routepdfprimeirosemestre.replace('idproduto', produtopdf);
                         routepdfprimeirosemestre = routepdfprimeirosemestre.replace('idano', anopdf);
-                    
+
                     $('#btnPdfPrimeiroSemestre').attr('href', routepdfprimeirosemestre);
                     //$("#btnPdfPrimeiroSemestre").css("display", "inline");
 
@@ -472,7 +472,7 @@
                     $("#btnPdf").css("display", "none");
                     $("#btnPdfPrimeiroSemestre").css("display", "none");
                 }
-                
+
             });
 
             // Destaca com o fundo azul, uma ou mais linha ao serem clicadas
