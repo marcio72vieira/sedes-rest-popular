@@ -97,22 +97,19 @@
     </div>
 
 
-    <!-- Modal PDF de GRUPO -->
-    <div class="modal fade modalGrupo" id="exampleModalGrupo" tabindex="-1" aria-labelledby="exampleModalLabelGrupo" aria-hidden="true">
+    <!-- Modal PDF de Subgrupo -->
+    <div class="modal fade modalSubgrupo" id="exampleModalSubgrupo" tabindex="-1" aria-labelledby="exampleModalLabelSubgrupo" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabelGrupo" style="color: rgb(46, 63, 250)">DESEJA OBTER SÓ REGISTROS DESTA REGIONAL?</h5>
+            <h5 class="modal-title" id="exampleModalLabelSubgrupo" style="color: rgb(46, 63, 250)"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
             <div class="modal-body">
-                <a href="{{route('admin.regional.relpdfregional')}}" id="btnPdfgrupo" class="btn btn-danger" style="height: 36px; width: 40px;" title="Municípios desta Regional" target="_blank"><i class="far fa-file-pdf"></i></a>
-                Municípios da Regional 
-                <br><br>
-                <a href="{{route('admin.regional.relpdfregional')}}" id="btnPdfgrupo" class="btn btn-danger" style="height: 36px; width: 40px;" title="Restaurantes desta Regional" target="_blank"><i class="far fa-file-pdf"></i></a> 
-                Restaurantes da Regional
+                <a href="{{route('admin.regional.relpdfregional')}}" id="btnPdfSubgrupo" class="btn btn-danger" style="height: 36px; width: 40px;" title="Municípios desta Regional" target="_blank"><i class="far fa-file-pdf"></i></a>
+                <span id="labelButtonPdf"></span>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
@@ -206,18 +203,36 @@
                     { data: 'id',
                         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                             //$(nTd).html("<a href='/tickets/"+oData.id+"'>"+oData.id+"</a>");
-                            // Só invoca a chamada de grupo para Regionais, Municípios e Categorias, pois possuem subgrupos
+                            // Só invoca a chamada de Subgrupo para Regionais, Municípios e Categorias, pois possuem subSubgrupos
                             if(valEntidadeSelecionada == 1 || valEntidadeSelecionada == 2 || valEntidadeSelecionada == 4) {
-                                $("#exampleModalLabelGrupo").text("Deseja os registros deste: " + txtEntidadeSelecionada);
+                                //$("#exampleModalLabelGrupo").text("Deseja os registros deste: " + txtEntidadeSelecionada);
                                 $(nTd).hover(
-                                    function(){ $(this).css({"background-color":"#4e73df", "font-weight":"bold", "color":"#ffffff" }); }, 
-                                    function(){ $(this).css({"background-color":"white", "font-weight":"bold", "color":"#808080"}); }
+                                    function(){ $(this).css({"background-color":"#4e73df", "font-weight":"bold", "color":"#ffffff", "cursor":"pointer" }); },
+                                    function(){ $(this).css({"background-color":"white", "font-weight":"normal", "color":"#808080"}); }
                                 );
                                 //$(nTd).css({"font-weight":"bold", "color":"#808080", "cursor":"pointer"});
                                 $(nTd).on('click', function(){
                                     //alert("Dados:" + oData.nomeentidade);
-                                    //alert("Linha: " + iRow + " Coluna:" + iCol);
-                                    $(".modalGrupo").modal("show");
+                                    //alert("Linha: " + iRow + " Coluna:" + iCol);btnPdfSubgrupo
+                                    switch(valEntidadeSelecionada){
+                                        case "1":
+                                            $("#exampleModalLabelSubgrupo").text("REGIONAL: " + oData.nomeentidade);
+                                            $("#labelButtonPdf").text("Listar só os Municípios desta Regional.");
+                                            relPdfSubgrupo("Regionais");
+                                        break;
+                                        case "2":
+                                            $("#exampleModalLabelSubgrupo").text("MUNICÍPIO: " + oData.nomeentidade);
+                                            $("#labelButtonPdf").text("Listar só os Restaurantes deste Município.");
+                                            relPdfSubgrupo("Municípios");
+                                        break;
+                                        case "4":
+                                            $("#exampleModalLabelSubgrupo").text("CATEGORIA: " + oData.nomeentidade);
+                                            $("#labelButtonPdf").text("Listar só os Produtos desta Categoria.");
+                                            relPdfSubgrupo("Categorias");
+                                        break;
+                                    }
+                                    //$("#exampleModalLabelSubgrupo").text(txtEntidadeSelecionada.slice(0,-1) + ": " + oData.nomeentidade );
+                                    $(".modalSubgrupo").modal("show");
                                 });
                             }
                         }
@@ -524,7 +539,21 @@
                 e.currentTarget.classList.toggle('selected');
             });
 
+
+            function relPdfSubgrupo(valsubgrupo) {
+                var valor = valsubgrupo;
+
+                valEntidadeSelecionada  = $("#selectEntidade").val();
+                valCategoriaSelecionada = $("#selectCategorias").val() == undefined ? 0 : $("#selectCategorias").val() ;
+                valProdutoSelecionado   = $("#selectProdutos").val() == undefined ? 0 : $("#selectProdutos").val();
+                valAnoSelecionado       = $("#selectPeriodo").val();
+                periodoAno  = valAnoSelecionado;
+
+                alert("Entidade: " + valEntidadeSelecionada + " Categoria: " + valCategoriaSelecionada + " Produtos: " + valProdutoSelecionado + " Ano: " + periodoAno );
+            }
+
          });
+
     </script>
 @endsection
 
