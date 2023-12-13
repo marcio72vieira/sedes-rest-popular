@@ -3442,3 +3442,72 @@ public function relpdfmonitorentidade(Request $request)
 }
 
 
+============================================
+ADICIONANDO LINK AO CONTEÚDO DE UM DATATABLE
+============================================
+{ data: 'id',
+	fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+	    //$(nTd).html("<a href='/tickets/"+oData.id+"'>"+oData.id+"</a>");
+	    // Só invoca a chamada de grupo para Regionais, Municípios e Categorias, pois possuem subgrupos
+	    if(valEntidadeSelecionada == 1 || valEntidadeSelecionada == 2 || valEntidadeSelecionada == 4) {
+		$("#exampleModalLabelGrupo").text("Deseja os registros deste: " + txtEntidadeSelecionada);
+		$(nTd).hover(
+		    function(){ $(this).css({"background-color":"#4e73df", "font-weight":"bold", "color":"#ffffff" }); }, 
+		    function(){ $(this).css({"background-color":"white", "font-weight":"bold", "color":"#808080"}); }
+		);
+		//$(nTd).css({"font-weight":"bold", "color":"#808080", "cursor":"pointer"});
+		$(nTd).on('click', function(){
+		    //alert("Dados:" + oData.nomeentidade);
+		    //alert("Linha: " + iRow + " Coluna:" + iCol);
+		    $(".modalGrupo").modal("show");
+		});
+	    }
+	}
+},
+
+
+{ data: 'id',
+	fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+	    //$(nTd).html("<a href='/tickets/"+oData.id+"'>"+oData.id+"</a>");
+	    // Só invoca a chamada de Subgrupo se for escolhido: Regionais, Municípios ou Categorias
+	    if(valEntidadeSelecionada == 1 || valEntidadeSelecionada == 2 || valEntidadeSelecionada == 4) {
+		//$("#exampleModalLabelGrupo").text("Deseja os registros deste: " + txtEntidadeSelecionada);
+		$(nTd).hover(
+		    function(){ $(this).css({"background-color":"#cc1c0c", "color":"#ffffff", "cursor":"pointer" }); },
+		    function(){ $(this).css({"background-color":"white", "color":"#858796"}); }
+		);
+
+		//$(nTd).css({"font-weight":"bold", "color":"#808080", "cursor":"pointer"});
+		$(nTd).on('click', function(){
+		    //alert("Dados:" + oData.nomeentidade);
+		    //alert("Linha: " + iRow + " Coluna:" + iCol);btnPdfSubgrupo
+		    switch(valEntidadeSelecionada){
+		        case "1":
+		            $("#exampleModalLabelSubgrupo").text("REGIONAL: " + oData.nomeentidade);
+		            $("#labelButtonPdf").text("Listar só os Municípios desta Regional.");
+		            relPdfSubgrupo("Regionais");
+		        break;
+		        case "2":
+		            $("#exampleModalLabelSubgrupo").text("MUNICÍPIO: " + oData.nomeentidade);
+		            $("#labelButtonPdf").text("Listar só os Restaurantes deste Município.");
+		            relPdfSubgrupo("Municípios");
+		        break;
+		        case "4":
+		            $("#exampleModalLabelSubgrupo").text("CATEGORIA: " + oData.nomeentidade);
+		            $("#labelButtonPdf").text("Listar só os Produtos desta Categoria.");
+		            relPdfSubgrupo("Categorias");
+		        break;
+		    }
+		    //$("#exampleModalLabelSubgrupo").text(txtEntidadeSelecionada.slice(0,-1) + ": " + oData.nomeentidade );
+		    $(".modalSubgrupo").modal("show");
+		});
+	    }
+	}
+},
+
+
+
+Implementação Controlet RelPDFSubGrupo
+
+
+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

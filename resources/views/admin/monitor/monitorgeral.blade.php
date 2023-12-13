@@ -203,17 +203,13 @@
                     { data: 'id',
                         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                             //$(nTd).html("<a href='/tickets/"+oData.id+"'>"+oData.id+"</a>");
-                            // Só invoca a chamada de Subgrupo para Regionais, Municípios e Categorias, pois possuem subSubgrupos
+                            // Só invoca a chamada de Subgrupo se for escolhido: Regionais, Municípios ou Categorias
                             if(valEntidadeSelecionada == 1 || valEntidadeSelecionada == 2 || valEntidadeSelecionada == 4) {
-                                //$("#exampleModalLabelGrupo").text("Deseja os registros deste: " + txtEntidadeSelecionada);
                                 $(nTd).hover(
-                                    function(){ $(this).css({"background-color":"#4e73df", "font-weight":"bold", "color":"#ffffff", "cursor":"pointer" }); },
-                                    function(){ $(this).css({"background-color":"white", "font-weight":"normal", "color":"#808080"}); }
+                                    function(){ $(this).css({"background-color":"#cc1c0c", "color":"#ffffff", "cursor":"pointer" }); },
+                                    function(){ $(this).css({"background-color":"white", "color":"#858796"}); }
                                 );
-                                //$(nTd).css({"font-weight":"bold", "color":"#808080", "cursor":"pointer"});
                                 $(nTd).on('click', function(){
-                                    //alert("Dados:" + oData.nomeentidade);
-                                    //alert("Linha: " + iRow + " Coluna:" + iCol);btnPdfSubgrupo
                                     switch(valEntidadeSelecionada){
                                         case "1":
                                             $("#exampleModalLabelSubgrupo").text("REGIONAL: " + oData.nomeentidade);
@@ -231,7 +227,6 @@
                                             relPdfSubgrupo("Categorias");
                                         break;
                                     }
-                                    //$("#exampleModalLabelSubgrupo").text(txtEntidadeSelecionada.slice(0,-1) + ": " + oData.nomeentidade );
                                     $(".modalSubgrupo").modal("show");
                                 });
                             }
@@ -419,6 +414,7 @@
                 // txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
                 // txtAnoSelecionado       = $("#selectPeriodo").children("option:selected").text();
 
+                // Se apenas a entidade foi selecionada
                 if(valEntidadeSelecionada != 0 && valCategoriaSelecionada == 0 && valProdutoSelecionado == 0){
 
                     switch (valEntidadeSelecionada){
@@ -451,7 +447,8 @@
 
                     oTable.ajax.url(rotaAjax).load();
 
-
+                
+                // Se entidade e categoria foi selecionada
                 }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
 
                     // Configura o texto da pesquisa
@@ -466,6 +463,7 @@
                     rotaAjax = "{{route('admin.ajaxgetCategoriasPorEntidadeComprasMensais')}}";
                     oTable.ajax.url(rotaAjax).load();
 
+                // Se entidade, categoria e produtos foram selecionados
                 }else {
 
                     // Configura o texto da pesquisa
@@ -539,6 +537,7 @@
                 e.currentTarget.classList.toggle('selected');
             });
 
+            // Fechar modal: $("#MyPopup").modal("hide");
 
             function relPdfSubgrupo(valsubgrupo) {
                 var valor = valsubgrupo;
