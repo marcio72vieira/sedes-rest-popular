@@ -108,7 +108,7 @@
             </button>
             </div>
             <div class="modal-body">
-                <a href="{{route('admin.regional.relpdfregional')}}" id="btnPdfSubgrupo" class="btn btn-danger" style="height: 36px; width: 40px;" title="Municípios desta Regional" target="_blank"><i class="far fa-file-pdf"></i></a>
+                <a href="" id="btnPdfSubgrupo" class="btn btn-danger" style="height: 36px; width: 40px;" title="Municípios desta Regional" target="_blank"><i class="far fa-file-pdf"></i></a>
                 <span id="labelButtonPdf"></span>
             </div>
             <div class="modal-footer">
@@ -213,18 +213,18 @@
                                     switch(valEntidadeSelecionada){
                                         case "1":
                                             $("#exampleModalLabelSubgrupo").text("REGIONAL: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text("Listar só os Municípios desta Regional.");
-                                            relPdfSubgrupo("Regionais");
+                                            $("#labelButtonPdf").text("Listar os Municípios desta Regional.");
+                                            relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
                                         break;
                                         case "2":
                                             $("#exampleModalLabelSubgrupo").text("MUNICÍPIO: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text("Listar só os Restaurantes deste Município.");
-                                            relPdfSubgrupo("Municípios");
+                                            $("#labelButtonPdf").text("Listar os Restaurantes deste Município.");
+                                            relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
                                         break;
                                         case "4":
                                             $("#exampleModalLabelSubgrupo").text("CATEGORIA: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text("Listar só os Produtos desta Categoria.");
-                                            relPdfSubgrupo("Categorias");
+                                            $("#labelButtonPdf").text("Listar os Produtos desta Categoria.");
+                                            relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
                                         break;
                                     }
                                     $(".modalSubgrupo").modal("show");
@@ -447,7 +447,7 @@
 
                     oTable.ajax.url(rotaAjax).load();
 
-                
+
                 // Se entidade e categoria foi selecionada
                 }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
 
@@ -539,16 +539,32 @@
 
             // Fechar modal: $("#MyPopup").modal("hide");
 
-            function relPdfSubgrupo(valsubgrupo) {
-                var valor = valsubgrupo;
 
+            function relPdfSubgrupo(validregistro) {
+
+                // Recupera os valores (se selecionados) dos elementos nos respectivos selects
                 valEntidadeSelecionada  = $("#selectEntidade").val();
                 valCategoriaSelecionada = $("#selectCategorias").val() == undefined ? 0 : $("#selectCategorias").val() ;
                 valProdutoSelecionado   = $("#selectProdutos").val() == undefined ? 0 : $("#selectProdutos").val();
                 valAnoSelecionado       = $("#selectPeriodo").val();
-                periodoAno  = valAnoSelecionado;
+                periodoAno              = valAnoSelecionado;
 
-                alert("Entidade: " + valEntidadeSelecionada + " Categoria: " + valCategoriaSelecionada + " Produtos: " + valProdutoSelecionado + " Ano: " + periodoAno );
+
+                var entidadepdfsubgrup = valEntidadeSelecionada;
+                var validregistroselecionado = validregistro;
+                var categoriapdfsubgrup =  valCategoriaSelecionada;
+                var produtopdfsubgrup = valProdutoSelecionado;
+                var anopdfsubgrup =  periodoAno;
+
+                var routepdfsubgroup = "{{route('admin.monitor.relpdfmonitorgeralsubgrupo', ['identidade', 'idregistro' , 'idcategoria', 'idproduto', 'idano'])}}";
+                    routepdfsubgroup = routepdfsubgroup.replace('identidade', entidadepdfsubgrup);
+                    routepdfsubgroup = routepdfsubgroup.replace('idregistro', validregistroselecionado);
+                    routepdfsubgroup = routepdfsubgroup.replace('idcategoria', categoriapdfsubgrup);
+                    routepdfsubgroup = routepdfsubgroup.replace('idproduto', produtopdfsubgrup);
+                    routepdfsubgroup = routepdfsubgroup.replace('idano', anopdfsubgrup);
+
+                $('#btnPdfSubgrupo').attr('href', routepdfsubgroup);
+
             }
 
          });

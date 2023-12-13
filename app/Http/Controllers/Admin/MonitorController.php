@@ -40,11 +40,11 @@ class MonitorController extends Controller
         // Obtendo apenas as Categorias e Produtos que foram efetivamente comprados (independnete do ano).
         $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
         $produtos =  DB::table('bigtable_data')->select('produto_id', 'produto_nome')->distinct('produto_id')->orderBy('produto_nome')->get();
-      
+
         // Transformando as coleções retornada acima, em arrays JSON(javascript) e enviando-os para a view
         $categoriaJSON =  json_encode($categorias);
         $produtosJSON =  json_encode($produtos);
-        
+
         return view('admin.monitor.index', compact('categoriaJSON', 'produtosJSON'));
         */
 
@@ -61,7 +61,7 @@ class MonitorController extends Controller
             $categorias =  DB::table('bigtable_data')->select('categoria_id', 'categoria_nome')->distinct('categoria_id')->orderBy('categoria_nome')->get();
             // Transformando a coleção retornada acima, em array JSON(javascript) e enviando-a para a view
             $categoriaJSON =  json_encode($categorias);
-            
+
             return view('admin.monitor.monitorgeral', compact('categoriaJSON'));
         }else if($request->tipo == "e"){
             return view('admin.monitor.monitorespecifico');
@@ -72,7 +72,7 @@ class MonitorController extends Controller
 
     }
 
-    
+
     // Monitor Registros Vazios
     public function ajaxgetRecordsEmpty(Request $request){
 
@@ -83,11 +83,11 @@ class MonitorController extends Controller
         $totalRecordswithFilter = 0;
 
         $data_arr[] = array(
-            "id" => " ", "nomeentidade" => " ", 
-            "jannormal" => " ", "janaf" => " ", "fevnormal" => " ", "fevaf" => " ", "marnormal" => " ", "maraf" => " ", 
-            "abrnormal" => " ", "abraf" => " ", "mainormal" => " ", "maiaf" => " ", "junnormal" => " ", "junaf" => " ", 
-            "julnormal" => " ", "julaf" => " ", "agsnormal" => " ", "agsaf" => " ", "setnormal" => " ", "setaf" => " ", 
-            "outnormal" => " ", "outaf" => " ", "novnormal" => " ", "novaf" => " ", "deznormal" => " ", "dezaf" => " ", 
+            "id" => " ", "nomeentidade" => " ",
+            "jannormal" => " ", "janaf" => " ", "fevnormal" => " ", "fevaf" => " ", "marnormal" => " ", "maraf" => " ",
+            "abrnormal" => " ", "abraf" => " ", "mainormal" => " ", "maiaf" => " ", "junnormal" => " ", "junaf" => " ",
+            "julnormal" => " ", "julaf" => " ", "agsnormal" => " ", "agsaf" => " ", "setnormal" => " ", "setaf" => " ",
+            "outnormal" => " ", "outaf" => " ", "novnormal" => " ", "novaf" => " ", "deznormal" => " ", "dezaf" => " ",
             "totalnormal" => " ", "totalaf" => " ", "totalgeral" => " ", "percentagemnormal" => " ", "percentagemaf" => " "
         );
 
@@ -126,7 +126,7 @@ class MonitorController extends Controller
         // Obtendo o ano de referência (ano atual)
         // $anoRef = date("Y");
         $anoRef =  $request->periodo;
-       
+
         // Obtendo o total de registros de acordo com os critérios de pesquia (fitro)
         $totalRecords = DB::table("bigtable_data")->select('regional_id')->whereYear("data_ini", "=",  $anoRef)->distinct('regional_id')->count();
         $totalRecordswithFilter =  DB::table('bigtable_data')
@@ -135,7 +135,7 @@ class MonitorController extends Controller
         ->distinct('bigtable_data.regional_id')
         ->where('bigtable_data.regional_nome', 'like', '%' .$searchValue . '%')
         ->count();
-        
+
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
@@ -335,7 +335,7 @@ class MonitorController extends Controller
         ->distinct('bigtable_data.municipio_id')
         ->where('bigtable_data.municipio_nome', 'like', '%' .$searchValue . '%')
         ->count();
-        
+
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
@@ -536,7 +536,7 @@ class MonitorController extends Controller
         ->distinct('bigtable_data.restaurante_id')
         ->where('bigtable_data.identificacao', 'like', '%' .$searchValue . '%')
         ->count();
-        
+
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
@@ -737,7 +737,7 @@ class MonitorController extends Controller
         ->distinct('bigtable_data.categoria_id')
         ->where('bigtable_data.categoria_nome', 'like', '%' .$searchValue . '%')
         ->count();
-        
+
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
@@ -939,7 +939,7 @@ class MonitorController extends Controller
         ->distinct('bigtable_data.produto_id')
         ->where('bigtable_data.produto_nome', 'like', '%' .$searchValue . '%')
         ->count();
-        
+
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
@@ -1105,9 +1105,9 @@ class MonitorController extends Controller
 
         echo json_encode($response);
         exit;
-    }   
-    
-    
+    }
+
+
     // Requisição ajax simples, para carregar produtos de uma categoria específica
     public function ajaxgetProdutosDaCategoriaComprasMensais(Request $request){
         $idCat = $request->idcategoria;
@@ -1133,10 +1133,10 @@ class MonitorController extends Controller
                 $records = DB::select(DB::raw("SELECT DISTINCT restaurante_id AS id, identificacao AS nome FROM bigtable_data ORDER BY identificacao ASC"));
             break;
         }
-        
+
         return response()->json($records);
     }
-    
+
 
     // Monitor Compras Mensais Categorias por Entidade (Regionais, Município ou Restaurantes)
     public function ajaxgetCategoriasPorEntidadeComprasMensais(Request $request){
@@ -1189,7 +1189,7 @@ class MonitorController extends Controller
         ->distinct("bigtable_data.$entidade_id")
         ->where("bigtable_data.$entidade_nome", "like", "%" .$searchValue . "%")
         ->count();
-        
+
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
@@ -1410,7 +1410,7 @@ class MonitorController extends Controller
         ->distinct("bigtable_data.$entidade_id")
         ->where("bigtable_data.$entidade_nome", "like", "%" .$searchValue . "%")
         ->count();
-        
+
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
@@ -1643,7 +1643,7 @@ class MonitorController extends Controller
         ->where("bigtable_data.$campo_nome", "like", "%" .$searchValue . "%")
         ->count();
 
-        
+
         // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
         // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
         $valoresmeses = DB::table('bigtable_data')
@@ -1814,7 +1814,7 @@ class MonitorController extends Controller
 
 
 
-    
+
     // Configuração de relatórios PDF's
     public function relpdfmonitorgeral(Request $request)
     {
@@ -1822,8 +1822,8 @@ class MonitorController extends Controller
         $catRef     = $request->idcategoria;
         $prodRef   = $request->idproduto;
         $anoRef     = $request->idano;
-        
-        
+
+
         switch($entitRef){
             case "1":
                 $entidade_id = "regional_id";
@@ -2058,41 +2058,36 @@ class MonitorController extends Controller
     public function relpdfmonitorgeralsubgrupo(Request $request)
     {
         $entitRef   = $request->identidade;
+        $idRegsRef  = $request->idregistro;
         $catRef     = $request->idcategoria;
         $prodRef   = $request->idproduto;
         $anoRef     = $request->idano;
-        
-        
+
+
         switch($entitRef){
+            // Se for REGIONAL(1), então a entidade a ser pesquisada será municípios pertencentes à regional(idRegRef)
             case "1":
-                $entidade_id = "regional_id";
-                $entidade_nome =  "regional_nome";
-                $entidaderotulo = "Regionais";
-                $titulorelatorio =  "COMPRAS POR REGIONAIS EM ".$anoRef;
-            break;
-            case "2":
                 $entidade_id = "municipio_id";
-                $entidade_nome = "municipio_nome";
+                $entidade_nome =  "municipio_nome";
                 $entidaderotulo = "Municípios";
-                $titulorelatorio =  "COMPRAS POR MUNICÍPIOS EM ".$anoRef;
+                $nomeregional = DB::table('regionais')->where('id', '=', $idRegsRef)->value('nome');
+                $titulorelatorio =  "Compras por Municípios da Regional: ".$nomeregional." em ".$anoRef;
             break;
-            case "3":
+            // Se for MUNICÍPIO(2), então a entidade a ser pesquisada será restaurantes pertencentes ao município(idRegRef)
+            case "2":
                 $entidade_id = "restaurante_id";
-                $entidade_nome =  "identificacao";
+                $entidade_nome = "identificacao";
                 $entidaderotulo = "Restaurantes";
-                $titulorelatorio =  "COMPRAS POR RESTAURANTES EM ".$anoRef;
+                $nomemunicipio = DB::table('restaurantes')->where('id', '=', $idRegsRef)->value('identificacao');
+                $titulorelatorio =  "Compras por Restaurantes do Muncípio: ".$nomemunicipio." em ".$anoRef;
             break;
+            // Se for CATEGORIAS(4), então a entidade a ser pesquisada será produtos pertencentes à categoria(idRegRef)
             case "4":
                 $entidade_id = "categoria_id";
                 $entidade_nome =  "categoria_nome";
-                $entidaderotulo = "Categorias";
-                $titulorelatorio =  "COMPRAS POR CATEGORIAS EM ".$anoRef;
-            break;
-            case "5":
-                $entidade_id = "produto_id";
-                $entidade_nome =  "produto_nome";
                 $entidaderotulo = "Produtos";
-                $titulorelatorio =  "COMPRAS POR PRODUTOS EM ".$anoRef;
+                $nomecategoria = DB::table('categorias')->where('id', '=', $idRegsRef)->value('nome');
+                $titulorelatorio =  "Compras por produtos da Categoria: ".$nomecategoria." em ".$anoRef;
             break;
         }
 
@@ -2159,6 +2154,17 @@ class MonitorController extends Controller
         ->whereYear("data_ini", "=",  $anoRef)
         ->groupByRaw("$entidade_id")
         ->orderByRaw("$entidade_nome");
+
+        //MONTAGEM CONDICIONAL DA QUERYBUILDER COM BASE NO ENVIO DA ENTIDADE: REGIONAL, MUNICÍPIO OU CATEGORIA
+        if($entitRef == "1"){
+            $valoresmeses->where("regional_id", "=", $idRegsRef);
+        }
+        if($entitRef == "2"){
+            $valoresmeses->where("municipio_id", "=", $idRegsRef);
+        }
+        if($entitRef == "4"){
+            $valoresmeses->where("categoria_id", "=", $idRegsRef);
+        }
 
 
         //MONTAGEM CONDICIONAL DA QUERYBUILDER COM BASE NO ENVIO DE CATEGORIAS OU PRODUTOS
@@ -2301,8 +2307,8 @@ class MonitorController extends Controller
         $idregRef   = $request->idregistro;
         $idtipoRef  = $request->idtipopesquisa;
         $anoRef     = $request->idano;
-        
-        
+
+
         switch($entitRef){
             case "1":
                 $entidade_id = "regional_id";
@@ -2323,18 +2329,18 @@ class MonitorController extends Controller
 
         // Define por qual campo pesquisar
         if($idtipoRef == "1"){
-            $campo_id = "categoria_id"; 
+            $campo_id = "categoria_id";
             $campo_nome = "categoria_nome";
             $rotulopesquisa =  "Categorias";
             $titulorelatorio =  "COMPRAS POR CATEGORIAS - ". $rotuloentidade . $rotuloregistro ." EM ".$anoRef;
         }else{
-            $campo_id = "produto_id"; 
+            $campo_id = "produto_id";
             $campo_nome = "produto_nome";
             $rotulopesquisa =  "Produtos";
             $titulorelatorio =  "COMPRAS POR PRODUTOS - ". $rotuloentidade . $rotuloregistro ." EM ".$anoRef;
         }
 
-        
+
         $valoresmeses = DB::table('bigtable_data')
         ->select(DB::RAW("data_ini, af, precototal, $campo_id, $campo_nome,
                 SUM(IF(MONTH(data_ini) = 01 AND af = 'nao', precototal, 0.00)) AS mesjannormal,
@@ -2501,7 +2507,7 @@ class MonitorController extends Controller
         $catRef     = $request->idcategoria;
         $prodRef   = $request->idproduto;
         $anoRef     = $request->idano;
-                
+
         switch($entitRef){
             case "1":
                 $entidade_id = "regional_id";
