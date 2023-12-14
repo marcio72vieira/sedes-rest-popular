@@ -108,7 +108,7 @@
             </button>
             </div>
             <div class="modal-body">
-                <a href="" id="btnPdfSubgrupo" class="btn btn-danger" style="height: 36px; width: 40px;" title="Municípios desta Regional" target="_blank"><i class="far fa-file-pdf"></i></a>
+                <a href="" id="btnPdfSubgrupo" class="btn btn-danger" style="height: 36px; width: 40px;" title="" target="_blank"><i class="far fa-file-pdf"></i></a>
                 <span id="labelButtonPdf"></span>
             </div>
             <div class="modal-footer">
@@ -198,7 +198,7 @@
                     },
                 },
 
-                // Define as colunas(campos) da tabela que irão receber os dados vindo do servidor. Os nomes deverão corresponder
+                // Define as colunas(campos) da tabela que irão receber os dados vindo do servidor. Os nomes deverão corresponder.
                 columns: [
                     { data: 'id',
                         fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
@@ -216,17 +216,20 @@
                                     switch(valEntidadeSelecionada){
                                         case "1":
                                             $("#exampleModalLabelSubgrupo").text("REGIONAL: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text("Listar os Municípios desta Regional.");
+                                            $("#labelButtonPdf").text(" Listar Municípios desta Regional.");
+                                            $("#btnPdfSubgrupo").attr("title", "PDF dos valores por Municípios");
                                             relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
                                         break;
                                         case "2":
                                             $("#exampleModalLabelSubgrupo").text("MUNICÍPIO: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text("Listar os Restaurantes deste Município.");
+                                            $("#labelButtonPdf").text(" Listar Restaurantes deste Município.");
+                                            $("#btnPdfSubgrupo").attr("title", "PDF dos valores por Restaurantes");
                                             relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
                                         break;
                                         case "4":
                                             $("#exampleModalLabelSubgrupo").text("CATEGORIA: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text("Listar os Produtos desta Categoria.");
+                                            $("#labelButtonPdf").text(" Listar Produtos desta Categoria.");
+                                            $("#btnPdfSubgrupo").attr("title", "PDF dos valores por Produtos");
                                             relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
                                         break;
                                     }

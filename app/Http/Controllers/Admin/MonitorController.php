@@ -2071,15 +2071,15 @@ class MonitorController extends Controller
                 $entidade_nome =  "municipio_nome";
                 $entidaderotulo = "Municípios";
                 $nomeregional = DB::table('regionais')->where('id', '=', $idRegsRef)->value('nome');
-                $titulorelatorio =  "Compras por Municípios da Regional: ".$nomeregional." em ".$anoRef;
+                $titulorelatorio =  "Compras nos Municípios da Regional ".$nomeregional." em ".$anoRef;
             break;
             // Se for MUNICÍPIO(2), então a entidade a ser pesquisada será restaurantes(restaurante_id) pertencentes ao município(idRegRef)
             case "2":
                 $entidade_id = "restaurante_id";
                 $entidade_nome = "identificacao";
                 $entidaderotulo = "Restaurantes";
-                $nomemunicipio = DB::table('restaurantes')->where('id', '=', $idRegsRef)->value('identificacao');
-                $titulorelatorio =  "Compras por Restaurantes do Muncípio: ".$nomemunicipio." em ".$anoRef;
+                $nomemunicipio = DB::table('municipios')->where('id', '=', $idRegsRef)->value('nome');
+                $titulorelatorio =  "Compras nos Restaurantes do Muncípio ".$nomemunicipio." em ".$anoRef;
             break;
             // Se for CATEGORIAS(4), então a entidade a ser pesquisada será produtos(produto_id) pertencentes à categoria(idRegRef)
             case "4":
@@ -2087,39 +2087,37 @@ class MonitorController extends Controller
                 $entidade_nome =  "produto_nome";
                 $entidaderotulo = "Produtos";
                 $nomecategoria = DB::table('categorias')->where('id', '=', $idRegsRef)->value('nome');
-                $titulorelatorio =  "Compras por produtos da Categoria: ".$nomecategoria." em ".$anoRef;
+                $titulorelatorio =  "Compras de produtos da Categoria ".$nomecategoria." em ".$anoRef;
             break;
         }
 
 
-        // Montando o título do relatório com base na CATEGORIA, se Regional, Município ou Restaurantes forem escolhidos
+        // Montando o título do relatório com base na CATEGORIA, se Regional ou  Município forem escolhidos
         if($entitRef == "1" && $catRef != 0 && $prodRef == 0 ){
             $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
-            //$titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR REGIONAIS EM ".$anoRef;
-            $titulorelatorio =  "Compras de ".Str::upper($nomeCategoria)." por municípios da Regional: ".$nomeregional." em ".$anoRef;
+            $titulorelatorio =  "Compras de ".Str::upper($nomeCategoria)." nos municípios da Regional ".$nomeregional." em ".$anoRef;
         }
         if($entitRef == "2" && $catRef != 0 && $prodRef == 0 ){
             $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR MUNICÍPIOS EM ".$anoRef;
-        }
-        if($entitRef == "3" && $catRef != 0 && $prodRef == 0 ){
-            $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR RESTAURANTES EM ".$anoRef;
+            $nomeMunicipio = DB::table('municipios')->where('id', '=', $idRegsRef)->value('nome');
+            $titulorelatorio =  "Compras de ".Str::upper($nomeCategoria)." nos restaurantes do Município ".$nomeMunicipio." em ".$anoRef;
+
         }
 
-        // Montando o título do relatório com base no PRODUTO, se Regional, Município ou Restaurantes forem escolhidos
+
+        // Montando o título do relatório com base no PRODUTO, se Regional ou Município forem escolhidos
         if($entitRef == "1" && $catRef != 0 && $prodRef != 0 ){
             $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR REGIONAIS EM ".$anoRef;
+            //$titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR REGIONAIS EM ".$anoRef;
+            $titulorelatorio =  "Compra de ".Str::upper($nomeProduto)." nos municípios da Regional ".$nomeregional." em ".$anoRef;
         }
         if($entitRef == "2" && $catRef != 0 && $prodRef != 0 ){
             $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR MUNICÍPIOS EM ".$anoRef;
+            $nomeMunicipio = DB::table('municipios')->where('id', '=', $idRegsRef)->value('nome');
+            //$titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR MUNICÍPIOS EM ".$anoRef;
+            $titulorelatorio =  "Compra de ".Str::upper($nomeProduto)." nos restaurantes do Município ".$nomeMunicipio." em ".$anoRef;
         }
-        if($entitRef == "3" && $catRef != 0 && $prodRef != 0 ){
-            $nomeProduto = DB::table('produtos')->where('id', '=', $prodRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeProduto)." POR RESTAURANTES EM ".$anoRef;
-        }
+
 
 
 
