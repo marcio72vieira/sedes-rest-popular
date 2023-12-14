@@ -206,8 +206,11 @@
                             // Só invoca a chamada de Subgrupo se for escolhido: Regionais, Municípios ou Categorias
                             if(valEntidadeSelecionada == 1 || valEntidadeSelecionada == 2 || valEntidadeSelecionada == 4) {
                                 $(nTd).hover(
-                                    function(){ $(this).css({"background-color":"#cc1c0c", "color":"#ffffff", "cursor":"pointer" }); },
-                                    function(){ $(this).css({"background-color":"white", "color":"#858796"}); }
+                                    //function(){ $(this).css({"background-color":"#cc1c0c", "color":"#ffffff", "cursor":"pointer" }); },
+                                    //function(){ $(this).css({"background-color":"white", "color":"#858796"}); }
+
+                                    function(){ $(this).html("<i class='far fa-file-pdf text-danger'></i>").css("cursor","pointer");},
+                                    function(){ $(this).html(oData.id);}
                                 );
                                 $(nTd).on('click', function(){
                                     switch(valEntidadeSelecionada){
@@ -563,7 +566,8 @@
                     routepdfsubgroup = routepdfsubgroup.replace('idproduto', produtopdfsubgrup);
                     routepdfsubgroup = routepdfsubgroup.replace('idano', anopdfsubgrup);
 
-                $('#btnPdfSubgrupo').attr('href', routepdfsubgroup);
+                $("#btnPdfSubgrupo").attr("href", routepdfsubgroup);
+                $("#btnPdfSubgrupo").on("click", function(){$(".modalSubgrupo").modal("hide")});
 
             }
 

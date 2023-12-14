@@ -2065,7 +2065,7 @@ class MonitorController extends Controller
 
 
         switch($entitRef){
-            // Se for REGIONAL(1), então a entidade a ser pesquisada será municípios pertencentes à regional(idRegRef)
+            // Se for REGIONAL(1), então a entidade a ser pesquisada será municípios(municipio_id) pertencentes à regional(idRegRef)
             case "1":
                 $entidade_id = "municipio_id";
                 $entidade_nome =  "municipio_nome";
@@ -2073,7 +2073,7 @@ class MonitorController extends Controller
                 $nomeregional = DB::table('regionais')->where('id', '=', $idRegsRef)->value('nome');
                 $titulorelatorio =  "Compras por Municípios da Regional: ".$nomeregional." em ".$anoRef;
             break;
-            // Se for MUNICÍPIO(2), então a entidade a ser pesquisada será restaurantes pertencentes ao município(idRegRef)
+            // Se for MUNICÍPIO(2), então a entidade a ser pesquisada será restaurantes(restaurante_id) pertencentes ao município(idRegRef)
             case "2":
                 $entidade_id = "restaurante_id";
                 $entidade_nome = "identificacao";
@@ -2081,10 +2081,10 @@ class MonitorController extends Controller
                 $nomemunicipio = DB::table('restaurantes')->where('id', '=', $idRegsRef)->value('identificacao');
                 $titulorelatorio =  "Compras por Restaurantes do Muncípio: ".$nomemunicipio." em ".$anoRef;
             break;
-            // Se for CATEGORIAS(4), então a entidade a ser pesquisada será produtos pertencentes à categoria(idRegRef)
+            // Se for CATEGORIAS(4), então a entidade a ser pesquisada será produtos(produto_id) pertencentes à categoria(idRegRef)
             case "4":
-                $entidade_id = "categoria_id";
-                $entidade_nome =  "categoria_nome";
+                $entidade_id = "produto_id";
+                $entidade_nome =  "produto_nome";
                 $entidaderotulo = "Produtos";
                 $nomecategoria = DB::table('categorias')->where('id', '=', $idRegsRef)->value('nome');
                 $titulorelatorio =  "Compras por produtos da Categoria: ".$nomecategoria." em ".$anoRef;
@@ -2095,7 +2095,8 @@ class MonitorController extends Controller
         // Montando o título do relatório com base na CATEGORIA, se Regional, Município ou Restaurantes forem escolhidos
         if($entitRef == "1" && $catRef != 0 && $prodRef == 0 ){
             $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
-            $titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR REGIONAIS EM ".$anoRef;
+            //$titulorelatorio =  "COMPRA DE ".Str::upper($nomeCategoria)." POR REGIONAIS EM ".$anoRef;
+            $titulorelatorio =  "Compras de ".Str::upper($nomeCategoria)." por municípios da Regional: ".$nomeregional." em ".$anoRef;
         }
         if($entitRef == "2" && $catRef != 0 && $prodRef == 0 ){
             $nomeCategoria = DB::table('categorias')->where('id', '=', $catRef)->value('nome');
