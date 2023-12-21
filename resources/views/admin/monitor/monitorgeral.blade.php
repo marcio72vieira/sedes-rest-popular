@@ -574,6 +574,137 @@
 
             }
 
+            // Obtendo o índice da coluna e o sentido (asc ou desc) que foi escolhida para ordenação pelo click do usuário.
+            oTable.on( 'order.dt', function () {
+                // Recebe um array 2D com o índice da coluna e a ordem (asc ou desc), no formato: [[índice_numerico_coluna],["ordem"]]
+                var ordering = oTable.order();  //
+                console.log( 'Table ordering changed: ' + JSON.stringify(ordering) );
+                console.log(ordering);
+                var ndxColumnEOrder =  ordering;    
+                //alert ("Número da Coluna: " + ndxColumnEOrder[0][0] + "  Ordem da Coluna: " + ndxColumnEOrder[0][1] );
+
+                //alert(getNameColumnHeader(ndxColumnEOrder[0][0]));
+                alert(getNameColumnHeader(ndxColumnEOrder));
+                
+            });
+
+            function getNameColumnHeader(arrayColumnOrder){
+                var nameColumn = "";
+                var orderColumn = "";
+
+                switch(arrayColumnOrder[0][0]) {
+                    case 0:
+                        nameColumn =  "id";
+                        sortColumn = arrayColumnOrder[0][1]; // recebe a string "asc" ou "desc"
+                    break;
+                    case 1:
+                        nameColumn =  "nomeentidade";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 2:
+                        nameColumn =  "jannormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 3:
+                        nameColumn =  "janaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 4:
+                        nameColumn =  "fevnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 5:
+                        nameColumn =  "fevaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 6:
+                        nameColumn =  "marnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 7:
+                        nameColumn =  "maraf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 8:
+                        nameColumn =  "abrnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 9:
+                        nameColumn =  "abraf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 10:
+                        nameColumn =  "mainormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 11:
+                        nameColumn =  "maiaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 12:
+                        nameColumn =  "junnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 13:
+                        nameColumn =  "junaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 14:
+                        nameColumn =  "julnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 15:
+                        nameColumn =  "julaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 16:
+                        nameColumn =  "agsnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 17:
+                        nameColumn =  "agsaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 18:
+                        nameColumn =  "setnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 19:
+                        nameColumn =  "setaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 20:
+                        nameColumn =  "outnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 21:
+                        nameColumn =  "outaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 22:
+                        nameColumn =  "novnormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 23:
+                        nameColumn =  "novaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 24:
+                        nameColumn =  "deznormal";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    case 25:
+                        nameColumn =  "dezaf";
+                        sortColumn = arrayColumnOrder[0][1];
+                    break;
+                    default:
+                        nameColumn = "Outras Colunas";
+                        sortColumn = arrayColumnOrder[0][1];
+                }
+
+                return nameColumn + " " + sortColumn;
+            }
+
          });
 
     </script>

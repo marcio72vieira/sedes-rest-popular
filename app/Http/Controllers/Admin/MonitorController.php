@@ -1942,7 +1942,7 @@ class MonitorController extends Controller
         )
         ->whereYear("bigtable_data.data_ini", "=",  $anoRef)
         ->groupBy("bigtable_data.$entidade_id")
-        ->orderBy("bigtable_data.$entidade_nome")
+        ->orderBy("bigtable_data.$entidade_nome")   // ->orderBy("aliasValoresMeses.mesjannormal", "DESC")
         ->get();
 
         $fileName = ('RelMonitor.pdf');
@@ -2035,7 +2035,7 @@ class MonitorController extends Controller
         $mpdf->SetHTMLFooter('
             <table style="width:1080px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                 <tr>
-                    <td width="360px">São Luis(MA) {DATE d/m/Y}</td>
+                    <td width="360px">São Luis(MA) {DATE d/m/Y - H:i:s}</td>
                     <td width="360px" align="center"></td>
                     <td width="360px" align="right">{PAGENO}/{nbpg}</td>
                 </tr>
