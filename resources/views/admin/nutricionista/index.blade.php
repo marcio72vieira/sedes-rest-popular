@@ -59,18 +59,54 @@
                 <td>
                     <a href="{{route('admin.empresa.nutricionista.show', [$empresa->id, $nutricionista->id])}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.empresa.nutricionista.edit', [$empresa->id, $nutricionista->id])}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
+
+                    <!-- Remanejamento de Nutricionista de uma Empresa para Outra empresa. O mesmo não deve está vinculado a um restaurante -->
+                    @if($nutricionista->qtdrestaurantevinc($nutricionista->id) == 0)
+                        <a href="" data-toggle="modal" data-target="#formRemaneje{{$nutricionista->id}}" title="remanejar"><i class="fas fa-retweet text-danger mr-2"></i></a>
+                    @else
+                        <a href="" title="Vinculado a um restaurante"><i class="fas fa-retweet text-secondary mr-2"></i></a>
+                    @endif
+
+                    <!-- Deleção de Nutricionista de uma Empresa. O mesmo não deve está vinculado a um restaurante e nem ter realizado compras -->
                     @if($nutricionista->qtdrestaurantevinc($nutricionista->id) == 0 && $nutricionista->qtdcomprasvinc($nutricionista->id) == 0)
                         <a href="" data-toggle="modal" data-target="#formDelete{{$nutricionista->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
                     @else
                         <a href="" title="Vinculado a um restaurante ou compra(s)"><i class="fas fa-trash text-secondary mr-2"></i></a>
                     @endif
 
+
                     <!-- MODAL FormDelete OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                     <div class="modal fade" id="formDelete{{$nutricionista->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="formDeleteLabel"><strong>Deletar Usuário</strong></h5>
+                            <h5 class="modal-title" id="formDeleteLabel"><strong>Deletar Nutricionista</strong></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5>{{$nutricionista->nomecompleto}}</h5>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                            <form action="{{route('admin.empresa.nutricionista.destroy', [$empresa->id, $nutricionista->id])}}" method="POST" style="display: inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" role="button"> Confirmar</button>
+                            </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+
+                    <!-- MODAL formRemaneje OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
+                    <div class="modal fade" id="formRemaneje{{$nutricionista->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="formRemanejeLabel"><strong>Remanejar Nutricionista</strong></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

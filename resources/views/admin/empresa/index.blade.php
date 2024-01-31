@@ -16,7 +16,7 @@
           <i class="far fa-file-pdf"></i> pdf
         </a>
 
- 
+
         @if(session('sucesso'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>OK!</strong> {{session('sucesso')}}
@@ -67,7 +67,7 @@
                     <a href="{{route('admin.empresa.show', $empresa->id)}}" title="exibir"><i class="fas fa-eye text-warning mr-2"></i></a>
                     <a href="{{route('admin.empresa.edit', $empresa->id)}}" title="editar"><i class="fas fa-edit text-info mr-2"></i></a>
                     {{--<a href="{{route('admin.empresa.ficha', $empresa->id)}}" title="ficha" target="_blank"><i class="far fa-file-pdf text-danger mr-2"></i></a>--}}
-                    {{--<a href="" data-toggle="modal" data-target="#formDelete{{$empresa->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>--}}                    
+                    {{--<a href="" data-toggle="modal" data-target="#formDelete{{$empresa->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>--}}
                     @if($empresa->qtdnutricionistasvinc($empresa->id) == 0)
                         <a href="" data-toggle="modal" data-target="#formDelete{{$empresa->id}}" title="excluir"><i class="fas fa-trash text-danger mr-2"></i></a>
                     @else

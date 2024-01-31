@@ -574,18 +574,21 @@
 
             }
 
+
+            /*
+            // OBTENDO O ÍNDICE DA COLUNA E O SENTIDO (asc ou desc) QUE FOI ESCOLHIDA PARA ORDENAÇÃO PELO CLICK DO USUÁRIO
             // Obtendo o índice da coluna e o sentido (asc ou desc) que foi escolhida para ordenação pelo click do usuário.
             oTable.on( 'order.dt', function () {
                 // Recebe um array 2D com o índice da coluna e a ordem (asc ou desc), no formato: [[índice_numerico_coluna],["ordem"]]
                 var ordering = oTable.order();  //
                 console.log( 'Table ordering changed: ' + JSON.stringify(ordering) );
                 console.log(ordering);
-                var ndxColumnEOrder =  ordering;    
+                var ndxColumnEOrder =  ordering;
                 //alert ("Número da Coluna: " + ndxColumnEOrder[0][0] + "  Ordem da Coluna: " + ndxColumnEOrder[0][1] );
 
                 //alert(getNameColumnHeader(ndxColumnEOrder[0][0]));
                 alert(getNameColumnHeader(ndxColumnEOrder));
-                
+
             });
 
             function getNameColumnHeader(arrayColumnOrder){
@@ -704,6 +707,7 @@
 
                 return nameColumn + " " + sortColumn;
             }
+            */
 
          });
 
