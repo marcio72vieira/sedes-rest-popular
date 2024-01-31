@@ -19,27 +19,30 @@ class NutricionistaController extends Controller
         //$this->middleware('auth', ['except' => ['index', 'show']]);
         $this->middleware(['auth', 'can:adm']);
     }
-    
-    
+
+
     public function index($idempresa)
     {
         $empresa = Empresa::find($idempresa);
         $nutricionistas = Nutricionista::where('empresa_id', '=', $idempresa)->get();
-        
-        //Forma errada. Não quero todos os nutricionistas do banco, apenas a da empresaa corrente ($idempresa)
-        //$nutricionistas = Nutricionista::all(); 
 
-        return view('admin.nutricionista.index', compact('empresa','nutricionistas'));
+        // Relação de empresas para a necessidade de Remanejamento
+        $empresas = Empresa::where('ativo', '=', '1')->orderBy('nomefantasia', 'ASC')->get();
+
+        //Forma errada. Não quero todos os nutricionistas do banco, apenas a da empresaa corrente ($idempresa)
+        //$nutricionistas = Nutricionista::all();
+
+        return view('admin.nutricionista.index', compact('empresa','nutricionistas', 'empresas'));
     }
 
-    
+
     public function create($idempresa)
     {
         $empresa = Empresa::find($idempresa);
         return view('admin.nutricionista.create', compact('empresa'));
     }
 
-    
+
     public function store(NutricionistaCreateRequest $request, $idempresa)
     {
         Nutricionista::create([
@@ -57,7 +60,7 @@ class NutricionistaController extends Controller
         return redirect()->route('admin.empresa.nutricionista.index', $idempresa);
     }
 
-    
+
     public function show($idempresa, $idnutricionista)
     {
         $empresa = Empresa::find($idempresa);
@@ -66,7 +69,7 @@ class NutricionistaController extends Controller
         return view('admin.nutricionista.show', compact('empresa', 'nutricionista'));
     }
 
-    
+
     public function edit($idempresa, $idnutricionista)
     {
         $empresa = Empresa::find($idempresa);
@@ -75,7 +78,7 @@ class NutricionistaController extends Controller
         return view('admin.nutricionista.edit', compact('empresa', 'nutricionista'));
     }
 
-    
+
     public function update(NutricionistaUpdateRequest $request, $idempresa, $idnutricionista)
     {
         $nutricionista = nutricionista::find($idnutricionista);
@@ -107,7 +110,7 @@ class NutricionistaController extends Controller
             return redirect()->route('admin.empresa.nutricionista.index', $idempresa);
     }
 
-    
+
     public function destroy($idempresa, $idnutricionista, Request $request)
     {
         Nutricionista::destroy($idnutricionista);

@@ -112,7 +112,24 @@
                             </button>
                             </div>
                             <div class="modal-body">
+                                Remanejar:
                                 <h5>{{$nutricionista->nomecompleto}}</h5>
+
+                                da Empresa:
+                                <h5>{{$nutricionista->empresa->nomefantasia}}</h5>
+
+                                para Empresa:
+                                <div class="form-group focused">
+                                    <select name="empresa_id" id="empresa_id" class="form-control" required>
+                                        <option value="" selected disabled>Escolha...</option>
+                                        @foreach($empresas  as $empresa)
+                                            <option value="{{$empresa->id}}" {{$nutricionista->empresa->id == $empresa->id ? 'disabled' : ''}}>{{$empresa->nomefantasia}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('empresa_id')
+                                        <small style="color: red">{{$message}}</small>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
