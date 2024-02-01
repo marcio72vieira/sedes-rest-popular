@@ -26,6 +26,15 @@
             </div>
         @endif
 
+        @if(session('sucessoremaneja'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>OK!</strong> {{session('sucessoremaneja')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -104,45 +113,49 @@
                     <!-- MODAL formRemaneje OBS: O id da modal para cada registro tem que ser diferente, senão ele pega apenas o primeiro registro-->
                     <div class="modal fade" id="formRemaneje{{$nutricionista->id}}" tabindex="-1" aria-labelledby="formDeleteLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="formRemanejeLabel"><strong>Remanejar Nutricionista</strong></h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                                Remanejar:
-                                <h5>{{$nutricionista->nomecompleto}}</h5>
+                            <div class="modal-content">
 
-                                da Empresa:
-                                <h5>{{$nutricionista->empresa->nomefantasia}}</h5>
-
-                                para Empresa:
-                                <div class="form-group focused">
-                                    <select name="empresa_id" id="empresa_id" class="form-control" required>
-                                        <option value="" selected disabled>Escolha...</option>
-                                        @foreach($empresas  as $empresa)
-                                            <option value="{{$empresa->id}}" {{$nutricionista->empresa->id == $empresa->id ? 'disabled' : ''}}>{{$empresa->nomefantasia}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('empresa_id')
-                                        <small style="color: red">{{$message}}</small>
-                                    @enderror
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="formRemanejeLabel"><strong>Remanejar Nutricionista</strong></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
+
+                                <!-- Passando o id da empresa atual($nutricionista->empresa->id) para após o remanejamento ser efetivado, o usuário ser redirecionado para essa mesma página -->
+                                <form action="{{route('admin.nutricionista.remaneja', [$nutricionista->empresa->id, $nutricionista->id])}}" method="POST" style="display: inline">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="modal-body">
+                                        Remanejar:
+                                        <h5>{{$nutricionista->nomecompleto}}</h5>
+
+                                        da Empresa:
+                                        <h5>{{$nutricionista->empresa->nomefantasia}}</h5>
+
+                                        para Empresa:
+                                        <div class="form-group focused">
+                                            <select name="novaempresa_id" id="novaempresa_id" class="form-control" required>
+                                                <option value="" selected disabled>Escolha...</option>
+                                                @foreach($empresas  as $empresa)
+                                                    <option value="{{$empresa->id}}" {{$nutricionista->empresa->id == $empresa->id ? 'disabled' : ''}}>{{$empresa->nomefantasia}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('empresa_id')
+                                                <small style="color: red">{{$message}}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        {{-- <input type="hidden" name="nutricionista_id_hidden" value="{{$nutricionista->id}}"> --}}
+                                        <button type="submit" class="btn btn-danger" role="button"> Confirmar</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                            <form action="{{route('admin.empresa.nutricionista.destroy', [$empresa->id, $nutricionista->id])}}" method="POST" style="display: inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger" role="button"> Confirmar</button>
-                            </form>
-                            </div>
-                        </div>
                         </div>
                     </div>
-
                 </td>
             </tr>
             @endforeach

@@ -119,4 +119,23 @@ class NutricionistaController extends Controller
 
         return redirect()->route('admin.empresa.nutricionista.index', $idempresa);
     }
+
+
+
+    //public function remaneja($idempresa, $nutricionista_id, $novaempresa_id, Request $request)
+    public function remaneja($idempresa, $nutricionista_id, Request $request)
+    {
+
+        $nutricionista = Nutricionista::findOrFail($nutricionista_id);
+        $nutricionista->empresa_id = $request->novaempresa_id;
+        $nutricionista->save();
+
+
+        //Nutricionista::where('id', "=", $nutricionista_id)->update(array('empresa_id' => $novaempresa_id));
+
+        $request->session()->flash('sucessoremaneja', 'Nutricionista Remanejado(a) com sucesso!');
+
+        return redirect()->route('admin.empresa.nutricionista.index', $idempresa);
+
+    }
 }

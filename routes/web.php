@@ -112,6 +112,8 @@ Route::prefix('admin')->name('admin.')->group(function() {
 
     // Nutricionista (Rota aninhada) fica do tipo: empresa/1/nutricionista.
     Route::resource('empresa.nutricionista', NutricionistaController::class)->middleware(['auth']);
+    // Rota para remanejar nutricionista de uma empresa para outra
+    Route::put('/nutricionista/{idempresa}/{idnutricionista}/remaneja', [NutricionistaController::class, 'remaneja'])->name('nutricionista.remaneja')->middleware(['auth']);
 
     // Compra (Rota aninhada) fica do tipo: restaurante/1/Compra. So acessa essa rota se estiver autenticado e for administrador ou proprietario.
     // Route::resource('restaurante.compra', CompraController::class)->middleware(['auth','comprarestrita']); Só utilize este middleware quando não utilizar o HELP mrc_encryp_decrypt
