@@ -523,6 +523,15 @@ EXTRAINDO O MÊS DE UMA DATA
 
 
 
+===============================================================================
+CORRIGINDO ERRO: unserialize(): Extra data starting at offset 678 of 681 bytes
+Site de Referência: https://github.com/mpdf/mpdf/issues/1895
+===============================================================================
+1 - Substitua o conteúdo da linha: 9094 do arquivo: ../vendor/mpdf/mpdf/src/Mpdf.php
+        Substitua:  $c = explode("\xbb\xa4\xac", $t, 2);
+        Por isso: $c = explode("\xbb\xa4\xac", $t, 3);
+2 -  Salve o arquivo
+
 
 ========================================================
 EXPLICANDO SELECT DEPENDENTE (MUNICIPIO/BAIRRO) NO EDIT
@@ -1936,7 +1945,7 @@ GROUP BY regional_id;
 ==========================
 TRABALHANDO COM DATATABLE
 ==========================
-/*            
+/*
 // Obtendo os dados de uma linha que foi clicada
 oTable.on( 'click', 'tbody tr', function () {
     console.log( oTable.row( this ).data());                // Todos os dados da linha atual
@@ -1959,7 +1968,7 @@ DESTAQUE DE LINHAS E COLUNAS SIMULTANEAMENTE NO DATATABLE
     td.highlight {
         background-color: whitesmoke !important;
     }
-    
+
     html.dark td.highlight {
         background-color: rgba(var(--dt-row-hover), 0.082) !important;
     }
@@ -1970,7 +1979,7 @@ DESTAQUE DE LINHAS E COLUNAS SIMULTANEAMENTE NO DATATABLE
 // Deve está na página onde possui datable
 // Script para destaque de linha e coluna simultaneamente com hover.
 // Necessita do style personalizado no início do templateadmin.blade.php
-// É necessário que sempre retorne dados, caso contrário, cauxa erro, ou seja, 
+// É necessário que sempre retorne dados, caso contrário, cauxa erro, ou seja,
 // dataJSON.iTotalRecords sempre deverá ser maior que zero. (dataJSON.iTotalRecords > 0)
 oTable.on('mouseenter', 'tbody tr td', function () {
     let colIdx = oTable.cell(this).index().column;
@@ -1991,7 +2000,7 @@ oTable.on('mouseenter', 'tbody tr td', function () {
 ================================
 TEMPLATEADMIN.BLADE.PHP ORIGINAL
 ================================
-{{-- 
+{{--
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -2029,7 +2038,7 @@ TEMPLATEADMIN.BLADE.PHP ORIGINAL
         td.highlight {
             background-color: whitesmoke !important;
         }
-        
+
         html.dark td.highlight {
             background-color: rgba(var(--dt-row-hover), 0.082) !important;
         }
@@ -2220,7 +2229,7 @@ public function ajaxgetRegionaisComprasMensais(Request $request){
                     aliasValoresMeses.mesabrnormal AS abrnormal, aliasValoresMeses.mesabraf AS abraf, aliasValoresMeses.mesmainormal AS mainormal, aliasValoresMeses.mesmaiaf AS maiaf, aliasValoresMeses.mesjunnormal AS junnormal, aliasValoresMeses.mesjunaf AS junaf,
                     aliasValoresMeses.mesjulnormal AS julnormal, aliasValoresMeses.mesjulaf AS julaf, aliasValoresMeses.mesagsnormal AS agsnormal, aliasValoresMeses.mesagsaf AS agsaf, aliasValoresMeses.messetnormal AS setnormal, aliasValoresMeses.messetaf AS setaf,
                     aliasValoresMeses.mesoutnormal AS outnormal, aliasValoresMeses.mesoutaf AS outaf, aliasValoresMeses.mesnovnormal AS novnormal, aliasValoresMeses.mesnovaf AS novaf, aliasValoresMeses.mesdeznormal AS deznormal, aliasValoresMeses.mesdezaf AS dezaf,
-                    
+
                     (aliasValoresMeses.mesjannormal + aliasValoresMeses.mesfevnormal + aliasValoresMeses.mesmarnormal + aliasValoresMeses.mesabrnormal + aliasValoresMeses.mesmainormal + aliasValoresMeses.mesjunnormal + aliasValoresMeses.mesjulnormal + aliasValoresMeses.mesagsnormal + aliasValoresMeses.messetnormal + aliasValoresMeses.mesoutnormal + aliasValoresMeses.mesnovnormal + aliasValoresMeses.mesdeznormal ) AS totalnormal,
                     (aliasValoresMeses.mesjanaf + aliasValoresMeses.mesfevaf + aliasValoresMeses.mesmaraf + aliasValoresMeses.mesabraf + aliasValoresMeses.mesmaiaf + aliasValoresMeses.mesjunaf + aliasValoresMeses.mesjulaf + aliasValoresMeses.mesagsaf + aliasValoresMeses.messetaf + aliasValoresMeses.mesoutaf + aliasValoresMeses.mesnovaf + aliasValoresMeses.mesdezaf ) AS totalaf,
                     ((aliasValoresMeses.mesjannormal + aliasValoresMeses.mesfevnormal + aliasValoresMeses.mesmarnormal + aliasValoresMeses.mesabrnormal + aliasValoresMeses.mesmainormal + aliasValoresMeses.mesjunnormal + aliasValoresMeses.mesjulnormal + aliasValoresMeses.mesagsnormal + aliasValoresMeses.messetnormal + aliasValoresMeses.mesoutnormal + aliasValoresMeses.mesnovnormal + aliasValoresMeses.mesdeznormal) + (aliasValoresMeses.mesjanaf + aliasValoresMeses.mesfevaf + aliasValoresMeses.mesmaraf + aliasValoresMeses.mesabraf + aliasValoresMeses.mesmaiaf + aliasValoresMeses.mesjunaf + aliasValoresMeses.mesjulaf + aliasValoresMeses.mesagsaf + aliasValoresMeses.messetaf + aliasValoresMeses.mesoutaf + aliasValoresMeses.mesnovaf + aliasValoresMeses.mesdezaf)) AS totalgeral,
