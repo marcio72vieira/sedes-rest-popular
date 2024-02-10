@@ -314,6 +314,8 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
             return Bigtabledata::all();
         }
 
+10- Testar a execução do novo recurso, a partir daqui, clicando no link criado acima.
+
 10- Se for necessário selecionar campos específicos com critérios específicos, é necessário criar um método stático(getBigtabledatasExcel) no model
     Bigtabledata e invocá-lo no return da collect, ou seja, substitua o conteúdo do método collection() como abaixo:
         public function collection()
@@ -321,6 +323,7 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
             // Retorna os dados consultados no método getBigtabledatas criado no model Bigtabledata
             return collect(Bigtabledata::getBigtabledatasExcel(10, 2023));
         }
+
 
 
 
