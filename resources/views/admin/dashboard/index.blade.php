@@ -20,27 +20,36 @@
             Script no final desta página
         --}}
         
-        <div id="mesesanosparapesquisa" class="col-md-3 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px">
-            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
-                <option value="" selected disabled>Mês...</option>
-                @foreach($mesespesquisa as $key => $value)
-                    {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
-                    {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
-                    <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
-                @endforeach
-            </select>
-            &nbsp;&nbsp;
-            <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
-                <option value="" selected disabled>Ano...</option>
-                @foreach($anospesquisa as $value)
-                    <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
-                @endforeach
-            </select>
-            &nbsp;&nbsp;
-            <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
-                <i class="far fa-file-excel"></i>
-                <b>Gerar Excel</b>
-            </a>
+        <div id="mesesanosparapesquisa" class="col-md-3 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px; border: 1px dotted red">
+            <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline">
+                <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
+                    <option value="" selected disabled>Mês...</option>
+                    @foreach($mesespesquisa as $key => $value)
+                        {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
+                        {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
+                        <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
+                    @endforeach
+                </select>
+                &nbsp;&nbsp;
+                <select id="selectAnoExecel"  name="anoexcel" class="form-control col-form-label-sm">
+                    <option value="" selected disabled>Ano...</option>
+                    @foreach($anospesquisa as $value)
+                        <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
+                    @endforeach
+                </select>
+                &nbsp;&nbsp;
+                <button type="submit" class="mb-2 btn btn-success btn-sm form-control col-form-label-sm" style="margin-top: 8px;">
+                    <i class="far fa-file-excel"></i>
+                    <b>Gerar Excel</b>
+                </button>
+                
+                {{-- 
+                <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
+                    <i class="far fa-file-excel"></i>
+                    <b>Gerar Excel</b>
+                </a>
+                --}}
+            </form>
         </div>
     </div>
 

@@ -680,9 +680,12 @@ class DashboardController extends Controller
     *******************/
 
     // Gerando arquivo Excel
-    public function gerarexcel() 
+    public function gerarexcel(Request $request) 
     {
-        return Excel::download(new BigtabledatasExport(10, 2023), 'dadoscompra.xlsx');
+        $mes = $request->mesexcel;
+        $ano = $request->anoexcel;
+
+        return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.xlsx');
     }
 
 
