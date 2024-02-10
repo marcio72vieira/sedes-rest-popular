@@ -17,6 +17,9 @@ use App\Models\User;
 
 use Illuminate\Support\Str;
 
+use App\Exports\BigtabledatasExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class DashboardController extends Controller
 {
     public function __construct()
@@ -675,6 +678,12 @@ class DashboardController extends Controller
     /*******************
     //   FIM - MONITOR
     *******************/
+
+    // Gerando arquivo Excel
+    public function gerarexcel() 
+    {
+        return Excel::download(new BigtabledatasExport, 'dadoscompra.xlsx');
+    }
 
 
 

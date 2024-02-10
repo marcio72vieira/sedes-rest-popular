@@ -1,7 +1,7 @@
 =============================
 CONFIGURAÇÕES INICIAIS
 ============================
-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
+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
 
 1 - Criar um projeto com o Laravel:
     composer create-project --prefer-dist laravel/laravel sedes-rest-popular "8.5"
@@ -263,20 +263,71 @@ RELACIONAMENTOS
 ==================================
 BIBLIOTECA PARA GERAR CSV E EXCEL
 ==================================
-// Depois de baixar o Maatwebsite
-// composer require maatwebsite/excel
-// Registar em config/app.php na propriedade provider e alias
-   'providers' => [
-   	\Maatwebsite\Excel\ExcelServiceProvider::class,
-   ]
+1 - Sites de referência: 
+        https://laravel-excel.com/
+        https://dev.to/ellis22/laravel-export-in-excel-and-csv-example-24ma?utm_source=pocket_reader
+2 - Baixar a biblioteca a partir da pasta raiz do seu projeto
+        composer require maatwebsite/excel
+3 - Registar em config/app.php na propriedade provider e alias
+        'providers' => [
+   	        \Maatwebsite\Excel\ExcelServiceProvider::class,
+        ]
 
-   'aliases' => [
-   	'Excel' => \Maatwebsite\Excel\Facades\Excel::class,
-   ]
+        'aliases' => [
+   	        'Excel' => \Maatwebsite\Excel\Facades\Excel::class,
+        ]
+4 - Publicar o service provider através do comando abaixo, irá criar o arquivo: config/exel.php
+        php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
+5 - Gerar o(s) arquivo(s) de exportação na pasta app/Exports (que será criada automaticamente)
+        php artisan make:export BigtabledatasExport --model=Bigtabledata
+6 - Crie um método no Controller correspondente ao arquivo de Export gerado anteriormente
+        No caso concreto, iremos criar o método no controller DashboardController.php.
+        Poderia ser nos controles:  UserController, MunicípioController, RestauranteController, etc...
+        Não esquecer de importar as classes necessárias no início do Controller
+        <?php
 
-// php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"
-// Comando para gerar este export:
-// php artisan make:export ResiduoExport --model=App\Models\Residuo
+            namespace App\Http\Controllers;
+
+            use App\Exports\BigtabledatasExport;
+            use Maatwebsite\Excel\Facades\Excel;
+
+            class DashboardController extends Controller 
+            {
+                public function exportarexcel() 
+                {
+                    return Excel::download(new BigtabledatasExport, 'dadoscompra.xlsx');
+                }
+            }
+7 - Criar rota para referenciar o método: exportarexcel()
+        Route::get('admin/dashboard/gerarexcel', [DashboardController::class, 'gerarexcel'])->name('admin.dashboard.gerarexcel')->middleware(['auth']);
+8 - Criar o link no arquivo de View para referenciar a rota criada acima:
+        <a href="{{route('admin.dashboard.gerarexcel')}}">Gerar Excel</a>
+
+
+
+9 - OBS: Até o passo anterior(8), a geração do arquivo excel está plenamente funcional, ou seja, gera um arquivo excel 
+    com todos os dados da tabela bigtable_data através da invocação do método abaixo no arquivo: app/Exports/BigtabledatasExport.php
+        public function collection()
+        {
+            // Retorna todos os dados da Model Bigtabledata sem a necessidade de criar um método específico. 
+            // Esta é a forma default de utilização
+            return Bigtabledata::all();
+        }
+
+10- Se for necessário selecionar campos específicos com critérios específicos, é necessário criar um método stático(getBigtabledatasExcel) no model
+    Bigtabledata e invocá-lo no return da collect, ou seja, substitua o conteúdo do método collection() como abaixo:
+        public function collection()
+        {
+            // Retorna os dados consultados no método getBigtabledatas criado no model Bigtabledata
+            return collect(Bigtabledata::getBigtabledatasExcel(10, 2023));
+        }
+
+
+
+
+
+
+
 
 // Criar o método getResiduos() no model Residuo
 // No model Residuo inserir a Facades DB
@@ -2083,7 +2134,7 @@ TEMPLATEADMIN.BLADE.PHP ORIGINAL
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <a class="rounded scroll-to-top" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 

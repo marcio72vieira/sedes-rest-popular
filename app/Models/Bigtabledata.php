@@ -441,16 +441,11 @@ class Bigtabledata extends Model
      }
 
 
-
-
-
-
-
-
-
-
-
-
+     // relatorio excel
+    public static function getBigtabledatasExcel($mes, $ano){
+        $records = DB::table('bigtable_data')->select('id', 'compra_id', 'produto_id', 'quantidade', 'medida_id', 'preco', 'af', 'precototal', 'produto_nome', 'medida_nome')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get()->toArray();
+        return $records;
+    }
 
 
 }

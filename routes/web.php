@@ -299,3 +299,5 @@ Route::get('admin/registroconsultacompra/{idcateg}/{idmedi}/{idmun}/{mes}/{ano}/
 Route::get('admin/registroconsultacompra/{idcateg}/{idmedi}/{idreg}/{mes}/{ano}/pdf/relpdfcomparativomensalcategoriaregional', [RegistroconsultacompraController::class, 'relpdfcomparativomensalcategoriaregional'])->name('admin.registroconsultacompra.relpdfcomparativomensalcategoriaregional')->middleware(['auth']);
 Route::get('admin/registroconsultacompra/{idcateg}/{idmedi}/{mes}/{ano}/pdf/relpdfcomparativomensalgeralcategoria', [RegistroconsultacompraController::class, 'relpdfcomparativomensalgeralcategoria'])->name('admin.registroconsultacompra.relpdfcomparativomensalgeralcategoria')->middleware(['auth']);
 
+// Relatorio EXCEL
+Route::get('admin/dashboard/gerarexcel', [DashboardController::class, 'gerarexcel'])->name('admin.dashboard.gerarexcel')->middleware(['auth']);

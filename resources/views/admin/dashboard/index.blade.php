@@ -6,10 +6,10 @@
 
     <!-- Page Heading -->
 
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <div class="mb-4 d-sm-flex align-items-center justify-content-between">
+        <h1 class="mb-0 text-gray-800 h3">Dashboard</h1>
         {{--
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <a href="#" class="shadow-sm d-none d-sm-inline-block btn btn-sm btn-primary">
                 <i class="fas fa-download fa-sm text-white-50"></i>
                 Generate Report
             </a>
@@ -19,6 +19,29 @@
             espaço original reservado para SELECTS MÊS E ANO DE PESQUISA PARA GRÁFICOS.
             Script no final desta página
         --}}
+        
+        <div id="mesesanosparapesquisa" class="col-md-3 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px">
+            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
+                <option value="" selected disabled>Mês...</option>
+                @foreach($mesespesquisa as $key => $value)
+                    {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
+                    {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
+                    <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
+                @endforeach
+            </select>
+            &nbsp;&nbsp;
+            <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
+                <option value="" selected disabled>Ano...</option>
+                @foreach($anospesquisa as $value)
+                    <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
+                @endforeach
+            </select>
+            &nbsp;&nbsp;
+            <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
+                <i class="far fa-file-excel"></i>
+                <b>Gerar Excel</b>
+            </a>
+        </div>
     </div>
 
 
@@ -29,16 +52,16 @@
     <div class="row">
 
         <!-- Empresas -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-primary h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Empresas</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totEmpresas }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-primary text-uppercase">Empresas</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $totEmpresas }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-city fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-city fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -47,16 +70,16 @@
 
 
         <!-- Nutricionistas -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-primary h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Nutricionistas</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totNutricionistas }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-primary text-uppercase">Nutricionistas</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $totNutricionistas }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-user-friends fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-user-friends fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -65,16 +88,16 @@
 
 
         <!-- Usuarios -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-primary h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Usuarios</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totUsuarios }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-primary text-uppercase">Usuarios</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $totUsuarios }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-user-friends fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-user-friends fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -83,16 +106,16 @@
 
 
         <!-- Regionais -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-warning h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Regionais</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $regionais->count() }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-warning text-uppercase">Regionais</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $regionais->count() }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-globe-americas fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-globe-americas fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -100,16 +123,16 @@
         </div>
 
         <!-- Municípios -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-warning h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Municípios</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totMunicipios }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-warning text-uppercase">Municípios</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $totMunicipios }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-map-marked-alt fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-map-marked-alt fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -117,16 +140,16 @@
         </div>
 
         <!-- Restaurantes -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-warning h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Restaurantes</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totRestaurantes}}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-warning text-uppercase">Restaurantes</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $totRestaurantes}}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-utensils fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-utensils fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -135,18 +158,18 @@
 
 
         <!-- Compras -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-success h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            {{-- <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compras / Mês</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totComprasGeral }} / {{ $totComprasMes }}</div> --}}
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compras</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totComprasMes }}</div>
+                        <div class="mr-2 col">
+                            {{-- <div class="mb-1 text-xs font-weight-bold text-success text-uppercase">Compras / Mês</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $totComprasGeral }} / {{ $totComprasMes }}</div> --}}
+                            <div class="mb-1 text-xs font-weight-bold text-success text-uppercase">Compras</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $totComprasMes }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-shopping-cart fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -155,16 +178,16 @@
 
 
         <!-- Valor Total -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-success h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($totalValorCompras, 2, ',', '.') }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-success text-uppercase">Total</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">R$ {{ number_format($totalValorCompras, 2, ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-dollar-sign fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -173,16 +196,16 @@
 
 
          <!-- Valor Compras Normal-->
-         <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+         <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-success h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compra Normal</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($totComprasNormal, '2', ',', '.') }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-success text-uppercase">Compra Normal</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">R$ {{ number_format($totComprasNormal, '2', ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-dollar-sign fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -191,16 +214,16 @@
 
 
         <!-- Valor Compras AF-->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-success h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Compras AF</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">R$ {{ number_format($totComprasAf, '2', ',', '.') }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-success text-uppercase">Compras AF</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">R$ {{ number_format($totComprasAf, '2', ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-dollar-sign fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -210,16 +233,16 @@
 
 
         <!-- Categorias-->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-danger shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-danger h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Categorias</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $categorias->count() }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-danger text-uppercase">Categorias</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $categorias->count() }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-stream fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-stream fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -228,16 +251,16 @@
 
 
         <!-- Produtos-->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-danger shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-danger h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Produtos</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $produtos->count() }}</div>
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-danger text-uppercase">Produtos</div>
+                            <div class="mb-0 text-gray-800 h5 font-weight-bold">{{ $produtos->count() }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-leaf fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-leaf fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -248,31 +271,31 @@
 
         {{--
         <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
+        <div class="mb-4 col-xl-2 col-md-6">
+            <div class="py-2 shadow card border-left-info h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pontos Coletas
+                        <div class="mr-2 col">
+                            <div class="mb-1 text-xs font-weight-bold text-info text-uppercase">Pontos Coletas
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0</div>
+                                    <div class="mb-0 mr-3 text-gray-800 h5 font-weight-bold">0</div>
                                 </div>
                                 <div class="col">
-                                    <div class="progress progress-sm mr-2">
+                                    <div class="mr-2 progress progress-sm">
                                         <div class="progress-bar bg-info" role="progressbar"
                                             style="width: 50%" aria-valuenow="50" aria-valuemin="0"
                                             aria-valuemax="100"></div>
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0</div>
+                                    <div class="mb-0 mr-3 text-gray-800 h5 font-weight-bold">0</div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            <i class="text-gray-300 fas fa-clipboard-list fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -289,9 +312,9 @@
 
         <!-- Area Chart -->
         <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
+            <div class="mb-4 shadow card">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                <div class="flex-row py-2 card-header d-flex align-items-center justify-content-between">
 
                     {{-- <h6 class="m-0 font-weight-bold text-primary">GRÁFICOS</h6>
                     <input type="month" id="start" name="start"> --}}
@@ -300,7 +323,7 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                             Dados
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        <div class="shadow dropdown-menu dropdown-menu-right animated--fade-in"
                             aria-labelledby="dropdownMenuDados">
                             <div class="dropdown-header">Gerais:</div>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Produtos</a>
@@ -341,9 +364,9 @@
                         </a> --}}
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuTipografico"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            <i class="text-gray-400 fas fa-ellipsis-v fa-sm fa-fw"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        <div class="shadow dropdown-menu dropdown-menu-right animated--fade-in"
                             aria-labelledby="dropdownMenuTipografico">
                             <div class="dropdown-header">Estilo do Gráfico:</div>
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="bar"><span><i class="fas fa-chart-bar"></i></span> Coluna</a>
@@ -373,14 +396,14 @@
 
         <!-- Tabela Tradução -->
         <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
+            <div class="mb-4 shadow card">
                 <!-- Card Header - Dropdown -->
                 <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    class="flex-row py-3 card-header d-flex align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Tradução</h6>
                 </div>
                 <!-- Card Body -->
-                <div class="card-body" style="max-height: 540px; overflow: auto;">{{-- <div class="chart-pie pt-4 pb-2"> <canvas id="myPieChart"></canvas> </div>  --}}
+                <div class="card-body" style="max-height: 540px; overflow: auto;">{{-- <div class="pt-4 pb-2 chart-pie"> <canvas id="myPieChart"></canvas> </div>  --}}
                     <table class="tabelatraducao">
                         @php
                             $somacompra = 0;
@@ -423,7 +446,7 @@
     <!-- INÍCIO MEUS GRÁFICOS LINHA MÊS a MÊS -->
     <div class="row">
         <div class="col-xl-12 col-lg-12">
-            <div class="card shadow mb-4">
+            <div class="mb-4 shadow card">
                 <div>
                     <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Comparativo de Compra Mensal (Normal x Agricultara Familiar)</h5>
                     <div class="card-header"  style="float: right; margin-top: -41px;">
@@ -434,12 +457,12 @@
                             </a> -->
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMes"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                <i class="text-gray-400 fas fa-ellipsis-v fa-sm fa-fw"></i>
                             </a>
                             <!-- Div: psdmenu-mrc, sem função alguma, só para envolver a div: dropdown-menu e modificar seu estilo no arquivo mystyles.css
                                  a fim de não afetar o estilo das demais divis que possui a mesma class (dropdown-menu -->
                             <div class="psdmenu-mrc">
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                <div class="shadow dropdown-menu dropdown-menu-right animated--fade-in"
                                     aria-labelledby="dropdownMenuDadosMesMes">
                                     <a class="dropdown-item psdlink entidademesames" data-entidademesames="Geral"  data-id="0">Geral</a>
 
@@ -499,7 +522,7 @@
     <!-- INÍCIO GRÁFICOS MONITOR MÊS A MÊS REGIONAL - MUNICIPIO - RESTAURANTE  -->
     <div class="row">
         <div class="col-xl-12 col-lg-12">
-            <div class="card shadow mb-4">
+            <div class="mb-4 shadow card">
                 <div class="pesquisaMonitor">
                    {{--  <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">
                         Comparativo de Compra Mensal (Normal x Agricultara Familiar) por Município ou Restaurante
@@ -564,12 +587,12 @@
                             </a> --}}
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuDadosMesMesRestaurante"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                <i class="text-gray-400 fas fa-ellipsis-v fa-sm fa-fw"></i>
                             </a>
                             {{-- Div: psdmenu-mrc, sem função alguma, só para envolver a div: dropdown-menu e modificar seu estilo no arquivo mystyles.css
                                  a fim de não afetar o estilo das demais divis que possui a mesma class (dropdown-menu --}}
                             <div class="psdmenu-mrc">
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                <div class="shadow dropdown-menu dropdown-menu-right animated--fade-in"
                                     aria-labelledby="dropdownMenuDadosMesMes">
                                     <a class="dropdown-item psdlink entidademesamesmonitor" data-entidademesamesmonitor="Geral"  data-id="0">Geral</a>
 
@@ -619,7 +642,7 @@
     <div class="row">
         {{-- Outros dados --}}
         <div class="col-xl-5 col-lg-6">
-            <div class="card shadow mb-4">
+            <div class="mb-4 shadow card">
                 <div>
                     <h5 class="card-header" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Visualização Rápida</h5>
                     <div class="card-header"  style="float: right; margin-top: -41px;">
@@ -630,9 +653,9 @@
                             </a> --}}
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuEntidade"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                <i class="text-gray-400 fas fa-ellipsis-v fa-sm fa-fw"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            <div class="shadow dropdown-menu dropdown-menu-right animated--fade-in"
                                 aria-labelledby="dropdownMenuEntidade">
                                 <div class="dropdown-header">Entidade:</div>
                                 <a class="dropdown-item tabentidade psdlink">Usuários</a>
@@ -663,7 +686,7 @@
                                             echo "<tr class='destaque'>";
                                                 echo "<td class='dadoslabel'>".$value->id."</td>";
                                                 echo "<td class='dadoslabel regid psdlink' data-id='".$value->id."'>".$value->nomecompleto."</td>";
-                                                echo "<td class='dadoslabel' style='text-align:center'>".($value->perfil != "ina" ? '<b><i class="fas fa-check text-success mr-2"></i></b>' : '<b><i class="fas fa-times  text-danger mr-2"></i></b>')."</td>";
+                                                echo "<td class='dadoslabel' style='text-align:center'>".($value->perfil != "ina" ? '<b><i class="mr-2 fas fa-check text-success"></i></b>' : '<b><i class="mr-2 fas fa-times text-danger"></i></b>')."</td>";
                                             echo "</tr>";
                                         }
                                     }
@@ -677,7 +700,7 @@
 
         {{-- Informações --}}
         <div class="col-xl-7 col-lg-6">
-            <div class="card shadow mb-4">
+            <div class="mb-4 shadow card">
                 <div>
                     <h5 class="card-header" id="headinformacaoes" style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; float: left;">Informações</h5>
                 </div>
@@ -696,7 +719,7 @@
 
     <!-- Modal PeríodoVazio -->
     <div class="modal fade modalSemLancamento" id="exampleModalSemLancamento" tabindex="-1" aria-labelledby="exampleModalLabelSemLancamento" aria-hidden="true">
-        <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabelSemLancamento" style="color: rgb(46, 63, 250)">SEM LANÇAMENTOS!</h5>
@@ -1390,8 +1413,8 @@
                                 statusentidade = "1";
                             }
 
-                            //$(".tabelaentidade").append('<tr class="destaque"><td class="dadoslabel">' + value.id + '</td><td class="dadoslabel regid psdlink" data-id="' + value.id + '">' + value.nome + '</td><td class="dadoslabel" style="text-align:center">' + (value.ativo != "ina" || value.ativo != "0" ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times text-danger mr-2'></i></b>") + '</td></tr>');
-                            $(".tabelaentidade").append('<tr class="destaque"><td class="dadoslabel">' + value.id + '</td><td class="dadoslabel regid psdlink" data-id="' + value.id + '">' + value.nome + '</td><td class="dadoslabel" style="text-align:center">' + (statusentidade == "1" ? "<b><i class='fas fa-check text-success mr-2'></i></b>" : "<b><i class='fas fa-times text-danger mr-2'></i></b>") + '</td></tr>');
+                            //$(".tabelaentidade").append('<tr class="destaque"><td class="dadoslabel">' + value.id + '</td><td class="dadoslabel regid psdlink" data-id="' + value.id + '">' + value.nome + '</td><td class="dadoslabel" style="text-align:center">' + (value.ativo != "ina" || value.ativo != "0" ? "<b><i class='mr-2 fas fa-check text-success'></i></b>" : "<b><i class='mr-2 fas fa-times text-danger'></i></b>") + '</td></tr>');
+                            $(".tabelaentidade").append('<tr class="destaque"><td class="dadoslabel">' + value.id + '</td><td class="dadoslabel regid psdlink" data-id="' + value.id + '">' + value.nome + '</td><td class="dadoslabel" style="text-align:center">' + (statusentidade == "1" ? "<b><i class='mr-2 fas fa-check text-success'></i></b>" : "<b><i class='mr-2 fas fa-times text-danger'></i></b>") + '</td></tr>');
                         });
                     },
                     error: function(result){
