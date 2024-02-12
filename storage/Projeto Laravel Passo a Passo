@@ -303,45 +303,177 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
 8 - Criar o link no arquivo de View para referenciar a rota criada acima:
         <a href="{{route('admin.dashboard.gerarexcel')}}">Gerar Excel</a>
 
-
-
 9 - OBS: Até o passo anterior(8), a geração do arquivo excel está plenamente funcional, ou seja, gera um arquivo excel 
-    com todos os dados da tabela bigtable_data através da invocação do método abaixo no arquivo: app/Exports/BigtabledatasExport.php
+    com todos os dados da tabela bigtable_data(sem linha de cabeçalho) através da invocação do método abaixo no arquivo: app/Exports/BigtabledatasExport.php
         public function collection()
         {
-            // Retorna todos os dados da Model Bigtabledata sem a necessidade de criar um método específico. 
+            // Retorna todos os dados(campos) da Model Bigtabledata sem a necessidade de criar um método específico. 
             // Esta é a forma default de utilização
             return Bigtabledata::all();
         }
 
 10- Testar a execução do novo recurso, a partir daqui, clicando no link criado acima.
 
-10- Se for necessário selecionar campos específicos com critérios específicos, é necessário criar um método stático(getBigtabledatasExcel) no model
+11- Se for necessário selecionar campos específicos com critérios específicos, é necessário criar um método stático(getBigtabledatasExcel) no model
     Bigtabledata e invocá-lo no return da collect, ou seja, substitua o conteúdo do método collection() como abaixo:
         public function collection()
         {
-            // Retorna os dados consultados no método getBigtabledatas criado no model Bigtabledata
-            return collect(Bigtabledata::getBigtabledatasExcel(10, 2023));
+            // Retorna os dados(campos) consultados no método getBigtabledatas criado no model Bigtabledata
+            return collect(Bigtabledata::getBigtabledatasExcel());
         }
+12- Para criar a linha de cabeçalho da planilha, na classe: BigtabledatasExport.php
+    a) importe a classe: 
+        use Maatwebsite\Excel\Concerns\WithHeadings;
+    b) referencie sua implementação: 
+        class BigtabledatasExport implements FromCollection, WithHeadings
+    c) implemente o método:
+        public function headings():array{
+            return[
+                'ID', 'ID COMPRA', 'ID PRODUTO', etc... 
+            ];
+        }
+    
+    SEQUÊNCIA FINAL DA UTILIZAÇÃO DA CLASSE MAATWEBSITE/EXCEL SEM A PASSAGEM DE PARÂMETROS
+    --------------------------------------------------------------------------------------
+   
+    A) No arquivo: routes/web.php
+        Route::get('admin/dashboard/gerarexcel', [DashboardController::class, 'gerarexcel'])->name('admin.dashboard.gerarexcel')->middleware(['auth']);
+    
+    B) No arquivo: app/Http/Controllers/Admin/DashboardController.php
+        ...
+        use App\Exports\BigtabledatasExport;
+        use Maatwebsite\Excel\Facades\Excel;
+        
+        public function gerarexcel() 
+        {
+            return Excel::download(new BigtabledatasExport(), 'dadoscompra.xlsx');
+        }
+    
+    C) No arquivo: app/Exports/BigtabledatasExport.php
+        <?php
 
+            namespace App\Exports;
 
+            use App\Models\Bigtabledata;
+            use Maatwebsite\Excel\Concerns\FromCollection;
+            use Maatwebsite\Excel\Concerns\WithHeadings;
 
+            class BigtabledatasExport implements FromCollection, WithHeadings
+            {
+                public function headings():array{
+                    return[
+                        'ID', 'ID COMPRA', 'ID PRODUTO', 'QUANTIDADE', 'MEDIDA', 'PREÇO', 'AF', 'TOTAL', 'NOME PRODUTO', 'MEDIDA', 'DATA INICIAL'
+                    ];
+                }
 
+                public function collection()
+                {
+                    // Retorna todos os dados(campos) da Model Bigtabledata sem a necessidade de criar um método específico. Este é a forma default de utilização
+                    // return Bigtabledata::all();
 
+                    // Retorna os dados(campos) consultados no método getBigtabledatas criado no model Bigtabledata
+                    return collect(Bigtabledata::getBigtabledatasExcel());
+                }
+            }
+    
+    D) No arquivo: app/Models/Bigtabledata.php
+        // relatorio excel
+        public static function getBigtabledatasExcel(){
+            $records = DB::table('bigtable_data')->select('id', 'compra_id', 'produto_id', 'quantidade', 'medida_id', 'preco', 'af', 'precototal', 'produto_nome', 'medida_nome', 'data_ini')->get()->toArray();
+            return $records;
+        }
+    
+    E) No arquivo: resources/views/admin/dashboard/index.blade.php
+        <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
+            <i class="far fa-file-excel"></i>
+            <b>Gerar Excel</b>
+        </a>
+    
 
+    SEQUÊNCIA FINAL DA UTILIZAÇÃO DA CLASSE MAATWEBSITE/EXCEL COM A PASSAGEM DE PARÂMETROS
+    --------------------------------------------------------------------------------------
 
+    A') No arquivo: routes/web.php
+    Route::get('admin/dashboard/gerarexcel', [DashboardController::class, 'gerarexcel'])->name('admin.dashboard.gerarexcel')->middleware(['auth']);
 
+    B') No arquivo: app/Http/Controllers/Admin/DashboardController.php
+        ...
+        use App\Exports\BigtabledatasExport;
+        use Maatwebsite\Excel\Facades\Excel;
 
-// Criar o método getResiduos() no model Residuo
-// No model Residuo inserir a Facades DB
-// criar o método heading():array nesta classe (indicando o cabeçalho dos arquivos xlsx e csv)
-// Colocar a "treat" ,WithHeadings no início desta classe
-// importar o model resíduo para esta classe use App\Models\Residuo
+        public function gerarexcel(Request $request) 
+        {
+            $mes = $request->mesexcel;
+            $ano = $request->anoexcel;
 
-// No controle ResidoController, importar: use App\Exports\ResiduoExport;
-// No controle ResidoController, importar: use Excel;
-// criar os métodos relatorioresiduoexcel e relatorioresiduocsv no controller ResiduoController
+            return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.xlsx');
+        }
+    
+    C') No arquivo: app/Exports/BigtabledatasExport.php
+        <?php
 
+            namespace App\Exports;
+
+            use App\Models\Bigtabledata;
+            use Maatwebsite\Excel\Concerns\FromCollection;
+            use Maatwebsite\Excel\Concerns\WithHeadings;
+
+            class BigtabledatasExport implements FromCollection, WithHeadings
+            {
+                protected $mes;
+                protected $ano;
+
+                public function __construct($mesrelatorio, $anorelatorio)
+                {
+                    $this->mes = $mesrelatorio;
+                    $this->ano = $anorelatorio;
+                }
+
+                public function headings():array{
+                    return[
+                        'ID', 'ID COMPRA', 'ID PRODUTO', 'QUANTIDADE', 'MEDIDA', 'PREÇO', 'AF', 'TOTAL', 'NOME PRODUTO', 'MEDIDA', 'DATA INICIAL'
+                    ];
+                }
+
+                public function collection()
+                {
+                    // Retorna todos os dados(campos) da Model Bigtabledata sem a necessidade de criar um método específico. Este é a forma default de utilização
+                    // return Bigtabledata::all();
+
+                    // Retorna os dados(campos) consultados no método getBigtabledatas criado no model Bigtabledata
+                    return collect(Bigtabledata::getBigtabledatasExcel($this->mes, $this->ano));
+                }
+            }
+    
+    D') No arquivo: app/Models/Bigtabledata.php
+        // relatorio excel
+        public static function getBigtabledatasExcel($mes, $ano){
+            $records = DB::table('bigtable_data')->select('id', 'compra_id', 'produto_id', 'quantidade', 'medida_id', 'preco', 'af', 'precototal', 'produto_nome', 'medida_nome', 'data_ini')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get()->toArray();
+            return $records;
+        }
+    
+    E') No arquivo: resources/views/admin/dashboard/index.blade.php
+        <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline" style="width: 500px; margin-left: 237px;">
+            
+            <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
+                <option value="" selected disabled>Mês...</option>
+                @foreach($mesespesquisa as $key => $value)
+                    <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
+                @endforeach
+            </select>
+            
+            <select id="selectAnoExecel"  name="anoexcel" class="form-control col-form-label-sm">
+                <option value="" selected disabled>Ano...</option>
+                @foreach($anospesquisa as $value)
+                    <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
+                @endforeach
+            </select>
+            
+            <button type="submit" class="mb-2 btn btn-success btn-sm form-control col-form-label-sm" style="margin-top: 8px;">
+                <i class="far fa-file-excel"></i>
+                <b>Gerar Excel</b>
+            </button>
+        </form>
 
 
 ==========================================

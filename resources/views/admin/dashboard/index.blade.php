@@ -20,8 +20,8 @@
             Script no final desta página
         --}}
         
-        <div id="mesesanosparapesquisa" class="col-md-3 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px; border: 1px dotted red">
-            <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline">
+        <div id="mesesanosparapesquisaexcel" class="col-md-4 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px; border: 1px dotted red">
+            <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline" style="width: 500px; margin-left: 237px;">
                 <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
                     <option value="" selected disabled>Mês...</option>
                     @foreach($mesespesquisa as $key => $value)
@@ -42,6 +42,7 @@
                     <i class="far fa-file-excel"></i>
                     <b>Gerar Excel</b>
                 </button>
+                
                 
                 {{-- 
                 <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
