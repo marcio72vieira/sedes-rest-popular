@@ -14,44 +14,42 @@
                 Generate Report
             </a>
         --}}
-
-        {{--
-            espaço original reservado para SELECTS MÊS E ANO DE PESQUISA PARA GRÁFICOS.
-            Script no final desta página
-        --}}
-        
-        <div id="mesesanosparapesquisaexcel" class="col-md-4 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px; border: 1px dotted red">
-            <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline" style="width: 500px; margin-left: 237px;">
-                <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
-                    <option value="" selected disabled>Mês...</option>
-                    @foreach($mesespesquisa as $key => $value)
-                        {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
-                        {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
-                        <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
-                    @endforeach
-                </select>
-                &nbsp;&nbsp;
-                <select id="selectAnoExecel"  name="anoexcel" class="form-control col-form-label-sm">
-                    <option value="" selected disabled>Ano...</option>
-                    @foreach($anospesquisa as $value)
-                        <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
-                    @endforeach
-                </select>
-                &nbsp;&nbsp;
-                <button type="submit" class="mb-2 btn btn-success btn-sm form-control col-form-label-sm" style="margin-top: 8px;">
-                    <i class="far fa-file-excel"></i>
-                    <b>Gerar Excel</b>
-                </button>
-                
-                
-                {{-- 
-                <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
-                    <i class="far fa-file-excel"></i>
-                    <b>Gerar Excel</b>
-                </a>
-                --}}
-            </form>
-        </div>
+        <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline">
+            <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
+                <option value="0" selected>Mês...</option>
+                @foreach($mesespesquisa as $key => $value)
+                    {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
+                    {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
+                    <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} class="optionMesPesquisa"> {{ $value }} </option>
+                @endforeach
+            </select>
+            &nbsp;&nbsp;
+            <select id="selectAnoExcel"  name="anoexcel" class="form-control col-form-label-sm">
+                <option value="" selected disabled>Ano...</option>
+                @foreach($anospesquisa as $value)
+                    <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} class="optionAnoPesquisa"> {{ $value }} </option>
+                @endforeach
+            </select>
+            &nbsp;&nbsp;
+            <select id="selectTipoExcelCsv"  name="tipoexcelcsv" class="form-control col-form-label-sm selectpicker">
+                <option value="" selected disabled>Tipo...</option>                
+                <option value="1" class="optionAnoPesquisa"><b>EXCEL</b> </option>
+                <option value="2" class="optionAnoPesquisa"><b>CSV</b> </option>
+            </select>
+            &nbsp;&nbsp;
+            <button type="submit" class="mb-2 btn btn-primary btn-sm form-control col-form-label-sm" style="margin-top: 8px;">
+                <i class="fas fa-download"></i>
+                <b>Baixar</b>
+            </button>
+            
+            
+            {{-- 
+            <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
+                <i class="far fa-file-excel"></i>
+                <b>Gerar Excel</b>
+            </a>
+            --}}
+        </form>
     </div>
 
 

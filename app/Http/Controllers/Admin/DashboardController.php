@@ -20,6 +20,8 @@ use Illuminate\Support\Str;
 use App\Exports\BigtabledatasExport;
 use Maatwebsite\Excel\Facades\Excel;
 
+use Illuminate\Support\Facades\Auth;
+
 class DashboardController extends Controller
 {
     public function __construct()
@@ -684,12 +686,22 @@ class DashboardController extends Controller
     {
         $mes = $request->mesexcel;
         $ano = $request->anoexcel;
+        $tipo = $request->tipoexcelcsv;
 
-        return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.xlsx');
+        // Testa se o mês e o ano estão dentro dos perídos válidos
+        if(($mes > 0 || $mes < 13) || ($ano > 2022 || $ano < date('Y'))){
+            if($tipo == 1){
+                return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.xlsx');
+            }
+            if($tipo == 2){
+                return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.csv');
+            }
+            
+        }else{
+            Auth::logout();
+            return redirect()->back()->withInput()->withErrors(['Usuário inativo!']);
+        }
     }
-
-
-
 
 
 
