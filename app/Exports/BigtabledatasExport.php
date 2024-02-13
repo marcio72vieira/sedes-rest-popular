@@ -4,9 +4,10 @@ namespace App\Exports;
 
 use App\Models\Bigtabledata;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithHeadings;        // Criar cabeçalho
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;      // Define o autosizing das colunas
 
-class BigtabledatasExport implements FromCollection, WithHeadings
+class BigtabledatasExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
     protected $mes;
     protected $ano;
@@ -17,21 +18,41 @@ class BigtabledatasExport implements FromCollection, WithHeadings
         $this->ano = $anorelatorio;
     }
 
+    // Definindo a linha de cabeçalho da planilha e csv (nessecário importar: WithHeadings)
     public function headings():array{
         return[
-            'ID',
-            'ID COMPRA',
-            'ID PRODUTO',
+            'REGISTRO',
+            'REGIONAL',
+            'MUNICÍPIO',
+            'RESTAURANTE',
+            'AF',
+            'Nº COMPRA',
+            'CATEGORIA',
+            'PRODUTO',
+            'DETALHE',
             'QUANTIDADE',
             'MEDIDA',
             'PREÇO',
-            'AF',
             'TOTAL',
-            'NOME PRODUTO',
-            'MEDIDA',
-            'DATA INICIAL'
+            'SEMANA',
+            'DATA INICIAL',
+            'MÊS INICIO',
+            'ANO INICIO',
+            'DATA FINAL',
+            'MÊS FIM',
+            'ANO FIM',
+            'EMPRESA',
+            'NUTRICIONISTA EMPRESA',
+            'CPF NUTRI EMPRESA',
+            'CRN NUTRI EMPRESA',
+            'NUTRICIONISTA SEDES',
+            'CPF NUTRI SEDES',
+            'CRN NUTRI SEDES',
+            'CRIADO',
+            'ATUALIZADO'
         ];
     }
+
 
     /**
     * @return \Illuminate\Support\Collection

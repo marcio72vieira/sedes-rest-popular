@@ -15,6 +15,7 @@
             </a>
         --}}
         <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline">
+            
             <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
                 <option value="0" selected>Mês...</option>
                 @foreach($mesespesquisa as $key => $value)
@@ -32,7 +33,7 @@
             </select>
             &nbsp;&nbsp;
             <select id="selectTipoExcelCsv"  name="tipoexcelcsv" class="form-control col-form-label-sm selectpicker">
-                <option value="" selected disabled>Tipo...</option>                
+                <option value="0" selected>Tipo...</option>                
                 <option value="1" class="optionAnoPesquisa"><b>EXCEL</b> </option>
                 <option value="2" class="optionAnoPesquisa"><b>CSV</b> </option>
             </select>
@@ -42,13 +43,22 @@
                 <b>Baixar</b>
             </button>
             
-            
             {{-- 
             <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
                 <i class="far fa-file-excel"></i>
                 <b>Gerar Excel</b>
             </a>
             --}}
+
+            @if(session('falhaexcelcsv'))
+                &nbsp;&nbsp;
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 240px; height:36px; margin-top: 15px; padding: 5px;">
+                    <b>{{session('falhaexcelcsv')}}</b>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin-top: -5px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
         </form>
     </div>
 

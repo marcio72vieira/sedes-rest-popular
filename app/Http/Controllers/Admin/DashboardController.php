@@ -688,19 +688,31 @@ class DashboardController extends Controller
         $ano = $request->anoexcel;
         $tipo = $request->tipoexcelcsv;
 
-        // Testa se o mês e o ano estão dentro dos perídos válidos
-        if(($mes > 0 || $mes < 13) || ($ano > 2022 || $ano < date('Y'))){
-            if($tipo == 1){
-                return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.xlsx');
+
+        if($tipo != 0){
+
+            // Testa se o mês e o ano estão dentro dos perídos válidos
+            // Se mês for igual a zero, significa queo usuário irá querer o relatório referente a todo o ano independente do mês
+            // O ano só pode ser igual a 2023(ano implementação) e menor ou igual ao ano atual.
+            if(($mes >= 0 || $mes < 13) || ($ano >= 2023 || $ano <= date('Y'))){
+                if($tipo == 1){
+                    return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.xlsx');
+                }
+                if($tipo == 2){
+                    return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.csv');
+                }
+                
+            }else{
+                Auth::logout();
+                return redirect()->back()->withInput()->withErrors(['Operação inválida!']);
             }
-            if($tipo == 2){
-                return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.csv');
-            }
-            
-        }else{
-            Auth::logout();
-            return redirect()->back()->withInput()->withErrors(['Usuário inativo!']);
+
+        } else {
+            $request->session()->flash('falhaexcelcsv', 'Escolha o tipo de arquivo!');
+            return redirect()->route('admin.dashboard');
         }
+
+
     }
 
 

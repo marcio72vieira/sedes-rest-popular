@@ -443,7 +443,14 @@ class Bigtabledata extends Model
 
     // relatorio excel
     public static function getBigtabledatasExcel($mes, $ano){
-        $records = DB::table('bigtable_data')->select('id', 'compra_id', 'produto_id', 'quantidade', 'medida_id', 'preco', 'af', 'precototal', 'produto_nome', 'medida_nome', 'data_ini')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get()->toArray();
+        if($mes == 0){
+            //$records = DB::table('bigtable_data')->select('id', 'regional_nome', 'municipio_nome', 'identificacao', 'af', 'compra_id', 'categoria_nome', 'produto_nome', 'detalhe', 'quantidade', 'medida_simbolo', 'preco', 'precototal', 'semana_nome', 'data_ini', 'data_fin', 'nomefantasia', 'nutricionista_nomecompleto', 'nutricionista_cpf', 'nutricionista_crn', 'user_nomecompleto', 'user_cpf', 'user_crn', 'created_at', 'updated_at' )->whereYear('data_ini', $ano)->get()->toArray();
+            $records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_simbolo, preco, precototal, semana_nome, data_ini, MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, data_fin, MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, created_at, updated_at')->whereYear('data_ini', $ano)->get()->toArray();
+        }else{
+            //$records = DB::table('bigtable_data')->select('id', 'regional_nome', 'municipio_nome', 'identificacao', 'af', 'compra_id', 'categoria_nome', 'produto_nome', 'detalhe', 'quantidade', 'medida_simbolo', 'preco', 'precototal', 'semana_nome', 'data_ini', 'data_fin', 'nomefantasia', 'nutricionista_nomecompleto', 'nutricionista_cpf', 'nutricionista_crn', 'user_nomecompleto', 'user_cpf', 'user_crn', 'created_at', 'updated_at' )->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get()->toArray();
+            $records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_simbolo, preco, precototal, semana_nome, data_ini, MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, data_fin, MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, created_at, updated_at')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get()->toArray();
+        }
+
         return $records;
     }
 
