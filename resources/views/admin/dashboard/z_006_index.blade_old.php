@@ -405,12 +405,8 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     {{-- chartJS 3.9.1 --}}
-                    <div id="areaparagraficos" style="height: 500px">
-                        <div class="containerScroll">
-                            <div class="containerBodyScroll">
-                                <canvas id="myChartArea"></canvas>
-                            </div>
-                        </div>
+                    <div id="areaparagraficos" style="width: 100%; height: 500px;">
+                        <canvas id="myChartArea"></canvas>
                     </div>
                 </div>
             </div>
@@ -887,7 +883,6 @@
             var entidade = "";
             var identidade = 0;
             var identificadorreg = 0;
-
 
 
             //Renderiza o gráfico padrão com dados vindo do método compact da view, logo que a página é carregada.
@@ -1696,16 +1691,6 @@
                 myChart.update();
             }
             */
-
-            /**** HORIZONTAL SCROLL BAR *****/
-            const containerBodyScroll = document.querySelector(".containerBodyScroll");
-            const totalLabels = myChart.data.labels.length;
-            if(totalLabels > 7){
-                const newWith = 700 + ((totalLabels - 7) * 30);
-                containerBodyScroll.style.width = `${newWith}px`;
-            };
-            /****  HORIZONTAL SCROLL BAR *****/
-
         }
 
 
@@ -1863,15 +1848,6 @@
                 myChart.update();
             }
             */
-
-            /**** HORIZONTAL SCROLL BAR *****/
-            const containerBodyScroll = document.querySelector(".containerBodyScroll");
-            const totalLabels = myChart.data.labels.length;
-            if(totalLabels > 7){
-                const newWith = 700 + ((totalLabels - 7) * 30);
-                containerBodyScroll.style.width = `${newWith}px`;
-            };
-            /****  HORIZONTAL SCROLL BAR *****/
         }
 
 

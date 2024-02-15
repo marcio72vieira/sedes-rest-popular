@@ -363,3 +363,19 @@ MODIFICANDO CLASSE DO BOOTSTRAP
     border-radius: 0.35rem;
   }
 */
+
+
+
+/**************
+APLICANDO HOROZINTAL BAR PARA Á ÁREA DE GRÁFICO
+**************
+.containerScroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
+.containerBodyScroll {
+    height: 1px;
+}
+*/
