@@ -263,7 +263,7 @@ RELACIONAMENTOS
 ==================================
 BIBLIOTECA PARA GERAR CSV E EXCEL
 ==================================
-1 - Sites de referência: 
+1 - Sites de referência:
         https://laravel-excel.com/
         https://dev.to/ellis22/laravel-export-in-excel-and-csv-example-24ma?utm_source=pocket_reader
 2 - Baixar a biblioteca a partir da pasta raiz do seu projeto
@@ -291,9 +291,9 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
             use App\Exports\BigtabledatasExport;
             use Maatwebsite\Excel\Facades\Excel;
 
-            class DashboardController extends Controller 
+            class DashboardController extends Controller
             {
-                public function exportarexcel() 
+                public function exportarexcel()
                 {
                     return Excel::download(new BigtabledatasExport, 'dadoscompra.xlsx');
                 }
@@ -303,11 +303,11 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
 8 - Criar o link no arquivo de View para referenciar a rota criada acima:
         <a href="{{route('admin.dashboard.gerarexcel')}}">Gerar Excel</a>
 
-9 - OBS: Até o passo anterior(8), a geração do arquivo excel está plenamente funcional, ou seja, gera um arquivo excel 
+9 - OBS: Até o passo anterior(8), a geração do arquivo excel está plenamente funcional, ou seja, gera um arquivo excel
     com todos os dados da tabela bigtable_data(sem linha de cabeçalho) através da invocação do método abaixo no arquivo: app/Exports/BigtabledatasExport.php
         public function collection()
         {
-            // Retorna todos os dados(campos) da Model Bigtabledata sem a necessidade de criar um método específico. 
+            // Retorna todos os dados(campos) da Model Bigtabledata sem a necessidade de criar um método específico.
             // Esta é a forma default de utilização
             return Bigtabledata::all();
         }
@@ -322,33 +322,33 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
             return collect(Bigtabledata::getBigtabledatasExcel());
         }
 12- Para criar a linha de cabeçalho da planilha, na classe: BigtabledatasExport.php
-    a) importe a classe: 
+    a) importe a classe:
         use Maatwebsite\Excel\Concerns\WithHeadings;
-    b) referencie sua implementação: 
+    b) referencie sua implementação:
         class BigtabledatasExport implements FromCollection, WithHeadings
     c) implemente o método:
         public function headings():array{
             return[
-                'ID', 'ID COMPRA', 'ID PRODUTO', etc... 
+                'ID', 'ID COMPRA', 'ID PRODUTO', etc...
             ];
         }
-    
+
     SEQUÊNCIA FINAL DA UTILIZAÇÃO DA CLASSE MAATWEBSITE/EXCEL SEM A PASSAGEM DE PARÂMETROS
     --------------------------------------------------------------------------------------
-   
+
     A) No arquivo: routes/web.php
         Route::get('admin/dashboard/gerarexcel', [DashboardController::class, 'gerarexcel'])->name('admin.dashboard.gerarexcel')->middleware(['auth']);
-    
+
     B) No arquivo: app/Http/Controllers/Admin/DashboardController.php
         ...
         use App\Exports\BigtabledatasExport;
         use Maatwebsite\Excel\Facades\Excel;
-        
-        public function gerarexcel() 
+
+        public function gerarexcel()
         {
             return Excel::download(new BigtabledatasExport(), 'dadoscompra.xlsx');
         }
-    
+
     C) No arquivo: app/Exports/BigtabledatasExport.php
         <?php
 
@@ -375,20 +375,20 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
                     return collect(Bigtabledata::getBigtabledatasExcel());
                 }
             }
-    
+
     D) No arquivo: app/Models/Bigtabledata.php
         // relatorio excel
         public static function getBigtabledatasExcel(){
             $records = DB::table('bigtable_data')->select('id', 'compra_id', 'produto_id', 'quantidade', 'medida_id', 'preco', 'af', 'precototal', 'produto_nome', 'medida_nome', 'data_ini')->get()->toArray();
             return $records;
         }
-    
+
     E) No arquivo: resources/views/admin/dashboard/index.blade.php
         <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
             <i class="far fa-file-excel"></i>
             <b>Gerar Excel</b>
         </a>
-    
+
 
     SEQUÊNCIA FINAL DA UTILIZAÇÃO DA CLASSE MAATWEBSITE/EXCEL COM A PASSAGEM DE PARÂMETROS
     --------------------------------------------------------------------------------------
@@ -401,14 +401,14 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
         use App\Exports\BigtabledatasExport;
         use Maatwebsite\Excel\Facades\Excel;
 
-        public function gerarexcel(Request $request) 
+        public function gerarexcel(Request $request)
         {
             $mes = $request->mesexcel;
             $ano = $request->anoexcel;
 
             return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.xlsx');
         }
-    
+
     C') No arquivo: app/Exports/BigtabledatasExport.php
         <?php
 
@@ -444,36 +444,65 @@ BIBLIOTECA PARA GERAR CSV E EXCEL
                     return collect(Bigtabledata::getBigtabledatasExcel($this->mes, $this->ano));
                 }
             }
-    
+
     D') No arquivo: app/Models/Bigtabledata.php
         // relatorio excel
         public static function getBigtabledatasExcel($mes, $ano){
             $records = DB::table('bigtable_data')->select('id', 'compra_id', 'produto_id', 'quantidade', 'medida_id', 'preco', 'af', 'precototal', 'produto_nome', 'medida_nome', 'data_ini')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get()->toArray();
             return $records;
         }
-    
+
     E') No arquivo: resources/views/admin/dashboard/index.blade.php
         <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline" style="width: 500px; margin-left: 237px;">
-            
+
             <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
                 <option value="" selected disabled>Mês...</option>
                 @foreach($mesespesquisa as $key => $value)
                     <option value="{{ $key }}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>
                 @endforeach
             </select>
-            
+
             <select id="selectAnoExecel"  name="anoexcel" class="form-control col-form-label-sm">
                 <option value="" selected disabled>Ano...</option>
                 @foreach($anospesquisa as $value)
                     <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
                 @endforeach
             </select>
-            
+
             <button type="submit" class="mb-2 btn btn-success btn-sm form-control col-form-label-sm" style="margin-top: 8px;">
                 <i class="far fa-file-excel"></i>
                 <b>Gerar Excel</b>
             </button>
         </form>
+
+
+======================================================================================================
+SEQUÊNCIA DE ATUALIZAÇÃO NO SERVIDOR COM DOCKER PARA ATUALIZAÇÃO COM MAATWEBSITE EXCEL FEITA POR DIEGO
+======================================================================================================
+Só para que eu não esqueça na hora de subir na produção
+precisei mudar umas coisas
+
+
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    zip \
+    unzip && \
+
+    # Install PHP extensions
+    docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets intl zip && \
+
+
+0BS: Com as alterações acima o plugin maatwebsite Excel funcionou muito bem, mas causou problemas (500|Server Erro) na geração dos relatórios .pdf com MPDF
+     que funcionava perfeitamente. O Diego ajustou a seguinte configuração abaixo:
+     Diego: "...é um dos plugins que você usa, ele trabalha na pasta do vendor. para não esquecer quando for fazer na produção."
+     Ajuste: chown -R www-data:www-data vendor/mpdf
+
+    Com o novo ajuste acima, TODOS OS RELATÓRIOS: EXCEL, CSV e PDF VOLTARAM A FUNCIONAR PERFEITAMENTE.
 
 
 ==========================================
