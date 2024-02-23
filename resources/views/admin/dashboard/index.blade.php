@@ -15,7 +15,7 @@
             </a>
         --}}
         <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline">
-            
+
             <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
                 <option value="0" selected>Mês...</option>
                 @foreach($mesespesquisa as $key => $value)
@@ -33,7 +33,7 @@
             </select>
             &nbsp;&nbsp;
             <select id="selectTipoExcelCsv"  name="tipoexcelcsv" class="form-control col-form-label-sm selectpicker">
-                <option value="0" selected>Tipo...</option>                
+                <option value="0" selected>Tipo...</option>
                 <option value="1" class="optionAnoPesquisa"><b>EXCEL</b> </option>
                 <option value="2" class="optionAnoPesquisa"><b>CSV</b> </option>
             </select>
@@ -42,8 +42,8 @@
                 <i class="fas fa-download"></i>
                 <b>Baixar</b>
             </button>
-            
-            {{-- 
+
+            {{--
             <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
                 <i class="far fa-file-excel"></i>
                 <b>Gerar Excel</b>
@@ -1095,12 +1095,13 @@
                             valorLabels.push(key);
                             valorData.push(value);
                             somaCompra = somaCompra += Number(value);
-
-                            if(somaCompra == 0){
-                                $(".modalSemLancamento").modal("show");
-                            }
-
                         });
+
+                        if(somaCompra == 0){
+                            $(".modalSemLancamento").modal("show");
+                        }
+
+
 
                         valorTituloGrafico = result['titulo'];
 
