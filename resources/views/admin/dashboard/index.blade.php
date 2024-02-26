@@ -17,7 +17,7 @@
         <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline">
 
             <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
-                <option value="0" selected>Mês...</option>
+                <option value="0" selected disabled>Mês...</option>
                 @foreach($mesespesquisa as $key => $value)
                     {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
                     {{-- <option value="{{ $value}}" {{date('n') == $key ? 'selected' : ''}} data-mespesquisa="{{$key}}" class="optionMesPesquisa"> {{ $value }} </option>  OU --}}
@@ -26,7 +26,7 @@
             </select>
             &nbsp;&nbsp;
             <select id="selectAnoExcel"  name="anoexcel" class="form-control col-form-label-sm">
-                <option value="" selected disabled>Ano...</option>
+                <option value="0" selected disabled>Ano...</option>
                 @foreach($anospesquisa as $value)
                     <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} class="optionAnoPesquisa"> {{ $value }} </option>
                 @endforeach
@@ -54,7 +54,7 @@
                 &nbsp;&nbsp;
                 <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 240px; height:36px; margin-top: 15px; padding: 5px;">
                     <b>{{session('falhaexcelcsv')}}</b>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin-top: -5px;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin-top: -7px; margin-right: -15px;">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

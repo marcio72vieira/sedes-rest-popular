@@ -261,7 +261,7 @@ class DashboardController extends Controller
     }
 
 
-    
+
 
 
     public function ajaxrecuperadadosgraficoempilhado(Request $request)
@@ -682,14 +682,14 @@ class DashboardController extends Controller
     *******************/
 
     // Gerando arquivo Excel
-    public function gerarexcel(Request $request) 
+    public function gerarexcel(Request $request)
     {
         $mes = $request->mesexcel;
         $ano = $request->anoexcel;
         $tipo = $request->tipoexcelcsv;
 
-
-        if($tipo != 0){
+        // Testa se todos os parâmetros são válidos
+        if($mes != 0 && $ano != 0 && $tipo != 0){
 
             // Testa se o mês e o ano estão dentro dos perídos válidos
             // Se mês for igual a zero, significa queo usuário irá querer o relatório referente a todo o ano independente do mês
@@ -701,14 +701,14 @@ class DashboardController extends Controller
                 if($tipo == 2){
                     return Excel::download(new BigtabledatasExport($mes, $ano), 'dadoscompra.csv');
                 }
-                
+
             }else{
                 Auth::logout();
                 return redirect()->back()->withInput()->withErrors(['Operação inválida!']);
             }
 
         } else {
-            $request->session()->flash('falhaexcelcsv', 'Escolha o tipo de arquivo!');
+            $request->session()->flash('falhaexcelcsv', 'Selecione: mês, ano e tipo!');
             return redirect()->route('admin.dashboard');
         }
 
