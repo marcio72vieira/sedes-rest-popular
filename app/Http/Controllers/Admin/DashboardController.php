@@ -14,11 +14,14 @@ use App\Models\Municipio;
 use App\Models\Categoria;
 use App\Models\Produto;
 use App\Models\User;
+use App\Models\Bigtabledata;
 
 use Illuminate\Support\Str;
 
 use App\Exports\BigtabledatasExport;
 use Maatwebsite\Excel\Facades\Excel;
+
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -681,6 +684,7 @@ class DashboardController extends Controller
     //   FIM - MONITOR
     *******************/
 
+    /*
     // Gerando arquivo Excel
     public function gerarexcel(Request $request)
     {
@@ -711,6 +715,63 @@ class DashboardController extends Controller
             $request->session()->flash('falhaexcelcsv', 'Selecione: mês, ano e tipo!');
             return redirect()->route('admin.dashboard');
         }
+    }
+    */
+
+
+    public function gerarexcel(Request $request)
+    {
+
+
+        $mes = $request->mesexcel;
+        $ano = $request->anoexcel;
+        $tipo = $request->tipoexcelcsv;
+
+        //$records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_nome, medida_simbolo, preco, precototal, semana_nome, DATE_FORMAT(data_ini,"%d/%m/%Y"), MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, DATE_FORMAT(data_fin,"%d/%m/%Y"), MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, DATE_FORMAT(created_at,"%d/%m/%Y %H:%i"), DATE_FORMAT(updated_at,"%d/%m/%Y %H:%i")')->whereYear('data_ini', $ano)->get()->toArray();
+        $records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_nome, medida_simbolo, preco, precototal, semana_nome, DATE_FORMAT(data_ini,"%d/%m/%Y"), MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, DATE_FORMAT(data_fin,"%d/%m/%Y"), MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, DATE_FORMAT(created_at,"%d/%m/%Y %H:%i"), DATE_FORMAT(updated_at,"%d/%m/%Y %H:%i")')->whereYear('data_ini', $ano)->get();
+
+        //dd($records);
+        $records =  Bigtabledata::all();
+
+        $writer = SimpleExcelWriter::streamDownload('dadoscompra.xlsx');
+
+        foreach ($records as $record ) {
+            $writer->addRow([
+                'Registro'                  => $record->idd,
+                'Regional'                  => $record->regional_nome,
+                'Município'                 => $record->municipio_nome,
+                'Restaurante'               => $record->identificacao,
+                'AF'                        => $record->af,
+                'Nº Compra'                 => $record->compra_id,
+                'Categoria'                 => $record->categoria_nome,
+                'Produto'                   => $record->produto_nome,
+                'Detalhe'                   => $record->detalhe,
+                'Quantidade'                => $record->quantidade,
+                'Medida'                    => $record->medida_nome,
+                'Medida Abev'               => $record->medida_simbolo,
+                'Preço'                     => $record->preco,
+                'Total'                     => $record->preco_total,
+                'Semana'                    => $record->semana_nome,
+                'Data Inicial'              => $record->data_ini,
+                'Mês Inicial'               => $record->mes_ini,
+                'Ano Inicial'               => $record->ano_ini,
+                'Data Final'                => $record->data_fin,
+                'Mês Final'                 => $record->mes_fin,
+                'Ano Final'                 => $record->ano_fin,
+                'Empresa'                   => $record->nomefantasia,
+                'Nutricionista Empresa'     => $record->nutricionista_nomecompleto,
+                'CPF Nutri. Empresa'        => $record->nutricionista_cpf,
+                'CRN Nutri. Empresa'        => $record->nutricionista_crn,
+                'Nutricionista SEDES'       => $record->user_nomecompleto,
+                'CPF Nutri. SEDES'          => $record->user_cpf,
+                'CRN Nutri. SEDES'          => $record->user_crn,
+                'Registrado'                => $record->created_at,
+                'Atualizado'                => $record->updated_at,
+
+            ]);
+        }
+
+        $writer->toBrowser();
 
 
     }
