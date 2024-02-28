@@ -727,49 +727,69 @@ class DashboardController extends Controller
         $ano = $request->anoexcel;
         $tipo = $request->tipoexcelcsv;
 
-        //$records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_nome, medida_simbolo, preco, precototal, semana_nome, DATE_FORMAT(data_ini,"%d/%m/%Y"), MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, DATE_FORMAT(data_fin,"%d/%m/%Y"), MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, DATE_FORMAT(created_at,"%d/%m/%Y %H:%i"), DATE_FORMAT(updated_at,"%d/%m/%Y %H:%i")')->whereYear('data_ini', $ano)->get()->toArray();
-        $records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_nome, medida_simbolo, preco, precototal, semana_nome, DATE_FORMAT(data_ini,"%d/%m/%Y"), MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, DATE_FORMAT(data_fin,"%d/%m/%Y"), MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, DATE_FORMAT(created_at,"%d/%m/%Y %H:%i"), DATE_FORMAT(updated_at,"%d/%m/%Y %H:%i")')->whereYear('data_ini', $ano)->get();
+        // Define o nome do arquivo(formado por mês e ano)
+        $referencia = $mes."_".$ano;
 
-        //dd($records);
-        $records =  Bigtabledata::all();
+        // Define o tipo de arquivo a ser gerado
+        $tipoextensao = ($tipo == 1) ? 'xlsx' : 'csv';
 
-        $writer = SimpleExcelWriter::streamDownload('dadoscompra.xlsx');
+        // Definindo a query
+        $records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_nome, medida_simbolo, preco, precototal, semana_nome, DATE_FORMAT(data_ini,"%d/%m/%Y") AS datainicial, MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, DATE_FORMAT(data_fin,"%d/%m/%Y") AS datafinal, MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, DATE_FORMAT(created_at,"%d/%m/%Y %H:%i") AS criado, DATE_FORMAT(updated_at,"%d/%m/%Y %H:%i") AS atualizado')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get();
 
-        foreach ($records as $record ) {
+
+        $writer = SimpleExcelWriter::streamDownload('compras_'.$referencia.".".$tipoextensao)
+            ->addHeader([
+                        'Registro', 'Regional', 'Município', 'Restaurante', 'AF', 'Nº Compra', 'Categoria', 'Produto', 'Detalhe',
+                        'Quantidade', 'Medida', 'Medida Abev', 'Preço', 'Total', 'Semana', 'Data Inicial', 'Mês Inicial', 'Ano Inicial',
+                        'Data Final', 'Mês Final', 'Ano Final', 'Empresa', 'Nutricionista Empresa', 'CPF Nutri. Empresa', 'CRN Nutri. Empresa',
+                        'Nutricionista SEDES', 'CPF Nutri. SEDES', 'CRN Nutri. SEDES', 'Registrado', 'Atualizado'
+                        ]);
+
+        // Contador para esvaziar buffer com flush()
+         $countbuffer = 1;
+
+         foreach ($records as $record ) {
             $writer->addRow([
-                'Registro'                  => $record->idd,
-                'Regional'                  => $record->regional_nome,
-                'Município'                 => $record->municipio_nome,
-                'Restaurante'               => $record->identificacao,
-                'AF'                        => $record->af,
-                'Nº Compra'                 => $record->compra_id,
-                'Categoria'                 => $record->categoria_nome,
-                'Produto'                   => $record->produto_nome,
-                'Detalhe'                   => $record->detalhe,
-                'Quantidade'                => $record->quantidade,
-                'Medida'                    => $record->medida_nome,
-                'Medida Abev'               => $record->medida_simbolo,
-                'Preço'                     => $record->preco,
-                'Total'                     => $record->preco_total,
-                'Semana'                    => $record->semana_nome,
-                'Data Inicial'              => $record->data_ini,
-                'Mês Inicial'               => $record->mes_ini,
-                'Ano Inicial'               => $record->ano_ini,
-                'Data Final'                => $record->data_fin,
-                'Mês Final'                 => $record->mes_fin,
-                'Ano Final'                 => $record->ano_fin,
-                'Empresa'                   => $record->nomefantasia,
-                'Nutricionista Empresa'     => $record->nutricionista_nomecompleto,
-                'CPF Nutri. Empresa'        => $record->nutricionista_cpf,
-                'CRN Nutri. Empresa'        => $record->nutricionista_crn,
-                'Nutricionista SEDES'       => $record->user_nomecompleto,
-                'CPF Nutri. SEDES'          => $record->user_cpf,
-                'CRN Nutri. SEDES'          => $record->user_crn,
-                'Registrado'                => $record->created_at,
-                'Atualizado'                => $record->updated_at,
-
+                'id' => $record->id,
+                'regional_nome' => $record->regional_nome,
+                'municipio_nome' => $record->municipio_nome,
+                'identificacao' => $record->identificacao,
+                'af' => $record->af,
+                'compra_id' => $record->compra_id,
+                'categoria_nome' => $record->categoria_nome,
+                'produto_nome' => $record->produto_nome,
+                'detalhe' => $record->detalhe,
+                'Quantidade' => $record->quantidade,
+                'quantidade' => $record->medida_nome,
+                'medida_simbolo' => $record->medida_simbolo,
+                'preco' => $record->preco,
+                'precototal' => $record->precototal,
+                'semana_nome' => $record->semana_nome,
+                'datainicial'=> $record->datainicial,
+                'mes_ini' => $record->mes_ini,
+                'ano_ini' => $record->ano_ini,
+                'datafinal' => $record->datafinal,
+                'mes_fin' => $record->mes_fin,
+                'ano_fin' => $record->ano_fin,
+                'nomefantasia' => $record->nomefantasia,
+                'nutricionista_nomecompleto' => $record->nutricionista_nomecompleto,
+                'nutricionista_cpf' => $record->nutricionista_cpf,
+                'nutricionista_crn' => $record->nutricionista_crn,
+                'user_nomecompleto' => $record->user_nomecompleto,
+                'user_cpf' => $record->user_cpf,
+                'user_crn' => $record->user_crn,
+                'criado' => $record->criado,
+                'atualizado' => $record->atualizado,
             ]);
+
+            // Limpa o buffer a cada mil linhas
+            $countbuffer++;
+
+            if($countbuffer % 1000 === 0){
+                flush();
+            }
         }
+
 
         $writer->toBrowser();
 
