@@ -685,6 +685,7 @@ class DashboardController extends Controller
     *******************/
 
     /*
+    // Método utilizado com Biblioteca Maatwebsite/Excel
     // Gerando arquivo Excel
     public function gerarexcel(Request $request)
     {
@@ -719,13 +720,16 @@ class DashboardController extends Controller
     */
 
 
+    // Método utilizado com Biblioteca Spatie-Simple-Excel
     public function gerarexcel(Request $request)
     {
-
 
         $mes = $request->mesexcel;
         $ano = $request->anoexcel;
         $tipo = $request->tipoexcelcsv;
+
+        // Adiciona um 0 (zero) na frente do mês de 01 a 09
+        $mes = ($mes < 10) ? "0".$mes : $mes;
 
         // Define o nome do arquivo(formado por mês e ano)
         $referencia = $mes."_".$ano;
@@ -736,6 +740,7 @@ class DashboardController extends Controller
         // Definindo a query
         $records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_nome, medida_simbolo, preco, precototal, semana_nome, DATE_FORMAT(data_ini,"%d/%m/%Y") AS datainicial, MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, DATE_FORMAT(data_fin,"%d/%m/%Y") AS datafinal, MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, DATE_FORMAT(created_at,"%d/%m/%Y %H:%i") AS criado, DATE_FORMAT(updated_at,"%d/%m/%Y %H:%i") AS atualizado')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get();
 
+        //dd($records); //dd($records[0]->precototal);
 
         $writer = SimpleExcelWriter::streamDownload('compras_'.$referencia.".".$tipoextensao)
             ->addHeader([
@@ -759,11 +764,11 @@ class DashboardController extends Controller
                 'categoria_nome' => $record->categoria_nome,
                 'produto_nome' => $record->produto_nome,
                 'detalhe' => $record->detalhe,
-                'Quantidade' => $record->quantidade,
-                'quantidade' => $record->medida_nome,
-                'medida_simbolo' => $record->medida_simbolo,
-                'preco' => $record->preco,
-                'precototal' => $record->precototal,
+                'quantidade' => (float) $record->quantidade,    // converte para float
+                'medida_nome' => $record->medida_nome,
+                'medida_simbolo' => $record->medida_simbolo,    // converte para float
+                'preco' => (float)$record->preco,               // converte para float
+                'precototal' => (float) $record->precototal,
                 'semana_nome' => $record->semana_nome,
                 'datainicial'=> $record->datainicial,
                 'mes_ini' => $record->mes_ini,
