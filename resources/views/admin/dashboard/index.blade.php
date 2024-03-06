@@ -406,8 +406,8 @@
                 <div class="card-body">
                     {{-- chartJS 3.9.1 --}}
                     <div id="areaparagraficos" style="height: 500px">
-                        <div class="containerScroll">
-                            <div class="containerBodyScroll">
+                        <div class="containerScroll"  style="height: 500px">
+                            <div class="containerBodyScroll"  style="height: 500px">
                                 <canvas id="myChartArea"></canvas>
                             </div>
                         </div>
@@ -1550,7 +1550,8 @@
         function renderGrafico(estilo, titulo, titulomesano){
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
-            $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
+            //$('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
+            $('.containerBodyScroll').append('<canvas id="myChartArea"><canvas>');
 
             const ctx = document.getElementById('myChartArea').getContext('2d');
             const myChart = new Chart(ctx, {
@@ -1715,7 +1716,8 @@
 
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
-            $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
+            //$('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
+            $('.containerBodyScroll').append('<canvas id="myChartArea"><canvas>');
 
             const ctx = document.getElementById('myChartArea').getContext('2d');
             const myChart = new Chart(ctx, {

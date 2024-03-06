@@ -368,7 +368,7 @@ MODIFICANDO CLASSE DO BOOTSTRAP
 
 /**************
 APLICANDO HOROZINTAL BAR PARA Á ÁREA DE GRÁFICO
-**************
+***************/
 .containerScroll {
     width: 100%;
     max-width: 100%;
@@ -376,6 +376,6 @@ APLICANDO HOROZINTAL BAR PARA Á ÁREA DE GRÁFICO
 }
 
 .containerBodyScroll {
-    height: 1px;
+    height: 100%;
 }
-*/
+
