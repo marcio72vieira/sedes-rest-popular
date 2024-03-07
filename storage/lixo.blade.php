@@ -1946,7 +1946,7 @@ public function ajaxgetRegionaisComprasMensais(Request $request){
         ->count();
     */
     $totalRecords = DB::table("bigtable_data")->select('regional_id')->whereYear("data_ini", "=",  $ano)->distinct('regional_id')->count();
-    
+
     //** BEGIN FILTER */
     $valoresmesesfilter = DB::table('bigtable_data')
     ->select(DB::RAW("data_ini, af, precototal, regional_id, regional_nome,
@@ -1990,7 +1990,7 @@ public function ajaxgetRegionaisComprasMensais(Request $request){
     ->count();
 
     //** END FILTER */
-    
+
     $valoresmeses = DB::table('bigtable_data')
     ->select(DB::RAW("data_ini, af, precototal, regional_id, regional_nome,
             SUM(IF(MONTH(data_ini) = 01 AND af = 'nao', precototal, 0.00)) AS mesjannormal,
@@ -2189,7 +2189,7 @@ public function ajaxgetRegionaisComprasMensais(Request $request){
     ->distinct('bigtable_data.regional_id')
     ->where('bigtable_data.regional_nome', 'like', '%' .$searchValue . '%')
     ->count();
-    
+
     // Obtendo os valores das compras por mês (1 a 12), se da agricultura familiar ou não (normal ou af) no ano de referência
     // por meio de SUBQUERY utilizando a mesma tabela (bigtable_data) através do "joinSub"
     $valoresmeses = DB::table('bigtable_data')
@@ -2410,10 +2410,10 @@ Modificações no sede após o primeiro dia das minhas férias:
     {
         //$restaurantes = Restaurante::orderBy('identificacao', 'ASC')->get();
         //return view('admin.monitor.index', compact('restaurantes'));
-        
+
         return view('admin.monitor.index');
     }
-    
+
 6 - Acrescentei as rotas abaixo, no arquivo: routes/web.php
     Route::get('ajaxgetRegionaisComprasMensais',[MonitorController::class,'ajaxgetRegionaisComprasMensais'])->name('admin.ajaxgetRegionaisComprasMensais')->middleware(['auth']);
     Route::get('ajaxgetMunicipiosComprasMensais',[MonitorController::class,'ajaxgetMunicipiosComprasMensais'])->name('admin.ajaxgetMunicipiosComprasMensais')->middleware(['auth']);
@@ -2467,11 +2467,11 @@ Modificações no sede após o primeiro dia das minhas férias:
     // https://stackoverflow.com/questions/66243388/how-to-reload-datatable-by-using-new-url-and-some-parameters-without-reinitializ?utm_source=pocket_reader
 
         $(document).ready(function() {
-        
+
           // ajax for initial table creation:
           var requestUrl = "https://jsonplaceholder.typicode.com/posts";
           var requestData = { "name": "Abel", "location": "here" };
-        
+
           var table = $('#example').DataTable( {
             ajax: {
               method: "GET",
@@ -2479,25 +2479,25 @@ Modificações no sede após o primeiro dia das minhas férias:
               "data": function ( ) {
                 return requestData;
               },
-              dataSrc: "",  
+              dataSrc: "",
             },
             "columns": [
               { "title": "User ID", "data": "userId" },
               { "title": "ID", "data": "id" },
               { "title": "Title", "data": "title" }
             ]
-                    
+
           } );
-          
+
           $("#button_one").click(function() {
             // subsequent ajax call, with button click:
             requestUrl = "https://jsonplaceholder.typicode.com/todos";
             requestData = { "name": "Charlie", "location": "there" };
             table.ajax.url( requestUrl ).load();
           });
-          
+
         } );
-        
+
         </script>
 
 ============ FINALIDADE ALCANÇADA, FALTA ORGANIZAR ==========
@@ -2541,8 +2541,8 @@ Modificações no sede após o primeiro dia das minhas férias:
             serverSide: true,
 
             //ajax: "{{route('admin.ajaxgetRegionaisComprasMensais')}}", // Preenche a tabela automaticamente, a partir de uma requisição Ajax (pela rota nomeada)
-            
-            
+
+
 
             /* ajax: {
                 url: "{{route('admin.ajaxgetRegionaisComprasMensais')}}",
@@ -2550,7 +2550,7 @@ Modificações no sede após o primeiro dia das minhas férias:
                     //d.grupoEnviado = "Regionais";
                     d.periodo = $("#selectPeriodo").val();
                 }
-            }, 
+            },
             */
 
             ajax: {
@@ -2559,7 +2559,7 @@ Modificações no sede após o primeiro dia das minhas férias:
                     d.periodo = periodoAno;
                 },
             },
-            
+
             columns: [
                 { data: 'id' },
                 { data: 'nomeentidade' },
@@ -2614,7 +2614,7 @@ Modificações no sede após o primeiro dia das minhas férias:
             // Quando a tabela estiver completamente inicializada(carregada), executa a função abaixo
             initComplete: function (settings, json) {
                 /*
-                // "#dataTableMonitor_length" é o nome atribuido dinamicamente à div onde está localizado o menu de 
+                // "#dataTableMonitor_length" é o nome atribuido dinamicamente à div onde está localizado o menu de
                 // de opçoes length. Nesse caso nesta div adicionando um select na toolbar do datatable
                 $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
                 $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
@@ -2633,10 +2633,10 @@ Modificações no sede após o primeiro dia das minhas férias:
 
         $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras por:</label>');
         $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
-        
+
         $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Período:</label>');
         $('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"><option value="2023" selected>2023</option><option value="2024">2024</option><option value="2025">2025</option></select>');
-        
+
         $("#selectGrupo").on('change', function(){
             //alert($(this).children("option:selected").text());
             //alert(oTable.ajax.data);
@@ -2753,7 +2753,7 @@ Modificações no sede após o primeiro dia das minhas férias:
 
             rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
             periodoAno = new Date().getFullYear();
-            
+
             // anospesquisa = "{$anospesquisa}"; // {variavel}, desta forma evita erro de htmlspecialchar
             var anoimplementacao = 2020;
             var anoatual = new Date().getFullYear();
@@ -2771,7 +2771,7 @@ Modificações no sede após o primeiro dia das minhas férias:
                 anosexibicao = anos.reverse();
             }
 
-            
+
             // DataTable. Aqui, estamos atribuindo todo o dataTable à uma variável, para posterior manipulação caso seja necessário
             var oTable = $('#dataTableMonitor').DataTable({
                 //## Fixando colunas e cabeçalhos
@@ -2811,7 +2811,7 @@ Modificações no sede após o primeiro dia das minhas férias:
                         //d.grupoEnviado = "Regionais";
                         d.periodo = $("#selectPeriodo").val();
                     }
-                }, 
+                },
                 */
 
                 ajax: {
@@ -2820,7 +2820,7 @@ Modificações no sede após o primeiro dia das minhas férias:
                         d.periodo = periodoAno;
                     },
                 },
-                
+
                 columns: [
                     { data: 'id' },
                     { data: 'nomeentidade' },
@@ -2875,7 +2875,7 @@ Modificações no sede após o primeiro dia das minhas férias:
                 // Quando a tabela estiver completamente inicializada(carregada), executa a função abaixo
                 initComplete: function (settings, json) {
                     /*
-                    // "#dataTableMonitor_length" é o nome atribuido dinamicamente à div onde está localizado o menu de 
+                    // "#dataTableMonitor_length" é o nome atribuido dinamicamente à div onde está localizado o menu de
                     // de opçoes length. Nesse caso nesta div adicionando um select na toolbar do datatable
                     $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Escolha</label>');
                     $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municipios</option><option value="rest">Restaurantes</option></select>');
@@ -2894,7 +2894,7 @@ Modificações no sede após o primeiro dia das minhas férias:
 
             $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras</label>');
             $('#dataTableMonitor_length').append('<select id="selectGrupo" class="form-control input-sm" style="height: 36px;"><option value="regi">Regionais</option><option value="muni">Municípios</option><option value="rest">Restaurantes</option></select>');
-            
+
             $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Ano</label>');
             //$('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"><option value="2023" selected>2023</option><option value="2024">2024</option><option value="2025">2025</option></select>'); // OU
             $('#dataTableMonitor_length').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px;"></select>');
@@ -2902,7 +2902,7 @@ Modificações no sede após o primeiro dia das minhas férias:
                     $('#selectPeriodo').append($('<option></option>').val(valorano).html(valorano));
             });
 
-            
+
             $("#selectGrupo, #selectPeriodo").on('change', function(){
                 //alert($(this).children("option:selected").text());
                 //alert(oTable.ajax.data);
@@ -3026,7 +3026,7 @@ Exibição de select Dinâmico Categoria x Produtos
 
             var rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
             var periodoAno = new Date().getFullYear();
-            
+
             var anoimplementacao = 2023;
             var anoatual = new Date().getFullYear();
             var anos = [];
@@ -3043,7 +3043,7 @@ Exibição de select Dinâmico Categoria x Produtos
                 anosexibicao = anos.reverse();
             }
 
-            
+
 
             var oTable = $('#dataTableMonitor').DataTable({
                 fixedColumns: {
@@ -3060,10 +3060,10 @@ Exibição de select Dinâmico Categoria x Produtos
                 ],
 
                 lengthMenu: [15, 20, 25, 30, 35, 40, 45, 50],
-                
+
                 processing: true,
                 serverSide: true,
-                
+
                 ajax: {
                     url: rotaAjax,
                     data: function(d){
@@ -3126,12 +3126,12 @@ Exibição de select Dinâmico Categoria x Produtos
                 }
             });
 
-            
+
 
 
             //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Compras</label>');
             $('#dataTableMonitor_length').append('<select id="selectEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option selected disabled value="0">Compras</option><option value="1">Regionais</option><option value="2">Municípios</option><option value="3">Restaurantes</option><option disabled>___________</option><option value="4">Categorias</option><option value="5">Produtos</option></select>');
-            
+
 
             // Populando o selectCategorias a partir de um Array JSON(ou seja, um objeto) com jQuery
             // $('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Categorias</label>');
@@ -3154,7 +3154,7 @@ Exibição de select Dinâmico Categoria x Produtos
                         $('#selectProdutos').append($('<option selected></option>').val('0').html('Produtos'));
                         $.each(result, function() {
                             $('#selectProdutos').append($('<option></option>').val(this.produto_id).html(this.produto_nome));
-                        }); 
+                        });
                     },
                     error: function(result){
                         alert("Error ao retornar produtos desta Categoria!");
@@ -3181,7 +3181,7 @@ Exibição de select Dinâmico Categoria x Produtos
             $('#dataTableMonitor_filter').append('<button type="button" id="btnAcao" class="btn btn-light" style="height: 36px; width: 80px; float:left; margin-left: 30px;"><i class="fas fa-search"></i></button>');
             $('#dataTableMonitor_filter').append('<a class="btn btn-light" style="height: 36px; width: 80px; float:left; margin-left: 30px;"><i class="far fa-file-pdf"></i></a>');
 
-            
+
             $("#selectEntidade, #selectPeriodo").on('change', function(){
                 var textEntidadeSelecionada = $("#selectEntidade").children("option:selected").text();
                 var entidadeSelecionada = $("#selectEntidade").val();
@@ -3250,7 +3250,7 @@ public function relpdfmonitorentidade(Request $request)
     $catRef   = $request->idcategoria;
     $prodRef   = $request->idproduto;
 
-    
+
     switch($entitRef){
         case "1":
             $entidade_id = "regional_id";
@@ -3357,7 +3357,7 @@ public function relpdfmonitorentidade(Request $request)
                     Secretaria do Estado de Desenvolvimento Social/SEDES
                 </td>
                 <td style="width: 540px;" class="titulo-rel">
-                    COMPRAS POR '.Str::upper($entidaderotulo).' EM '. $anoRef .' 
+                    COMPRAS POR '.Str::upper($entidaderotulo).' EM '. $anoRef .'
                 </td>
             </tr>
         </table>
@@ -3452,7 +3452,7 @@ ADICIONANDO LINK AO CONTEÚDO DE UM DATATABLE
 	    if(valEntidadeSelecionada == 1 || valEntidadeSelecionada == 2 || valEntidadeSelecionada == 4) {
 		$("#exampleModalLabelGrupo").text("Deseja os registros deste: " + txtEntidadeSelecionada);
 		$(nTd).hover(
-		    function(){ $(this).css({"background-color":"#4e73df", "font-weight":"bold", "color":"#ffffff" }); }, 
+		    function(){ $(this).css({"background-color":"#4e73df", "font-weight":"bold", "color":"#ffffff" }); },
 		    function(){ $(this).css({"background-color":"white", "font-weight":"bold", "color":"#808080"}); }
 		);
 		//$(nTd).css({"font-weight":"bold", "color":"#808080", "cursor":"pointer"});
@@ -3509,5 +3509,31 @@ ADICIONANDO LINK AO CONTEÚDO DE UM DATATABLE
 
 Implementação Controlet RelPDFSubGrupo
 
+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
 
-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
+
+======================================
+OTIMIZANDO A EXIBIÇÃO DOS GRÁFICOS
+=====================================
+OBS: Para uma melhor apresentação dos gráficos, podemos fazer uma série de if com vários teste para atender às nossas necessidades
+
+GRÁFICO ESTÁTICO (CONFIGURAÇÕES ANTIGAS)
+/**** HORIZONTAL SCROLL BAR *****/
+const containerBodyScroll = document.querySelector(".containerBodyScroll");
+const totalLabels = myChart.data.labels.length;
+if(totalLabels > 7){
+    const newWith = 700 + ((totalLabels - 7) * 30);
+    containerBodyScroll.style.width = `${newWith}px`;
+};
+/****  HORIZONTAL SCROLL BAR *****/
+
+
+GRÁFICO DINÂMICO (CONFIGURAÇÕES NOVAS)
+/**** HORIZONTAL SCROLL BAR *****/
+const containerBodyScroll = document.querySelector(".containerBodyScroll");
+const totalLabels = myChart.data.labels.length;
+if(totalLabels > 22){
+    const newWith = 10000 + ((totalLabels - 22) * 30);
+    containerBodyScroll.style.width = `${newWith}px`;
+};
+/****  HORIZONTAL SCROLL BAR *****/
