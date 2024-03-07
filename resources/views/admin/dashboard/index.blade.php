@@ -1706,7 +1706,7 @@
                 const newWith = 700 + ((totalLabels - 7) * 30);
                 containerBodyScroll.style.width = `${newWith}px`;
             };
-            /****  HORIZONTAL SCROLL BAR *****/
+            /****  HORIZONTAL SCROLL BAR ******/
 
         }
 
