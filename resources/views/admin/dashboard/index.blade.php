@@ -1631,7 +1631,10 @@
                         },
                         // Change options for ALL labels of THIS CHART
                         datalabels: {
-                            color: '#0000ff'
+                            color: '#0000ff',
+                            //anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
+                            //align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
+                            //offset: 5           // distância em pixel do valores a serem apresentados
                         }
                     },
                     scales: {
@@ -1795,7 +1798,10 @@
                         },
                         // Change options for ALL labels of THIS CHART
                         datalabels: {
-                            color: '#0000ff'
+                            color: '#0000ff',   // Cor dos valores das colunas
+                            //anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
+                            //align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
+                            //offset: 5           // distância em pixel do valores a serem apresentados
                         }
                     },
                     scales: {
@@ -1867,12 +1873,14 @@
             }
             */
 
-            /**** HORIZONTAL SCROLL BAR *****/
+            /**** HORIZONTAL SCROLL BAR ****
             const containerBodyScroll = document.querySelector(".containerBodyScroll");
             const totalLabels = myChart.data.labels.length;
-            if(totalLabels > 22){
-                const newWith = 10000 + ((totalLabels - 22) * 30);
-                containerBodyScroll.style.width = `${newWith}px`;
+            if(totalLabels > 10){
+                const newWidth = 3500 + ((totalLabels - 10) * 30);
+                containerBodyScroll.style.width = `${newWidth}px`;
+                //const newHeigth = 10000 + ((totalLabels - 22) * 30);
+                //containerBodyScroll.style.heigth = `${newHeigth}px`;
             };
             /****  HORIZONTAL SCROLL BAR ****     **/
         }

@@ -373,6 +373,8 @@ APLICANDO HOROZINTAL BAR PARA Á ÁREA DE GRÁFICO
     width: 100%;
     max-width: 100%;
     overflow-x: scroll;
+    /* max-height: 100%;
+    overflow-y: scroll; */
 }
 
 .containerBodyScroll {
