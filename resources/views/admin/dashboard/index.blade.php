@@ -2002,7 +2002,8 @@
 
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
-            $('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
+            //$('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
+            $('.containerBodyScroll').append('<canvas id="myChartArea"><canvas>');
 
             const ctx = document.getElementById('myChartArea').getContext('2d');
             const myChart = new Chart(ctx, {
