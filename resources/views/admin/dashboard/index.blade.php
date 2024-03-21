@@ -888,14 +888,15 @@
             var identidade = 0;
             var identificadorreg = 0;
 
-            //Informações de largura e altura do recipiente do gráfico
-            var tamanhoContainerOriginal = $(".containerBodyScroll").width();       // Captura a largura do elemento containerBodyScroll atual
-            
+            //Informações de largura e altura do recipiente(div) do gráfico logo que o dashboard é carregado
+            var larguraContainerOriginal = $(".containerBodyScroll").width();       // Captura a largura do elemento containerBodyScroll atual
+            var alturaContainerOriginal = $(".containerBodyScroll").height();       // Captura a altura do elemento containerBodyScroll atual
+
 
 
 
             //Renderiza o gráfico padrão com dados vindo do método compact da view, logo que a página é carregada.
-            renderGrafico("bar", "COMPRAS POR PRODUTOS", titulomesanoatual, tamanhoContainerOriginal);
+            renderGrafico("bar", "COMPRAS POR PRODUTOS", titulomesanoatual, larguraContainerOriginal);
 
 
             //ALTERAÇÃO DO ESTILO DE GRÁFICO
@@ -907,14 +908,14 @@
                 //Logo que a página é carregada, tipodado não está definido, então renderiza-se o gráfico padrão (bar) com os dados padrão (produtos), vindos
                 //do método compact da view
                 if(tipodados == ""){
-                    renderGrafico(estilo, "COMPRAS POR PRODUTOS", titulomesanoatual, tamanhoContainerOriginal);
+                    renderGrafico(estilo, "COMPRAS POR PRODUTOS", titulomesanoatual, larguraContainerOriginal);
                 }else{
                     //Obs: Nesse momento valorTituloGrafico recebe o valor definido globalmente.
                     //Obs: Os valores dos parâmetros para a função "renderGraficoDinamico()" são obtidos
                     //     a partir dos valores definidos quando for executado o script Jquery ($(".tipodadosgraficopadrao").on("click", function(){...})) localizado em algum
                     //     trecho de código abaixo. Se nenhum outro tipo de dados (produto, categoria, reginal) for escolhido, o gráfico a ser renderizado continuará a ser o
                     //     de produto, mudando-se apenas o estilo, só que desta vez, fazendo uso da função renderGraficoDinamico()
-                    renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual, tamanhoContainerOriginal);
+                    renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual, larguraContainerOriginal);
                 }
 
             });
@@ -964,7 +965,7 @@
                         valorTituloGrafico = result['titulo'];
 
                         //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamicoEmpilhado(valorLabels, valorDataNormal, valorDataAf, valorTituloGrafico, titulomesanoatual, tamanhoContainerOriginal);
+                        renderGraficoDinamicoEmpilhado(valorLabels, valorDataNormal, valorDataAf, valorTituloGrafico, titulomesanoatual, larguraContainerOriginal);
 
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
@@ -1113,7 +1114,7 @@
                         if(estilo == ""){estilo = "bar";}
 
                         //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual, tamanhoContainerOriginal);
+                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual, larguraContainerOriginal);
 
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
@@ -1368,7 +1369,7 @@
                         if(estilo == ""){estilo = "bar";}
 
                         //Renderiza gráfico passando as informações necessárias
-                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual, tamanhoContainerOriginal);
+                        renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual, larguraContainerOriginal);
 
                         //Atualiza a tabela tradução
                         $(".tabelatraducao").html('');
@@ -1551,7 +1552,7 @@
         // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS BAR - HORIZONTALBAR - LINHA - ROSCA
         //**************************************************************************
         //Renderiza Gráfico com dados padrão Produtos e o estilo igual a "bar" (Dados vindos via método compac, da view).
-        function renderGrafico(estilo, titulo, titulomesano, tamanhoContainerOriginal){
+        function renderGrafico(estilo, titulo, titulomesano, larguraContainerOriginal){
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
             //$('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
@@ -1636,9 +1637,9 @@
                         // Change options for ALL labels of THIS CHART
                         datalabels: {
                             color: '#0000ff',
-                            //anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
-                            //align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
-                            //offset: 5           // distância em pixel do valores a serem apresentados
+                            anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
+                            align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
+                            offset: 5           // distância em pixel do valores a serem apresentados
                         }
                     },
                     scales: {
@@ -1709,20 +1710,18 @@
             /**** HORIZONTAL SCROLL BAR *****/
             const containerBodyScroll = document.querySelector(".containerBodyScroll");
             const totalLabels = myChart.data.labels.length;
-            //alert($(".containerBodyScroll").width());
-            if(totalLabels > 7){
-                const newWith = 700 + ((totalLabels - 7) * 30);
+            if(totalLabels > 15){
+                const newWith = 3500 + ((totalLabels - 15) * 30);
                 containerBodyScroll.style.width = `${newWith}px`;
             }else{
-                containerBodyScroll.style.width = `${tamanhoContainerOriginal}px`;
+                containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
             };
-            /****  HORIZONTAL SCROLL BAR ****     **/
 
         }
 
 
 
-        function renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, titulo, titulomesano, tamanhoContainerOriginal){
+        function renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, titulo, titulomesano, larguraContainerOriginal){
 
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
@@ -1806,9 +1805,9 @@
                         // Change options for ALL labels of THIS CHART
                         datalabels: {
                             color: '#0000ff',   // Cor dos valores das colunas
-                            //anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
-                            //align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
-                            //offset: 5           // distância em pixel do valores a serem apresentados
+                            anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
+                            align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
+                            offset: 5           // distância em pixel do valores a serem apresentados
                         }
                     },
                     scales: {
@@ -1889,9 +1888,9 @@
                 //const newHeigth = 10000 + ((totalLabels - 22) * 30);
                 //containerBodyScroll.style.heigth = `${newHeigth}px`;
             }else{
-                containerBodyScroll.style.width = `${tamanhoContainerOriginal}px`;
+                containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
             };
-            /****  HORIZONTAL SCROLL BAR ****     **/
+
         }
 
 
