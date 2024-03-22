@@ -14,8 +14,8 @@
                 Generate Report
             </a>
         --}}
-        <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline">
-
+        <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline" style="padding-left: 5px; padding-right: 5px; border: 1px solid #f7f5f5; background-color: #e5e5e5;">
+            <span><strong>Gerar arquivo:</strong> &nbsp;&nbsp;</span>
             <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
                 <option value="0" selected disabled>Mês...</option>
                 @foreach($mesespesquisa as $key => $value)

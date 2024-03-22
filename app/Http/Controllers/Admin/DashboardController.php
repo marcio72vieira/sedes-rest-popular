@@ -728,75 +728,83 @@ class DashboardController extends Controller
         $ano = $request->anoexcel;
         $tipo = $request->tipoexcelcsv;
 
-        // Adiciona um 0 (zero) na frente do mês de 01 a 09
-        $mes = ($mes < 10) ? "0".$mes : $mes;
 
-        // Define o nome do arquivo(formado por mês e ano)
-        $referencia = $mes."_".$ano;
+        // Testa se todos os parâmetros são válidos
+        if($mes != 0 && $ano != 0 && $tipo != 0){
 
-        // Define o tipo de arquivo a ser gerado
-        $tipoextensao = ($tipo == 1) ? 'xlsx' : 'csv';
+            // Adiciona um 0 (zero) na frente do mês de 01 a 09
+            $mes = ($mes < 10) ? "0".$mes : $mes;
 
-        // Definindo a query
-        $records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_nome, medida_simbolo, preco, precototal, semana_nome, DATE_FORMAT(data_ini,"%d/%m/%Y") AS datainicial, MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, DATE_FORMAT(data_fin,"%d/%m/%Y") AS datafinal, MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, DATE_FORMAT(created_at,"%d/%m/%Y %H:%i") AS criado, DATE_FORMAT(updated_at,"%d/%m/%Y %H:%i") AS atualizado')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get();
+            // Define o nome do arquivo(formado por mês e ano)
+            $referencia = $mes."_".$ano;
 
-        //dd($records); //dd($records[0]->precototal);
+            // Define o tipo de arquivo a ser gerado
+            $tipoextensao = ($tipo == 1) ? 'xlsx' : 'csv';
 
-        $writer = SimpleExcelWriter::streamDownload('compras_'.$referencia.".".$tipoextensao)
-            ->addHeader([
-                        'Registro', 'Regional', 'Município', 'Restaurante', 'AF', 'Nº Compra', 'Categoria', 'Produto', 'Detalhe',
-                        'Quantidade', 'Medida', 'Medida Abev', 'Preço', 'Total', 'Semana', 'Data Inicial', 'Mês Inicial', 'Ano Inicial',
-                        'Data Final', 'Mês Final', 'Ano Final', 'Empresa', 'Nutricionista Empresa', 'CPF Nutri. Empresa', 'CRN Nutri. Empresa',
-                        'Nutricionista SEDES', 'CPF Nutri. SEDES', 'CRN Nutri. SEDES', 'Registrado', 'Atualizado'
-                        ]);
+            // Definindo a query
+            $records = DB::table('bigtable_data')->selectRaw('id, regional_nome, municipio_nome, identificacao, af, compra_id, categoria_nome, produto_nome, detalhe, quantidade, medida_nome, medida_simbolo, preco, precototal, semana_nome, DATE_FORMAT(data_ini,"%d/%m/%Y") AS datainicial, MONTH(data_ini) AS mes_ini, YEAR(data_ini) AS ano_ini, DATE_FORMAT(data_fin,"%d/%m/%Y") AS datafinal, MONTH(data_fin) AS mes_fin, YEAR(data_fin) AS ano_fin, nomefantasia, nutricionista_nomecompleto, nutricionista_cpf, nutricionista_crn, user_nomecompleto, user_cpf, user_crn, DATE_FORMAT(created_at,"%d/%m/%Y %H:%i") AS criado, DATE_FORMAT(updated_at,"%d/%m/%Y %H:%i") AS atualizado')->whereMonth('data_ini', $mes)->whereYear('data_ini', $ano)->get();
 
-        // Contador para esvaziar buffer com flush()
-         $countbuffer = 1;
+            //dd($records); //dd($records[0]->precototal);
 
-         foreach ($records as $record ) {
-            $writer->addRow([
-                'id' => $record->id,
-                'regional_nome' => $record->regional_nome,
-                'municipio_nome' => $record->municipio_nome,
-                'identificacao' => $record->identificacao,
-                'af' => $record->af,
-                'compra_id' => $record->compra_id,
-                'categoria_nome' => $record->categoria_nome,
-                'produto_nome' => $record->produto_nome,
-                'detalhe' => $record->detalhe,
-                'quantidade' => (float) $record->quantidade,    // converte para float
-                'medida_nome' => $record->medida_nome,
-                'medida_simbolo' => $record->medida_simbolo,    // converte para float
-                'preco' => (float)$record->preco,               // converte para float
-                'precototal' => (float) $record->precototal,
-                'semana_nome' => $record->semana_nome,
-                'datainicial'=> $record->datainicial,
-                'mes_ini' => $record->mes_ini,
-                'ano_ini' => $record->ano_ini,
-                'datafinal' => $record->datafinal,
-                'mes_fin' => $record->mes_fin,
-                'ano_fin' => $record->ano_fin,
-                'nomefantasia' => $record->nomefantasia,
-                'nutricionista_nomecompleto' => $record->nutricionista_nomecompleto,
-                'nutricionista_cpf' => $record->nutricionista_cpf,
-                'nutricionista_crn' => $record->nutricionista_crn,
-                'user_nomecompleto' => $record->user_nomecompleto,
-                'user_cpf' => $record->user_cpf,
-                'user_crn' => $record->user_crn,
-                'criado' => $record->criado,
-                'atualizado' => $record->atualizado,
-            ]);
+            $writer = SimpleExcelWriter::streamDownload('compras_'.$referencia.".".$tipoextensao)
+                ->addHeader([
+                            'Registro', 'Regional', 'Município', 'Restaurante', 'AF', 'Nº Compra', 'Categoria', 'Produto', 'Detalhe',
+                            'Quantidade', 'Medida', 'Medida Abev', 'Preço', 'Total', 'Semana', 'Data Inicial', 'Mês Inicial', 'Ano Inicial',
+                            'Data Final', 'Mês Final', 'Ano Final', 'Empresa', 'Nutricionista Empresa', 'CPF Nutri. Empresa', 'CRN Nutri. Empresa',
+                            'Nutricionista SEDES', 'CPF Nutri. SEDES', 'CRN Nutri. SEDES', 'Registrado', 'Atualizado'
+                            ]);
 
-            // Limpa o buffer a cada mil linhas
-            $countbuffer++;
+            // Contador para esvaziar buffer com flush()
+            $countbuffer = 1;
 
-            if($countbuffer % 1000 === 0){
-                flush();
+            foreach ($records as $record ) {
+                $writer->addRow([
+                    'id' => $record->id,
+                    'regional_nome' => $record->regional_nome,
+                    'municipio_nome' => $record->municipio_nome,
+                    'identificacao' => $record->identificacao,
+                    'af' => $record->af,
+                    'compra_id' => $record->compra_id,
+                    'categoria_nome' => $record->categoria_nome,
+                    'produto_nome' => $record->produto_nome,
+                    'detalhe' => $record->detalhe,
+                    'quantidade' => (float) $record->quantidade,    // converte para float
+                    'medida_nome' => $record->medida_nome,
+                    'medida_simbolo' => $record->medida_simbolo,    // converte para float
+                    'preco' => (float)$record->preco,               // converte para float
+                    'precototal' => (float) $record->precototal,
+                    'semana_nome' => $record->semana_nome,
+                    'datainicial'=> $record->datainicial,
+                    'mes_ini' => $record->mes_ini,
+                    'ano_ini' => $record->ano_ini,
+                    'datafinal' => $record->datafinal,
+                    'mes_fin' => $record->mes_fin,
+                    'ano_fin' => $record->ano_fin,
+                    'nomefantasia' => $record->nomefantasia,
+                    'nutricionista_nomecompleto' => $record->nutricionista_nomecompleto,
+                    'nutricionista_cpf' => $record->nutricionista_cpf,
+                    'nutricionista_crn' => $record->nutricionista_crn,
+                    'user_nomecompleto' => $record->user_nomecompleto,
+                    'user_cpf' => $record->user_cpf,
+                    'user_crn' => $record->user_crn,
+                    'criado' => $record->criado,
+                    'atualizado' => $record->atualizado,
+                ]);
+
+                // Limpa o buffer a cada mil linhas
+                $countbuffer++;
+
+                if($countbuffer % 1000 === 0){
+                    flush();
+                }
             }
+
+            $writer->toBrowser();
+
+        } else {
+            $request->session()->flash('falhaexcelcsv', 'Selecione: mês, ano e tipo!');
+            return redirect()->route('admin.dashboard');
         }
-
-
-        $writer->toBrowser();
 
 
     }
