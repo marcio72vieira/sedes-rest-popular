@@ -58,7 +58,7 @@ class DashboardController extends Controller
         }else{
             $qtdanosexibicao = $anoatual - $anoimplantacao;
             for($a = $qtdanosexibicao; $a >= 0; $a--){
-                $anos[] = $anoatual - $a;   // $anoatual - 0 (quando $a for igual a zero) será igual ao ano corrente.
+                $anos[] = $anoatual - $a;
             }
             $anospesquisa = array_reverse($anos);
         }
@@ -81,11 +81,6 @@ class DashboardController extends Controller
 
         //Dados Produtos Para gráfico Principal com tradução
         $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
-
-        //Seleciona só as categorias dos produtos comprados no mês e ano corrente para compor o select:  selectProdutosDaCategoriaparaPesquisa_id
-        $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
-        
-        
         $dataRecords = [];
 
         //Ignite
@@ -96,8 +91,6 @@ class DashboardController extends Controller
         }else{
             $dataRecords[''] =  0;
         }
-
-        
 
 
 
@@ -170,7 +163,7 @@ class DashboardController extends Controller
         return view('admin.dashboard.index', compact('mes_corrente','ano_corrente','mesespesquisa', 'anospesquisa', 'totEmpresas', 'totNutricionistas', 'totRestaurantes', 'totComprasGeral',
                         'totComprasMes', 'totalValorCompras', 'totComprasNormal', 'totComprasAf', 'totMunicipios',
                         'totUsuarios', 'regionais', 'categorias', 'produtos', 'dataRecords', 'usuarios',
-                        'compras_af', 'compras_norm', 'nomesCategorias'));
+                        'compras_af', 'compras_norm'));
     }
 
 
@@ -183,7 +176,6 @@ class DashboardController extends Controller
         $tipodados = $request->tipodados;
         $mes_corrente = $request->mescorrente;
         $ano_corrente = $request->anocorrente;
-        $cat_corrente = $request->catcorrente;
 
         $data = [];
         $dataRecords = [];
@@ -191,16 +183,7 @@ class DashboardController extends Controller
 
         switch($tipodados){
             case "Produtos":
-                //$records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
-                if($cat_corrente != 0){
-                    $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente  GROUP BY produto_id ORDER BY totalcompra ASC"));
-                }else{
-                    $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
-                }
-
-                // Seleciona só as categorias das compras realizadas no mês e/ou ano corrente. Para RECOMPOR DINAMICAMENTE O SELECT: "selectCategoriaPesquisa_id"
-                $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
-                $data['selcategorias'] = $nomesCategorias;
+                $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
                 $data['titulo'] = "COMPRAS POR PRODUTOS ";
             break;
             case "Categorias":

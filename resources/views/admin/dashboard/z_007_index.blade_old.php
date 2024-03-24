@@ -351,8 +351,8 @@
                     </div>
 
 
-                    <div id="mesesanoscategoriaparapesquisa" class="col-md-6 d-sm-flex justify-content-between">
-                        <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
+                    <div id="mesesanosparapesquisa" class="col-md-3 d-sm-flex justify-content-between">
+                        <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
                             <option value="" selected disabled>Mês...</option>
                             @foreach($mesespesquisa as $key => $value)
                                 {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
@@ -361,19 +361,11 @@
                             @endforeach
                         </select>
                         &nbsp;&nbsp;
-                        <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
+                        <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
                             <option value="" selected disabled>Ano...</option>
                             @foreach($anospesquisa as $value)
                                 <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
                             @endforeach
-                        </select>
-                        &nbsp;&nbsp;
-                        <select id="selectCategoriaPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
-                            <option value="" selected disabled>Só da Categoria...</option>
-                            @foreach($nomesCategorias as $nomeCategoria)
-                                <option value="{{ $nomeCategoria->id }}"> {{ $nomeCategoria->nome }}</option>
-                            @endforeach
-                            <option value="0" selected data-catpesquisa="0" class="optionAnoPesquisa"> Todos os produtos </option>
                         </select>
                     </div>
 
@@ -851,7 +843,6 @@
             // Mês e ano corrente (valores obtidos a partir da view)
             var mespesquisa = "{{$mes_corrente}}";
             var anopesquisa = "{{$ano_corrente}}";
-            var catpesquisa = 0 // O valor está definido como zero, porque em um primeiro momento, TODOS OS PRODUTOS de TODAS AS CATEGORIAS são retornados
             var titulomesanoatual = "{{$mesespesquisa[$mes_corrente]}} " + " - " + "{{$ano_corrente}}";
 
             var estilo = "";
@@ -1065,27 +1056,15 @@
             // $('.optionAnoPesquisa').on('click', function() { var anopesquisa = $(this).data('anopesquisa'); alert(anopesquisa); });
 
 
-            $('.selectsmesesanoscategoriaspesquisa').on('change', function() {
+            $('.selectsmesesanospesquisa').on('change', function() {
                 //Resgatando o mês e o ano selecionados
-                mespesquisa = $(this).parents("#mesesanoscategoriaparapesquisa").find("#selectMesPesquisa_id").val();
-                anopesquisa = $(this).parents("#mesesanoscategoriaparapesquisa").find("#selectAnoPesquisa_id").val();
-                catpesquisa = $(this).parents("#mesesanoscategoriaparapesquisa").find("#selectCategoriaPesquisa_id").val();
-
-                alert(catpesquisa);
+                mespesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectMesPesquisa_id").val();
+                anopesquisa = $(this).parents("#mesesanosparapesquisa").find("#selectAnoPesquisa_id").val();
 
                 // Título para compor cabeçalho da tabela de "Tradução".
                 var mes = $("#selectMesPesquisa_id").find('option:selected').text();
                 var ano = $("#selectAnoPesquisa_id").find('option:selected').text();
-                var cat = $("#selectCategoriaPesquisa_id").find('option:selected').text();
-
-                alert(cat.toUpperCase());
-
-                if(catpesquisa != 0){
-                    titulomesanoatual = "(" + cat.toUpperCase() + ") " + mes + " - " + ano;
-                }else{
-                    titulomesanoatual = mes + " - " + ano;
-                }
-
+                titulomesanoatual = mes + " - " + ano;
 
                 if(tipodados == ""){
                     tipodados = "Produtos";
@@ -1101,8 +1080,7 @@
                     data: {
                         tipodados: tipodados,
                         mescorrente: mespesquisa,
-                        anocorrente: anopesquisa,
-                        catcorrente: catpesquisa
+                        anocorrente: anopesquisa
                     },
                     dataType : 'json',
 
@@ -1116,12 +1094,6 @@
                         somaCompra = 0;
                         porcentagemCompra = 0;
                         valorTituloGrafico = "";
-
-                        //Iterando sobre o array['selcategorias'] para "REMONTAR" o elemento select: "selectCategoriaPesquisa_id" .addClass(className);
-                        $('#selectCategoriaPesquisa_id').html('<option value="" selected disabled>Só da Categoria...</option>');
-                        $.each(result['selcategorias'],function(key,value){
-                            $("#selectCategoriaPesquisa_id").append('<option value="'+value.id+'">'+value.nome+'</option>');
-                        });
 
                         //Iterando sobre o array['dados'] e // Obtém o valor da soma de todas as compras realizadas, para cálculo da %
                         $.each(result['dados'], function(key,value){
@@ -2629,11 +2601,11 @@
         */
 
         //******************************************************
-        // SELECTS MÊS, ANO  E CATEGORIA DE PESQUISA PARA GRÁFICOS ORIGINAL
+        // SELECTS MÊS E ANO DE PESQUISA PARA GRÁFICOS ORIGINAL
         //*****************************************************
         /*
         <div id="mesesanosparapesquisa" class="col-md-2 d-sm-flex align-items-center justify-content-between" style="padding-right: 0px">
-            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
+            <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
                 <option value="" selected disabled>Mês...</option>
                 @foreach($mesespesquisa as $key => $value)
                     {{-- Obs: Os índices dos mêses são 1, 2, 3 ... 12 (sem zeros à esquerda) que corresponde exatamente aos seus índices, vindo do controller e seus valores são: Janeiro, Fevereiro, Março ... Dezembro, por isso a necessidade usarmos o parâmetro $key --}}
@@ -2642,7 +2614,7 @@
                 @endforeach
             </select>
             &nbsp;&nbsp;
-            <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
+            <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanospesquisa">
                 <option value="" selected disabled>Ano...</option>
                 @foreach($anospesquisa as $value)
                     <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="optionAnoPesquisa"> {{ $value }} </option>
