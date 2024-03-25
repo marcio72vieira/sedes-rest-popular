@@ -351,7 +351,7 @@
                     </div>
 
 
-                    <div id="mesesanoscategoriaparapesquisa" class="col-md-6 d-sm-flex justify-content-between">
+                    <div id="mesesanoscategoriaparapesquisa" class="col-md-5 d-sm-flex justify-content-between">
                         <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
                             <option value="" selected disabled>Mês...</option>
                             @foreach($mesespesquisa as $key => $value)
@@ -369,11 +369,12 @@
                         </select>
                         &nbsp;&nbsp;
                         <select id="selectCategoriaPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
-                            <option value="" selected disabled>Só da Categoria...</option>
+                            <option value="" selected disabled>Categoria...</option>
                             @foreach($nomesCategorias as $nomeCategoria)
                                 <option value="{{ $nomeCategoria->id }}"> {{ $nomeCategoria->nome }}</option>
                             @endforeach
-                            <option value="0" selected data-catpesquisa="0" class="optionAnoPesquisa"> Todos os produtos </option>
+                            <option value="" disabled class="optionCategoriaPesquisa">___________________</option>
+                            <option value="0" selected data-catpesquisa="0" class="optionCategoriaPesquisa"> Todas </option>
                         </select>
                     </div>
 
@@ -851,7 +852,7 @@
             // Mês e ano corrente (valores obtidos a partir da view)
             var mespesquisa = "{{$mes_corrente}}";
             var anopesquisa = "{{$ano_corrente}}";
-            var catpesquisa = 0 // O valor está definido como zero, porque em um primeiro momento, TODOS OS PRODUTOS de TODAS AS CATEGORIAS são retornados
+            var catpesquisa = 0 // O valor está definido como zero, porque em um primeiro momento, TODOS OS PRODUTOS de TODAS AS CATEGORIAS serão retornados
             var titulomesanoatual = "{{$mesespesquisa[$mes_corrente]}} " + " - " + "{{$ano_corrente}}";
 
             var estilo = "";
@@ -1056,9 +1057,9 @@
             });
 
 
-            //###########################################################
-            //####### INÍCIO PESQUISA POR MESES E ANOS ##################
-            //#######                                  ##################
+            //##################################################################################
+            //####### INÍCIO PESQUISA POR MESES, ANOS E PRODUTOS DA CATEGORIA ##################
+            //#######                                                         ##################
             // Forma alternativa de resgatar o valor de um option da tag select. Atribui-se uma classe diretamente em
             // cada option do select (optionMesPesquisa) e depois utiliza-se o evento 'click' sobre a classe desejada conforme abaixo:
             // $('.optionMesPesquisa').on('click', function() { var mespesquisa = $(this).data('mespesquisa'); alert(mespesquisa); });
@@ -1071,14 +1072,12 @@
                 anopesquisa = $(this).parents("#mesesanoscategoriaparapesquisa").find("#selectAnoPesquisa_id").val();
                 catpesquisa = $(this).parents("#mesesanoscategoriaparapesquisa").find("#selectCategoriaPesquisa_id").val();
 
-                alert(catpesquisa);
-
                 // Título para compor cabeçalho da tabela de "Tradução".
                 var mes = $("#selectMesPesquisa_id").find('option:selected').text();
                 var ano = $("#selectAnoPesquisa_id").find('option:selected').text();
                 var cat = $("#selectCategoriaPesquisa_id").find('option:selected').text();
 
-                alert(cat.toUpperCase());
+                alert("Mês: " + mespesquisa + " Ano: " + anopesquisa + " Categoria: " + catpesquisa + " - " + cat.toUpperCase());
 
                 if(catpesquisa != 0){
                     titulomesanoatual = "(" + cat.toUpperCase() + ") " + mes + " - " + ano;
@@ -1118,10 +1117,12 @@
                         valorTituloGrafico = "";
 
                         //Iterando sobre o array['selcategorias'] para "REMONTAR" o elemento select: "selectCategoriaPesquisa_id" .addClass(className);
-                        $('#selectCategoriaPesquisa_id').html('<option value="" selected disabled>Só da Categoria...</option>');
+                        $('#selectCategoriaPesquisa_id').html('<option value="" selected disabled>Categoria...</option>');
                         $.each(result['selcategorias'],function(key,value){
                             $("#selectCategoriaPesquisa_id").append('<option value="'+value.id+'">'+value.nome+'</option>');
                         });
+                        $("#selectCategoriaPesquisa_id").append('<option value="" disabled  class="optionCategoriaPesquisa">___________________</option>');
+                        $("#selectCategoriaPesquisa_id").append('<option value="0" data-catpesquisa="0"  class="optionCategoriaPesquisa"> Todas </option>');
 
                         //Iterando sobre o array['dados'] e // Obtém o valor da soma de todas as compras realizadas, para cálculo da %
                         $.each(result['dados'], function(key,value){
