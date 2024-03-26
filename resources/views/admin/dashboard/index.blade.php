@@ -14,8 +14,8 @@
                 Generate Report
             </a>
         --}}
-        <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline" style="padding-left: 5px; padding-right: 5px; border: 1px solid #f7f5f5; background-color: #e5e5e5;">
-            <span><strong>Gerar arquivo:</strong> &nbsp;&nbsp;</span>
+        <form action="{{route('admin.dashboard.gerarexcel')}}"  method="GET" class="form-inline" style="padding-left: 5px; padding-right: 5px; border: 1px solid #f7f5f5; background-color: #e5e5e5; border-radius: 5px;">
+            <span><strong>&nbsp;&nbsp;Gerar arquivo:</strong> &nbsp;&nbsp;</span>
             <select id="selectMesExcel" name="mesexcel"  class="form-control col-form-label-sm">
                 <option value="0" selected disabled>Mês...</option>
                 @foreach($mesespesquisa as $key => $value)
@@ -42,7 +42,7 @@
                 <i class="fas fa-download"></i>
                 <b>Baixar</b>
             </button>
-
+            &nbsp;&nbsp;
             {{--
             <a class="btn btn-primary btn-success form-control col-form-label-sm" href="{{route('admin.dashboard.gerarexcel')}}" role="button"   title="gerar excel">
                 <i class="far fa-file-excel"></i>
@@ -2263,7 +2263,10 @@
                         text: 'Compras Gerais'
                     },
                     datalabels: {
-                        color: '#0000ff'
+                        color: '#0000ff',   // Cor dos valores das colunas
+                        anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
+                        align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
+                        offset: 5           // distância em pixel do valores a serem apresentados
                     }
                 }
             }
