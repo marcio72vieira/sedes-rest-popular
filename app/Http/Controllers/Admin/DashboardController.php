@@ -197,10 +197,6 @@ class DashboardController extends Controller
                 }else{
                     $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
                 }
-
-                // Seleciona só as categorias das compras realizadas no mês e/ou ano corrente. Para RECOMPOR DINAMICAMENTE O SELECT: "selectCategoriaPesquisa_id"
-                $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
-                $data['selcategorias'] = $nomesCategorias;
                 $data['titulo'] = "COMPRAS POR PRODUTOS ";
             break;
             case "Categorias":
@@ -208,9 +204,21 @@ class DashboardController extends Controller
                 $data['titulo'] = "COMPRAS POR CATEGORIAS";
             break;
             case "Regionais":
-                $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                //$records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                if($cat_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }
                 $data['titulo'] = "COMPRAS POR REGIONAIS";
             break;
+        }
+
+        // Verifica se produtos ou regionais foram selecionados, para recuperar só as categorias das compras realizadas no mês e/ou ano corrente. 
+        // Para RECOMPOR DINAMICAMENTE O SELECT: "selectCategoriaPesquisa_id"
+        if($tipodados == "Produtos" || $tipodados == "Regionais" ){
+            $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
+            $data['selcategorias'] = $nomesCategorias;
         }
 
 
