@@ -1748,8 +1748,8 @@
             /**** HORIZONTAL SCROLL BAR *****/
             const containerBodyScroll = document.querySelector(".containerBodyScroll");
             const totalLabels = myChart.data.labels.length;
-            if(totalLabels > 15){
-                const newWith = 3500 + ((totalLabels - 15) * 30);
+            if(totalLabels >= 20){
+                const newWith = 3500 + ((totalLabels - 20) * 30);
                 containerBodyScroll.style.width = `${newWith}px`;
             }else{
                 containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
@@ -1831,6 +1831,7 @@
                         title: {
                             display: true,
                             text: titulo,
+                            align: 'center', //Nova configuração (start, center, end)
                             padding: {
                                 top: 3,
                                 bottom: 3
@@ -1838,7 +1839,8 @@
                         },
                         subtitle: {
                             display: true,
-                            text: titulomesano //text: 'Compras Gerais'
+                            text: titulomesano, //text: 'Compras Gerais'
+                            align: 'center', //Nova configuração (start, center, end)
                         },
                         // Change options for ALL labels of THIS CHART
                         datalabels: {
@@ -1846,6 +1848,14 @@
                             anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
                             align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
                             offset: 5           // distância em pixel do valores a serem apresentados
+                        },
+                        // Novas configurações
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: 'rgb(0, 0, 0)'
+                            },
+                            position: 'top'   //left, right, top, bottom
                         }
                     },
                     scales: {
@@ -1879,9 +1889,9 @@
                         text: titulo
                     },
                     */
-                    legend: {
+                    /* legend: {
                         display: false,
-                    },
+                    }, */
                     indexAxis: (estilo == 'horizontalBar' ? 'y' : 'x'),  // versão 3.9.1
                     // Adequa o tamanho dos gráficos conforme o tamanho da div: "#areaparagraficos"
                     maintainAspectRatio: false, // versão 3.9.1
@@ -1920,8 +1930,9 @@
             /**** HORIZONTAL SCROLL BAR ****/
             const containerBodyScroll = document.querySelector(".containerBodyScroll");
             const totalLabels = myChart.data.labels.length;
-            if(totalLabels > 15){
-                const newWidth = 3500 + ((totalLabels - 15) * 30);
+            if(totalLabels >= 20){
+            //if(totalLabels >= 20 && (myChart.config.type != 'doughnut' && myChart.config.type != 'pie')){
+                const newWidth = 3500 + ((totalLabels - 20) * 30);
                 containerBodyScroll.style.width = `${newWidth}px`;
                 //const newHeigth = 10000 + ((totalLabels - 22) * 30);
                 //containerBodyScroll.style.heigth = `${newHeigth}px`;
