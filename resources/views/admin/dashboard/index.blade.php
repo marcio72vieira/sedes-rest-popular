@@ -584,6 +584,14 @@
                                 </select>
                             </div>
 
+                            <div class="col-md-1">
+                                <select id="selectAno_id" class="form-control col-form-label-sm">
+                                    @foreach($anospesquisa as $value)
+                                        <option value="{{ $value }}" {{date('Y') == $value ? 'selected' : ''}} data-anopesquisa="{{$value}}" class="xxxoptionAnoPesquisa"> {{ $value }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             {{-- <div class="col-md-1">
                                 {{-- <label for="selectMes"  style="font-weight:bold; font-size: 1rem; color: #4e73df; display:block; width:100%; " class="col-form-label col-form-label-sm">Mês:</label>
                                 <select id="selectMes" class="form-control col-form-label-sm">
@@ -1198,12 +1206,14 @@
                 var selecaoRegional = $(this).parents(".pesquisaMonitor").find("#selectRegional_id").val();
                 var selecaoMunicipio = $(this).parents(".pesquisaMonitor").find("#selectMunicipio_id").val();
                 var selecaoRestaurante = $(this).parents(".pesquisaMonitor").find("#selectRestaurante_id").val();
+                var selecaoAno = $(this).parents(".pesquisaMonitor").find("#selectAno_id").val();
                 // alert("Regional: " + selecaoRegional + "; Município: " + selecaoMunicipio + "; Restaurante: " + selecaoRestaurante);
 
                 //Capturando os textos dos selects
                 var textSelecaoRegional = $("#selectRegional_id option:selected").text();
                 var textSelecaoMunicipio = $("#selectMunicipio_id option:selected").text();
                 var textSelecaoRestaurante = $("#selectRestaurante_id option:selected").text();
+                var textSelecaoAno = $("#selectAno_id option:selected").text();
                 // alert("Regional: " + textSelecaoRegional + "; Município: " + textSelecaoMunicipio + "; Restaurante: " + textSelecaoRestaurante);
 
 
@@ -1218,9 +1228,11 @@
                         idReg: selecaoRegional,
                         idMuni: selecaoMunicipio,
                         idRest: selecaoRestaurante,
+                        idAno: selecaoAno,
                         txtReg: textSelecaoRegional,        //Utilizado para montar o título do gráfico
                         txtMuni: textSelecaoMunicipio,      //Utilizado para montar o título do gráfico
-                        txtRest: textSelecaoRestaurante     //Utilizado para montar o título do gráfico
+                        txtRest: textSelecaoRestaurante,     //Utilizado para montar o título do gráfico
+                        txtAno: textSelecaoAno     //Utilizado para montar o título do gráfico
                     },
                     dataType : 'json',
 
@@ -1898,6 +1910,7 @@
                 }
             });
 
+
             //Configurações personalizadas se grafico é do tipo linha
             if(myChart.config.type == 'line'){
                 myChart.data.datasets[0].backgroundColor = 'rgb(255, 0, 0, 0.5)';
@@ -1939,6 +1952,18 @@
             }else{
                 containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
             };
+
+
+            
+            // Se a quantidde de legendas for maior que 5 e os gráficos forem do tipo Doughnut ou Pie muda a disposição das mesmas para uma melhor visualização
+            if(myChart.data.labels.length >= 5 && (myChart.config.type == 'doughnut' || myChart.config.type == 'pie')){
+                myChart.options.plugins.legend.position = "right";
+                myChart.options.plugins.title.align = "start";
+                myChart.options.plugins.subtitle.align = "start";
+                containerBodyScroll.style.width = `${larguraContainerOriginal}px`; //'1089px';
+                myChart.update();
+            }
+           
 
         }
 
@@ -2233,9 +2258,9 @@
         }
 
 
-        //**************************************************************
-        // GRÁFICOS MÊS A MÊS MONITOR REGIONAL - MUNICÍPIO - RESTAURANTE
-        //**************************************************************
+        //***********************************************************************************************************************
+        // INÍCIO - GRÁFICOS MÊS A MÊS MONITOR REGIONAL - MUNICÍPIO - RESTAURANTE / ESTÁTICO (COM DADOS VINDO DA VIEW) E DINÂMICO
+        //***********************************************************************************************************************
         //Limpa a área do grafico para evitar sobreposição de informações
         $('#graficomesamesMonitor').remove();
         $('#areaparagraficosmesamesmonitor').append('<canvas id="graficomesamesMonitor"  width="200" height="40" style="padding: 10px 5px 5px 5px;"><canvas>');
@@ -2280,7 +2305,7 @@
                     },
                     subtitle: {
                         display: true,
-                        text: 'Compras Gerais'
+                        text: 'Compras Gerais' + " / " + new Date().getFullYear()   // Obtendo o ano corrente que é default
                     },
                     datalabels: {
                         color: '#0000ff',   // Cor dos valores das colunas
@@ -2348,9 +2373,9 @@
             });
         }
 
-        //******************************************************************
-        // FIM GRÁFICOS MÊS A MÊS MONITOR REGIONAL - MUNICÍPIO - RESTAURANTE
-        //******************************************************************
+        //*********************************************************************************************************************
+        // FIM - GRÁFICOS MÊS A MÊS MONITOR REGIONAL - MUNICÍPIO - RESTAURANTE / ESTÁTICO (COM DADOS VINDO DA VIEW) E DINÂMICO
+        //*********************************************************************************************************************
 
 
 
