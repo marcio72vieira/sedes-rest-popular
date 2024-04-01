@@ -1954,16 +1954,17 @@
             };
 
 
-            
+
             // Se a quantidde de legendas for maior que 5 e os gráficos forem do tipo Doughnut ou Pie muda a disposição das mesmas para uma melhor visualização
-            if(myChart.data.labels.length >= 5 && (myChart.config.type == 'doughnut' || myChart.config.type == 'pie')){
+            // if(myChart.data.labels.length >= 5 && (myChart.config.type == 'doughnut' || myChart.config.type == 'pie')){
+            if(myChart.config.type == 'doughnut' || myChart.config.type == 'pie'){
                 myChart.options.plugins.legend.position = "right";
                 myChart.options.plugins.title.align = "start";
                 myChart.options.plugins.subtitle.align = "start";
                 containerBodyScroll.style.width = `${larguraContainerOriginal}px`; //'1089px';
                 myChart.update();
             }
-           
+
 
         }
 

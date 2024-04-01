@@ -3537,3 +3537,96 @@ if(totalLabels > 22){
     containerBodyScroll.style.width = `${newWith}px`;
 };
 /****  HORIZONTAL SCROLL BAR ****     **/
+
+
+
+=======================================================
+GERAÇÃO DA SCROLLBAR VERTICAL - EM FASE APERFEIÇOAMENTO
+=======================================================
+Arquivo: public/mrccustom/css/mystyles.css
+        ---- ORIGINAL
+        .containerScroll {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: scroll;
+            /* max-height: 100%;
+            overflow-y: scroll; */
+        }
+
+        .containerBodyScroll {
+            height: 100%;
+        }
+
+
+
+        ----- MODIFICADO -----
+        .containerScroll {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: scroll;
+            max-height: 100%;
+            overflow-y: scroll;
+        }
+
+        .containerBodyScroll {
+            height: 100%;
+        }
+
+
+Arquivo: resources/views/admin/dashboard/index.blade.php
+        ----- ORIGINAL-----
+        /**** HORIZONTAL SCROLL BAR ****/
+            const containerBodyScroll = document.querySelector(".containerBodyScroll");
+            const totalLabels = myChart.data.labels.length;
+            if(totalLabels >= 20){
+            //if(totalLabels >= 20 && (myChart.config.type != 'doughnut' && myChart.config.type != 'pie')){
+                const newWidth = 3500 + ((totalLabels - 20) * 30);
+                containerBodyScroll.style.width = `${newWidth}px`;
+                //const newHeigth = 10000 + ((totalLabels - 22) * 30);
+                //containerBodyScroll.style.heigth = `${newHeigth}px`;
+            }else{
+                containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
+            };
+
+        ------ MODIFICADO-----
+        /**** HORIZONTAL SCROLL BAR ****/
+        const containerBodyScroll = document.querySelector(".containerBodyScroll");
+        const totalLabels = myChart.data.labels.length;
+        if(totalLabels >= 20){
+        //if(totalLabels >= 20 && (myChart.config.type != 'doughnut' && myChart.config.type != 'pie')){
+            const newWidth = 3500 + ((totalLabels - 20) * 30);
+            containerBodyScroll.style.width = `${newWidth}px`;
+
+            if(myChart.options.indexAxis == 'y'){
+                alert("Gráfico de barra!");
+                containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
+                const newHeigth = 3500 + ((totalLabels - 22) * 30);
+                containerBodyScroll.style.height = `${newHeigth}px`;
+            }
+
+
+        }else{
+            containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
+        };
+
+
+        ------ MODIFICADO APERFEIÇOADO MAS AINDA COM DEFEITO
+        /**** HORIZONTAL SCROLL BAR ****/
+        const containerBodyScroll = document.querySelector(".containerBodyScroll");
+        const totalLabels = myChart.data.labels.length;
+        if(totalLabels >= 20){
+        //if(totalLabels >= 20 && (myChart.config.type != 'doughnut' && myChart.config.type != 'pie')){
+            const newWidth = 3500 + ((totalLabels - 20) * 30);
+            containerBodyScroll.style.width = `${newWidth}px`;
+
+            if(myChart.options.indexAxis == 'y'){
+                alert("Gráfico de barra!");
+                containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
+                const newHeigth = 3500 + (totalLabels - 22);
+                containerBodyScroll.style.height = `${newHeigth}px`;
+            }
+
+
+        }else{
+            containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
+        };
