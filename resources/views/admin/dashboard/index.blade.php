@@ -2081,7 +2081,7 @@
         //*************************************************
         // FUNÇÕES PARA RENDERIZAÇÃO DE GRÁFICOS EMPILHADO
         //*************************************************
-        function renderGraficoDinamicoEmpilhado(valorLabels, valorNormal, valorAf, titulo, titulomesano){
+        function renderGraficoDinamicoEmpilhado(valorLabels, valorNormal, valorAf, titulo, titulomesano, larguraContainerOriginal){
 
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
@@ -2098,51 +2098,19 @@
                     labels: valorLabels,
                     datasets: [{
                         label: 'Normal',
+                        minBarLength: 20,   // Define um tamanho mínimo para exibição das barras do gráfico
                         data: valorNormal,
+                        /*
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.3)',
-                            'rgba(54, 162, 235, 0.3)',
-                            'rgba(255, 206, 86, 0.3)',
-                            'rgba(75, 192, 192, 0.3)',
-                            'rgba(153, 102, 255, 0.3)',
-                            'rgba(255, 159, 64, 0.3)',
-                            'rgba(255, 192, 192, 0.3)',
-                            'rgba(153, 102, 255, 0.3)',
-                            'rgba(100, 159, 64, 0.3)',
-                            'rgba(100, 255, 192, 0.3)',
-                            'rgba(183, 90, 255, 0.3)',
-                            'rgba(255, 159, 100, 0.3)', //
-                            'rgba(200, 99, 132, 0.3)',
-                            'rgba(50, 162, 235, 0.3)',
-                            'rgba(210, 206, 86, 0.3)',
-                            'rgba(175, 192, 192, 0.3)',
-                            'rgba(100, 102, 255, 0.3)',
-                            'rgba(210, 159, 64, 0.3)',
-                            'rgba(220, 192, 192, 0.3)',
-                            'rgba(100, 102, 255, 0.3)'
+                            'rgba(255, 99, 132, 0.3)', 'rgba(54, 162, 235, 0.3)', 'rgba(255, 206, 86, 0.3)', 'rgba(75, 192, 192, 0.3)', 'rgba(153, 102, 255, 0.3)', 'rgba(255, 159, 64, 0.3)', 'rgba(255, 192, 192, 0.3)', 'rgba(153, 102, 255, 0.3)', 'rgba(100, 159, 64, 0.3)', 'rgba(100, 255, 192, 0.3)', 'rgba(183, 90, 255, 0.3)', 'rgba(255, 159, 100, 0.3)', //
+                            'rgba(200, 99, 132, 0.3)', 'rgba(50, 162, 235, 0.3)', 'rgba(210, 206, 86, 0.3)', 'rgba(175, 192, 192, 0.3)', 'rgba(100, 102, 255, 0.3)', 'rgba(210, 159, 64, 0.3)', 'rgba(220, 192, 192, 0.3)', 'rgba(100, 102, 255, 0.3)'
                         ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 0)',
-                            'rgba(54, 162, 235, 0)',
-                            'rgba(255, 206, 86, 0)',
-                            'rgba(75, 192, 192, 0)',
-                            'rgba(153, 102, 255, 0)',
-                            'rgba(255, 159, 64, 0)',
-                            'rgba(255, 192, 192, 0)',
-                            'rgba(153, 102, 255, 0)',
-                            'rgba(100, 159, 64, 0)',
-                            'rgba(100, 255, 192, 0)',
-                            'rgba(183, 90, 255, 0)',
-                            'rgba(255, 159, 100, 0)', //
-                            'rgba(200, 99, 132, 0)',
-                            'rgba(50, 162, 235, 0)',
-                            'rgba(210, 206, 86, 0)',
-                            'rgba(175, 192, 192, 0)',
-                            'rgba(100, 102, 255, 0)',
-                            'rgba(210, 159, 64, 0)',
-                            'rgba(220, 192, 192, 0)',
-                            'rgba(100, 102, 255, 0)'
+                        borderColor: ['rgba(255, 99, 132, 0)', 'rgba(54, 162, 235, 0)', 'rgba(255, 206, 86, 0)', 'rgba(75, 192, 192, 0)', 'rgba(153, 102, 255, 0)', 'rgba(255, 159, 64, 0)', 'rgba(255, 192, 192, 0)', 'rgba(153, 102, 255, 0)', 'rgba(100, 159, 64, 0)', 'rgba(100, 255, 192, 0)',
+                                        'rgba(183, 90, 255, 0)', 'rgba(255, 159, 100, 0)', 'rgba(200, 99, 132, 0)', 'rgba(50, 162, 235, 0)', 'rgba(210, 206, 86, 0)', 'rgba(175, 192, 192, 0)', 'rgba(100, 102, 255, 0)', 'rgba(210, 159, 64, 0)', 'rgba(220, 192, 192, 0)', 'rgba(100, 102, 255, 0)'
                         ],
+                        */
+                        backgroundColor: ['rgba(255, 0, 0, 0.3)'],
+                        borderColor: ['rgba(255, 0, 0, 1)'],
                         borderWidth: 2,
                         barPercentage: 0.5, //Determina a largura da coluna ou barra
                         fill: false,
@@ -2151,50 +2119,17 @@
                     {
                         label: 'AF',
                         data: valorAf,
+                        /*
                         backgroundColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(255, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(100, 159, 64, 1)',
-                            'rgba(100, 255, 192, 1)',
-                            'rgba(183, 90, 255, 1)',
-                            'rgba(255, 159, 100, 1)', //
-                            'rgba(200, 99, 132, 1)',
-                            'rgba(50, 162, 235, 1)',
-                            'rgba(210, 206, 86, 1)',
-                            'rgba(175, 192, 192, 1)',
-                            'rgba(100, 102, 255, 1)',
-                            'rgba(210, 159, 64, 1)',
-                            'rgba(220, 192, 192, 1)',
-                            'rgba(100, 102, 255, 1)'
+                            'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 192, 192, 1)',  'rgba(153, 102, 255, 1)', 'rgba(100, 159, 64, 1)', 'rgba(100, 255, 192, 1)',
+                            'rgba(183, 90, 255, 1)', 'rgba(255, 159, 100, 1)', 'rgba(200, 99, 132, 1)', 'rgba(50, 162, 235, 1)', 'rgba(210, 206, 86, 1)', 'rgba(175, 192, 192, 1)', 'rgba(100, 102, 255, 1)', 'rgba(210, 159, 64, 1)', 'rgba(220, 192, 192, 1)',  'rgba(100, 102, 255, 1)'
                         ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(255, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(100, 159, 64, 1)',
-                            'rgba(100, 255, 192, 1)',
-                            'rgba(183, 90, 255, 1)',
-                            'rgba(255, 159, 100, 1)', //
-                            'rgba(200, 99, 132, 1)',
-                            'rgba(50, 162, 235, 1)',
-                            'rgba(210, 206, 86, 1)',
-                            'rgba(175, 192, 192, 1)',
-                            'rgba(100, 102, 255, 1)',
-                            'rgba(210, 159, 64, 1)',
-                            'rgba(220, 192, 192, 1)',
-                            'rgba(100, 102, 255, 1)'
+                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(255, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(100, 159, 64, 1)', 'rgba(100, 255, 192, 1)', 'rgba(183, 90, 255, 1)',
+                                        'rgba(255, 159, 100, 1)', 'rgba(200, 99, 132, 1)', 'rgba(50, 162, 235, 1)', 'rgba(210, 206, 86, 1)', 'rgba(175, 192, 192, 1)', 'rgba(100, 102, 255, 1)', 'rgba(210, 159, 64, 1)', 'rgba(220, 192, 192, 1)', 'rgba(100, 102, 255, 1)'
                         ],
+                        */
+                        backgroundColor: ['rgba(0, 0, 255, 0.3)'],
+                        borderColor: ['rgba(0, 0, 255, 1)'],
                         borderWidth: 2,
                         barPercentage: 0.5, //Determina a largura da coluna ou barra
                         fill: false,
@@ -2217,7 +2152,10 @@
                             text: titulomesano //text: 'Compras Gerais'
                         },
                         datalabels: {
-                            color: '#0000ff'
+                            color: '#0000ff',   // Cor dos valores das colunas
+                            anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
+                            align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
+                            offset: 5           // distância em pixel do valores a serem apresentados
                         }
                     },
                     scales: {
@@ -2253,9 +2191,19 @@
                     // Se a quantidade de registro for muito grande, melhor visualizar os dados, verticalmente, ou seja,
                     // em linha(na forma de barras), Uma vez que o tipo horizontalBar não pe mais suportado pela
                     // versão 3.9.1 do chartJs, deve-se apenas definir a opção: indexAxis para 'y'
-                    indexAxis: valorLabels.length >= 13 ? 'y' : 'x', // versão 3.9.1
+                    // indexAxis: valorLabels.length >= 13 ? 'y' : 'x', // versão 3.9.1
+                    //indexAxis:  'y'
                 }
             });
+
+            const containerBodyScroll = document.querySelector(".containerBodyScroll");
+            const totalLabels = myChart.data.labels.length;
+            if(totalLabels >= 20){
+                const newWith = 10000 + ((totalLabels - 20) * 30);
+                containerBodyScroll.style.width = `${newWith}px`;
+            }else{
+                containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
+            };
         }
 
 
@@ -2277,14 +2225,14 @@
                 datasets: [
                     {
                         label: 'Compra Normal',
-                        backgroundColor: 'rgb(255, 0, 0, 0.3)',
+                        backgroundColor: 'rgb(255, 0, 0, 0.6)',
                         borderColor: 'rgb(255, 0, 0, 0.1)',
                         data: [ {{ implode(',', $dataNormal) }} ],
                         fill: true  // para gráfico do tipo linha
                     },
                     {
                         label: 'Compra AF',
-                        backgroundColor: 'rgb(0, 0, 255, 0.3)',
+                        backgroundColor: 'rgb(0, 0, 255, 0.6)',
                         borderColor: 'rgb(0, 0, 255, 0.1)',
                         data: [ {{ implode(',', $dataAf) }} ],
                         fill: true  // para gráfico do tipo linha
@@ -2334,14 +2282,14 @@
                     datasets: [
                         {
                             label: 'Compra Normal',
-                            backgroundColor: 'rgb(255, 0, 0, 0.3)',
+                            backgroundColor: 'rgb(255, 0, 0, 0.6)',
                             borderColor: 'rgb(255, 0, 0, 0.1)',
                             data: comprasNORM,
                             fill: true  // para gráfico do tipo linha
                         },
                         {
                             label: 'Compra AF',
-                            backgroundColor: 'rgb(0, 0, 255, 0.3)',
+                            backgroundColor: 'rgb(0, 0, 255, 0.6)',
                             borderColor: 'rgb(0, 0, 255, 0.1)',
                             data: comprasAF,
                             fill: true  // para gráfico do tipo linha
@@ -2367,7 +2315,10 @@
                             text: subtitulo
                         },
                         datalabels: {
-                            color: '#0000ff'
+                            color: '#0000ff',   // Cor dos valores das colunas
+                            anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
+                            align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
+                            offset: 5           // distância em pixel do valores a serem apresentados
                         }
                     }
                 }

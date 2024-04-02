@@ -84,8 +84,8 @@ class DashboardController extends Controller
 
         //Seleciona só as categorias dos produtos comprados no mês e ano corrente para compor o select:  selectProdutosDaCategoriaparaPesquisa_id
         $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
-        
-        
+
+
         $dataRecords = [];
 
         //Ignite
@@ -97,7 +97,7 @@ class DashboardController extends Controller
             $dataRecords[''] =  0;
         }
 
-        
+
 
 
 
@@ -214,7 +214,7 @@ class DashboardController extends Controller
             break;
         }
 
-        // Verifica se produtos ou regionais foram selecionados, para recuperar só as categorias das compras realizadas no mês e/ou ano corrente. 
+        // Verifica se produtos ou regionais foram selecionados, para recuperar só as categorias das compras realizadas no mês e/ou ano corrente.
         // Para RECOMPOR DINAMICAMENTE O SELECT: "selectCategoriaPesquisa_id"
         if($tipodados == "Produtos" || $tipodados == "Regionais" ){
             $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
@@ -339,12 +339,12 @@ class DashboardController extends Controller
         $data['dados'] =  $records; */
 
 
-
+        // Referencia: https://stackoverflow.com/questions/72444855/bar-chart-with-min-height-and-zero-values-chartjs
         if(count($records) > 0){
             foreach($records as $value) {
                 $dataEmpilhadoLabels[] = $value->nome;
-                $dataEmpilhadoRecordsNormal[] = $value->totalcompranormal;
-                $dataEmpilhadoRecordsAf[] = $value->totalcompraaf;
+                $dataEmpilhadoRecordsNormal[] = ($value->totalcompranormal > 0 ? $value->totalcompranormal : NULL) ;
+                $dataEmpilhadoRecordsAf[] = ($value->totalcompraaf > 0 ? $value->totalcompraaf : NULL);
             }
         }else{
             $dataEmpilhadoLabels[] = "";
