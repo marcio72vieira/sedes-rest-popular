@@ -402,7 +402,7 @@
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="line"><span><i class="fas fa-chart-line"></i> Linha</a>
                             <a class="dropdown-item estilografico psdlink" data-estilo-grafico="doughnut"><span><i class="fas fa-circle-notch"></i> Rosca</a>
                             <div class="dropdown-divider"></div>
-                            <div class="dropdown-header"><i class="fas fa-cubes"></i> Pilha:</div>
+                            <div class="dropdown-header"><i class="fas fa-cubes"></i> Comparativo:</div>
                             {{-- <a class="dropdown-item estilograficoempilhado psdlink"><i class="fas fa-cubes"></i> Pilha</a> --}}
                             <a class="dropdown-item estilograficoempilhado psdlink"> Normal x AF</a>
                             {{-- <a class="dropdown-item estilograficoempilhadocategoriaproduto psdlink"> Categoria (produtos)</a> --}}
@@ -2098,7 +2098,7 @@
                     labels: valorLabels,
                     datasets: [{
                         label: 'Normal',
-                        minBarLength: 20,   // Define um tamanho mínimo para exibição das barras do gráfico
+                        //minBarLength: 20,   // Define um tamanho mínimo para exibição das barras do gráfico
                         data: valorNormal,
                         /*
                         backgroundColor: [
@@ -2112,9 +2112,8 @@
                         backgroundColor: ['rgba(255, 0, 0, 0.3)'],
                         borderColor: ['rgba(255, 0, 0, 1)'],
                         borderWidth: 2,
-                        barPercentage: 0.5, //Determina a largura da coluna ou barra
+                        //barPercentage: 0.5, //Determina a largura da coluna ou barra
                         fill: false,
-
                     },
                     {
                         label: 'AF',
@@ -2131,7 +2130,7 @@
                         backgroundColor: ['rgba(0, 0, 255, 0.3)'],
                         borderColor: ['rgba(0, 0, 255, 1)'],
                         borderWidth: 2,
-                        barPercentage: 0.5, //Determina a largura da coluna ou barra
+                        //barPercentage: 0.5, //Determina a largura da coluna ou barra
                         fill: false,
 
                     }]
@@ -2172,10 +2171,12 @@
                         }] */
                         // versao 3.9.1
                         x: {
-                            stacked: true
+                            stacked: false,             // true configura o gráfico em forma de pilha
+                            barPercentage: 1,           // Esta propriedade conjunta com a de baixo(categoryPercentage), diminui o espaço entre as colunas
+                            categoryPercentage: 0.1
                         },
                         y: {
-                            stacked: true
+                            stacked: false              // true configura o gráfico em forma de pilha
                         }
                     },
                     /* title: {

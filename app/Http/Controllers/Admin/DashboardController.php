@@ -339,6 +339,8 @@ class DashboardController extends Controller
         $data['dados'] =  $records; */
 
 
+        // Define o valor par NULL, se o valor for igual a zero, pois o Charjs interpreta o zero como um valor válido,
+        // mostrando no gráfico o valor zero. Se o valor for setado para null, o mesmo não é exibido no gráfico.
         // Referencia: https://stackoverflow.com/questions/72444855/bar-chart-with-min-height-and-zero-values-chartjs
         if(count($records) > 0){
             foreach($records as $value) {
