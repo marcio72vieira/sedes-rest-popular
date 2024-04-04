@@ -345,8 +345,9 @@
                             aria-labelledby="dropdownMenuDados">
                             <div class="dropdown-header">Gerais:</div>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Produtos</a>
-                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Categorias</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Regionais</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Categorias</a>
                         </div>
                     </div>
 
@@ -1690,6 +1691,14 @@
                             anchor: 'end',      // Determina a posição dos valoresa serem exibidos : Default meio(não é necessário informar), end(no final da coluna de baixo para cima)
                             align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
                             offset: 5           // distância em pixel do valores a serem apresentados
+                        },
+                        legend: {
+                            // Evita a exibição da legenda (Produtos, Categoria, Regional) associada com a primeira cor (pink) configurda em backgroundColor: ['rgba(255, 99, 132, 0.5)'], exceto para gráficos do tipo Pie e Doughnt
+                            display: ((estilo != 'pie' && estilo != 'doughnut') ? false : true),
+                            labels: {
+                                color: 'rgb(0, 0, 0)'
+                            },
+                            position: 'top'   //left, right, top, bottom
                         }
                     },
                     scales: {
@@ -1863,7 +1872,8 @@
                         },
                         // Novas configurações
                         legend: {
-                            display: true,
+                            // Evita a exibição da legenda (Produtos, Categoria, Regional) associada com a primeira cor (pink) configurda em backgroundColor: ['rgba(255, 99, 132, 0.5)'], exceto para gráficos do tipo Pie e Doughnt
+                            display: ((estilo != 'pie' && estilo != 'doughnut') ? false : true),
                             labels: {
                                 color: 'rgb(0, 0, 0)'
                             },
