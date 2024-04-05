@@ -117,7 +117,7 @@
             var txtCategoriaSelecionada = "";
             var txtProdutoSelecionado = "";
             var habilitaImpresao = 0;
-            
+
             // Definindo os anos a serem exibidos a partir do ano de implementação do sistema
             var anoimplementacao = 2020;
             var anoatual = new Date().getFullYear();
@@ -135,7 +135,7 @@
                 anosexibicao = anos.reverse();
             }
 
-            
+
             // Definindo o datatabble e suas propriedades e atribuindo à variável oTable(objeto dataTable)
             var oTable = $('#dataTableMonitor').DataTable({
                 // Define "congelamento" de colunas e rolagens vertical/horizontal. Necessário importar CSS correspondente
@@ -156,11 +156,11 @@
 
                 // Menu da quantidade de registros a serem exibidos
                 lengthMenu: [15, 20, 25, 30, 35, 40, 45, 50],
-                
+
                 // Indica a mensagem de processamento e que os dados virão de um servidor
                 processing: true,
                 serverSide: true,
-                
+
                 // Requisição ajax indicando a rota e os parâmetros a serem enviados
                 // Como as variáveis que definem os parâmetros são globais ("var") quaisquer modifiações nos mesmos refletem aqui
                 ajax: {
@@ -232,14 +232,14 @@
                 // }
             });
 
-            
+
 
             // ELEMENTOS DA DIV dataTableMonitor_length (Div, criada dinamicamente)
             //$('#dataTableMonitor_length').append('<label style="margin-left:30px; margin-right:5px">Entidades</label>');
             $('#dataTableMonitor_length').append('<select id="selectEntidade" class="form-control input-sm" style="margin-left:30px; height: 36px;"><option selected value="0">Entidades</option><option value="1">Regionais</option><option value="2">Municípios</option><option value="3">Restaurantes</option><option disabled>___________</option><option value="4">Categorias</option><option value="5">Produtos</option></select>');
-            
+
             $("#selectEntidade").on("change", function(){
-                
+
                 // Define informações, carrega uma tabela vazia e esconde os controles de ano, carregamento e impresssão
                 if($(this).val() == "0" ){
                     $("#entidade").text("Entidades");
@@ -249,7 +249,7 @@
                     rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
                     oTable.ajax.url(rotaAjax).load();
 
-                    $("#controlesPeriodoCarregarPdf").css("display", "none"); 
+                    $("#controlesPeriodoCarregarPdf").css("display", "none");
                 }
 
                 // Remove dropdown CATEGORIAS e PRODUTOS(caso existam) para "resetar" seus valores
@@ -285,7 +285,7 @@
                                     $('#selectProdutos').append($('<option selected></option>').val('0').html('Produtos'));
                                     $.each(result, function() {
                                         $('#selectProdutos').append($('<option></option>').val(this.produto_id).html(this.produto_nome));
-                                    }); 
+                                    });
                                 },
                                 error: function(result){
                                     alert("Error ao retornar produtos desta Categoria!");
@@ -317,7 +317,7 @@
             // Botões de CarregarDados e Impressão PDF. O valor do atributo href, é criado dinamicamente
             $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
             $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 80px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
-            
+
 
 
             // Ocultando o botão PDF com a DELEGAÇÃO DE EVENTOS para os elementos dentro da div #dataTableMonitor_length e para
@@ -344,11 +344,11 @@
                 // txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
                 // txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
                 // txtAnoSelecionado       = $("#selectPeriodo").children("option:selected").text();
-                
+
                 if(valEntidadeSelecionada != 0 && valCategoriaSelecionada == 0 && valProdutoSelecionado == 0){
-                    
+
                     switch (valEntidadeSelecionada){
-                        
+
                         // Define a rota de acordo com a Entidade escolhida
                         case "1":
                             rotaAjax = "{{route('admin.ajaxgetRegionaisComprasMensais')}}";
@@ -374,12 +374,12 @@
                     $("#entidade").text(txtEntidadeSelecionada);
                     $("#titulopesquisa").text("COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
                     $("#titulomonitor").text("MONITOR | COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                    
+
                     oTable.ajax.url(rotaAjax).load();
 
 
                 }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
-                    
+
                     // Configura o texto da pesquisa
                     txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
                     txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
@@ -406,17 +406,17 @@
                     oTable.ajax.url(rotaAjax).load();
 
                 }
-                
+
             });
 
 
             // Acessando os Dados Retornados pela Requisição AJAx para o DATATABLE
             // oTable.on( 'xhr', function () {
             //      var dataJSON = oTable.ajax.json();
-            //      console.log( dataJSON); 
-            //      console.log( dataJSON.iTotalRecords); 
+            //      console.log( dataJSON);
+            //      console.log( dataJSON.iTotalRecords);
             //      console.log( dataJSON.aaData[3].id);
-            //      console.log( dataJSON.aaData[3].nomeentidade); 
+            //      console.log( dataJSON.aaData[3].nomeentidade);
             //      alert(dataJSON.aaData.length);
             // });
 
@@ -445,10 +445,10 @@
                 }else{
                     $("#btnPdf").css("display", "none");
                 }
-                
+
             });
 
-            
+
 
          });
     </script>
