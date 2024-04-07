@@ -1135,6 +1135,7 @@
                         //Iterando sobre o array['selcategorias'] para "REMONTAR" o elemento select: "selectCategoriaPesquisa_id" .addClass(className);
                         $('#selectCategoriaPesquisa_id').html('<option value="0" disabled>Produtos da Categoria</option>');
                         $.each(result['selcategorias'],function(key,value){
+                            /*$("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") + (tipodados == "Categorias" ? "disabled" : "") +'>'+ value.nome +'</option>');*/
                             $("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") +'>'+ value.nome +'</option>');
                         });
                         $("#selectCategoriaPesquisa_id").append('<option value="" disabled  class="optionCategoriaPesquisa">___________________</option>');
@@ -1382,6 +1383,12 @@
 
                 //Limpa espaço em branco no texto do link tipodados (Produtos, Categorias, Regionais)
                 tipodados = $(this).text().trim();
+
+                if(tipodados != "Categorias"){
+                    $("#selectCategoriaPesquisa_id").css("display", "inline");
+                }else{
+                    $("#selectCategoriaPesquisa_id").css("display", "none");
+                }
 
                 var urltipo = "";
 

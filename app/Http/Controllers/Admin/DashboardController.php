@@ -214,13 +214,10 @@ class DashboardController extends Controller
             break;
         }
 
-        // Verifica se produtos ou regionais foram selecionados, para recuperar só as categorias das compras realizadas no mês e/ou ano corrente.
-        // Para RECOMPOR DINAMICAMENTE O SELECT: "selectCategoriaPesquisa_id"
-        if($tipodados == "Produtos" || $tipodados == "Regionais" ){
-            $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
-            $data['selcategorias'] = $nomesCategorias;
-        }
-
+        // Recupera as categorias das compras realizadas no mês e/ou ano corrente para RECOMPOR DINAMICAMENTE O SELECT: "selectCategoriaPesquisa_id"
+        $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
+        $data['selcategorias'] = $nomesCategorias;
+        
 
         // foreach($records as $value) {
         //     $dataRecords[$value->nome] =  $value->totalcompra;
