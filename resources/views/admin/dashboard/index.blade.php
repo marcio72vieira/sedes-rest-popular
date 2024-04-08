@@ -864,6 +864,11 @@
             var catpesquisa = 0 // O valor está definido como zero, porque em um primeiro momento, TODOS OS PRODUTOS de TODAS AS CATEGORIAS serão retornados
             var titulomesanoatual = "{{$mesespesquisa[$mes_corrente]}} " + " - " + "{{$ano_corrente}}";
 
+            // Textos do mês, ano e categoria escolhidas para geração do título dos gráficos
+            var mes = "";
+            var ano = "";
+            var cat = "";
+
             var estilo = "";
             var tipodados = "";
             var valorLabels = [];
@@ -1083,9 +1088,9 @@
                 catpesquisa = $(this).parents("#mesesanoscategoriaparapesquisa").find("#selectCategoriaPesquisa_id").val();
 
                 // Título para compor cabeçalho da tabela de "Tradução".
-                var mes = $("#selectMesPesquisa_id").find('option:selected').text();
-                var ano = $("#selectAnoPesquisa_id").find('option:selected').text();
-                var cat = $("#selectCategoriaPesquisa_id").find('option:selected').text();
+                mes = $("#selectMesPesquisa_id").find('option:selected').text();
+                ano = $("#selectAnoPesquisa_id").find('option:selected').text();
+                cat = $("#selectCategoriaPesquisa_id").find('option:selected').text();
 
                 // alert("Mês: " + mespesquisa + " Ano: " + anopesquisa + " Categoria: " + catpesquisa + " - " + cat.toUpperCase());
                 // Vefifica se o select Mês ou Ano foram clicados para zerar o valor de catpesquisa (para buscar todos os produtos de todas as categorias)
@@ -1384,11 +1389,20 @@
                 //Limpa espaço em branco no texto do link tipodados (Produtos, Categorias, Regionais)
                 tipodados = $(this).text().trim();
 
+                // Se o tipo de dados escolhido for diferente de Categorias, ou seja, Produtos, Regionais exibe o select (#selectCategoriaPesquisa_id)
+                // Caso contrário, esconde o select(#selectCategoriaPesquisa_id). O título é definido independente da situação exibir ou esconder
                 if(tipodados != "Categorias"){
                     $("#selectCategoriaPesquisa_id").css("display", "inline");
+                    titulomesanoatual = mes + " - " + ano;
                 }else{
                     $("#selectCategoriaPesquisa_id").css("display", "none");
+                    titulomesanoatual = mes + " - " + ano;
                 }
+
+                // Sempre que Produtos, Regionais for escolhido, define a categoria da pesquisa como sendo geral(todos os produtos, ou seja, valor zero)
+                catpesquisa = 0;
+                //$("#selectCategoriaPesquisa_id").val("3").change();
+                //$("#selectCategoriaPesquisa_id[value=0]").attr('selected','selected');
 
                 var urltipo = "";
 
@@ -1399,7 +1413,8 @@
                     data: {
                         tipodados: tipodados,
                         mescorrente: mespesquisa,
-                        anocorrente: anopesquisa
+                        anocorrente: anopesquisa,
+                        catcorrente: catpesquisa
                     },
                     dataType : 'json',
 
