@@ -1138,7 +1138,7 @@
                         valorTituloGrafico = "";
 
                         //Iterando sobre o array['selcategorias'] para "REMONTAR" o elemento select: "selectCategoriaPesquisa_id" .addClass(className);
-                        $('#selectCategoriaPesquisa_id').html('<option value="0" disabled>Produtos da Categoria</option>');
+                        $('#selectCategoriaPesquisa_id').html('<option value="" disabled>Produtos da Categoria</option>');
                         $.each(result['selcategorias'],function(key,value){
                             /*$("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") + (tipodados == "Categorias" ? "disabled" : "") +'>'+ value.nome +'</option>');*/
                             $("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") +'>'+ value.nome +'</option>');
@@ -1399,10 +1399,8 @@
                     titulomesanoatual = mes + " - " + ano;
                 }
 
-                // Sempre que Produtos, Regionais for escolhido, define a categoria da pesquisa como sendo geral(todos os produtos, ou seja, valor zero)
-                catpesquisa = 0;
-                //$("#selectCategoriaPesquisa_id").val("3").change();
-                //$("#selectCategoriaPesquisa_id[value=0]").attr('selected','selected');
+                // Sempre que Dados(Produtos, Regionais ou Categorias) for escolhido, define a categoria de pesquisa como sendo geral(todos os produtos)
+                $("#selectCategoriaPesquisa_id").val("0").change();     // ou $("#selectCategoriaPesquisa_id[value=0]").attr('selected','selected');
 
                 var urltipo = "";
 

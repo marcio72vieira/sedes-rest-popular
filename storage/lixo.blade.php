@@ -3630,3 +3630,19 @@ Arquivo: resources/views/admin/dashboard/index.blade.php
         }else{
             containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
         };
+
+
+
+
+        // TENTATIVA
+        if(myChart.options.indexAxis == 'y'){
+            alert("Gráfico de barra!");
+            containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
+            if(totalLabels <= 20){
+                //const newHeigth = 3500 + (totalLabels - 22);
+                containerBodyScroll.style.height = `${alturaContainerOriginal}px`;
+            }else{
+                const newHeigth = 3500 + (totalLabels - 22);
+                containerBodyScroll.style.height = `${newHeigth}px`;
+            }
+        }
