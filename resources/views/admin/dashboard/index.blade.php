@@ -950,7 +950,7 @@
             $('.estilograficoempilhado').on('click', function() {
 
                 if(tipodados == ""){
-                    tipodadosEmpilhado = " Produtos";   //alert("Nenhum DADO foi escolhido " + tipodadosEmpilhado);
+                    tipodadosEmpilhado = "Produtos";   //alert("Nenhum DADO foi escolhido " + tipodadosEmpilhado);
                 }else{
                     tipodadosEmpilhado = tipodados;     //alert("DADO já escolhido" + tipodadosEmpilhado);
                 }
@@ -962,7 +962,8 @@
                     data: {
                         tipodados: tipodadosEmpilhado,
                         mescorrente: mespesquisa,
-                        anocorrente: anopesquisa
+                        anocorrente: anopesquisa,
+                        catcorrente: catpesquisa
                     },
                     dataType : 'json',
 
