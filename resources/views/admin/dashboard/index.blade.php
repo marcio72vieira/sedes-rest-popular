@@ -1625,6 +1625,7 @@
         //**************************************************************************
         //Renderiza Gráfico com dados padrão Produtos e o estilo igual a "bar" (Dados vindos via método compac, da view).
         function renderGrafico(estilo, titulo, titulomesano, larguraContainerOriginal){
+
             //Limpa a área do grafico para evitar sobreposição de informações
             $('#myChartArea').remove();
             //$('#areaparagraficos').append('<canvas id="myChartArea"><canvas>');
@@ -1687,8 +1688,9 @@
                             'rgba(220, 192, 192, 1)',
                             'rgba(100, 102, 255, 1)'
                         ],
-                        borderWidth: 1,
+                        borderWidth: 2,
                         barPercentage: 0.5, //Determina a largura da coluna ou barra
+                        fill: false,
                     }]
                 },
                 plugins: [ChartDataLabels], // Exibe rótulo dos valores dentro dos gráficos
@@ -1697,6 +1699,7 @@
                         title: {
                             display: true,
                             text: titulo,
+                            align: 'center', //Nova configuração (start, center, end)
                             padding: {
                                 top: 3,
                                 bottom: 3
@@ -1704,7 +1707,8 @@
                         },
                         subtitle: {
                             display: true,
-                            text: titulomesano //text: 'Compras Gerais'
+                            text: titulomesano, //text: 'Compras Gerais'
+                            align: 'center', //Nova configuração (start, center, end)
                         },
                         // Change options for ALL labels of THIS CHART
                         datalabels: {
@@ -1713,6 +1717,7 @@
                             align: 'top',       // posição dos valores (top, left, right, bottom) em relação ao anchor:end
                             offset: 5           // distância em pixel do valores a serem apresentados
                         },
+                        // Novas configurações
                         legend: {
                             // Evita a exibição da legenda (Produtos, Categoria, Regional) associada com a primeira cor (pink) configurda em backgroundColor: ['rgba(255, 99, 132, 0.5)'], exceto para gráficos do tipo Pie e Doughnt
                             display: ((estilo != 'pie' && estilo != 'doughnut') ? false : true),
@@ -1749,9 +1754,9 @@
                         text: 'COMPRAS POR PRODUTOS'
                     },
                     */
-                    legend: {
+                    /*legend: {
                         display: false,
-                    },
+                    },*/
                     indexAxis: (estilo == 'horizontalBar' ? 'y' : 'x'),  // versão 3.9.1
                     // Adequa o tamanho dos gráficos conforme o tamanho da div: "#areaparagraficos"
                     maintainAspectRatio: false, // versão 3.9.1
@@ -1791,11 +1796,33 @@
             const containerBodyScroll = document.querySelector(".containerBodyScroll");
             const totalLabels = myChart.data.labels.length;
             if(totalLabels >= 20){
+                //if(totalLabels >= 20 && (myChart.config.type != 'doughnut' && myChart.config.type != 'pie')){
                 const newWith = 3500 + ((totalLabels - 20) * 30);
                 containerBodyScroll.style.width = `${newWith}px`;
+                //const newHeigth = 10000 + ((totalLabels - 22) * 30);
+                //containerBodyScroll.style.heigth = `${newHeigth}px`;
             }else{
                 containerBodyScroll.style.width = `${larguraContainerOriginal}px`;
             };
+
+            // Se a quantidde de legendas for maior que 5 e os gráficos forem do tipo Doughnut ou Pie muda a disposição das mesmas para uma melhor visualização
+            // if(myChart.data.labels.length >= 5 && (myChart.config.type == 'doughnut' || myChart.config.type == 'pie')){
+            if(myChart.config.type == 'doughnut' || myChart.config.type == 'pie'){
+                myChart.options.plugins.legend.position = "right";
+                myChart.options.plugins.title.align = "start";
+                myChart.options.plugins.subtitle.align = "start";
+                containerBodyScroll.style.width = `${larguraContainerOriginal}px`; //'1089px';
+                myChart.update();
+            }
+
+            // Se o gráfico for do tipo "BarraHorizontal"(configurado como: indexAxis == "y"), configura a nova disposição dos valores a serem exibidos
+            if(myChart.options.indexAxis == "y"){
+                myChart.options.plugins.datalabels.color = '#0000ff';
+                myChart.options.plugins.datalabels.anchor = 'end';
+                myChart.options.plugins.datalabels.align = 'right';
+                myChart.options.plugins.datalabels.offset = 5;
+                myChart.update();
+            }
 
         }
 
@@ -1993,6 +2020,15 @@
                 myChart.options.plugins.title.align = "start";
                 myChart.options.plugins.subtitle.align = "start";
                 containerBodyScroll.style.width = `${larguraContainerOriginal}px`; //'1089px';
+                myChart.update();
+            }
+
+            // Se o gráfico for do tipo "BarraHorizontal"(configurado como: indexAxis == "y"), configura a nova disposição dos valores a serem exibidos
+            if(myChart.options.indexAxis == "y"){
+                myChart.options.plugins.datalabels.color = '#0000ff';
+                myChart.options.plugins.datalabels.anchor = 'end';
+                myChart.options.plugins.datalabels.align = 'right';
+                myChart.options.plugins.datalabels.offset = 5;
                 myChart.update();
             }
 
