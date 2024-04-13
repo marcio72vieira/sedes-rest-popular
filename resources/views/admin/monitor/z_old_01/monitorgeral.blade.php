@@ -387,43 +387,21 @@
 
 
             // Botões de CarregarDados e Impressão PDF. O valor do atributo href, é criado dinamicamente
-            // $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdfPrimeiroSemestre" class="btn btn-danger" style="height: 36px; width: 20px; float:left; margin-left: 30px; display: none" title="Relatório PDF primerio semestre" target="_blank"><i class="fas fa-file-alt" style="margin-left: -7px"></i></a>');
             $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 40px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
-            $('#controlesPeriodoCarregarPdf').append(`<select id="selectMes" class="form-control input-sm" style="height: 36px; width: 150px; float:left; margin-left: 30px;">
-                        <option value="0" selected>Emitir PDF</option>
-                        <option value="1">janeiro</option>
-                        <option value="2">fevereiro</option>
-                        <option value="3">março</option>
-                        <option value="4">abril</option>
-                        <option value="5">maio</option>
-                        <option value="6">junho</option>
-                        <option value="7">julho</option>
-                        <option value="8">agosto</option>
-                        <option value="9">setembro</option>
-                        <option value="10">outubro</option>
-                        <option value="11">novembro</option>
-                        <option value="12">dezembro</option>
-                        <option value="" disabled>_______________</option>
-                        <option value="13">Todos os meses</option>
-                    </select>`);
             $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 40px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
+            $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdfPrimeiroSemestre" class="btn btn-danger" style="height: 36px; width: 20px; float:left; margin-left: 30px; display: none" title="Relatório PDF primerio semestre" target="_blank"><i class="fas fa-file-alt" style="margin-left: -7px"></i></a>');
 
-
-
-            
 
             // Ocultando o botão PDF com a DELEGAÇÃO DE EVENTOS para os elementos dentro da div #dataTableMonitor_length e para
             // o elemento #selectPeriodo. Deixando o botão PDF disponível apenas se o resultado da pesquisa retornar dados.
             $("#dataTableMonitor_length").on("change", "#selectEntidade, #selectCategorias, #selectProdutos", function(){
-                //$("#btnPdfPrimeiroSemestre").css("display", "none");
                 $("#btnPdf").css("display", "none");
-                $("#selectMes").css("display", "none");
+                $("#btnPdfPrimeiroSemestre").css("display", "none");
 
             });
             $("#selectPeriodo").on("change", function(){
-                //$("#btnPdfPrimeiroSemestre").css("display", "none");
                 $("#btnPdf").css("display", "none");
-                $("#selectMes").css("display", "none");
+                $("#btnPdfPrimeiroSemestre").css("display", "none");
             });
 
 
@@ -520,62 +498,26 @@
             //      alert(dataJSON.aaData.length);
             // });
 
-            // Exibe/Oculta o Select dos meses juntamente com o Botão para Ipressão PDF e ou Modal(caso não exista dados retornados) de acordo com o número de registros retornados.
+            // Exibe/Oculta o Botão para Ipressão PDF e ou Modal de acordo com o número de registros retornados.
             oTable.on( 'xhr', function () {
-                // dataJSON recebe o retorno da requisição xhtmlrequest(xhr)
                 var dataJSON = oTable.ajax.json();
-                // Se retornar registros, configura a rota para impressão dos mesmos e exibe select meses e o botão PDF.
+                // Se retornar registros, configura a rota para impressão dos mesmos e exibe o botão PDF.
                 if(dataJSON.iTotalRecords > 0){
                     var entidadepdf = valEntidadeSelecionada;
                     var categoriapdf =  valCategoriaSelecionada;
                     var produtopdf = valProdutoSelecionado;
                     var anopdf =  periodoAno;
-                    var mespdf =  $("#selectMes").val();   // mespdf, recebe o valor do selectMes, que inicialmente terá o valor 13(todos os meses, pois o mesmo está selectd por padrão)
-                    
 
-                    // Exibe select para escolha do mês do relatório pdf
-                    $("#selectMes").css("display", "inline");
+                    var routepdf = "{{route('admin.monitor.relpdfmonitorgeral', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
+                        routepdf = routepdf.replace('identidade', entidadepdf);
+                        routepdf = routepdf.replace('idcategoria', categoriapdf);
+                        routepdf = routepdf.replace('idproduto', produtopdf);
+                        routepdf = routepdf.replace('idano', anopdf);
 
-                    $("#selectMes").on('change', function(){
-                        mespdf =  $(this).find('option:selected').val();   // mespdf, recebe o valor do selectMes, que inicialmente terá o valor 13(todos os meses, pois o mesmo está selectd por padrão)
-
-                        switch(mespdf){
-                                
-                            case "13":
-                                var routepdf = "{{route('admin.monitor.relpdfmonitorgeral', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
-                                routepdf = routepdf.replace('identidade', entidadepdf);
-                                routepdf = routepdf.replace('idcategoria', categoriapdf);
-                                routepdf = routepdf.replace('idproduto', produtopdf);
-                                routepdf = routepdf.replace('idano', anopdf);
-
-                                $('#btnPdf').attr('href', routepdf);
-                                $("#btnPdf").css("display", "inline");
-                                
-
-                            break;
-
-                            case "1","2","3","4","5","6","7","8","9","10","11","2":
-                            default:
-                                var routepdf = "{{route('admin.monitor.relpdfmonitorgeralmensal', ['identidade', 'idcategoria', 'idproduto', 'idmes', 'idano'])}}";
-                                routepdf = routepdf.replace('identidade', entidadepdf);
-                                routepdf = routepdf.replace('idcategoria', categoriapdf);
-                                routepdf = routepdf.replace('idproduto', produtopdf);
-                                routepdf = routepdf.replace('idmes', mespdf);
-                                routepdf = routepdf.replace('idano', anopdf);
-
-                                $('#btnPdf').attr('href', routepdf);
-                                $("#btnPdf").css("display", "inline");
-                                
-                        }
-                    });
+                    $('#btnPdf').attr('href', routepdf);
+                    $("#btnPdf").css("display", "inline");
 
 
-                    // $('#btnPdf').attr('href', routepdf);
-                    
-                    
-
-
-                    /*
                     var routepdfprimeirosemestre = "{{route('admin.monitor.relpdfmonitorgeralprimeirosemestre', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
                         routepdfprimeirosemestre = routepdfprimeirosemestre.replace('identidade', entidadepdf);
                         routepdfprimeirosemestre = routepdfprimeirosemestre.replace('idcategoria', categoriapdf);
@@ -583,17 +525,15 @@
                         routepdfprimeirosemestre = routepdfprimeirosemestre.replace('idano', anopdf);
 
                     $('#btnPdfPrimeiroSemestre').attr('href', routepdfprimeirosemestre);
-                    $("#btnPdfPrimeiroSemestre").css("display", "inline");
-                    */
+                    //$("#btnPdfPrimeiroSemestre").css("display", "inline");
 
 
                 // Se nenhum registro for retornado, exibe a modal
                 }else if(dataJSON.iTotalRecords == 0 && valEntidadeSelecionada != 0){
                     $(".modalSemLancamento").modal("show");
                 }else{
-                    // $("#btnPdfPrimeiroSemestre").css("display", "none");
                     $("#btnPdf").css("display", "none");
-                    $("#selectMes").css("display", "inline");
+                    $("#btnPdfPrimeiroSemestre").css("display", "none");
                 }
 
             });

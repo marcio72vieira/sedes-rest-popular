@@ -5,7 +5,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-        <h5><strong id="titulomonitor">MONITOR GERAL</strong></h5>
+        <h5><strong id="titulomonitor">MONITOR</strong></h5>
 
 
     <!-- DataTales Example -->
@@ -13,9 +13,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                {{-- Com as classes row-border e order-column, as coluna Entidade fica destacada como padrão
-                    <table class="table table-bordered row-border hover order-column" id="dataTableMonitor" width="100%" cellspacing="0"> --}}
-                    <table class="table table-bordered hover" id="dataTableMonitor" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTableMonitor" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th rowspan="3" style="vertical-align: middle; text-align:center;">Id</th>
@@ -86,30 +84,7 @@
             </button>
             </div>
             <div class="modal-body">
-                Nenhum registro encontrado com os dados fornecidos!
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-            {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
-            </div>
-        </div>
-        </div>
-    </div>
-
-
-    <!-- Modal PDF de Subgrupo -->
-    <div class="modal fade modalSubgrupo" id="exampleModalSubgrupo" tabindex="-1" aria-labelledby="exampleModalLabelSubgrupo" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabelSubgrupo" style="color: rgb(46, 63, 250)"></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <a href="" id="btnPdfSubgrupo" class="btn btn-danger" style="height: 36px; width: 40px;" title="" target="_blank"><i class="far fa-file-pdf"></i></a>
-                <span id="labelButtonPdf"></span>
+            Nenhum registro encontrado com os critérios especifiados!.
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
@@ -144,7 +119,7 @@
             var habilitaImpresao = 0;
 
             // Definindo os anos a serem exibidos a partir do ano de implementação do sistema
-            var anoimplementacao = 2023;
+            var anoimplementacao = 2020;
             var anoatual = new Date().getFullYear();
             var anos = [];
             var anosexibicao = [];
@@ -168,7 +143,7 @@
                     left: 2,
                 },
                 scrollCollapse: true,
-                scrollY: '1000px',
+                scrollY: '500px',
                 scrollX: true,
 
                 // Ordena os dados em ordem alfabética pela coluna 1
@@ -198,46 +173,9 @@
                     },
                 },
 
-                // Define as colunas(campos) da tabela que irão receber os dados vindo do servidor. Os nomes deverão corresponder.
+                // Define as colunas(campos) da tabela que irão receber os dados vindo do servidor. Os nomes deverão corresponder
                 columns: [
-                    { data: 'id',
-                        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                            //$(nTd).html("<a href='/tickets/"+oData.id+"'>"+oData.id+"</a>");
-                            // Só invoca a chamada de Subgrupo se for escolhido: Regionais, Municípios ou Categorias
-                            if(valEntidadeSelecionada == 1 || valEntidadeSelecionada == 2 || valEntidadeSelecionada == 4) {
-                                $(nTd).hover(
-                                    //function(){ $(this).css({"background-color":"#cc1c0c", "color":"#ffffff", "cursor":"pointer" }); },
-                                    //function(){ $(this).css({"background-color":"white", "color":"#858796"}); }
-
-                                    function(){ $(this).html("<i class='far fa-file-pdf text-danger'></i>").css("cursor","pointer");},
-                                    function(){ $(this).html(oData.id);}
-                                );
-                                $(nTd).on('click', function(){
-                                    switch(valEntidadeSelecionada){
-                                        case "1":
-                                            $("#exampleModalLabelSubgrupo").text("REGIONAL: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text(" Listar Municípios desta Regional.");
-                                            $("#btnPdfSubgrupo").attr("title", "PDF dos valores por Municípios");
-                                            relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
-                                        break;
-                                        case "2":
-                                            $("#exampleModalLabelSubgrupo").text("MUNICÍPIO: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text(" Listar Restaurantes deste Município.");
-                                            $("#btnPdfSubgrupo").attr("title", "PDF dos valores por Restaurantes");
-                                            relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
-                                        break;
-                                        case "4":
-                                            $("#exampleModalLabelSubgrupo").text("CATEGORIA: " + oData.nomeentidade);
-                                            $("#labelButtonPdf").text(" Listar Produtos desta Categoria.");
-                                            $("#btnPdfSubgrupo").attr("title", "PDF dos valores por Produtos");
-                                            relPdfSubgrupo(oData.id);   // id da entidade principal para pesquisa de seu subbrupo
-                                        break;
-                                    }
-                                    $(".modalSubgrupo").modal("show");
-                                });
-                            }
-                        }
-                    },
+                    { data: 'id' },
                     { data: 'nomeentidade' },
                     { data: 'jannormal' },
                     { data: 'janaf' },
@@ -305,19 +243,13 @@
                 // Define informações, carrega uma tabela vazia e esconde os controles de ano, carregamento e impresssão
                 if($(this).val() == "0" ){
                     $("#entidade").text("Entidades");
-                    $("#titulomonitor").text("MONITOR GERAL");
+                    $("#titulomonitor").text("MONITOR");
                     $("#titulopesquisa").text("COMPRAS EM " + anoatual);
 
                     rotaAjax = "{{route('admin.ajaxgetRecordsEmpty')}}";
                     oTable.ajax.url(rotaAjax).load();
 
-                    // Define sempre o ano atual como sendo o ano padrão de pesquisa antes de ocultar a div com o seletor
-                    $('#selectPeriodo option[value="' + anoatual +'"]').prop('selected', true);
                     $("#controlesPeriodoCarregarPdf").css("display", "none");
-
-                    // Evita exibição da modal de forma desnecessária na avaliação da condição: "dataJSON.iTotalRecords == 0 && valEntidadeSelecionada != 0"
-                    // no trecho de código no final deste script.
-                    valEntidadeSelecionada = 0;
                 }
 
                 // Remove dropdown CATEGORIAS e PRODUTOS(caso existam) para "resetar" seus valores
@@ -373,11 +305,7 @@
 
 
             // ELEMENTOS DA DIV dataTableMonitor_filter
-            // Sem classe "hover" na tabela
-            // $('#dataTableMonitor_filter').append('<div id="controlesPeriodoCarregarPdf" style="float:left; display:none;"></div>');
-            // ELEMENTOS DA DIV dataTableMonitor_filter
-            // Com implementação da classe "hover" na tabela
-            $('#dataTableMonitor_filter').append('<div id="controlesPeriodoCarregarPdf" style="float:left; margin-left: -430px; display:none;"></div>');
+            $('#dataTableMonitor_filter').append('<div id="controlesPeriodoCarregarPdf" style="float:left; display:none"></div>');
             // Populando o selectPeriodo a partir de um Array "padrão" com jQuery
             $('#controlesPeriodoCarregarPdf').append('<select id="selectPeriodo" class="form-control input-sm" style="height: 36px; width: 80px; float:left"></select>');
             $('#selectPeriodo').append($('<option disabled></option>').val('0').html('Ano'));
@@ -387,43 +315,18 @@
 
 
             // Botões de CarregarDados e Impressão PDF. O valor do atributo href, é criado dinamicamente
-            // $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdfPrimeiroSemestre" class="btn btn-danger" style="height: 36px; width: 20px; float:left; margin-left: 30px; display: none" title="Relatório PDF primerio semestre" target="_blank"><i class="fas fa-file-alt" style="margin-left: -7px"></i></a>');
-            $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 40px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
-            $('#controlesPeriodoCarregarPdf').append(`<select id="selectMes" class="form-control input-sm" style="height: 36px; width: 150px; float:left; margin-left: 30px;">
-                        <option value="0" selected>Emitir PDF</option>
-                        <option value="1">janeiro</option>
-                        <option value="2">fevereiro</option>
-                        <option value="3">março</option>
-                        <option value="4">abril</option>
-                        <option value="5">maio</option>
-                        <option value="6">junho</option>
-                        <option value="7">julho</option>
-                        <option value="8">agosto</option>
-                        <option value="9">setembro</option>
-                        <option value="10">outubro</option>
-                        <option value="11">novembro</option>
-                        <option value="12">dezembro</option>
-                        <option value="" disabled>_______________</option>
-                        <option value="13">Todos os meses</option>
-                    </select>`);
-            $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 40px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
+            $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 80px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
+            $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 80px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
 
 
-
-            
 
             // Ocultando o botão PDF com a DELEGAÇÃO DE EVENTOS para os elementos dentro da div #dataTableMonitor_length e para
             // o elemento #selectPeriodo. Deixando o botão PDF disponível apenas se o resultado da pesquisa retornar dados.
             $("#dataTableMonitor_length").on("change", "#selectEntidade, #selectCategorias, #selectProdutos", function(){
-                //$("#btnPdfPrimeiroSemestre").css("display", "none");
                 $("#btnPdf").css("display", "none");
-                $("#selectMes").css("display", "none");
-
             });
             $("#selectPeriodo").on("change", function(){
-                //$("#btnPdfPrimeiroSemestre").css("display", "none");
                 $("#btnPdf").css("display", "none");
-                $("#selectMes").css("display", "none");
             });
 
 
@@ -442,7 +345,6 @@
                 // txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
                 // txtAnoSelecionado       = $("#selectPeriodo").children("option:selected").text();
 
-                // Se apenas a entidade foi selecionada
                 if(valEntidadeSelecionada != 0 && valCategoriaSelecionada == 0 && valProdutoSelecionado == 0){
 
                     switch (valEntidadeSelecionada){
@@ -471,12 +373,11 @@
                     txtEntidadeSelecionada  = $("#selectEntidade").children("option:selected").text();
                     $("#entidade").text(txtEntidadeSelecionada);
                     $("#titulopesquisa").text("COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                    $("#titulomonitor").text("MONITOR GERAL | COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+                    $("#titulomonitor").text("MONITOR | COMPRAS POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
 
                     oTable.ajax.url(rotaAjax).load();
 
 
-                // Se entidade e categoria foi selecionada
                 }else if(valEntidadeSelecionada != 0 && valCategoriaSelecionada != 0 && valProdutoSelecionado == 0){
 
                     // Configura o texto da pesquisa
@@ -484,14 +385,13 @@
                     txtCategoriaSelecionada = $("#selectCategorias").children("option:selected").text();
                     $("#entidade").text(txtEntidadeSelecionada);
                     $("#titulopesquisa").text("COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                    $("#titulomonitor").text("MONITOR GERAL | COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+                    $("#titulomonitor").text("MONITOR | COMPRAS DE " + txtCategoriaSelecionada.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
 
 
                     // Define a rota de acordo com a Entidade e a Categoria escolhida
                     rotaAjax = "{{route('admin.ajaxgetCategoriasPorEntidadeComprasMensais')}}";
                     oTable.ajax.url(rotaAjax).load();
 
-                // Se entidade, categoria e produtos foram selecionados
                 }else {
 
                     // Configura o texto da pesquisa
@@ -499,7 +399,7 @@
                     txtProdutoSelecionado   = $("#selectProdutos").children("option:selected").text();
                     $("#entidade").text(txtEntidadeSelecionada);
                     $("#titulopesquisa").text("COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
-                    $("#titulomonitor").text("MONITOR GERAL | COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
+                    $("#titulomonitor").text("MONITOR | COMPRAS DE " + txtProdutoSelecionado.toUpperCase() + " POR " + txtEntidadeSelecionada.toUpperCase() + " EM " + periodoAno);
 
                     // Define a rota de acordo com a Entidade, Categoria e Produto escolhido
                     rotaAjax = "{{route('admin.ajaxgetProdutosPorEntidadeComprasMensais')}}";
@@ -520,257 +420,37 @@
             //      alert(dataJSON.aaData.length);
             // });
 
-            // Exibe/Oculta o Select dos meses juntamente com o Botão para Ipressão PDF e ou Modal(caso não exista dados retornados) de acordo com o número de registros retornados.
+            // Exibe/Oculta o Botão para Ipressão PDF e ou Modal de acordo com o número de registros retornados.
             oTable.on( 'xhr', function () {
-                // dataJSON recebe o retorno da requisição xhtmlrequest(xhr)
                 var dataJSON = oTable.ajax.json();
-                // Se retornar registros, configura a rota para impressão dos mesmos e exibe select meses e o botão PDF.
+                // Se retornar registros, configura a rota para impressão dos mesmos e exibe o botão PDF.
                 if(dataJSON.iTotalRecords > 0){
                     var entidadepdf = valEntidadeSelecionada;
                     var categoriapdf =  valCategoriaSelecionada;
                     var produtopdf = valProdutoSelecionado;
                     var anopdf =  periodoAno;
-                    var mespdf =  $("#selectMes").val();   // mespdf, recebe o valor do selectMes, que inicialmente terá o valor 13(todos os meses, pois o mesmo está selectd por padrão)
-                    
 
-                    // Exibe select para escolha do mês do relatório pdf
-                    $("#selectMes").css("display", "inline");
+                    var routepdf = "{{route('admin.monitor.relpdfmonitor', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
+                        routepdf = routepdf.replace('identidade', entidadepdf);
+                        routepdf = routepdf.replace('idcategoria', categoriapdf);
+                        routepdf = routepdf.replace('idproduto', produtopdf);
+                        routepdf = routepdf.replace('idano', anopdf);
 
-                    $("#selectMes").on('change', function(){
-                        mespdf =  $(this).find('option:selected').val();   // mespdf, recebe o valor do selectMes, que inicialmente terá o valor 13(todos os meses, pois o mesmo está selectd por padrão)
-
-                        switch(mespdf){
-                                
-                            case "13":
-                                var routepdf = "{{route('admin.monitor.relpdfmonitorgeral', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
-                                routepdf = routepdf.replace('identidade', entidadepdf);
-                                routepdf = routepdf.replace('idcategoria', categoriapdf);
-                                routepdf = routepdf.replace('idproduto', produtopdf);
-                                routepdf = routepdf.replace('idano', anopdf);
-
-                                $('#btnPdf').attr('href', routepdf);
-                                $("#btnPdf").css("display", "inline");
-                                
-
-                            break;
-
-                            case "1","2","3","4","5","6","7","8","9","10","11","2":
-                            default:
-                                var routepdf = "{{route('admin.monitor.relpdfmonitorgeralmensal', ['identidade', 'idcategoria', 'idproduto', 'idmes', 'idano'])}}";
-                                routepdf = routepdf.replace('identidade', entidadepdf);
-                                routepdf = routepdf.replace('idcategoria', categoriapdf);
-                                routepdf = routepdf.replace('idproduto', produtopdf);
-                                routepdf = routepdf.replace('idmes', mespdf);
-                                routepdf = routepdf.replace('idano', anopdf);
-
-                                $('#btnPdf').attr('href', routepdf);
-                                $("#btnPdf").css("display", "inline");
-                                
-                        }
-                    });
-
-
-                    // $('#btnPdf').attr('href', routepdf);
-                    
-                    
-
-
-                    /*
-                    var routepdfprimeirosemestre = "{{route('admin.monitor.relpdfmonitorgeralprimeirosemestre', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
-                        routepdfprimeirosemestre = routepdfprimeirosemestre.replace('identidade', entidadepdf);
-                        routepdfprimeirosemestre = routepdfprimeirosemestre.replace('idcategoria', categoriapdf);
-                        routepdfprimeirosemestre = routepdfprimeirosemestre.replace('idproduto', produtopdf);
-                        routepdfprimeirosemestre = routepdfprimeirosemestre.replace('idano', anopdf);
-
-                    $('#btnPdfPrimeiroSemestre').attr('href', routepdfprimeirosemestre);
-                    $("#btnPdfPrimeiroSemestre").css("display", "inline");
-                    */
-
+                    $('#btnPdf').attr('href', routepdf);
+                    $("#btnPdf").css("display", "inline");
 
                 // Se nenhum registro for retornado, exibe a modal
                 }else if(dataJSON.iTotalRecords == 0 && valEntidadeSelecionada != 0){
                     $(".modalSemLancamento").modal("show");
                 }else{
-                    // $("#btnPdfPrimeiroSemestre").css("display", "none");
                     $("#btnPdf").css("display", "none");
-                    $("#selectMes").css("display", "inline");
                 }
 
             });
 
-            // Destaca com o fundo azul, uma ou mais linha ao serem clicadas
-            oTable.on('click', 'tbody tr', function (e) {
-                e.currentTarget.classList.toggle('selected');
-            });
 
-            // Fechar modal: $("#MyPopup").modal("hide");
-
-
-            function relPdfSubgrupo(validregistro) {
-
-                // Recupera os valores (se selecionados) dos elementos nos respectivos selects
-                valEntidadeSelecionada  = $("#selectEntidade").val();
-                valCategoriaSelecionada = $("#selectCategorias").val() == undefined ? 0 : $("#selectCategorias").val() ;
-                valProdutoSelecionado   = $("#selectProdutos").val() == undefined ? 0 : $("#selectProdutos").val();
-                valAnoSelecionado       = $("#selectPeriodo").val();
-                periodoAno              = valAnoSelecionado;
-
-
-                var entidadepdfsubgrup = valEntidadeSelecionada;
-                var validregistroselecionado = validregistro;
-                var categoriapdfsubgrup =  valCategoriaSelecionada;
-                var produtopdfsubgrup = valProdutoSelecionado;
-                var anopdfsubgrup =  periodoAno;
-
-                var routepdfsubgroup = "{{route('admin.monitor.relpdfmonitorgeralsubgrupo', ['identidade', 'idregistro' , 'idcategoria', 'idproduto', 'idano'])}}";
-                    routepdfsubgroup = routepdfsubgroup.replace('identidade', entidadepdfsubgrup);
-                    routepdfsubgroup = routepdfsubgroup.replace('idregistro', validregistroselecionado);
-                    routepdfsubgroup = routepdfsubgroup.replace('idcategoria', categoriapdfsubgrup);
-                    routepdfsubgroup = routepdfsubgroup.replace('idproduto', produtopdfsubgrup);
-                    routepdfsubgroup = routepdfsubgroup.replace('idano', anopdfsubgrup);
-
-                $("#btnPdfSubgrupo").attr("href", routepdfsubgroup);
-                $("#btnPdfSubgrupo").on("click", function(){$(".modalSubgrupo").modal("hide")});
-
-            }
-
-
-            /*
-            // OBTENDO O ÍNDICE DA COLUNA E O SENTIDO (asc ou desc) QUE FOI ESCOLHIDA PARA ORDENAÇÃO PELO CLICK DO USUÁRIO
-            // Obtendo o índice da coluna e o sentido (asc ou desc) que foi escolhida para ordenação pelo click do usuário.
-            oTable.on( 'order.dt', function () {
-                // Recebe um array 2D com o índice da coluna e a ordem (asc ou desc), no formato: [[índice_numerico_coluna],["ordem"]]
-                var ordering = oTable.order();  //
-                console.log( 'Table ordering changed: ' + JSON.stringify(ordering) );
-                console.log(ordering);
-                var ndxColumnEOrder =  ordering;
-                //alert ("Número da Coluna: " + ndxColumnEOrder[0][0] + "  Ordem da Coluna: " + ndxColumnEOrder[0][1] );
-
-                //alert(getNameColumnHeader(ndxColumnEOrder[0][0]));
-                alert(getNameColumnHeader(ndxColumnEOrder));
-
-            });
-
-            function getNameColumnHeader(arrayColumnOrder){
-                var nameColumn = "";
-                var orderColumn = "";
-
-                switch(arrayColumnOrder[0][0]) {
-                    case 0:
-                        nameColumn =  "id";
-                        sortColumn = arrayColumnOrder[0][1]; // recebe a string "asc" ou "desc"
-                    break;
-                    case 1:
-                        nameColumn =  "nomeentidade";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 2:
-                        nameColumn =  "jannormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 3:
-                        nameColumn =  "janaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 4:
-                        nameColumn =  "fevnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 5:
-                        nameColumn =  "fevaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 6:
-                        nameColumn =  "marnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 7:
-                        nameColumn =  "maraf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 8:
-                        nameColumn =  "abrnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 9:
-                        nameColumn =  "abraf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 10:
-                        nameColumn =  "mainormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 11:
-                        nameColumn =  "maiaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 12:
-                        nameColumn =  "junnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 13:
-                        nameColumn =  "junaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 14:
-                        nameColumn =  "julnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 15:
-                        nameColumn =  "julaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 16:
-                        nameColumn =  "agsnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 17:
-                        nameColumn =  "agsaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 18:
-                        nameColumn =  "setnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 19:
-                        nameColumn =  "setaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 20:
-                        nameColumn =  "outnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 21:
-                        nameColumn =  "outaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 22:
-                        nameColumn =  "novnormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 23:
-                        nameColumn =  "novaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 24:
-                        nameColumn =  "deznormal";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    case 25:
-                        nameColumn =  "dezaf";
-                        sortColumn = arrayColumnOrder[0][1];
-                    break;
-                    default:
-                        nameColumn = "Outras Colunas";
-                        sortColumn = arrayColumnOrder[0][1];
-                }
-
-                return nameColumn + " " + sortColumn;
-            }
-            */
 
          });
-
     </script>
 @endsection
 
