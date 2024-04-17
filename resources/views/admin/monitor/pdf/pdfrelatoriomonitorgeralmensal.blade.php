@@ -9,8 +9,8 @@
 
 
 <body style="vertical-align:baseline">
-    <table style="width: 717px; border-collapse: collapse;  border: 0.1px solid #b1aeae;">
-
+   
+    <table style="width: 390px; border-collapse: collapse;  border: 0.1px solid #b1aeae;  margin: auto;">
         @php
             $linhatotalnormal = 0;
             $linhatotalaf = 0;
@@ -71,10 +71,10 @@
             @endphp
 
             <tr @if($loop->even) style="background-color: #e3e3e3;" @endif>
-                <td style="width: 30px;" class="dados-lista-monitor">&nbsp;{{ $record->id }}</td>
-                <td style="width: 90px;" class="dados-lista-monitor">{{ $record->nomeentidade }}</td>
-                <td style="width: 208px;" class="dados-lista-valor-monitor">{{ $record->jannormal == 0 ? "" : number_format($record->jannormal, "2", ",", ".") }}</td>
-                <td style="width: 209px;" class="dados-lista-valor-monitor">{{ $record->janaf     == 0 ? "" : number_format($record->janaf, "2", ",", ".") }}</td>
+                <td style="width: 20px;" class="dados-lista-monitor">&nbsp;{{ $record->id }}</td>
+                <td style="width: 100px;" class="dados-lista-monitor">{{ $record->nomeentidade }}</td>
+                <td style="width: 45px;" class="dados-lista-valor-monitor">{{ $record->jannormal == 0 ? "" : number_format($record->jannormal, "2", ",", ".") }}</td>
+                <td style="width: 45px;" class="dados-lista-valor-monitor">{{ $record->janaf     == 0 ? "" : number_format($record->janaf, "2", ",", ".") }}</td>
                 {{--<td style="width: 39px;" class="dados-lista-valor-monitor">{{ $linhatotalnormal  == 0 ? "" : number_format($linhatotalnormal, "2", ",", ".") }}</td>
                 <td style="width: 39px;" class="dados-lista-valor-monitor">{{ $linhatotalaf      == 0 ? "" : number_format($linhatotalaf, "2", ",", ".") }}</td>--}}
                 <td style="width: 90px;" class="dados-lista-valor-monitor">{{ $linhatotalgeral   == 0 ? "" : number_format($linhatotalgeral, "2", ",", ".") }}</td>
@@ -114,9 +114,9 @@
 
         <tr>
             {{--<td style="width: 25px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor"></td> --}}
-            <td colspan="2" style="width: 120px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor">&nbsp;&nbsp;TOTAIS PARCIAIS</td>
-            <td style="width: 208px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunajannormal == 0 ? "" : number_format($totalcolunajannormal, "2", ",", ".")}}</td>
-            <td style="width: 209px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunajanaf == 0 ? "" : number_format($totalcolunajanaf, "2", ",", ".")}}</td>
+            <td colspan="2" style="width: 120px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor">&nbsp;&nbsp;TOTAL GERAL</td>
+            <td style="width: 45px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunajannormal == 0 ? "" : number_format($totalcolunajannormal, "2", ",", ".")}}</td>
+            <td style="width: 45px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunajanaf == 0 ? "" : number_format($totalcolunajanaf, "2", ",", ".")}}</td>
             {{--<td style="width: 39px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialnormal == 0 ? "" : number_format($totalcolunatotalparcialnormal, "2", ",", ".")}}</td>
             <td style="width: 39px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialaf == 0 ? "" : number_format($totalcolunatotalparcialaf, "2", ",", ".")}}</td>--}}
             <td style="width: 90px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalgeral == 0 ? "" : number_format($totalcolunatotalgeral, "2", ",", ".") }}</td>

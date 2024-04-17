@@ -2066,8 +2066,8 @@ class MonitorController extends Controller
 
         // Meses para compor cabeçalho do relatório
         $meses = [
-            '1' => 'janeiro', '2' => 'fevereiro', '3' => 'março', '4' => 'abril', '5' => 'maio', '6' => 'junho',
-            '7' => 'julho', '8' => 'agosto', '9' => 'setembro', '10' => 'outubro', '11' => 'novembro', '12' => 'dezembro'
+            '1' => 'JANEIRO', '2' => 'FEVEREIRO', '3' => 'MARÇO', '4' => 'ABRIL', '5' => 'MAIO', '6' => 'JUNHO',
+            '7' => 'JULHO', '8' => 'AGOSTO', '9' => 'SETEMBRO', '10' => 'OUTUBRO', '11' => 'NOVEMBRO', '12' => 'DEZEMBRO'
         ];
 
 
@@ -2194,19 +2194,19 @@ class MonitorController extends Controller
             </table>
 
 
-            <table style="width:717px; border-collapse: collapse; border: 0.1px solid #000000;">
+            <table style="width:390px; border-collapse: collapse; border: 0.1px solid #000000;  margin: auto;">
                 <tr>
-                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 30px;">Id</td>
-                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 90px;">'.$entidaderotulo.'</td>
-                    <td  colspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 417px;">MÊS REFERENCIA: '.$anoRef.'</td>
-                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 90px;">TOTAL GERAL<br>(nm + af)</td>
+                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 20px;">Id</td>
+                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 100px;">'.$entidaderotulo.'</td>
+                    <td  colspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 90px;">COMPRA</td>
+                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 90px;">TOTAL <br>(normal + af)</td>
                     <td  colspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 90px;">PORCENTO %</td>
                 </tr>
 
                 <tr>
-                    <td style="width: 208px; text-align:center" class="col-header-table-monitor">nm</td>
-                    <td style="width: 209px; text-align:center" class="col-header-table-monitor">af</td>
-                    <td style="width: 45px; text-align:center" class="col-header-table-monitor">nm</td>
+                    <td style="width: 45px; text-align:center" class="col-header-table-monitor">normal</td>
+                    <td style="width: 45px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 45px; text-align:center" class="col-header-table-monitor">normal</td>
                     <td style="width: 45px; text-align:center" class="col-header-table-monitor">af</td>
                 </tr>
             </table>
