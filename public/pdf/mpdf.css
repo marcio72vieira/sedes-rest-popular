@@ -188,3 +188,33 @@ td.dados-lista-valor-monitor {
   text-align: right;
   border-right: 0.1px solid #b1aeae;
 }
+
+
+/*FORMATAÇÃO DOS RELATÓRIOS PDFS MENSAIS*/
+td.col-header-table-monitor-mensal {
+    background-color: #e3e3e3;
+    border: 0.1px solid #b1aeae;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+td.dados-lista-monitor-mensal {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    vertical-align: top;
+    border-right: 0.1px solid #b1aeae;
+  }
+
+  td.dados-lista-valor-monitor-mensal {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    vertical-align: top;
+    text-align: right;
+    border-right: 0.1px solid #b1aeae;
+  }

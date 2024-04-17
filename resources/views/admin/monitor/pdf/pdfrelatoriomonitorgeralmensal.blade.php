@@ -9,37 +9,19 @@
 
 
 <body style="vertical-align:baseline">
-   
-    <table style="width: 390px; border-collapse: collapse;  border: 0.1px solid #b1aeae;  margin: auto;">
+
+    <table style="width: 550px; border-collapse: collapse;  border: 0.1px solid #b1aeae;  margin: auto;">
         @php
-            $linhatotalnormal = 0;
-            $linhatotalaf = 0;
-            $linhatotalgeral = 0;
+            $linhatotalnormalaf = 0;
             $linhapercentagemnormal = 0;
             $linhapercentagemaf = 0;
 
-            $totalcolunajannormal = 0;
-            $totalcolunajanaf = 0;
+            $somageralcompranormal = 0;
+            $somageralcompraaf = 0;
+            $somageraltotalnormalaf = 0;
 
-            $totalcolunatotalparcialnormal = 0;
-            $totalcolunatotalparcialaf = 0;
-            $totalcolunatotalgeral = 0;
-            $totalcolunapercentagemtotalnormal = 0;
-            $totalcolunapercentagemtotalaf = 0;
-
-            $totalgeraljan = 0;
-            $totalgeralfev = 0;
-            $totalgeralmar = 0;
-            $totalgeralabr = 0;
-            $totalgeralmai = 0;
-            $totalgeraljun = 0;
-            $totalgeraljul = 0;
-            $totalgeralags = 0;
-            $totalgeralset = 0;
-            $totalgeralout = 0;
-            $totalgeralnov = 0;
-            $totalgeraldez = 0;
-
+            $percentagemgeralnormal = 0;
+            $percentagemgeralaf = 0;
         @endphp
 
 
@@ -48,15 +30,15 @@
             {{-- Usado para depuração no blade: @dd($record); --}}
 
             @php
-                // Somando os totais dos meses da entidade
-                $linhatotalnormal = $record->jannormal;
-                $linhatotalaf = $record->janaf;
-                $linhatotalgeral = $linhatotalnormal + $linhatotalaf;
-
                 // Cálculo das percentagens. Evitando divisão por zero
-                if($linhatotalgeral != 0){
-                    $linhapercentagemnormal = (($linhatotalnormal * 100)/$linhatotalgeral);
-                    $linhapercentagemaf = (($linhatotalaf * 100)/$linhatotalgeral);
+                $linhacompranormal = $record->jannormal;
+                $linhacompraaf = $record->janaf;
+
+                $linhatotalnormalaf = $linhacompranormal + $linhacompraaf;
+
+                if($linhatotalnormalaf != 0){
+                    $linhapercentagemnormal = (($linhacompranormal * 100)/$linhatotalnormalaf);
+                    $linhapercentagemaf = (($linhacompraaf * 100)/$linhatotalnormalaf);
                 }else {
                     $linhapercentagemnormal = 0;
                     $linhapercentagemaf = 0;
@@ -64,75 +46,50 @@
 
                 // Caso o registro não possua dados, o mesmo não é exibido, evitando a poluição do relatório com dados vazio
                 // O teste é feito em cima da linha total geral, porque esse já engloba os valores somados de normal e af
-                if($linhatotalgeral == 0){
-                    continue;
-                }
+                // Esta condição só deverá ser utilizada, caso as condições no controller [(->whereMonth("data_ini", "=",  $mesRef) e (->whereMonth("bigtable_data.data_ini", "=",  $mesRef)] forem retiradas
+                // if($linhatotalnormalaf == 0){
+                //     continue;
+                // }
 
             @endphp
 
             <tr @if($loop->even) style="background-color: #e3e3e3;" @endif>
-                <td style="width: 20px;" class="dados-lista-monitor">&nbsp;{{ $record->id }}</td>
-                <td style="width: 100px;" class="dados-lista-monitor">{{ $record->nomeentidade }}</td>
-                <td style="width: 45px;" class="dados-lista-valor-monitor">{{ $record->jannormal == 0 ? "" : number_format($record->jannormal, "2", ",", ".") }}</td>
-                <td style="width: 45px;" class="dados-lista-valor-monitor">{{ $record->janaf     == 0 ? "" : number_format($record->janaf, "2", ",", ".") }}</td>
-                {{--<td style="width: 39px;" class="dados-lista-valor-monitor">{{ $linhatotalnormal  == 0 ? "" : number_format($linhatotalnormal, "2", ",", ".") }}</td>
-                <td style="width: 39px;" class="dados-lista-valor-monitor">{{ $linhatotalaf      == 0 ? "" : number_format($linhatotalaf, "2", ",", ".") }}</td>--}}
-                <td style="width: 90px;" class="dados-lista-valor-monitor">{{ $linhatotalgeral   == 0 ? "" : number_format($linhatotalgeral, "2", ",", ".") }}</td>
-                <td style="width: 45px;" class="dados-lista-valor-monitor">{{ $linhapercentagemnormal == 0 ? "" : number_format($linhapercentagemnormal, "2", ",", ".") }}</td>
-                <td style="width: 45px;" class="dados-lista-valor-monitor">{{ $linhapercentagemaf     == 0 ? "" : number_format($linhapercentagemaf, "2", ",", ".") }}</td>
+                <td style="width: 30px;" class="dados-lista-monitor-mensal">&nbsp;{{ $record->id }}</td>
+                <td style="width: 200px;" class="dados-lista-monitor-mensal">{{ $record->nomeentidade }}</td>
+                <td style="width: 70px;" class="dados-lista-valor-monitor-mensal">{{ $record->jannormal == 0 ? "" : number_format($record->jannormal, "2", ",", ".") }}</td>
+                <td style="width: 70px;" class="dados-lista-valor-monitor-mensal">{{ $record->janaf     == 0 ? "" : number_format($record->janaf, "2", ",", ".") }}</td>
+                <td style="width: 80px;" class="dados-lista-valor-monitor-mensal">{{ $linhatotalnormalaf   == 0 ? "" : number_format($linhatotalnormalaf, "2", ",", ".") }}</td>
+                <td style="width: 50px;" class="dados-lista-valor-monitor-mensal">{{ $linhapercentagemnormal == 0 ? "" : number_format($linhapercentagemnormal, "2", ",", ".") }}</td>
+                <td style="width: 50px;" class="dados-lista-valor-monitor-mensal">{{ $linhapercentagemaf     == 0 ? "" : number_format($linhapercentagemaf, "2", ",", ".") }}</td>
             </tr>
             @php
                 // Cálculo dos totais parciais normal e af dos meses
-                $totalcolunajannormal = $totalcolunajannormal + $record->jannormal;
-                $totalcolunajanaf = $totalcolunajanaf + $record->janaf;
-
-                // Cálculo dos totais parciais normal e af das entidades
-                $totalcolunatotalparcialnormal = $totalcolunatotalparcialnormal + $linhatotalnormal;
-                $totalcolunatotalparcialaf = $totalcolunatotalparcialaf + $linhatotalaf;
-
-                $totalcolunatotalgeral = $totalcolunatotalgeral + $linhatotalgeral;
+                $somageralcompranormal = $somageralcompranormal + $record->jannormal;
+                $somageralcompraaf = $somageralcompraaf + $record->janaf;
+                $somageraltotalnormalaf = $somageraltotalnormalaf + $linhatotalnormalaf;
             @endphp
         @endforeach
 
         @php
             // Cálculo das percentagens totais. Evitando divisão por zero
-            if($totalcolunatotalgeral != 0){
-                $totalcolunapercentagemtotalnormal = (($totalcolunatotalparcialnormal * 100)/$totalcolunatotalgeral);
-                $totalcolunapercentagemtotalaf = (($totalcolunatotalparcialaf * 100)/$totalcolunatotalgeral);
+            if($somageraltotalnormalaf != 0){
+                $percentagemgeralnormal = (($somageralcompranormal * 100)/$somageraltotalnormalaf);
+                $percentagemgeralaf = (($somageralcompraaf * 100)/$somageraltotalnormalaf);
             }else {
-                $totalcolunapercentagemtotalnormal = 0;
-                $totalcolunapercentagemtotalaf = 0;
+                $percentagemgeralnormal = 0;
+                $percentagemgeralaf = 0;
             }
-
-            // Cálculo totais gerais por meses
-            $totalgeraljan = $totalcolunajannormal + $totalcolunajanaf;
-
-            $totalgeralcolunaparcial = $totalcolunatotalparcialnormal + $totalcolunatotalparcialaf;
-            $totalgeralcolunatotalgeral = $totalgeraljan;
-
         @endphp
 
         <tr>
-            {{--<td style="width: 25px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor"></td> --}}
-            <td colspan="2" style="width: 120px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor">&nbsp;&nbsp;TOTAL GERAL</td>
-            <td style="width: 45px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunajannormal == 0 ? "" : number_format($totalcolunajannormal, "2", ",", ".")}}</td>
-            <td style="width: 45px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunajanaf == 0 ? "" : number_format($totalcolunajanaf, "2", ",", ".")}}</td>
-            {{--<td style="width: 39px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialnormal == 0 ? "" : number_format($totalcolunatotalparcialnormal, "2", ",", ".")}}</td>
-            <td style="width: 39px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalparcialaf == 0 ? "" : number_format($totalcolunatotalparcialaf, "2", ",", ".")}}</td>--}}
-            <td style="width: 90px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunatotalgeral == 0 ? "" : number_format($totalcolunatotalgeral, "2", ",", ".") }}</td>
-            <td style="width: 45px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunapercentagemtotalnormal == 0 ? "" : number_format($totalcolunapercentagemtotalnormal, "2", ",", ".") }}</td>
-            <td style="width: 45px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor">{{ $totalcolunapercentagemtotalaf == 0 ? "" : number_format($totalcolunapercentagemtotalaf, "2", ",", ".") }}</td>
+            {{--<td style="width: 25px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor-mensal"></td> --}}
+            <td colspan="2" style="width: 230px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor-mensal">&nbsp;&nbsp;TOTAL GERAL</td>
+            <td style="width: 70px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor-mensal">{{ $somageralcompranormal == 0 ? "" : number_format($somageralcompranormal, "2", ",", ".")}}</td>
+            <td style="width: 70px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor-mensal">{{ $somageralcompraaf == 0 ? "" : number_format($somageralcompraaf, "2", ",", ".")}}</td>
+            <td style="width: 80px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor-mensal">{{ $somageraltotalnormalaf == 0 ? "" : number_format($somageraltotalnormalaf, "2", ",", ".") }}</td>
+            <td style="width: 50px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor-mensal">{{ $percentagemgeralnormal == 0 ? "" : number_format($percentagemgeralnormal, "2", ",", ".") }}</td>
+            <td style="width: 50px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-valor-monitor-mensal">{{ $percentagemgeralaf == 0 ? "" : number_format($percentagemgeralaf, "2", ",", ".") }}</td>
         </tr>
-
-        {{--
-        <tr>
-            <td colspan="2" style="width: 94px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px;" class="dados-lista-monitor">&nbsp;&nbsp;TOTAIS GERAIS (nm + af)</td>
-            <td colspan="2" style="width: 453px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeraljan == 0 ? "" : number_format($totalgeraljan, "2", ",", ".")}}</td>
-            <td colspan="2" style="width: 78px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeralcolunaparcial == 0 ? "" : number_format($totalgeralcolunaparcial, "2", ",", ".")}}</td>
-            <td style="width: 42px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ $totalgeralcolunatotalgeral == 0 ? "" : number_format($totalgeralcolunatotalgeral, "2", ",", ".") }}</td>
-            <td colspan="2" style="width: 50px; border-top: 0.1px solid #000000; padding-top: 5px; padding-bottom: 5px; text-align: right;" class="dados-lista-valor-monitor">{{ "100,00" }}</td>
-        </tr>
-        --}}
     </table>
 </body>
 </html>

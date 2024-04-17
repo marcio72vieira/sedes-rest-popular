@@ -2135,12 +2135,13 @@ class MonitorController extends Controller
 
 
 
-        $valoresmeses = DB::table('bigtable_data')
+        $valoresmes = DB::table('bigtable_data')
         ->select(DB::RAW("data_ini, af, precototal, $entidade_id, $entidade_nome,
                 SUM(IF(MONTH(data_ini) = $mesRef AND af = 'nao', precototal, 0.00)) AS mesjannormal,
                 SUM(IF(MONTH(data_ini) = $mesRef AND af = 'sim', precototal, 0.00)) AS mesjanaf",
             )
         )
+        ->whereMonth("data_ini", "=",  $mesRef)     // Se a condição de mês for retirada, são retornado todos os registros do ano, independentemente de possuir valor ou não.
         ->whereYear("data_ini", "=",  $anoRef)
         ->groupByRaw("$entidade_id")
         ->orderByRaw("$entidade_nome");
@@ -2148,16 +2149,17 @@ class MonitorController extends Controller
 
         //MONTAGEM CONDICIONAL DA QUERYBUILDER COM BASE NO ENVIO DE CATEGORIAS OU PRODUTOS
         if($catRef != 0 && $prodRef == 0){
-            $valoresmeses->where("categoria_id", "=", $catRef);
+            $valoresmes->where("categoria_id", "=", $catRef);
         }
         if($catRef != 0 && $prodRef != 0){
-            $valoresmeses->where("produto_id", "=", $prodRef);
+            $valoresmes->where("produto_id", "=", $prodRef);
         }
 
 
-        $records =  DB::table("bigtable_data")->joinSub($valoresmeses, "aliasValoresMeses", function($join)  use($entidade_id){
+        $records =  DB::table("bigtable_data")->joinSub($valoresmes, "aliasValoresMeses", function($join)  use($entidade_id){
             $join->on("bigtable_data.$entidade_id", "=", "aliasValoresMeses.$entidade_id");
         })->select(DB::raw("bigtable_data.$entidade_id AS id, bigtable_data.$entidade_nome AS nomeentidade, bigtable_data.data_ini, aliasValoresMeses.mesjannormal AS jannormal, aliasValoresMeses.mesjanaf AS janaf"))
+        ->whereMonth("bigtable_data.data_ini", "=",  $mesRef)   // Se a condição de mês for retirada, são retornado todos os registros do ano, independentemente de possuir valor ou não.
         ->whereYear("bigtable_data.data_ini", "=",  $anoRef)
         ->groupBy("bigtable_data.$entidade_id")
         ->orderBy("bigtable_data.$entidade_nome")   // ->orderBy("aliasValoresMeses.mesjannormal", "DESC")
@@ -2170,7 +2172,7 @@ class MonitorController extends Controller
             'orientation' => 'P',
             'margin_left' => 10,
             'margin_right' => 10,
-            'margin_top' => 35,
+            'margin_top' => 37,
             'margin_bottom' => 10,
             'margin-header' => 10,
             'margin_footer' => 5
@@ -2194,20 +2196,20 @@ class MonitorController extends Controller
             </table>
 
 
-            <table style="width:390px; border-collapse: collapse; border: 0.1px solid #000000;  margin: auto;">
+            <table style="width:550px; border-collapse: collapse; border: 0.1px solid #000000;  margin: auto;">
                 <tr>
-                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 20px;">Id</td>
-                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 100px;">'.$entidaderotulo.'</td>
-                    <td  colspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 90px;">COMPRA</td>
-                    <td  rowspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 90px;">TOTAL <br>(normal + af)</td>
-                    <td  colspan="2" class="col-header-table-monitor" style="vertical-align: middle; text-align:center; width: 90px;">PORCENTO %</td>
+                    <td  rowspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 30px;">Id</td>
+                    <td  rowspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 200px;">'.$entidaderotulo.'</td>
+                    <td  colspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 140px;">COMPRA</td>
+                    <td  rowspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 80px;">TOTAL <br>(normal + af)</td>
+                    <td  colspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 100px;">PORCENTO %</td>
                 </tr>
 
                 <tr>
-                    <td style="width: 45px; text-align:center" class="col-header-table-monitor">normal</td>
-                    <td style="width: 45px; text-align:center" class="col-header-table-monitor">af</td>
-                    <td style="width: 45px; text-align:center" class="col-header-table-monitor">normal</td>
-                    <td style="width: 45px; text-align:center" class="col-header-table-monitor">af</td>
+                    <td style="width: 70px; text-align:center" class="col-header-table-monitor-mensal">normal</td>
+                    <td style="width: 70px; text-align:center" class="col-header-table-monitor-mensal">af</td>
+                    <td style="width: 50px; text-align:center" class="col-header-table-monitor-mensal">normal</td>
+                    <td style="width: 50px; text-align:center" class="col-header-table-monitor-mensal">af</td>
                 </tr>
             </table>
         ');
