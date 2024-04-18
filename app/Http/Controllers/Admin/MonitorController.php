@@ -2137,11 +2137,11 @@ class MonitorController extends Controller
 
         $valoresmes = DB::table('bigtable_data')
         ->select(DB::RAW("data_ini, af, precototal, $entidade_id, $entidade_nome,
-                SUM(IF(MONTH(data_ini) = $mesRef AND af = 'nao', precototal, 0.00)) AS mesjannormal,
-                SUM(IF(MONTH(data_ini) = $mesRef AND af = 'sim', precototal, 0.00)) AS mesjanaf",
+                SUM(IF(MONTH(data_ini) = $mesRef AND af = 'nao', precototal, 0.00)) AS mescompranormal,
+                SUM(IF(MONTH(data_ini) = $mesRef AND af = 'sim', precototal, 0.00)) AS mescompraaf",
             )
         )
-        ->whereMonth("data_ini", "=",  $mesRef)     // Se a condição de mês for retirada, são retornado todos os registros do ano, independentemente de possuir valor ou não.
+        ->whereMonth("data_ini", "=",  $mesRef)     // Esta condição evita a captura de todos os registros do ano em questão, independente de possuir valor ou não.
         ->whereYear("data_ini", "=",  $anoRef)
         ->groupByRaw("$entidade_id")
         ->orderByRaw("$entidade_nome");
@@ -2156,10 +2156,10 @@ class MonitorController extends Controller
         }
 
 
-        $records =  DB::table("bigtable_data")->joinSub($valoresmes, "aliasValoresMeses", function($join)  use($entidade_id){
-            $join->on("bigtable_data.$entidade_id", "=", "aliasValoresMeses.$entidade_id");
-        })->select(DB::raw("bigtable_data.$entidade_id AS id, bigtable_data.$entidade_nome AS nomeentidade, bigtable_data.data_ini, aliasValoresMeses.mesjannormal AS jannormal, aliasValoresMeses.mesjanaf AS janaf"))
-        ->whereMonth("bigtable_data.data_ini", "=",  $mesRef)   // Se a condição de mês for retirada, são retornado todos os registros do ano, independentemente de possuir valor ou não.
+        $records =  DB::table("bigtable_data")->joinSub($valoresmes, "aliasValoresMes", function($join)  use($entidade_id){
+            $join->on("bigtable_data.$entidade_id", "=", "aliasValoresMes.$entidade_id");
+        })->select(DB::raw("bigtable_data.$entidade_id AS id, bigtable_data.$entidade_nome AS nomeentidade, bigtable_data.data_ini, aliasValoresMes.mescompranormal AS compranormal, aliasValoresMes.mescompraaf AS compraaf"))
+        ->whereMonth("bigtable_data.data_ini", "=",  $mesRef)   // Esta condição evita a captura de todos os registros do ano em questão, independente de possuir valor ou não.
         ->whereYear("bigtable_data.data_ini", "=",  $anoRef)
         ->groupBy("bigtable_data.$entidade_id")
         ->orderBy("bigtable_data.$entidade_nome")   // ->orderBy("aliasValoresMeses.mesjannormal", "DESC")
@@ -2191,7 +2191,7 @@ class MonitorController extends Controller
                         Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
                         Secretaria do Estado de Desenvolvimento Social/SEDES
                     </td>
-                    <td style="width: 352px;" class="titulo-rel">'. $titulorelatorio .'</td>
+                    <td style="width: 352px;" class="titulo-rel-mensal">'. $titulorelatorio .'</td>
                 </tr>
             </table>
 

@@ -31,8 +31,8 @@
 
             @php
                 // Cálculo das percentagens. Evitando divisão por zero
-                $linhacompranormal = $record->jannormal;
-                $linhacompraaf = $record->janaf;
+                $linhacompranormal = $record->compranormal;
+                $linhacompraaf = $record->compraaf;
 
                 $linhatotalnormalaf = $linhacompranormal + $linhacompraaf;
 
@@ -56,16 +56,16 @@
             <tr @if($loop->even) style="background-color: #e3e3e3;" @endif>
                 <td style="width: 30px;" class="dados-lista-monitor-mensal">&nbsp;{{ $record->id }}</td>
                 <td style="width: 200px;" class="dados-lista-monitor-mensal">{{ $record->nomeentidade }}</td>
-                <td style="width: 70px;" class="dados-lista-valor-monitor-mensal">{{ $record->jannormal == 0 ? "" : number_format($record->jannormal, "2", ",", ".") }}</td>
-                <td style="width: 70px;" class="dados-lista-valor-monitor-mensal">{{ $record->janaf     == 0 ? "" : number_format($record->janaf, "2", ",", ".") }}</td>
+                <td style="width: 70px;" class="dados-lista-valor-monitor-mensal">{{ $record->compranormal == 0 ? "" : number_format($record->compranormal, "2", ",", ".") }}</td>
+                <td style="width: 70px;" class="dados-lista-valor-monitor-mensal">{{ $record->compraaf     == 0 ? "" : number_format($record->compraaf, "2", ",", ".") }}</td>
                 <td style="width: 80px;" class="dados-lista-valor-monitor-mensal">{{ $linhatotalnormalaf   == 0 ? "" : number_format($linhatotalnormalaf, "2", ",", ".") }}</td>
                 <td style="width: 50px;" class="dados-lista-valor-monitor-mensal">{{ $linhapercentagemnormal == 0 ? "" : number_format($linhapercentagemnormal, "2", ",", ".") }}</td>
                 <td style="width: 50px;" class="dados-lista-valor-monitor-mensal">{{ $linhapercentagemaf     == 0 ? "" : number_format($linhapercentagemaf, "2", ",", ".") }}</td>
             </tr>
             @php
                 // Cálculo dos totais parciais normal e af dos meses
-                $somageralcompranormal = $somageralcompranormal + $record->jannormal;
-                $somageralcompraaf = $somageralcompraaf + $record->janaf;
+                $somageralcompranormal = $somageralcompranormal + $record->compranormal;
+                $somageralcompraaf = $somageralcompraaf + $record->compraaf;
                 $somageraltotalnormalaf = $somageraltotalnormalaf + $linhatotalnormalaf;
             @endphp
         @endforeach
