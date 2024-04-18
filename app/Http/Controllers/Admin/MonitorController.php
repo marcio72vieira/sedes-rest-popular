@@ -2685,6 +2685,150 @@ class MonitorController extends Controller
 
 
 
+    //////////INICIO REL PDF MONITOR ESPECIFICO MENSAL
+    public function relpdfmonitorespecificomensal(Request $request)
+    {
+        $entitRef   = $request->identidade;
+        $idregRef   = $request->idregistro;
+        $idtipoRef  = $request->idtipopesquisa;
+        $mesRef     = $request->idmes;
+        $anoRef     = $request->idano;
+
+        // Meses para compor cabeçalho do relatório
+        $meses = [
+            '1' => 'JANEIRO', '2' => 'FEVEREIRO', '3' => 'MARÇO', '4' => 'ABRIL', '5' => 'MAIO', '6' => 'JUNHO',
+            '7' => 'JULHO', '8' => 'AGOSTO', '9' => 'SETEMBRO', '10' => 'OUTUBRO', '11' => 'NOVEMBRO', '12' => 'DEZEMBRO'
+        ];
+
+
+        switch($entitRef){
+            case "1":
+                $entidade_id = "regional_id";
+                $rotuloentidade = "REGIONAL: ";
+                $rotuloregistro = DB::table('regionais')->where('id', '=', $idregRef)->value('nome');
+            break;
+            case "2":
+                $entidade_id = "municipio_id";
+                $rotuloentidade = "MUNICÍPIO: ";
+                $rotuloregistro = DB::table('municipios')->where('id', '=', $idregRef)->value('nome');
+            break;
+            case "3":
+                $entidade_id = "restaurante_id";
+                $rotuloentidade = "RESTAURANTE: ";
+                $rotuloregistro = DB::table('restaurantes')->where('id', '=', $idregRef)->value('identificacao');
+            break;
+        }
+
+        // Define por qual campo pesquisar
+        if($idtipoRef == "1"){
+            $campo_id = "categoria_id";
+            $campo_nome = "categoria_nome";
+            $rotulopesquisa =  "Categorias";
+            $titulorelatorio =  "COMPRAS POR CATEGORIAS - ". $rotuloentidade . $rotuloregistro ." EM ".$meses[$mesRef]."/".$anoRef;
+        }else{
+            $campo_id = "produto_id";
+            $campo_nome = "produto_nome";
+            $rotulopesquisa =  "Produtos";
+            $titulorelatorio =  "COMPRAS POR PRODUTOS - ". $rotuloentidade . $rotuloregistro ." EM ".$meses[$mesRef]."/".$anoRef;
+        }
+
+
+        $valoresmes = DB::table('bigtable_data')
+        ->select(DB::RAW("data_ini, af, precototal, $campo_id, $campo_nome,
+                SUM(IF(MONTH(data_ini) = $mesRef AND af = 'nao', precototal, 0.00)) AS mescompranormal,
+                SUM(IF(MONTH(data_ini) = $mesRef AND af = 'sim', precototal, 0.00)) AS mescompraaf",
+            )
+        )
+        ->whereMonth("data_ini", "=",  $mesRef)     // Esta condição evita a captura de todos os registros do ano em questão, independente de possuir valor ou não.
+        ->whereYear("data_ini", "=",  $anoRef)
+        ->where("$entidade_id", "=", $idregRef)
+        ->groupByRaw("$campo_id")
+        ->orderByRaw("$campo_nome");
+
+        $records =  DB::table("bigtable_data")->joinSub($valoresmes, "aliasValoresMes", function($join)  use($campo_id){
+            $join->on("bigtable_data.$campo_id", "=", "aliasValoresMes.$campo_id");
+        })->select(DB::raw("bigtable_data.$campo_id AS id, bigtable_data.$campo_nome AS nomeentidade, bigtable_data.data_ini, aliasValoresMes.mescompranormal AS compranormal, aliasValoresMes.mescompraaf AS compraaf"))
+        ->whereMonth("bigtable_data.data_ini", "=",  $mesRef)   // Esta condição evita a captura de todos os registros do ano em questão, independente de possuir valor ou não.
+        ->whereYear("bigtable_data.data_ini", "=",  $anoRef)
+        ->groupBy("bigtable_data.$campo_id")
+        ->orderBy("bigtable_data.$campo_nome")
+        ->get();
+
+        $fileName = ('RelMonitorMensal.pdf');
+
+        // Invocando a biblioteca mpdf e definindo as margens do arquivo
+        $mpdf = new \Mpdf\Mpdf([
+            'orientation' => 'P',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 37,
+            'margin_bottom' => 10,
+            'margin-header' => 10,
+            'margin_footer' => 5
+        ]);
+
+        // Configurando o cabeçalho da página
+        $mpdf->SetHTMLHeader('
+            <table style="width:717px; border-bottom: 1px solid #000000; margin-bottom: 3px;">
+                <tr>
+                    <td style="width: 108px">
+                        <img src="images/logo-ma.png" width="100"/>
+                    </td>
+                    <td style="width: 282px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                        Governo do Estado do Maranhão<br>
+                        Secretaria de Governo<br>
+                        Secreatia Adjunta de Tecnologia da Informação/SEATI<br>
+                        Secretaria do Estado de Desenvolvimento Social/SEDES
+                    </td>
+                    <td style="width: 352px;" class="titulo-rel-mensal">'. $titulorelatorio .'</td>
+                </tr>
+            </table>
+
+            <table style="width:550px; border-collapse: collapse; border: 0.1px solid #000000;  margin: auto;">
+                <tr>
+                    <td  rowspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 30px;">Id</td>
+                    <td  rowspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 200px;">'.$rotulopesquisa.'</td>
+                    <td  colspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 140px;">COMPRA</td>
+                    <td  rowspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 80px;">TOTAL <br>(normal + af)</td>
+                    <td  colspan="2" class="col-header-table-monitor-mensal" style="vertical-align: middle; text-align:center; width: 100px;">PORCENTO %</td>
+                </tr>
+
+                <tr>
+                    <td style="width: 70px; text-align:center" class="col-header-table-monitor-mensal">normal</td>
+                    <td style="width: 70px; text-align:center" class="col-header-table-monitor-mensal">af</td>
+                    <td style="width: 50px; text-align:center" class="col-header-table-monitor-mensal">normal</td>
+                    <td style="width: 50px; text-align:center" class="col-header-table-monitor-mensal">af</td>
+                </tr>
+            </table>
+        ');
+
+        $mpdf->SetHTMLFooter('
+            <table style="width:717px; border-top: 1px solid #000000; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                <tr>
+                    <td width="239px">São Luis(MA) {DATE d/m/Y - H:i:s}</td>
+                    <td width="239px" align="center"></td>
+                    <td width="239px" align="right">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>
+        ');
+
+
+        $html = \View::make('admin.monitor.pdf.pdfrelatoriomonitorespecificomensal', compact('records'));
+        $html = $html->render();
+
+        $stylesheet = file_get_contents('pdf/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, 1);
+
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($fileName, 'I');
+
+    }
+
+    /////////FIM REL PDF MONITOR ESPECÍFOC MENSAL
+
+
+
+
     public function relpdfmonitorgeralprimeirosemestre(Request $request)
     {
         $entitRef   = $request->identidade;

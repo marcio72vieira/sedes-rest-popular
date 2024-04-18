@@ -335,6 +335,24 @@
 
             // Botões de CarregarDados e Impressão PDF. O valor do atributo href, é criado dinamicamente
             $('#controlesPeriodoCarregarPdf').append('<button type="button" class="btn btn-primary" id="btnCarregar" style="height: 36px; width: 40px; float:left; margin-left: 30px;" title="Carregar Dados"><i class="fas fa-search"></i></button>');
+            $('#controlesPeriodoCarregarPdf').append(`<select id="selectMes" class="form-control input-sm" style="height: 36px; width: 150px; float:left; margin-left: 30px; display: none">
+                        <option value="0" selected>Emitir PDF</option>
+                        <option value="1">janeiro</option>
+                        <option value="2">fevereiro</option>
+                        <option value="3">março</option>
+                        <option value="4">abril</option>
+                        <option value="5">maio</option>
+                        <option value="6">junho</option>
+                        <option value="7">julho</option>
+                        <option value="8">agosto</option>
+                        <option value="9">setembro</option>
+                        <option value="10">outubro</option>
+                        <option value="11">novembro</option>
+                        <option value="12">dezembro</option>
+                        <option value="" disabled>_______________</option>
+                        <option value="13">Todos os meses</option>
+                    </select>`);
+
             $('#controlesPeriodoCarregarPdf').append('<a href="" id="btnPdf" class="btn btn-danger" style="height: 36px; width: 40px; float:left; margin-left: 30px; display: none" title="Relatório PDF" target="_blank"><i class="far fa-file-pdf"></i></a>');
 
 
@@ -343,9 +361,11 @@
             // o elemento #selectPeriodo. Deixando o botão PDF disponível apenas se o resultado da pesquisa retornar dados.
             $("#dataTableMonitor_length").on("change", "#selectEntidade, #selectRegistrosDaEntidade, #selectCategoriaProduto", function(){
                 $("#btnPdf").css("display", "none");
+                $("#selectMes").css("display", "none");
             });
             $("#selectPeriodo").on("change", function(){
                 $("#btnPdf").css("display", "none");
+                $("#selectMes").css("display", "none");
             });
 
 
@@ -357,6 +377,16 @@
                 valCategProd            = $("#selectCategoriaProduto").val() == undefined ? 0 : $("#selectCategoriaProduto").val();
                 valAno                  = $("#selectPeriodo").val();
                 periodoAno              = valAno;
+
+                // Exibe select para escolha do mês do relatório pdf
+                $("#selectMes").css("display", "inline");
+
+                // Define o valor da seleção para "Emitir PDF"
+                $("#selectMes").val("0").change();
+
+                // Oculta o botão emitir PDF. Só o exibe quando o select selectMes for alterado.
+                $("#btnPdf").css("display", "none");
+
 
                 if(valEntidadeSelecionada != 0 && valRegistro != 0 && valCategProd != 0){
 
@@ -389,21 +419,61 @@
                     var registropdf     = valRegistro;
                     var tipopesquisapdf = valCategProd;
                     var anopdf          = periodoAno;
+                    var mespdf =  $("#selectMes").val();   // mespdf, recebe o valor do selectMes, que inicialmente terá o valor 13(todos os meses, pois o mesmo está selectd por padrão)
 
-                    var routepdf = "{{route('admin.monitor.relpdfmonitorespecifico', ['identidade', 'idregistro', 'idtipopesquisa', 'idano'])}}";
-                        routepdf = routepdf.replace('identidade', entidadepdf);
-                        routepdf = routepdf.replace('idregistro', registropdf);
-                        routepdf = routepdf.replace('idtipopesquisa', tipopesquisapdf);
-                        routepdf = routepdf.replace('idano', anopdf);
 
-                    $('#btnPdf').attr('href', routepdf);
-                    $("#btnPdf").css("display", "inline");
+                    $("#selectMes").on('change', function(){
+                        mespdf =  $(this).find('option:selected').val();   // mespdf, recebe o valor do selectMes, que inicialmente terá o valor 13(todos os meses, pois o mesmo está selectd por padrão)
+
+                        switch(mespdf){
+
+                            case "1":
+                            case "2":
+                            case "3":
+                            case "4":
+                            case "5":
+                            case "6":
+                            case "7":
+                            case "8":
+                            case "9":
+                            case "10":
+                            case "11":
+                            case "12":
+                                var routepdf = "{{route('admin.monitor.relpdfmonitorespecificomensal', ['identidade', 'idregistro', 'idtipopesquisa', 'idmes', 'idano'])}}";
+                                    routepdf = routepdf.replace('identidade', entidadepdf);
+                                    routepdf = routepdf.replace('idregistro', registropdf);
+                                    routepdf = routepdf.replace('idtipopesquisa', tipopesquisapdf);
+                                    routepdf = routepdf.replace('idmes', mespdf);
+                                    routepdf = routepdf.replace('idano', anopdf);
+
+                                    $('#btnPdf').attr('href', routepdf);
+                                    $("#btnPdf").css("display", "inline");
+                            break;
+
+                            case "13":
+                                var routepdf = "{{route('admin.monitor.relpdfmonitorespecifico', ['identidade', 'idregistro', 'idtipopesquisa', 'idano'])}}";
+                                    routepdf = routepdf.replace('identidade', entidadepdf);
+                                    routepdf = routepdf.replace('idregistro', registropdf);
+                                    routepdf = routepdf.replace('idtipopesquisa', tipopesquisapdf);
+                                    routepdf = routepdf.replace('idano', anopdf);
+
+                                $('#btnPdf').attr('href', routepdf);
+                                $("#btnPdf").css("display", "inline");
+                            break;
+
+                            default:
+                                $("#btnPdf").css("display", "none");
+                        }
+                    });
+
 
                 // Se nenhum registro for retornado, exibe a modal
                 }else if(dataJSON.iTotalRecords == 0 && valEntidadeSelecionada != 0){
                     $(".modalSemLancamento").modal("show");
+                    $("#selectMes").css("display", "none");
                 }else{
                     $("#btnPdf").css("display", "none");
+                    $("#selectMes").css("display", "inline");
                 }
 
             });

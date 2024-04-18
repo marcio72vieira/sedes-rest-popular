@@ -411,7 +411,7 @@
 
 
 
-            
+
 
             // Ocultando o botão PDF com a DELEGAÇÃO DE EVENTOS para os elementos dentro da div #dataTableMonitor_length e para
             // o elemento #selectPeriodo. Deixando o botão PDF disponível apenas se o resultado da pesquisa retornar dados.
@@ -541,7 +541,7 @@
                     var produtopdf = valProdutoSelecionado;
                     var anopdf =  periodoAno;
                     var mespdf =  $("#selectMes").val();   // mespdf, recebe o valor do selectMes, que inicialmente terá o valor 13(todos os meses, pois o mesmo está selectd por padrão)
-                    
+
 
                     // Exibe select para escolha do mês do relatório pdf
                     // $("#selectMes").css("display", "inline");
@@ -573,7 +573,7 @@
                                     $('#btnPdf').attr('href', routepdf);
                                     $("#btnPdf").css("display", "inline");
                             break;
-                                
+
                             case "13":
                                 var routepdf = "{{route('admin.monitor.relpdfmonitorgeral', ['identidade', 'idcategoria', 'idproduto', 'idano'])}}";
                                 routepdf = routepdf.replace('identidade', entidadepdf);
@@ -587,14 +587,14 @@
 
                             default:
                                 $("#btnPdf").css("display", "none");
-                                
+
                         }
                     });
 
 
                     // $('#btnPdf').attr('href', routepdf);
-                    
-                    
+
+
 
 
                     /*
