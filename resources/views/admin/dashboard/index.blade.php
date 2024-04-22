@@ -346,6 +346,8 @@
                             <div class="dropdown-header">Gerais:</div>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Produtos</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Regionais</a>
+                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Municípios</a>
+                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Restaurantes</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Categorias</a>
                         </div>
