@@ -344,11 +344,11 @@
                         <div class="shadow dropdown-menu dropdown-menu-right animated--fade-in"
                             aria-labelledby="dropdownMenuDados">
                             <div class="dropdown-header">Gerais:</div>
+                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Produtos</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Regionais</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Municípios</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Restaurantes</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item tipodadosgraficopadrao psdlink">Produtos</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Categorias</a>
                         </div>
                     </div>
@@ -372,14 +372,13 @@
                         </select>
                         &nbsp;&nbsp;
                         <select id="selectCategoriaPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
-                            <option value="" disabled>Categoria</option>
+                            <option value="" disabled>Produtos da Categoria</option>
                             @foreach($nomesCategorias as $nomeCategoria)
                                 <option value="{{ $nomeCategoria->id }}"> {{ $nomeCategoria->nome }}</option>
                             @endforeach
                             <option value="" disabled class="optionCategoriaPesquisa">___________________</option>
-                            <option value="0" selected data-catpesquisa="0" class="optionCategoriaPesquisa"> Todas as categorias </option>
+                            <option value="0" selected data-catpesquisa="0" class="optionCategoriaPesquisa"> Todos os produtos </option>
                         </select>
-                        &nbsp;&nbsp;
                     </div>
 
 
@@ -1142,13 +1141,13 @@
                         valorTituloGrafico = "";
 
                         //Iterando sobre o array['selcategorias'] para "REMONTAR" o elemento select: "selectCategoriaPesquisa_id" .addClass(className);
-                        $('#selectCategoriaPesquisa_id').html('<option value="" disabled>Categoria</option>');
+                        $('#selectCategoriaPesquisa_id').html('<option value="" disabled>Produtos da Categoria</option>');
                         $.each(result['selcategorias'],function(key,value){
                             /*$("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") + (tipodados == "Categorias" ? "disabled" : "") +'>'+ value.nome +'</option>');*/
                             $("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") +'>'+ value.nome +'</option>');
                         });
                         $("#selectCategoriaPesquisa_id").append('<option value="" disabled  class="optionCategoriaPesquisa">___________________</option>');
-                        $("#selectCategoriaPesquisa_id").append('<option value="0" data-catpesquisa="0" class="optionCategoriaPesquisa" '+ (catpesquisa == 0 ? "selected" : "") +'> Todas as categorias </option>');
+                        $("#selectCategoriaPesquisa_id").append('<option value="0" data-catpesquisa="0" class="optionCategoriaPesquisa" '+ (catpesquisa == 0 ? "selected" : "") +'> Todos os produtos </option>');
 
 
 
@@ -1196,26 +1195,9 @@
 
             });
 
-            //#######                                                       ##################
-            //####### FIM PESQUISA POR MESES, ANOS E PRODUTOS DA CATEGORIA  ##################
-            //################################################################################
-
-
-            // Exibe SELECT PRODUTOS DA CATEGORIA
-            $("#selectCategoriaPesquisa_id").on("change", function(){
-                if(tipodados != "Produtos" && tipodados != "Categorias"){
-                    // Exibe os produtos da categoria selecionada, para Regionais, Restaurantes e Municípios
-                    $("#selectProdutoPesquisa_id").remove();
-                    $("#mesesanoscategoriaparapesquisa").append('<select id="selectProdutoPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa"></select>');
-                        $("#selectProdutoPesquisa_id").append('<option value="" disabled>Produto</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="">Produto 1</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="">Produto 2</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="">Produto 3</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="" disabled class="optionCategoriaPesquisa">___________________</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="0" selected data-prodpesquisa="0" class="optionProdutoPesquisa"> Todos os produtos </option>');
-
-                }
-            });
+            //#######                               ##################
+            //####### FIM PESQUISA POR MESES E ANOS ##################
+            //########################################################
 
 
 
@@ -1403,7 +1385,7 @@
             //Fim do estilo do gráfico tipo pilha  categoria produto
 
 
-            // Ponto de partida
+
             //Escolha de outro tipo de dados além do tipo padrão: "Produtos"
             $(".tipodadosgraficopadrao").on("click", function(){
 
@@ -1420,10 +1402,8 @@
                     titulomesanoatual = mes + " - " + ano;
                 }
 
-
                 // Sempre que Dados(Produtos, Regionais ou Categorias) for escolhido, define a categoria de pesquisa como sendo geral(todos os produtos)
-                $("#selectCategoriaPesquisa_id").val("0");      // OU $("#selectCategoriaPesquisa_id").val("0").change();
-
+                $("#selectCategoriaPesquisa_id").val("0").change();     // ou $("#selectCategoriaPesquisa_id[value=0]").attr('selected','selected');
 
                 var urltipo = "";
 
