@@ -211,6 +211,8 @@ Route::get('admin/dashboard/ajaxrecuperamunicipiosregionais',[DashboardControlle
 Route::get('admin/dashboard/ajaxrecuperarestaurantesmunicipios',[DashboardController::class, 'ajaxrecuperarestaurantesmunicipios'])->name('admin.dashboard.ajaxrecuperarestaurantesmunicipios')->middleware(['auth']);
 Route::get('admin/dashboard/ajaxrecuperadadosgraficomesamesmonitor', [DashboardController::class, 'ajaxrecuperadadosgraficomesamesmonitor'])->name('admin.dashboard.ajaxrecuperadadosgraficomesamesmonitor')->middleware(['auth']);
 
+// Rota para recuperar produtos específicos de uma categoria escolhida no mês e ano corrente
+Route::get('admin/dashboard/ajaxgetProdutosDaCategoriaMesAno', [DashboardController::class, 'ajaxgetProdutosDaCategoriaMesAno'])->name('admin.dashboard.ajaxgetProdutosDaCategoriaMesAno')->middleware(['auth']);
 
 
 /**************************************************/

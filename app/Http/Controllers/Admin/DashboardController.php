@@ -749,6 +749,16 @@ class DashboardController extends Controller
         return response()->json($data);
     }
 
+    // Requisição ajax simples, para carregar produtos de uma categoria específica no mês e ano específico
+    public function ajaxgetProdutosDaCategoriaMesAno(Request $request){
+        $mes_corrente = $request->mescorrente;
+        $ano_corrente = $request->anocorrente;
+        $cat_corrente = $request->catcorrente;
+
+        $records = DB::select(DB::raw("SELECT DISTINCT produto_id as id, produto_nome AS nome FROM bigtable_data WHERE categoria_id = $cat_corrente AND MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente ORDER BY produto_nome ASC"));
+        return response()->json($records);
+    }
+
 
     /*******************
     //   FIM - MONITOR

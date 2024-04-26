@@ -864,7 +864,8 @@
             // Mês e ano corrente (valores obtidos a partir da view)
             var mespesquisa = "{{$mes_corrente}}";
             var anopesquisa = "{{$ano_corrente}}";
-            var catpesquisa = 0 // O valor está definido como zero, porque em um primeiro momento, TODOS OS PRODUTOS de TODAS AS CATEGORIAS serão retornados
+            var catpesquisa = 0; // O valor está definido como zero, porque em um primeiro momento, TODOS OS PRODUTOS de TODAS AS CATEGORIAS serão retornados
+            var pdtpesquisa = 0;
             var titulomesanoatual = "{{$mesespesquisa[$mes_corrente]}} " + " - " + "{{$ano_corrente}}";
 
             // Textos do mês, ano e categoria escolhidas para geração do título dos gráficos
@@ -1205,14 +1206,126 @@
             $("#selectCategoriaPesquisa_id").on("change", function(){
                 if(tipodados != "Produtos" && tipodados != "Categorias"){
                     // Exibe os produtos da categoria selecionada, para Regionais, Restaurantes e Municípios
-                    $("#selectProdutoPesquisa_id").remove();
-                    $("#mesesanoscategoriaparapesquisa").append('<select id="selectProdutoPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa"></select>');
-                        $("#selectProdutoPesquisa_id").append('<option value="" disabled>Produto</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="">Produto 1</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="">Produto 2</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="">Produto 3</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="" disabled class="optionCategoriaPesquisa">___________________</option>');
-                        $("#selectProdutoPesquisa_id").append('<option value="0" selected data-prodpesquisa="0" class="optionProdutoPesquisa"> Todos os produtos </option>');
+                    if(catpesquisa != 0){
+                        $.ajax({
+                            url:"{{route('admin.dashboard.ajaxgetProdutosDaCategoriaMesAno')}}",
+                            type: "GET",
+                            data:{
+                                mescorrente: mespesquisa,
+                                anocorrente: anopesquisa,
+                                catcorrente: catpesquisa
+                            },
+                            dataType: 'json',
+
+                            success: function(result){
+                                $("#selectProdutoPesquisa_id").remove();
+                                $("#mesesanoscategoriaparapesquisa").append('<select id="selectProdutoPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa"></select>');
+                                $("#selectProdutoPesquisa_id").append('<option value="" disabled>'+ cat +'</option>');
+                                $.each(result,function(key,value){
+                                    $("#selectProdutoPesquisa_id").append('<option value="'+ value.id +'">'+ value.nome +'</option>');
+                                });
+                                $("#selectProdutoPesquisa_id").append('<option value="" disabled class="optionCategoriaPesquisa">___________________</option>');
+                                $("#selectProdutoPesquisa_id").append('<option value="0" selected data-prodpesquisa="0" class="optionProdutoPesquisa">Todos</option>');
+                            },
+                            error: function(result){
+                                alert("Error ao retornar dados!");
+                            }
+                        });
+
+
+                        /* $("#selectProdutoPesquisa_id").remove();
+                        $("#mesesanoscategoriaparapesquisa").append('<select id="selectProdutoPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa"></select>');
+                            $("#selectProdutoPesquisa_id").append('<option value="" disabled>'+ cat +'</option>');
+                            $("#selectProdutoPesquisa_id").append('<option value="">Produto 1</option>');
+                            $("#selectProdutoPesquisa_id").append('<option value="">Produto 2</option>');
+                            $("#selectProdutoPesquisa_id").append('<option value="">Produto 3</option>');
+                            $("#selectProdutoPesquisa_id").append('<option value="" disabled class="optionCategoriaPesquisa">___________________</option>');
+                            $("#selectProdutoPesquisa_id").append('<option value="0" selected data-prodpesquisa="0" class="optionProdutoPesquisa">Todos</option>'); */
+                    }else{
+                        $("#selectProdutoPesquisa_id").remove();
+                    }
+
+                    //#############
+                    //Faz requisição para obter novos dados
+                    $.ajax({
+                        //url:"{{route('admin.dashboard.ajaxrecuperadadosgraficomesesanospesquisa')}}",    //urltipo
+                        url:"{{route('admin.dashboard.ajaxrecuperadadosgrafico')}}",    //urltipo
+                        type: "GET",
+                        data: {
+                            tipodados: tipodados,
+                            mescorrente: mespesquisa,
+                            anocorrente: anopesquisa,
+                            catcorrente: catpesquisa
+                        },
+                        dataType : 'json',
+
+                        //Obs:  "result", recebe o valor retornado pela requisição Ajax (result = $data), logo como resultado, temos:
+                        //      result['titulo'] que é uma string e result['dados'] que é um array
+                        success: function(result){
+
+                            //Zerando o valor das variáveis globais do tipo array
+                            valorLabels = [];
+                            valorData = [];
+                            somaCompra = 0;
+                            porcentagemCompra = 0;
+                            valorTituloGrafico = "";
+
+                            //Iterando sobre o array['selcategorias'] para "REMONTAR" o elemento select: "selectCategoriaPesquisa_id" .addClass(className);
+                            $('#selectCategoriaPesquisa_id').html('<option value="" disabled>Categoria</option>');
+                            $.each(result['selcategorias'],function(key,value){
+                                /*$("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") + (tipodados == "Categorias" ? "disabled" : "") +'>'+ value.nome +'</option>');*/
+                                $("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") +'>'+ value.nome +'</option>');
+                            });
+                            $("#selectCategoriaPesquisa_id").append('<option value="" disabled  class="optionCategoriaPesquisa">___________________</option>');
+                            $("#selectCategoriaPesquisa_id").append('<option value="0" data-catpesquisa="0" class="optionCategoriaPesquisa" '+ (catpesquisa == 0 ? "selected" : "") +'> Todas as categorias </option>');
+
+
+
+                            //Iterando sobre o array['dados'] e // Obtém o valor da soma de todas as compras realizadas, para cálculo da %
+                            $.each(result['dados'], function(key,value){
+                                valorLabels.push(key);
+                                valorData.push(value);
+                                somaCompra = somaCompra += Number(value);
+                            });
+
+                            if(somaCompra == 0){
+                                $(".modalSemLancamento").modal("show");
+                            }
+
+
+
+                            valorTituloGrafico = result['titulo'];
+
+                            //Se tipo é igual a espaço em branco, é porque nenhum outro estilo de gráfico foi escolhido, permanecendo portanto o padrão "bar"
+                            if(estilo == ""){estilo = "bar";}
+
+                            //Renderiza gráfico passando as informações necessárias
+                            renderGraficoDinamico(estilo, tipodados, valorLabels, valorData, valorTituloGrafico, titulomesanoatual, larguraContainerOriginal);
+
+                            //Atualiza a tabela tradução
+                            $(".tabelatraducao").html('');
+                            $(".tabelatraducao").append('<tr><td colspan="3" class="titulotraducao">'+ valorTituloGrafico + '<br><span class="titulomesanoatual" style="font-size: 12px;">'+ titulomesanoatual + '</span></td></tr>');
+                            $(".tabelatraducao").append('<tr><td class="subtitulolabeltraducao">Nome</td><td class="subtitulovalortraducao">Valor (R$)</td><td class="subtitulovalortraducao">Percentagem (%)</td></tr>');
+
+                            //Itera sobre os dados retornados pela requisição Ajax
+                            $.each(result['dados'], function(key,value){
+                                // Calcula a porcentagem da compra do produto atual
+                                porcentagemCompra = ((value * 100) / somaCompra);
+
+                                $(".tabelatraducao").append('<tr class="destaque"><td class="dadoslabel">' + key + '</td><td class="dadosvalor">' + number_format(value,2,",",".") + '</td><td class="dadosvalor">' + number_format(porcentagemCompra,2,",",".") + '</td></tr>');
+                                //somaCompra = somaCompra += Number(value);
+                            });
+
+                            $(".tabelatraducao").append('<tr class="totaldadosvalor"><td class="dadoslabel">Total GERAL</td><td class="dadosvalor">' + number_format(somaCompra,2,",",".") + '</td><td class="dadosvalor">' + number_format(100,2,",",".") + '</td></tr>');
+                        },
+                        error: function(result){
+                            alert("Error ao retornar dados!");
+                        }
+                    });
+
+                    //#####
+
+
 
                 }
             });
