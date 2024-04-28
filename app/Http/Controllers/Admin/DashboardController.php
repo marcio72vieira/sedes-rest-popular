@@ -750,7 +750,7 @@ class DashboardController extends Controller
     }
 
     // Requisição ajax simples, para carregar produtos de uma categoria específica no mês e ano específico
-    public function ajaxgetProdutosDaCategoriaMesAno(Request $request){
+    public function ajaxgetprodutosdacategoriamesano(Request $request){
         $mes_corrente = $request->mescorrente;
         $ano_corrente = $request->anocorrente;
         $cat_corrente = $request->catcorrente;
@@ -758,6 +758,63 @@ class DashboardController extends Controller
         $records = DB::select(DB::raw("SELECT DISTINCT produto_id as id, produto_nome AS nome FROM bigtable_data WHERE categoria_id = $cat_corrente AND MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente ORDER BY produto_nome ASC"));
         return response()->json($records);
     }
+
+
+    public function ajaxrecuperadadosgraficoproduto(Request $request)
+    {
+        $tipodados = $request->tipodados;
+        $mes_corrente = $request->mescorrente;
+        $ano_corrente = $request->anocorrente;
+        $pdt_corrente = $request->pdtcorrente;
+
+        $data = [];
+        $dataRecords = [];
+        $records = "";
+
+        switch($tipodados){
+            case "Regionais":
+                if($pdt_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR REGIONAIS";
+            break;
+            case "Municípios":
+                if($pdt_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR MUNICÍPIOS";
+            break;
+            case "Restaurantes":
+                if($pdt_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR RESTAURANTES";
+            break;
+        }
+
+        // Recupera as categorias das compras realizadas no mês e/ou ano corrente para RECOMPOR DINAMICAMENTE O SELECT: "selectCategoriaPesquisa_id"
+        $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
+        $data['selcategorias'] = $nomesCategorias;
+
+        if(count($records) > 0){
+            foreach($records as $value) {
+                $dataRecords[$value->nome] =  $value->totalcompra;
+            }
+        }else{
+            $dataRecords[''] =  0;
+        }
+
+        $data['dados'] =  $dataRecords;
+
+        return response()->json($data);
+    }
+
 
 
     /*******************

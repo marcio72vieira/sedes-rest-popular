@@ -212,8 +212,8 @@ Route::get('admin/dashboard/ajaxrecuperarestaurantesmunicipios',[DashboardContro
 Route::get('admin/dashboard/ajaxrecuperadadosgraficomesamesmonitor', [DashboardController::class, 'ajaxrecuperadadosgraficomesamesmonitor'])->name('admin.dashboard.ajaxrecuperadadosgraficomesamesmonitor')->middleware(['auth']);
 
 // Rota para recuperar produtos específicos de uma categoria escolhida no mês e ano corrente
-Route::get('admin/dashboard/ajaxgetProdutosDaCategoriaMesAno', [DashboardController::class, 'ajaxgetProdutosDaCategoriaMesAno'])->name('admin.dashboard.ajaxgetProdutosDaCategoriaMesAno')->middleware(['auth']);
-
+Route::get('admin/dashboard/ajaxgetprodutosdacategoriamesano', [DashboardController::class, 'ajaxgetprodutosdacategoriamesano'])->name('admin.dashboard.ajaxgetprodutosdacategoriamesano')->middleware(['auth']);
+Route::get('admin/dashboard/ajaxrecuperadadosgraficoproduto', [DashboardController::class, 'ajaxrecuperadadosgraficoproduto'])->name('admin.dashboard.ajaxrecuperadadosgraficoproduto')->middleware(['auth']);
 
 /**************************************************/
 /*   ROTAS PARA DADOS DAS ENTIDADES VISÃO RÁPIDA  */
