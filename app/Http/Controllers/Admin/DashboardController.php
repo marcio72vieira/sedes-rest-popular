@@ -176,22 +176,53 @@ class DashboardController extends Controller
 
     public function ajaxrecuperadadosgrafico(Request $request)
     {
-        // $tipodados = $request->tipodados;
-        // $mes_corrente = date('m');
-        // $ano_corrente = date('Y');
-
         $tipodados = $request->tipodados;
         $mes_corrente = $request->mescorrente;
         $ano_corrente = $request->anocorrente;
         $cat_corrente = $request->catcorrente;
+        $pdt_corrente = ($request->exists('pdtcorrente') ? $request->pdtcorrente : 0);  // Verifica se o produto foi informado
 
         $data = [];
         $dataRecords = [];
         $records = "";
 
         switch($tipodados){
+            // Se produto for diferente de zero o usuário escolheu um produto, além da categoria. Se categoria for diferente de zero, o usuário escolheu uma categoria além da entidade selecionada (Regional, Municipio ou Restauratne). Estas regras não se aplicam a Produtos e Categorias
+            case "Regionais":
+                if($pdt_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }else if ($cat_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR REGIONAIS";
+            break;
+
+            case "Municípios":
+                if($pdt_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }else if ($cat_corrente != 0) {
+                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR MUNICÍPIOS";
+            break;
+
+            case "Restaurantes":
+                if($pdt_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }
+                else if($cat_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR RESTAURANTES";
+            break;
+
             case "Produtos":
-                //$records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
                 if($cat_corrente != 0){
                     $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente  GROUP BY produto_id ORDER BY totalcompra ASC"));
                 }else{
@@ -199,34 +230,10 @@ class DashboardController extends Controller
                 }
                 $data['titulo'] = "COMPRAS POR PRODUTOS ";
             break;
+
             case "Categorias":
                 $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY categoria_id ORDER BY totalcompra ASC"));
                 $data['titulo'] = "COMPRAS POR CATEGORIAS";
-            break;
-            case "Regionais":
-                //$records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
-                if($cat_corrente != 0){
-                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
-                }else{
-                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
-                }
-                $data['titulo'] = "COMPRAS POR REGIONAIS";
-            break;
-            case "Municípios":
-                if($cat_corrente != 0){
-                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
-                }else{
-                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
-                }
-                $data['titulo'] = "COMPRAS POR MUNICÍPIOS";
-            break;
-            case "Restaurantes":
-                if($cat_corrente != 0){
-                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
-                }else{
-                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
-                }
-                $data['titulo'] = "COMPRAS POR RESTAURANTES";
             break;
         }
 
@@ -234,10 +241,6 @@ class DashboardController extends Controller
         $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
         $data['selcategorias'] = $nomesCategorias;
 
-
-        // foreach($records as $value) {
-        //     $dataRecords[$value->nome] =  $value->totalcompra;
-        // }
 
         if(count($records) > 0){
             foreach($records as $value) {
@@ -252,7 +255,6 @@ class DashboardController extends Controller
 
         return response()->json($data);
     }
-
 
 
 
@@ -1008,5 +1010,88 @@ class DashboardController extends Controller
         return response()->json($data);
     }
     *******************************/
+
+    /*
+    public function ajaxrecuperadadosgrafico_old(Request $request)
+    {
+        // $tipodados = $request->tipodados;
+        // $mes_corrente = date('m');
+        // $ano_corrente = date('Y');
+
+        $tipodados = $request->tipodados;
+        $mes_corrente = $request->mescorrente;
+        $ano_corrente = $request->anocorrente;
+        $cat_corrente = $request->catcorrente;
+
+        $data = [];
+        $dataRecords = [];
+        $records = "";
+
+        switch($tipodados){
+            case "Produtos":
+                //$records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
+                if($cat_corrente != 0){
+                    $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente  GROUP BY produto_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR PRODUTOS ";
+            break;
+            case "Categorias":
+                $records = DB::select(DB::raw("SELECT categoria_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY categoria_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR CATEGORIAS";
+            break;
+            case "Regionais":
+                //$records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                if($cat_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT regional_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR REGIONAIS";
+            break;
+            case "Municípios":
+                if($cat_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT municipio_nome as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR MUNICÍPIOS";
+            break;
+            case "Restaurantes":
+                if($cat_corrente != 0){
+                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = DB::select(DB::raw("SELECT identificacao as nome, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR RESTAURANTES";
+            break;
+        }
+
+        // Recupera as categorias das compras realizadas no mês e/ou ano corrente para RECOMPOR DINAMICAMENTE O SELECT: "selectCategoriaPesquisa_id"
+        $nomesCategorias = DB::select(DB::raw("SELECT DISTINCT categoria_id as id, categoria_nome as nome FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente  AND YEAR(data_ini) = $ano_corrente ORDER BY categoria_nome ASC"));
+        $data['selcategorias'] = $nomesCategorias;
+
+
+        // foreach($records as $value) {
+        //     $dataRecords[$value->nome] =  $value->totalcompra;
+        // }
+
+        if(count($records) > 0){
+            foreach($records as $value) {
+                $dataRecords[$value->nome] =  $value->totalcompra;
+            }
+        }else{
+            $dataRecords[''] =  0;
+        }
+
+
+        $data['dados'] =  $dataRecords;
+
+        return response()->json($data);
+    }
+    */
+
+
 
 }

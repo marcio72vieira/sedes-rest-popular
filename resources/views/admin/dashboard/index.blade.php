@@ -1102,6 +1102,7 @@
                 var idElementoSelecionado = event.target.id;
                 if(idElementoSelecionado == 'selectMesPesquisa_id' || idElementoSelecionado == 'selectAnoPesquisa_id'){
                     catpesquisa = 0;
+                    $("#selectProdutoPesquisa_id").remove();
                 }
 
                 // Compondo o título do gráfico dependendo da categoria selecionada
@@ -1227,7 +1228,7 @@
                                 });
                                 $("#selectProdutoPesquisa_id").append('<option value="" disabled class="optionCategoriaPesquisa">___________________</option>');
                                 $("#selectProdutoPesquisa_id").append('<option value="0" selected data-prodpesquisa="0" class="optionProdutoPesquisa">Todos</option>');
-                            
+
 
                             },
                             error: function(result){
@@ -1243,14 +1244,24 @@
 
 
             // Inicio - Faz requisição para obter dados com o produto escolhido
-            // Propagação de eventos: 
+            // Propagação de eventos:
             // $("#selectProdutoPesquisa_id").on("change", function(){}) NÃO EXISTE ATÉ: #selectCategoriaPesquisa_id ser clicado
             // por isso, fizemos uso da propagação de eventos em "document" que lê toda a árvore de elementos dispníveis (criada, antes ou depois da árvore ser carregada) na página
             $(document).on("change", "#selectProdutoPesquisa_id", function () {
                 pdtpesquisa = $(this).val();
-                
+                pdtpesquisanome = $(this).find("option:selected").text();
+
+                // Compondo o novo título do gráfico dependendo do produto selecionado
+                if(pdtpesquisa != 0){
+                    titulomesanoatual = "(" + cat.toUpperCase() + ": "+ pdtpesquisanome.toUpperCase() +") " + mes + " - " + ano;
+                }else{
+                    titulomesanoatual = "(" + cat.toUpperCase() + ") " + mes + " - " + ano;
+                }
+
+
                 $.ajax({
-                    url:"{{route('admin.dashboard.ajaxrecuperadadosgraficoproduto')}}",    //urltipo
+                    //url:"{{route('admin.dashboard.ajaxrecuperadadosgraficoproduto')}}",   //urltipo
+                    url:"{{route('admin.dashboard.ajaxrecuperadadosgrafico')}}",            //urltipo
                     type: "GET",
                     data: {
                         tipodados: tipodados,
@@ -1268,18 +1279,6 @@
                         somaCompra = 0;
                         porcentagemCompra = 0;
                         valorTituloGrafico = "";
-
-                        //Iterando sobre o array['selcategorias'] para "REMONTAR" o elemento select: "selectCategoriaPesquisa_id" .addClass(className);
-                        // $('#selectCategoriaPesquisa_id').html('<option value="" disabled>Categoria</option>');
-                        // $.each(result['selcategorias'],function(key,value){
-                        //     /*$("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") + (tipodados == "Categorias" ? "disabled" : "") +'>'+ value.nome +'</option>');*/
-                        //     $("#selectCategoriaPesquisa_id").append('<option value="'+ value.id +'"'+ (value.id == catpesquisa ? "selected" : "") +'>'+ value.nome +'</option>');
-                        // });
-                        // $("#selectCategoriaPesquisa_id").append('<option value="" disabled  class="optionCategoriaPesquisa">___________________</option>');
-                        // $("#selectCategoriaPesquisa_id").append('<option value="0" data-catpesquisa="0" class="optionCategoriaPesquisa" '+ (catpesquisa == 0 ? "selected" : "") +'> Todas as categorias </option>');
-                        
-
-
 
                         //Iterando sobre o array['dados'] e // Obtém o valor da soma de todas as compras realizadas, para cálculo da %
                         $.each(result['dados'], function(key,value){
@@ -1320,7 +1319,7 @@
                         alert("Error ao retornar dados!");
                     }
                 });
-            });           
+            });
             // Fim - Faz requisição para obter dados com o produto escolhido
 
 
