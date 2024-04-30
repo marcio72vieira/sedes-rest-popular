@@ -339,11 +339,11 @@
                     <div class="dropdown">
                         <a class="dropdown-toggle font-weight-bold text-primary" href="#" role="button" id="dropdownMenuDados"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-                            Dados
+                            Produtos
                         </a>
                         <div class="shadow dropdown-menu dropdown-menu-right animated--fade-in"
                             aria-labelledby="dropdownMenuDados">
-                            <div class="dropdown-header">Gerais:</div>
+                            <div class="dropdown-header">Dados:</div>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Regionais</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Municípios</a>
                             <a class="dropdown-item tipodadosgraficopadrao psdlink">Restaurantes</a>
@@ -354,7 +354,8 @@
                     </div>
 
 
-                    <div id="mesesanoscategoriaparapesquisa" class="col-md-5 d-sm-flex justify-content-between">
+                    <div id="mesesanoscategoriaparapesquisa" class="col-md-8 d-sm-flex justify-content-between">
+                        <span id="selecionames" class="text-primary" style="margin: 5px;">Mês:</span>
                         <select id="selectMesPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
                             <option value="" selected disabled>Mês...</option>
                             @foreach($mesespesquisa as $key => $value)
@@ -364,6 +365,7 @@
                             @endforeach
                         </select>
                         &nbsp;&nbsp;
+                        <span id="selecionaano" class="text-primary" style="margin: 5px;">Ano:</span>
                         <select id="selectAnoPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
                             <option value="" selected disabled>Ano...</option>
                             @foreach($anospesquisa as $value)
@@ -371,6 +373,7 @@
                             @endforeach
                         </select>
                         &nbsp;&nbsp;
+                        <span id="selecionacategoria" class="text-primary" style="margin: 5px;">Categoria:</span>
                         <select id="selectCategoriaPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa">
                             <option value="" disabled>Categoria</option>
                             @foreach($nomesCategorias as $nomeCategoria)
@@ -393,6 +396,7 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
                             Estilo
                         </a> --}}
+                        {{--<span id="resetar" title="redefinir gráfico" style="margin-right: 15px;"><i class="fas fa-power-off"></i></span>--}}
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuTipografico"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="text-gray-400 fas fa-ellipsis-v fa-sm fa-fw"></i>
@@ -1098,10 +1102,11 @@
                 cat = $("#selectCategoriaPesquisa_id").find('option:selected').text();
 
                 // alert("Mês: " + mespesquisa + " Ano: " + anopesquisa + " Categoria: " + catpesquisa + " - " + cat.toUpperCase());
-                // Vefifica se o select Mês ou Ano foram clicados para zerar o valor de catpesquisa (para buscar todos os produtos de todas as categorias)
+                // Vefifica se o select Mês ou Ano foram clicados para zerar o valor de catpesquisa (para buscar todos os produtos de todas as categorias) e remover o select de produtos de uma categoria
                 var idElementoSelecionado = event.target.id;
                 if(idElementoSelecionado == 'selectMesPesquisa_id' || idElementoSelecionado == 'selectAnoPesquisa_id'){
                     catpesquisa = 0;
+                    $("#selecionaproduto").remove();
                     $("#selectProdutoPesquisa_id").remove();
                 }
 
@@ -1220,7 +1225,10 @@
 
                             success: function(result){
                                 // Exibe o select com os produtos da categoria selecionada.
+                                $("#selecionaproduto").remove();
                                 $("#selectProdutoPesquisa_id").remove();
+
+                                $("#mesesanoscategoriaparapesquisa").append('<span id="selecionaproduto" class="text-primary" style="margin: 5px;">Produtos:</span>');
                                 $("#mesesanoscategoriaparapesquisa").append('<select id="selectProdutoPesquisa_id" class="form-control col-form-label-sm selectsmesesanoscategoriaspesquisa"></select>');
                                 $("#selectProdutoPesquisa_id").append('<option value="" disabled>'+ cat +'</option>');
                                 $.each(result,function(key,value){
@@ -1236,6 +1244,7 @@
                             }
                         });
                     }else{
+                        $("#selecionaproduto").remove();
                         $("#selectProdutoPesquisa_id").remove();
                     }
                 }
@@ -1267,6 +1276,7 @@
                         tipodados: tipodados,
                         mescorrente: mespesquisa,
                         anocorrente: anopesquisa,
+                        catcorrente: catpesquisa,
                         pdtcorrente: pdtpesquisa
                     },
                     dataType : 'json',
@@ -1515,12 +1525,20 @@
                 //Limpa espaço em branco no texto do link tipodados (Produtos, Categorias, Regionais)
                 tipodados = $(this).text().trim();
 
-                // Se o tipo de dados escolhido for diferente de Categorias, ou seja, Produtos, Regionais exibe o select (#selectCategoriaPesquisa_id)
+                //Define o label dos dados escolhido, para plotar os gráficos
+                $("#dropdownMenuDados").text(tipodados);
+
+                //Remove o select de pesquisa de produto de uma categoria específica (selecionada)
+                $("#selectProdutoPesquisa_id").remove();
+
+                // Se o tipo de dados escolhido for diferente de Categorias, ou seja, Produtos, Regionais, Municípios ou Restaurante exibe o select (#selectCategoriaPesquisa_id)
                 // Caso contrário, esconde o select(#selectCategoriaPesquisa_id). O título é definido independente da situação exibir ou esconder
                 if(tipodados != "Categorias"){
+                    $("#selecionacategoria").css("display", "inline");
                     $("#selectCategoriaPesquisa_id").css("display", "inline");
                     titulomesanoatual = mes + " - " + ano;
                 }else{
+                    $("#selecionacategoria").css("display", "none");
                     $("#selectCategoriaPesquisa_id").css("display", "none");
                     titulomesanoatual = mes + " - " + ano;
                 }
