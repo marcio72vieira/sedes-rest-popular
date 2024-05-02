@@ -307,7 +307,7 @@ class DashboardController extends Controller
 
 
 
-    public function ajaxrecuperadadosgraficoempilhado(Request $request)
+    public function ajaxrecuperadadosgraficoempilhado_old(Request $request)
     {
         // $tipodados = $request->tipodados;
         // $mes_corrente = date('m');
@@ -404,6 +404,98 @@ class DashboardController extends Controller
 
         return response()->json($data);
     }
+
+
+
+    public function ajaxrecuperadadosgraficoempilhado(Request $request)
+    {
+        $tipodados = $request->tipodados;
+        $mes_corrente = $request->mescorrente;
+        $ano_corrente = $request->anocorrente;
+        $cat_corrente = $request->catcorrente;
+        $pdt_corrente = ($request->exists('pdtcorrente') ? $request->pdtcorrente : 0);  // Verifica se o produto foi informado
+
+
+        $data = [];
+        $dataEmpilhadoLabels = [];
+        $dataEmpilhadoRecordsNormal = [];
+        $dataEmpilhadoRecordsAf = [];
+        $records = "";
+
+        switch($tipodados){
+            case "Regionais":
+                if($pdt_corrente != 0){
+                    $records = $records = DB::select(DB::raw("SELECT regional_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }else if($cat_corrente != 0){
+                    $records = $records = DB::select(DB::raw("SELECT regional_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = $records = DB::select(DB::raw("SELECT regional_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY regional_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR REGIONAIS (NORMAL x AF)";
+            break;
+
+            case "Municípios":
+                if($pdt_corrente != 0){
+                    $records = $records = DB::select(DB::raw("SELECT municipio_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                } else if($cat_corrente != 0){
+                    $records = $records = DB::select(DB::raw("SELECT municipio_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = $records = DB::select(DB::raw("SELECT municipio_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY municipio_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR MUNICÍPIOS (NORMAL x AF)";
+            break;
+
+            case "Restaurantes":
+                if($pdt_corrente != 0){
+                    $records = $records = DB::select(DB::raw("SELECT identificacao as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND produto_id = $pdt_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }else if($cat_corrente != 0){
+                    $records = $records = DB::select(DB::raw("SELECT identificacao as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = $records = DB::select(DB::raw("SELECT identificacao as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY restaurante_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR RESTAURANTES (NORMAL x AF)";
+            break;
+
+            case "Produtos":
+                if($cat_corrente != 0){
+                    $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente AND categoria_id = $cat_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
+                }else{
+                    $records = $records = DB::select(DB::raw("SELECT produto_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY produto_id ORDER BY totalcompra ASC"));
+                }
+                $data['titulo'] = "COMPRAS POR PRODUTOS (NORMAL x AF)";
+            break;
+
+            case "Categorias":
+                $records = $records = DB::select(DB::raw("SELECT categoria_nome as nome, af, SUM(IF(af = 'nao', precototal, 0)) as totalcompranormal, SUM(IF(af = 'sim', precototal, 0)) as totalcompraaf, SUM(precototal) as totalcompra FROM bigtable_data WHERE MONTH(data_ini) = $mes_corrente AND YEAR(data_ini) = $ano_corrente GROUP BY categoria_id ORDER BY totalcompra ASC"));
+                $data['titulo'] = "COMPRAS POR CATEGORIAS (NORMAL x AF)";
+            break;
+        }
+
+
+        // Define o valor par NULL, se o valor for igual a zero, pois o Charjs interpreta o zero como um valor válido,
+        // mostrando no gráfico o valor zero. Se o valor for setado para null, o mesmo não é exibido no gráfico.
+        // Referencia: https://stackoverflow.com/questions/72444855/bar-chart-with-min-height-and-zero-values-chartjs
+        if(count($records) > 0){
+            foreach($records as $value) {
+                $dataEmpilhadoLabels[] = $value->nome;
+                $dataEmpilhadoRecordsNormal[] = ($value->totalcompranormal > 0 ? $value->totalcompranormal : NULL) ;
+                $dataEmpilhadoRecordsAf[] = ($value->totalcompraaf > 0 ? $value->totalcompraaf : NULL);
+            }
+        }else{
+            $dataEmpilhadoLabels[] = "";
+            $dataEmpilhadoRecordsNormal[] = 0;
+            $dataEmpilhadoRecordsAf[] = 0;
+        }
+
+        $data['labels'] = $dataEmpilhadoLabels;
+        $data['compranormal'] = $dataEmpilhadoRecordsNormal;
+        $data['compraaf'] =  $dataEmpilhadoRecordsAf;
+        $data['dados'] =  $records;
+
+
+        return response()->json($data);
+    }
+
 
 
 

@@ -971,7 +971,8 @@
                         tipodados: tipodadosEmpilhado,
                         mescorrente: mespesquisa,
                         anocorrente: anopesquisa,
-                        catcorrente: catpesquisa
+                        catcorrente: catpesquisa,
+                        pdtcorrente: pdtpesquisa
                     },
                     dataType : 'json',
 
@@ -1518,8 +1519,7 @@
             //Fim do estilo do gráfico tipo pilha  categoria produto
 
 
-            // Ponto de partida
-            //Escolha de outro tipo de dados além do tipo padrão: "Produtos"
+            //Escolha de outro tipo de entidade além do tipo padrão: "Produtos"
             $(".tipodadosgraficopadrao").on("click", function(){
 
                 //Limpa espaço em branco no texto do link tipodados (Produtos, Categorias, Regionais)
@@ -1529,9 +1529,10 @@
                 $("#dropdownMenuDados").text(tipodados);
 
                 //Remove o select de pesquisa de produto de uma categoria específica (selecionada)
+                $("#selecionaproduto").remove();
                 $("#selectProdutoPesquisa_id").remove();
 
-                // Se o tipo de dados escolhido for diferente de Categorias, ou seja, Produtos, Regionais, Municípios ou Restaurante exibe o select (#selectCategoriaPesquisa_id)
+                // Se o tipo de dados(Entidade) escolhido for diferente de Categorias, ou seja, Produtos, Regionais, Municípios ou Restaurante exibe o select (#selectCategoriaPesquisa_id)
                 // Caso contrário, esconde o select(#selectCategoriaPesquisa_id). O título é definido independente da situação exibir ou esconder
                 if(tipodados != "Categorias"){
                     $("#selecionacategoria").css("display", "inline");
@@ -1608,6 +1609,14 @@
                         alert("Error ao retornar dados!");
                     }
                 });
+            });
+
+            //******************
+            // RESETAR
+            //*****************
+            $("#resetar").on("click", function(){
+                //Recarrega a página com a URL atual
+                location.replace(location.href);
             });
 
 
