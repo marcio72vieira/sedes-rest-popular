@@ -1523,9 +1523,13 @@
             $(".tipodadosgraficopadrao").on("click", function(){
 
                 //Limpa espaço em branco no texto do link tipodados (Produtos, Categorias, Regionais)
+                //Captura o tipo de dados a ser exibido
                 tipodados = $(this).text().trim();
 
-                //Define o label dos dados escolhido, para plotar os gráficos
+                //Define a categoria como sendo todas as categorias, para trazer todas as Regionais, Municípios, Restaurantes que fizeram algum tipo de compra no período
+                catpesquisa = 0;
+
+                //Redefine o label (Regionais, Municipios, Restaurante, Produtos ou Categoria, no cabeçalho do card), para plotar o gráfico
                 $("#dropdownMenuDados").text(tipodados);
 
                 //Remove o select de pesquisa de produto de uma categoria específica (selecionada)
