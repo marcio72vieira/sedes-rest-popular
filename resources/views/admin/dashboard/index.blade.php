@@ -1526,6 +1526,10 @@
                 //Captura o tipo de dados a ser exibido
                 tipodados = $(this).text().trim();
 
+                //Capturando o texto do mês e do para compor o título do gráfio e da tabela tradução
+                mes = $("#selectMesPesquisa_id").find('option:selected').text();
+                ano = $("#selectAnoPesquisa_id").find('option:selected').text();
+
                 //Define a categoria como sendo todas as categorias, para trazer todas as Regionais, Municípios, Restaurantes que fizeram algum tipo de compra no período
                 catpesquisa = 0;
 
